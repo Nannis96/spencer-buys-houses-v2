@@ -1,7 +1,6 @@
 import { Phone, ArrowRight, CalendarCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-
 export function CTASection() {
     return (
         <section className="bg-[#f59e0b] py-16 lg:py-20">
