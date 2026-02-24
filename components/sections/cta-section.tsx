@@ -30,6 +30,7 @@ export function CTASection() {
                             <ArrowRight className="ml-2 h-5 w-5" />
                         </a>
                     </Button>
+
                     <Button
                         asChild
                         variant="outline"
