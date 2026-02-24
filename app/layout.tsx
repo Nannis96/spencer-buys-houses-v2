@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Inter, Open_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
-import { StickyHeader } from "@/components/header"
-import { JsonLd } from "@/components/json-ld"
+import { JsonLd } from "@/components/seo/json-ld"
 import "./globals.css"
 
 const inter = Inter({
@@ -116,7 +115,6 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />
-        <StickyHeader />
         {children}
         <Analytics />
       </body>

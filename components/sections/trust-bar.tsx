@@ -1,10 +1,12 @@
-import { Shield, Star, Award, CheckCircle } from "lucide-react"
+import { Shield, Star, Clock, CheckCircle, MapPin, DollarSign } from "lucide-react"
 
 const badges = [
-    { icon: Shield, label: "BBB A+ Rated" },
-    { icon: Star, label: "500+ Homes Purchased" },
-    { icon: Award, label: "As Seen on HGTV" },
-    { icon: CheckCircle, label: "Licensed & Insured" },
+    { icon: Star, label: "5-Star Google Reviews" },
+    { icon: Clock, label: "Close in 7 Days" },
+    { icon: DollarSign, label: "Zero Commissions" },
+    { icon: Shield, label: "No Repairs Needed" },
+    { icon: MapPin, label: "Local Memphis Buyer" },
+    { icon: CheckCircle, label: "Zero Obligation Offer" },
 ]
 
 export function TrustBar() {

@@ -6,10 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { MapPin, Phone, Mail, ArrowRight, Loader2, CheckCircle2, ShieldCheck } from "lucide-react"
+import { MapPin, Phone, Mail, User, ArrowRight, Loader2, CheckCircle2, ShieldCheck } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const leadSchema = z.object({
+    name: z.string().min(2, "Please enter your name"),
     address: z.string().min(5, "Please enter a valid property address"),
     phone: z
         .string()
@@ -91,16 +92,16 @@ export function LeadForm() {
                     <div className="flex flex-col gap-4">
                         <div>
                             <div className="relative">
-                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" />
+                                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" />
                                 <Input
-                                    placeholder="Name"
+                                    placeholder="Your Name"
                                     {...register("name")}
                                     className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                    aria-invalid={!!errors.address}
+                                    aria-invalid={!!errors.name}
                                 />
                             </div>
-                            {errors.address && (
-                                <p className="mt-1.5 text-xs text-red-400">{errors.address.message}</p>
+                            {errors.name && (
+                                <p className="mt-1.5 text-xs text-red-400">{errors.name.message}</p>
                             )}
                         </div>
                         <div>

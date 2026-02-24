@@ -1,0 +1,8 @@
+export { HeroBold } from "./hero-bold"
+export { TrustBar } from "./trust-bar"
+export { ProcessSection } from "./process-section"
+export { AboutSection } from "./about-section"
+export { BenefitsSection } from "./benefits-section"
+export { TestimonialsSection } from "./testimonials-section"
+export { FAQSection } from "./faq-section"
+export { CTASection } from "./cta-section"

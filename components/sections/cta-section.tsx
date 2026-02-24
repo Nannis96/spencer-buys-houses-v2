@@ -11,16 +11,19 @@ export function CTASection() {
                 </div>
 
                 <h2 className="text-3xl md:text-4xl font-black text-[#0f0f23] mb-4 text-balance">
-                    READY TO GET YOUR FREE CASH OFFER?
+                    Ready to Get Your Free Cash Offer?
                 </h2>
-                <p className="text-lg text-[#0f0f23]/70 mb-8 max-w-2xl mx-auto">
-                    {"Join 500+ homeowners who sold their property fast. It takes less than 2 minutes to get started."}
+                <p className="text-lg text-[#0f0f23]/80 mb-2 max-w-2xl mx-auto">
+                    No fees. No repairs. No obligation. Close in as little as 7 days.
+                </p>
+                <p className="text-base text-[#0f0f23]/60 mb-8 max-w-xl mx-auto">
+                    Serving Memphis, Berclair, Raleigh, Frayser, Hickory Hill, Cordova, Whitehaven &amp; surrounding areas.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Button
                         asChild
                         size="lg"
-                        className="bg-[#0f0f23] hover:bg-[#1a1a3e] text-white text-lg px-8 h-14 font-bold"
+                        className="bg-[#0f0f23] hover:bg-[#1a1a3e] text-white hover:text-[#f59e0b] text-lg px-8 h-14 font-bold"
                     >
                         <a href="#top">
                             Get My Free Cash Offer Now
@@ -31,11 +34,11 @@ export function CTASection() {
                         asChild
                         variant="outline"
                         size="lg"
-                        className="border-[#0f0f23] text-[#0f0f23] hover:bg-[#0f0f23] hover:text-white text-lg px-8 h-14 font-bold"
+                        className="border-[#0f0f23] text-white hover:bg-[#0f0f23] hover:text-[#f59e0b] text-lg px-8 h-14 font-bold"
                     >
-                        <a href="tel:+15551234567">
+                        <a href="tel:+19016218799">
                             <Phone className="mr-2 h-5 w-5" />
-                            Call Now
+                            (901) 621-8799
                         </a>
                     </Button>
                 </div>

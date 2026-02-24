@@ -1,11 +1,10 @@
-import { LeadForm } from "@/components/lead-form"
+import { LeadForm } from "@/components/forms/lead-form"
 import { Star, ArrowDown, CalendarCheck } from "lucide-react"
 
 export function HeroBold() {
     return (
-        <section className="relative bg-[#0f0f23] pt-24 pb-16 lg:pb-24 overflow-hidden">
+        <section className="relative bg-[#0f0f23] pt-44 pb-16 lg:pb-24 overflow-hidden">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#f59e0b]/5 rounded-full blur-3xl" />
-
             <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                     <div>

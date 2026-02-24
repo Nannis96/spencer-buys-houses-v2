@@ -2,21 +2,39 @@ import { Star, Quote } from "lucide-react"
 
 const testimonials = [
     {
-        name: "Sarah M.",
-        location: "Houston, TX",
-        text: "They made the whole process so easy. I had a cash offer within 24 hours and closed in just 10 days. The price was fair and the team was incredibly professional.",
+        name: "Darlene W.",
+        location: "Memphis, TN",
+        text: "Spencer made selling my Frayser home incredibly easy. I had a fair cash offer within 24 hours and closed in 9 days. No repairs, no commissions, no stress. I wish I had called sooner!",
         rating: 5,
     },
     {
-        name: "James & Linda K.",
-        location: "Dallas, TX",
-        text: "We inherited a property that needed tons of work. They bought it completely as-is and we didn't have to spend a dime on repairs. Highly recommend to anyone in a similar situation!",
+        name: "Marcus & Tanya B.",
+        location: "Hickory Hill, TN",
+        text: "We inherited a property that needed a ton of work. Spencer bought it completely as-is and we didn't spend a dime on repairs. Honest, transparent, and fast — highly recommend!",
         rating: 5,
     },
     {
-        name: "Robert T.",
-        location: "San Antonio, TX",
-        text: "After my divorce, I needed to sell fast and move on. They gave me a fair price and worked around my schedule. Professional and compassionate from start to finish.",
+        name: "James P.",
+        location: "Raleigh, TN",
+        text: "After going through a tough situation, I needed to sell fast and move forward. Spencer gave me a fair price, covered closing costs, and worked around my schedule. Truly compassionate service.",
+        rating: 5,
+    },
+    {
+        name: "Linda S.",
+        location: "Cordova, TN",
+        text: "I was skeptical at first but Spencer was professional from start to finish. No lowball offers, no hidden fees. He paid exactly what he promised and we closed on my timeline.",
+        rating: 5,
+    },
+    {
+        name: "Anthony R.",
+        location: "Berclair, TN",
+        text: "Listing with an agent wasn't working for me. Spencer stepped in, gave me a no-obligation offer the same day, and we closed in under 2 weeks. Best decision I made.",
+        rating: 5,
+    },
+    {
+        name: "Sheila M.",
+        location: "Whitehaven, TN",
+        text: "Spencer is a Memphis native who truly cares about this community. The process was smooth, he answered every question, and my family got the fresh start we needed.",
         rating: 5,
     },
 ]
@@ -47,13 +65,16 @@ export function TestimonialsSection() {
                         REAL REVIEWS
                     </span>
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                        {"Testimonials"}
+                        What Memphis Homeowners Are Saying
                     </h2>
+                    <p className="text-gray-400 max-w-2xl mx-auto">
+                        Real stories from real people who sold their Memphis property fast — no stress, no surprises.
+                    </p>
                     {/* <p className="text-gray-400 max-w-2xl mx-auto">
                         {"Hear from real homeowners who sold their properties quickly and stress-free."}
                     </p> */}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {testimonials.map((t) => (
                         <div key={t.name} className="p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col">
                             <StarRating rating={t.rating} />
