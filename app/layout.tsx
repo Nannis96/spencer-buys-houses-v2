@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next"
 import { Inter, Open_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { JsonLd } from "@/components/seo/json-ld"
+import { StickyHeader } from "@/components/layout/header"
+import { SiteFooter } from "@/components/layout/site-footer"
 import "./globals.css"
 
 const inter = Inter({
@@ -112,10 +114,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${openSans.variable}`}>
-      <body className="font-sans antialiased">
+      <body id="top" className="font-sans antialiased min-h-screen">
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />
+        <StickyHeader />
         {children}
+        <SiteFooter />
         <Analytics />
       </body>
     </html>

@@ -56,7 +56,14 @@ function StarRating({ rating }: { rating: number }) {
     )
 }
 
-export function TestimonialsSection() {
+interface TestimonialsSectionProps {
+    /** Number of testimonials to display. Defaults to all. */
+    count?: number
+}
+
+export function TestimonialsSection({ count }: TestimonialsSectionProps = {}) {
+    const visible = count ? testimonials.slice(0, count) : testimonials
+
     return (
         <section id="testimonials" className="bg-[#0f0f23] py-20 lg:py-28">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -70,12 +77,9 @@ export function TestimonialsSection() {
                     <p className="text-gray-400 max-w-2xl mx-auto">
                         Real stories from real people who sold their Memphis property fast — no stress, no surprises.
                     </p>
-                    {/* <p className="text-gray-400 max-w-2xl mx-auto">
-                        {"Hear from real homeowners who sold their properties quickly and stress-free."}
-                    </p> */}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {testimonials.map((t) => (
+                    {visible.map((t) => (
                         <div key={t.name} className="p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col">
                             <StarRating rating={t.rating} />
                             <Quote className="h-6 w-6 text-[#f59e0b]/30 mt-4 mb-3" />
