@@ -1,4 +1,5 @@
 import { MapPin, Users, Clock, TrendingUp } from "lucide-react"
+import Image from "next/image"
 
 const stats = [
     { icon: Users, value: "500+", label: "Memphis Homes Purchased" },
@@ -16,16 +17,16 @@ export function AboutSection() {
                     {/* Text Content */}
                     <div>
                         <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-6 uppercase tracking-wide">
-                            About Spencer
+                            About Spencer Buys Houses
                         </span>
                         <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
-                            A Local Memphis Cash Home Buyer You Can Trust
+                            Sell Your Memphis House Fast for Cash
                         </h2>
                         <p className="text-gray-400 leading-relaxed mb-4">
-                            We are a real estate solutions and investment firm that specializes in helping homeowners get rid of burdensome houses fast. We are investors and problem solvers who can buy your house fast with a fair all-cash offer.
+                            Spencer Buys Houses is your trusted local cash home buyer in Memphis, Tennessee, offering a fast, hassle-free solution to sell your Memphis house fast for cash. Whether you’re relocating, managing an inherited property, or need to sell your house fast in Memphis TN, our same-day cash offers eliminate stress and delays. Learn how our home buying process works!
                         </p>
                         <p className="text-gray-400 leading-relaxed mb-6">
-                            Whether you are facing foreclosure, going through a divorce, dealing with an inherited property, or simply need to move quickly — <strong className="text-white">Spencer Buys Houses</strong> is here to give you a fast, fair, no-obligation cash offer. As a Memphis native, Spencer understands the local market and is committed to helping our community.
+                            We specialize in closing sales in as little as 7 days – no fees, no commissions, and no obligations. Our streamlined process simplifies selling for homeowners across Memphis and surrounding areas, turning complex situations into seamless cash home buyer solutions.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4">
@@ -45,7 +46,7 @@ export function AboutSection() {
                     </div>
 
                     {/* Stats Grid */}
-                    <div className="grid grid-cols-2 gap-4">
+                    {/* <div className="grid grid-cols-2 gap-4">
                         {stats.map(({ icon: Icon, value, label }) => (
                             <div
                                 key={label}
@@ -58,6 +59,22 @@ export function AboutSection() {
                                 <p className="text-xs text-gray-400 leading-snug">{label}</p>
                             </div>
                         ))}
+                    </div> */}
+
+                    {/* Image in place of stats grid */}
+                    <div className="flex justify-center lg:justify-end">
+                        <div className="w-full max-w-full lg:max-w-4xl overflow-hidden rounded-2xl shadow-md">
+                            <div className="relative w-full aspect-[16/9]">
+                                <Image
+                                    src="/var-a-exterior.jpg"
+                                    alt="Exterior view of a house"
+                                    fill
+                                    sizes="(max-width: 1024px) 100vw, 1792px"
+                                    className="object-cover"
+                                    priority
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

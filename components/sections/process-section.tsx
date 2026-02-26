@@ -6,21 +6,21 @@ const steps = [
         step: "01",
         title: "Share Your Property Details",
         description:
-            "Tell us about your property – address, condition, and your situation. It takes less than 2 minutes and there's zero obligation.",
+            "Tell us about your house – location, condition, and situation. Our team starts analyzing your property immediately to provide a fair, no-obligation offer!",
     },
     {
         icon: DollarSign,
         step: "02",
-        title: "Receive Your Competitive Cash Offer",
+        title: "Receive a Competitive Cash Offer for Your Home in Memphis, TN",
         description:
-            "We'll analyze your home and present you a fair AS-IS cash offer within 24 hours. No repairs required, no open houses, no hassle.",
+            "We offer a fair cash offer for your Memphis home within 24 hours, based on market research for your property’s value.",
     },
     {
         icon: CalendarCheck,
         step: "03",
         title: "Close on YOUR Schedule",
         description:
-            "Pick the closing date that works for YOU — as fast as 7 days or whenever you're ready. We handle the paperwork and pay all closing costs.",
+            "Pick the closing date that works for you. Get paid in cash and move forward stress-free. We buy houses fast in Memphis, it’s that straightforward!",
     },
 ]
 
@@ -30,13 +30,13 @@ export function ProcessSection() {
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
                 <div className="text-center mb-16">
                     <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
-                        How It Works
+                        Discover How Our Home Buying Process Works!
                     </span>
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                        3 Simple Steps to Sell Your Memphis House Fast
+                        3 Simple Steps to Sell Your Memphis House Fast for Cash
                     </h2>
                     <p className="text-gray-400 max-w-2xl mx-auto">
-                        Our streamlined process means you go from offer to closing in days, not months.
+                        Sell your Memphis house quickly with Spencer Buys Houses and hassle-free in just three simple steps.
                     </p>
                 </div>
 
