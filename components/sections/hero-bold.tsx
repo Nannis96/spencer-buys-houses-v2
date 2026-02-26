@@ -1,4 +1,4 @@
-import { LeadForm } from "@/components/forms/lead-form"
+import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 
 export function HeroBold() {
     return (
@@ -7,7 +7,6 @@ export function HeroBold() {
             <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                     <div>
-
                         {/* H1 SEO */}
                         <h1 className="block text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
                             Sell Your Memphis House Fast for Cash
@@ -25,14 +24,13 @@ export function HeroBold() {
                         </a> */}
 
                         <div className="lg:hidden mt-8 mb-9">
-                            <LeadForm />
+                            <LeadFormConsent />
                         </div>
-
                     </div>
 
                     {/* Right: Lead form */}
                     <div className="hidden lg:block">
-                        <LeadForm />
+                        <LeadFormConsent />
                     </div>
                 </div>
             </div>
