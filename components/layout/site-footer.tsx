@@ -1,12 +1,5 @@
-import { Home, Phone, Mail, MapPin } from "lucide-react"
-import {
-    FaFacebookF,
-    FaGoogle,
-    FaInstagram,
-    FaLinkedinIn,
-    FaPinterestP,
-    FaYoutube,
-} from "react-icons/fa"
+import { Phone } from "lucide-react"
+import { SocialLinks } from "./social-links"
 
 export function SiteFooter() {
     return (
@@ -57,68 +50,7 @@ export function SiteFooter() {
                                 <Phone className="h-4 w-4" />
                                 Call Today: (901) 621-8799
                             </a>
-                            <div className="flex items-center gap-4">
-                                <a
-                                    href="https://www.facebook.com/spencerbuyshouses"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on Facebook"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    <FaFacebookF size={18} />
-                                </a>
-                                <a
-                                    href="https://www.google.com/search?sca_esv=bcc33a35ba758be7&sxsrf=AHTn8zqZnH3MJTMgocMcMH9qe8pwKbKfmw:1739816269184&kgmid=/g/11jnny9nkl&q=Spencer+Buys+Houses&shndl=30&shem=lcuae,uaasie&source=sh/x/loc/uni/m1/1&kgs=ba24ee0e0bb416e9"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on Google"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white transition"
-                                >
-                                    <FaGoogle size={18} />
-                                </a>
-                                <a
-                                    href="https://www.instagram.com/spen.cershadrach"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on Instagram"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    <FaInstagram size={18} />
-                                </a>
-                                <a
-                                    href="https://www.linkedin.com/in/spencer-shadrach-0a379b4a"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on LinkedIn"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    <FaLinkedinIn size={18} />
-                                </a>
-                                <a
-                                    href="https://mx.pinterest.com/spencerbuyshouses"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on Pinterest"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    <FaPinterestP size={18} />
-                                </a>
-                                <a
-                                    href="https://www.youtube.com/@spencerbuyshouses"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on YouTube"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    <FaYoutube size={18} />
-                                </a>
-                            </div>
+                            <SocialLinks />
                         </div>
                     </div>
                 </div>
@@ -128,6 +60,14 @@ export function SiteFooter() {
                         <p className="text-sm text-gray-500">
                             {"© 2026 Spencer Buys Houses"}
                         </p>
+                        <div className="flex gap-4">
+                            <a href="/terms/" className="text-sm text-gray-500 hover:text-[#f59e0b] transition-colors">
+                                Terms of Use
+                            </a>
+                            <a href="/privacy/" className="text-sm text-gray-500 hover:text-[#f59e0b] transition-colors">
+                                Privacy Policy
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
