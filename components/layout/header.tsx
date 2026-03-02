@@ -90,7 +90,7 @@ export function StickyHeader() {
                             { label: "How it works", href: "/how-we-buy-houses/" },
                             { label: "Blog", href: "/blog/" },
                             { label: "Contact us", href: "/contact-us/" },
-                            { label: "Get paid for referring", href: "/referral-program/" },
+                            { label: "Get paid for referring", href: "/get-paid/" },
                         ].map((item) => {
                             const normalizedPath = pathname.replace(/\/$/, "")
                             const normalizedHref = item.href.replace(/\/$/, "")
@@ -155,7 +155,7 @@ export function StickyHeader() {
                                 { label: "How it works", href: "/how-we-buy-houses/" },
                                 { label: "Blog", href: "/blog/" },
                                 { label: "Contact us", href: "/contact-us/" },
-                                { label: "Get paid for referring", href: "/referral-program/" },
+                                { label: "Get paid for referring", href: "/get-paid/" },
                             ].map((item) => {
                                 const normalizedPath = pathname.replace(/\/$/, "")
                                 const normalizedHref = item.href.replace(/\/$/, "")

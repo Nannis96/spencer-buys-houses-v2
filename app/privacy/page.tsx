@@ -277,9 +277,9 @@ export default function PrivacyPolicyPage() {
                                 </Prose>
                                 <Prose>
                                     We may collect information about your computer, including your IP
-                                    address, operating system, and browser type using Google Analytics,
-                                    this is to improve browsing for everyone and does not identify any individual.
-                                    You can learn more about how data is collected with Analytics here.
+                                    address, operating system, and browser type using Google Analytics.
+                                    This is to improve browsing for everyone and does not identify any
+                                    individual.
                                 </Prose>
                                 <Prose>
                                     When ordering or registering on our site, as appropriate, you may be
@@ -300,16 +300,16 @@ export default function PrivacyPolicyPage() {
                                     What do we use your information for?
                                 </SectionHeading>
                                 <Prose>
-                                    Any of the information we collect from you may be
-                                    used in one of the following ways:
+                                    Any of the information we collect from you may be used in one of the
+                                    following ways:
                                 </Prose>
 
                                 <SubHeading>To process transactions</SubHeading>
                                 <Prose>
-                                    Your information, whether public or private, will not be sold, exchanged,
-                                    transferred, or given to any other company for any reason whatsoever,
-                                    without your consent, other than for the express purpose of delivering
-                                    the purchased product or service requested.
+                                    Your information, whether public or private, will not be sold,
+                                    exchanged, transferred, or given to any other company for any reason
+                                    whatsoever, without your consent, other than for the express purpose
+                                    of delivering the purchased product or service requested.
                                 </Prose>
 
                                 <SubHeading>To send periodic emails</SubHeading>
@@ -345,10 +345,10 @@ export default function PrivacyPolicyPage() {
                                 </Prose>
                                 <Prose>
                                     We may also release your information when we believe release is
-                                    appropriate to comply with the law, enforce our site policies,
-                                    or protect our or others’ rights, property, or safety. However,
-                                    non-personally identifiable visitor information may be provided
-                                    to other parties for marketing, advertising, or other uses.
+                                    appropriate to comply with the law, enforce our site policies, or
+                                    protect our or others' rights, property, or safety. However,
+                                    non-personally identifiable visitor information may be provided to
+                                    other parties for marketing, advertising, or other uses.
                                 </Prose>
                             </section>
 
@@ -360,7 +360,7 @@ export default function PrivacyPolicyPage() {
                                 <Prose>
                                     Occasionally, at our discretion, we may include or offer third-party
                                     products or services on our website. These third-party sites have
-                                    separate and independent privacy policies. We, therefore, have no
+                                    separate and independent privacy policies. We therefore have no
                                     responsibility or liability for the content and activities of these
                                     linked sites. Nonetheless, we seek to protect the integrity of our
                                     site and welcome any feedback about these sites.
@@ -374,40 +374,41 @@ export default function PrivacyPolicyPage() {
                                 </SectionHeading>
                                 <Prose>
                                     In general, the third-party providers used by us will only collect,
-                                    use and disclose your information to the extent necessary to allow
+                                    use, and disclose your information to the extent necessary to allow
                                     them to perform the services they provide to us.
                                 </Prose>
                                 <Prose>
                                     However, certain third-party service providers, such as payment
                                     gateways and other payment transaction processors, have their own
-                                    privacy policies with respect to the information we are required
-                                    to provide to them for your purchase-related transactions.
+                                    privacy policies with respect to the information we are required to
+                                    provide to them for your purchase-related transactions. We recommend
+                                    that you read their privacy policies so you can understand the manner
+                                    in which your personal information will be handled by these providers.
                                 </Prose>
                                 <Prose>
-                                    For these providers, we recommend that you read their privacy
-                                    policies so you can understand the manner in which your personal
-                                    information will be handled by these providers.
-                                </Prose>
-                                <Prose>
-                                    In particular, remember that certain providers may be located in
-                                    or have facilities that are located in a different jurisdiction
-                                    than either you or us. So if you elect to proceed with a transaction
-                                    that involves the services of a third-party service provider,
-                                    hen your information may become subject to the laws of the
-                                    jurisdiction(s) in which that service provider or its facilities are located.
+                                    In particular, remember that certain providers may be located in or
+                                    have facilities located in a different jurisdiction than either you or
+                                    us. If you elect to proceed with a transaction that involves the
+                                    services of a third-party service provider, your information may
+                                    become subject to the laws of the jurisdiction(s) in which that
+                                    service provider or its facilities are located.
                                 </Prose>
                                 <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4 mt-4 text-sm text-gray-400 leading-relaxed">
-                                    <strong className="text-gray-300">Example:</strong> if you are located in Canada and your transaction is processed by a payment gateway located in the United States, then your personal information used in completing that transaction may be subject to disclosure under United States legislation, including the Patriot Act.
+                                    <strong className="text-gray-300">Example:</strong> If you are
+                                    located in Canada and your transaction is processed by a payment
+                                    gateway located in the United States, your personal information used
+                                    in completing that transaction may be subject to disclosure under
+                                    United States legislation, including the Patriot Act.
                                 </div>
                                 <Prose>
-                                    Once you leave our store’s website or are redirected to a third-party
-                                    website or application, you are no longer governed by this Privacy
-                                    Policy or our website’s{" "}
+                                    Once you leave our website or are redirected to a third-party website
+                                    or application, you are no longer governed by this Privacy Policy or
+                                    our website's{" "}
                                     <a
                                         href="/terms/"
                                         className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
                                     >
-                                        Terms of Service
+                                        Terms of Use
                                     </a>
                                     .
                                 </Prose>
@@ -419,45 +420,42 @@ export default function PrivacyPolicyPage() {
                                     Remarketing
                                 </SectionHeading>
                                 <Prose>
-                                    Spencer Buys Houses also may use 3rd party vendor re-marketing tracking
-                                    cookies, including but not limited to the Google Adwords tracking cookie.
-                                    This means we will continue to show ads to you across the internet,
-                                    specifically on the Google Content Network (GCN). As always we respect
-                                    your privacy and are not collecting any identifiable information through
-                                    the use of Google or any other 3rd party remarketing system.
+                                    Spencer Buys Houses may use 3rd-party vendor re-marketing tracking
+                                    cookies, including but not limited to the Google AdWords tracking
+                                    cookie. This means we will continue to show ads to you across the
+                                    internet, specifically on the Google Content Network (GCN). We
+                                    respect your privacy and are not collecting any identifiable
+                                    information through the use of Google or any other 3rd-party
+                                    remarketing system.
                                 </Prose>
                                 <Prose>
-                                    The third-party vendors, including Facebook and Google, whose services we
-                                    use – will place cookies on web browsers in order to serve ads based on
-                                    past visits to our website. – Third-party vendors, including Google, use
-                                    cookies to serve ads based on a user’s prior visits to your website. This
-                                    allows us to make special offers and continue to market our services to
-                                    those who have shown interest in our service.
+                                    The third-party vendors, including Facebook and Google, whose
+                                    services we use will place cookies on web browsers in order to serve
+                                    ads based on past visits to our website. This allows us to make
+                                    special offers and continue to market our services to those who have
+                                    shown interest in our service.
                                 </Prose>
                                 <Prose>
-                                    In addition to using cookies and related technologies as described above,
-                                    we also may permit certain third-party companies to help us tailor advertising
-                                    that we think may be of interest to users and to collect and use other data
-                                    about user activities on our Sites and/or Services (e.g., to allow them to
-                                    tailor ads on third-party services). These companies may deliver ads that
-                                    might also place cookies and otherwise track user behavior.
-                                </Prose>
-                                <Prose>
-                                    For example, we may use Google’s “remarketing” service to target our ads to
-                                    you based on your prior use of the Site when you visit other sites in Google’s
-                                    content network.
+                                    In addition to using cookies and related technologies as described
+                                    above, we also may permit certain third-party companies to help us
+                                    tailor advertising that we think may be of interest to users and to
+                                    collect and use other data about user activities on our Sites and/or
+                                    Services. These companies may deliver ads that might also place
+                                    cookies and otherwise track user behavior.
                                 </Prose>
 
-                                <SubHeading>This website may use Google AdWords</SubHeading>
+                                <SubHeading>Google AdWords Remarketing</SubHeading>
                                 <Prose>
-                                    This website uses the Google AdWords remarketing service to advertise on third-party
-                                    websites (including Google) to previous visitors to our site. It could mean that
-                                    we advertise to previous visitors who have&apos;t completed a task on our site,
-                                    for example using the contact form to make an inquiry. This could be in the form of
-                                    an advertisement on the Google search results page or a site in the Google Display
-                                    Network. Third-party vendors, including Google, use cookies to serve ads based on
-                                    someone&apos;s past visits to the Spencer Buys Houses website. Of course, any data
-                                    collected will be used in accordance with our own privacy policy and{" "}
+                                    This website uses the Google AdWords remarketing service to advertise
+                                    on third-party websites (including Google) to previous visitors to our
+                                    site. It could mean that we advertise to previous visitors who
+                                    haven&apos;t completed a task on our site, for example using the contact
+                                    form to make an inquiry. This could be in the form of an advertisement
+                                    on the Google search results page or a site in the Google Display
+                                    Network. Third-party vendors, including Google, use cookies to serve
+                                    ads based on someone&apos;s past visits to the Spencer Buys Houses
+                                    website. Any data collected will be used in accordance with our own
+                                    privacy policy and{" "}
                                     <a
                                         href="https://policies.google.com/privacy"
                                         target="_blank"
@@ -482,18 +480,19 @@ export default function PrivacyPolicyPage() {
                                 <Prose>
                                     Because we value your privacy we have taken the necessary precautions
                                     to be in compliance with the California Online Privacy Protection Act.
-                                    We, therefore, will not distribute your personal information to outside
-                                    parties without your consent.
+                                    We will not distribute your personal information to outside parties
+                                    without your consent.
                                 </Prose>
 
                                 <SubHeading>
-                                    Children&apos;s Online Privacy Protection Act Compliance
+                                    Children&apos;s Online Privacy Protection Act Compliance (COPPA)
                                 </SubHeading>
                                 <Prose>
                                     We are in compliance with the requirements of COPPA (Children&apos;s
                                     Online Privacy Protection Act), and we do not collect any information
-                                    from anyone under 13 years of age. Our website, products, and services
-                                    are all directed to people who are at least 13 years old or older.
+                                    from anyone under 13 years of age. Our website, products, and
+                                    services are all directed to people who are at least 13 years old or
+                                    older.
                                 </Prose>
                             </section>
 
@@ -503,19 +502,16 @@ export default function PrivacyPolicyPage() {
                                     Personal, Financial, and Property Information
                                 </SectionHeading>
                                 <Prose>
-                                    Our company is a real estate services firm that may require you to submit certain
-                                    information so we can help you in your situation. This information may
-                                    include your contact info, information about your property, or even in some
-                                    cases financial information needed to help us analyze your property and situation.
-                                    This information is for our use only and will not be shared with outside parties
-                                    unless required to help us help you solve your real estate situation.
+                                    Our company is a real estate services firm that may require you to
+                                    submit certain information so we can help you in your situation. This
+                                    information may include your contact info, information about your
+                                    property, or even in some cases financial information needed to help
+                                    us analyze your property and situation.
                                 </Prose>
-                                <SubHeading>
-                                    Online Privacy Policy Only
-                                </SubHeading>
                                 <Prose>
-                                    This online privacy policy applies only to information collected through our
-                                    website and not to information collected offline.
+                                    This information is for our use only and will not be shared with
+                                    outside parties unless required to help us help you solve your real
+                                    estate situation.
                                 </Prose>
                             </section>
 
@@ -525,7 +521,9 @@ export default function PrivacyPolicyPage() {
                                     Changes to our Privacy Policy
                                 </SectionHeading>
                                 <Prose>
-                                    If we decide to change our privacy policy, we will post those changes on this page.
+                                    If we decide to change our privacy policy, we will post those changes
+                                    on this page. This online privacy policy applies only to information
+                                    collected through our website and not to information collected offline.
                                 </Prose>
                             </section>
 
@@ -535,9 +533,10 @@ export default function PrivacyPolicyPage() {
                                     Contacting Us
                                 </SectionHeading>
                                 <Prose>
-                                    If there are any questions regarding this privacy policy you may contact us with
-                                    the information on our contact page.{" "}
+                                    If there are any questions regarding this privacy policy you may
+                                    contact us using the information on our{" "}
                                     <a
+                                        href="/contact-us/"
                                         className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
                                     >
                                         contact page
@@ -560,7 +559,7 @@ export default function PrivacyPolicyPage() {
                         <div className="mt-12 rounded-2xl bg-white/[0.02] border border-white/10 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                             <div className="text-sm text-gray-500">
                                 <p>
-                                    Also see our {" "}
+                                    Also see our{" "}
                                     <a
                                         href="/terms/"
                                         className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"

@@ -264,12 +264,13 @@ export default function TermsOfUsePage() {
                         <div className="rounded-2xl bg-[#f59e0b]/5 border border-[#f59e0b]/20 p-6 mb-10 flex gap-4">
                             <AlertTriangle className="h-5 w-5 text-[#f59e0b] flex-shrink-0 mt-0.5" aria-hidden="true" />
                             <div className="text-sm text-gray-300 leading-relaxed">
-                                <strong className="text-white">Important:</strong> By using any website,
-                                mobile app, or service of <strong className="text-white">Volunteer Buyers GP</strong>{" "}
-                                (otherwise known as <strong className="text-white">Spencer Buys Houses DBA</strong>),
-                                you agree to abide by these Terms of Use, including the referenced Privacy
-                                Policy. If you do not agree, you are not authorized to use any Volunteer
-                                Buyers GP website or to obtain any services.
+                                <strong className="text-white">Important:</strong> BY USING ANY WEBSITE, MOBILE APP
+                                OR SERVICE OF Volunteer Buyers GP otherwise known as
+                                Spencer Buys Houses DBA herein referred to as “The Company” (“Volunteer Buyers GP”)
+                                YOU AGREE TO ABIDE BY THESE TERMS OF USE BETWEEN YOU AND Volunteer Buyers GP,
+                                (Spencer Buys Houses DBA) WHICH INCLUDE THE REFERENCED PRIVACY POLICY (“AGREEMENT”).
+                                IF YOU DO NOT AGREE TO BE BOUND BY THIS AGREEMENT, YOU ARE NOT AUTHORIZED TO USE ANY
+                                Volunteer Buyers GP WEBSITE OR TO OBTAIN ANY SERVICES FROM Volunteer Buyers GP.
                             </div>
                         </div>
 
@@ -748,7 +749,7 @@ export default function TermsOfUsePage() {
                                     Company may be entitled, at law or in equity. Upon termination of this Agreement, all rights
                                     granted to you will terminate and revert to The Company.
                                 </Prose>
-
+                                pnpm run dev
                                 <SubHeading>10.6 Notice</SubHeading>
                                 <Prose>
                                     Official correspondence must be sent via postal mail to:{" "}
