@@ -5,18 +5,13 @@ import { Phone, Menu, X, Home } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
-import {
-    FaFacebookF,
-    FaInstagram,
-    FaLinkedinIn,
-    FaYoutube,
-    FaPinterestP,
-    FaGoogle,
-} from "react-icons/fa"
+import { usePathname } from "next/navigation"
+import { SocialLinks } from "./social-links"
 
 export function StickyHeader() {
     const [scrolled, setScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const pathname = usePathname()
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -74,68 +69,7 @@ export function StickyHeader() {
                         </div>
 
                         <div className="flex items-center ml-auto md:ml-0 md:justify-end gap-4">
-                            <div className="hidden md:flex items-center gap-4">
-                                <a
-                                    href="https://www.facebook.com/spencerbuyshouses"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on Facebook"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    <FaFacebookF size={18} />
-                                </a>
-                                <a
-                                    href="https://www.google.com/search?sca_esv=bcc33a35ba758be7&sxsrf=AHTn8zqZnH3MJTMgocMcMH9qe8pwKbKfmw:1739816269184&kgmid=/g/11jnny9nkl&q=Spencer+Buys+Houses&shndl=30&shem=lcuae,uaasie&source=sh/x/loc/uni/m1/1&kgs=ba24ee0e0bb416e9"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on Google"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white transition"
-                                >
-                                    <FaGoogle size={18} />
-                                </a>
-                                <a
-                                    href="https://www.instagram.com/spen.cershadrach"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on Instagram"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    <FaInstagram size={18} />
-                                </a>
-                                <a
-                                    href="https://www.linkedin.com/in/spencer-shadrach-0a379b4a"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on LinkedIn"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    <FaLinkedinIn size={18} />
-                                </a>
-                                <a
-                                    href="https://mx.pinterest.com/spencerbuyshouses"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on Pinterest"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    <FaPinterestP size={18} />
-                                </a>
-                                <a
-                                    href="https://www.youtube.com/@spencerbuyshouses"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Visit Spencer Buys Houses on YouTube"
-                                    itemProp="sameAs"
-                                    className="text-gray-300 hover:text-white"
-                                >
-                                    <FaYoutube size={18} />
-                                </a>
-                            </div>
+                            <SocialLinks className="hidden md:flex items-center gap-4" />
 
                             <button
                                 onClick={() => setMobileMenuOpen(true)}
@@ -149,23 +83,35 @@ export function StickyHeader() {
                         </div>
                     </div>
 
-                    <nav className="hidden md:flex justify-center pt-3 gap-8">
+                    <nav className="hidden md:flex justify-center pt-3 gap-1">
                         {[
                             { label: "Get your cash offer", href: "/get-a-cash-offer-today/" },
                             { label: "About", href: "/about/" },
                             { label: "How it works", href: "/how-we-buy-houses/" },
                             { label: "Blog", href: "/blog/" },
                             { label: "Contact us", href: "/contact-us/" },
-                            { label: "Get paid for referring", href: "/referral-program/" },
-                        ].map((item) => (
-                            <a
-                                key={item.label}
-                                href={item.href}
-                                className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
-                            >
-                                {item.label}
-                            </a>
-                        ))}
+                            { label: "Get paid for referring", href: "/get-paid/" },
+                        ].map((item) => {
+                            const normalizedPath = pathname.replace(/\/$/, "")
+                            const normalizedHref = item.href.replace(/\/$/, "")
+                            const isActive = normalizedPath === normalizedHref || normalizedPath.startsWith(normalizedHref + "/")
+                            return (
+                                <a
+                                    key={item.label}
+                                    href={item.href}
+                                    className={`relative px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md group ${isActive
+                                        ? "text-[#f59e0b] bg-[#f59e0b]/10"
+                                        : "text-gray-400 hover:text-white hover:bg-white/5"
+                                        }`}
+                                >
+                                    {item.label}
+                                    <span
+                                        className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[#f59e0b] transition-all duration-300 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-30"
+                                            }`}
+                                    />
+                                </a>
+                            )
+                        })}
                     </nav>
 
                 </div>
@@ -209,17 +155,26 @@ export function StickyHeader() {
                                 { label: "How it works", href: "/how-we-buy-houses/" },
                                 { label: "Blog", href: "/blog/" },
                                 { label: "Contact us", href: "/contact-us/" },
-                                { label: "Get paid for referring", href: "/referral-program/" },
-                            ].map((item) => (
-                                <a
-                                    key={item.label}
-                                    href={item.href}
-                                    className="py-4 text-white border-b border-white/10"
-                                    onClick={() => setMobileMenuOpen(false)}
-                                >
-                                    {item.label}
-                                </a>
-                            ))}
+                                { label: "Get paid for referring", href: "/get-paid/" },
+                            ].map((item) => {
+                                const normalizedPath = pathname.replace(/\/$/, "")
+                                const normalizedHref = item.href.replace(/\/$/, "")
+                                const isActive = normalizedPath === normalizedHref || normalizedPath.startsWith(normalizedHref + "/")
+                                return (
+                                    <a
+                                        key={item.label}
+                                        href={item.href}
+                                        className={`flex items-center justify-between py-4 border-b border-white/10 transition-colors ${isActive ? "text-[#f59e0b] font-medium" : "text-white"
+                                            }`}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                        {item.label}
+                                        {isActive && (
+                                            <span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b]" />
+                                        )}
+                                    </a>
+                                )
+                            })}
 
                             {/* CTA */}
                             <a
