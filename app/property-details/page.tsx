@@ -6,7 +6,6 @@ import { JsonLd } from "@/components/seo/json-ld"
 import { Loader2 } from "lucide-react"
 
 /* ─── Constants ─────────────────────────────────────────────────────────── */
-
 const SITE_URL = "https://www.spencerbuyshouses.com"
 const OG_IMAGE =
     "https://image-cdn.carrot.com/uploads/sites/81361/2025/03/Home-Page-Design1-2.png"
@@ -21,7 +20,6 @@ const SAME_AS = [
 ]
 
 /* ─── SEO Metadata ──────────────────────────────────────────────────────── */
-
 export const metadata: Metadata = {
     title: "Property Location Details | Spencer Buys Houses",
     description:
@@ -52,7 +50,6 @@ export const metadata: Metadata = {
 }
 
 /* ─── JSON-LD Structured Data ───────────────────────────────────────────── */
-
 const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
