@@ -1,6 +1,7 @@
 import { Suspense } from "react"
 import type { Metadata } from "next"
 import { PropertyDetailsForm } from "./property-details-form"
+import PropertyProgress from "@/components/progress/PropertyProgress"
 import { JsonLd } from "@/components/seo/json-ld"
 import { Loader2 } from "lucide-react"
 
@@ -161,31 +162,10 @@ export default function PropertyDetailsPage() {
                     </p>
                 </div>
 
-                {/* Progress indicator */}
-                <div className="w-full max-w-lg mb-8">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="flex items-center gap-2">
-                            <div className="h-7 w-7 rounded-full bg-[#22c55e] flex items-center justify-center text-xs font-bold text-white">
-                                ✓
-                            </div>
-                            <span className="text-sm text-[#22c55e] font-medium">Your Info</span>
-                        </div>
-                        <div className="flex-1 h-0.5 bg-[#f59e0b]" />
-                        <div className="flex items-center gap-2">
-                            <div className="h-7 w-7 rounded-full bg-[#f59e0b] flex items-center justify-center text-xs font-bold text-[#0f0f23]">
-                                2
-                            </div>
-                            <span className="text-sm text-[#f59e0b] font-medium">Property Location</span>
-                        </div>
-                        <div className="flex-1 h-0.5 bg-white/20" />
-                        <div className="flex items-center gap-2">
-                            <div className="h-7 w-7 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-gray-400">
-                                3
-                            </div>
-                            <span className="text-sm text-gray-400 font-medium">Property Info</span>
-                        </div>
-                    </div>
-                </div>
+                {/* Progress indicator — Suspense required for useSearchParams */}
+                <Suspense fallback={<div className="w-full max-w-lg mb-8 h-7" aria-hidden="true" />}>
+                    <PropertyProgress activeStep={2} />
+                </Suspense>
 
                 {/* Form with Suspense boundary (required for useSearchParams) */}
                 <Suspense

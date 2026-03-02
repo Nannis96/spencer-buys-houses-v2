@@ -164,8 +164,10 @@ export default function PropertyInfoPage() {
                         prepare your personalized cash offer &mdash; no fees, no commissions, no repairs needed.
                     </p>
                 </div>
-                {/* Progress indicator */}
-                <PropertyProgress />
+                {/* Progress indicator — Suspense required for useSearchParams */}
+                <Suspense fallback={<div className="w-full max-w-2xl mb-8 h-7" aria-hidden="true" />}>
+                    <PropertyProgress />
+                </Suspense>
 
                 {/* Form — Suspense required for useSearchParams */}
                 <Suspense
