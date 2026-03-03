@@ -7,20 +7,19 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { MapPin, Phone, Mail, User, ArrowRight, Loader2, ShieldCheck } from "lucide-react"
+import { MapPin, Phone, Mail, User, ArrowRight, Loader2, ShieldCheck, Building2, Hash } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 /* ─── Schema ──────────────────────────────────────────────────────────────── */
 
 const leadConsentSchema = z.object({
-    firstName: z.string().min(2, "Please enter your first name"),
-    lastName: z.string().min(2, "Please enter your last name"),
     address: z.string().min(5, "Please enter a valid property address"),
-    phone: z
+    city: z.string().min(2, "Please enter your city"),
+    state: z.string().min(2, "Please enter your state"),
+    zipCode: z
         .string()
-        .min(10, "Please enter a valid phone number")
-        .regex(/^[\d\s\-().+]+$/, "Please enter a valid phone number"),
-    email: z.string().email("Please enter a valid email address"),
+        .min(5, "Please enter a valid ZIP code")
+        .regex(/^\d{5}(-\d{4})?$/, "Please enter a valid ZIP code"),
     // Optional – user can opt in to SMS
     smsConsent: z.boolean().optional(),
     // Required – must explicitly agree to Privacy Policy
@@ -70,11 +69,10 @@ export function LeadFormConsent() {
         console.log("Lead form (consent) submitted:", data)
         // TODO: replace with real API call / CRM webhook
         const params = new URLSearchParams({
-            firstName: data.firstName,
-            lastName: data.lastName,
             address: data.address,
-            phone: data.phone,
-            email: data.email,
+            city: data.city,
+            state: data.state,
+            zipCode: data.zipCode,
             smsConsent: String(data.smsConsent ?? false),
         })
         setTimeout(() => {
@@ -104,43 +102,6 @@ export function LeadFormConsent() {
                 </p>
 
                 <div className="flex flex-col gap-4">
-
-                    {/* ── Name row ── */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label htmlFor={id("firstName")} className="sr-only">First name</label>
-                            <div className="relative">
-                                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
-                                <Input
-                                    id={id("firstName")}
-                                    placeholder="First Name"
-                                    autoComplete="given-name"
-                                    {...register("firstName")}
-                                    className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                    aria-invalid={!!errors.firstName}
-                                    aria-describedby={errors.firstName ? id("firstName-err") : undefined}
-                                />
-                            </div>
-                            <FieldError message={errors.firstName?.message} />
-                        </div>
-                        <div>
-                            <label htmlFor={id("lastName")} className="sr-only">Last name</label>
-                            <div className="relative">
-                                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
-                                <Input
-                                    id={id("lastName")}
-                                    placeholder="Last Name"
-                                    autoComplete="family-name"
-                                    {...register("lastName")}
-                                    className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                    aria-invalid={!!errors.lastName}
-                                    aria-describedby={errors.lastName ? id("lastName-err") : undefined}
-                                />
-                            </div>
-                            <FieldError message={errors.lastName?.message} />
-                        </div>
-                    </div>
-
                     {/* ── Property Address ── */}
                     <div>
                         <label htmlFor={id("address")} className="sr-only">Property address</label>
@@ -159,42 +120,62 @@ export function LeadFormConsent() {
                         <FieldError message={errors.address?.message} />
                     </div>
 
-                    {/* ── Phone ── */}
+                    {/* ── City ── */}
                     <div>
-                        <label htmlFor={id("phone")} className="sr-only">Phone number</label>
+                        <label htmlFor={id("city")} className="sr-only">City</label>
                         <div className="relative">
-                            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
+                            <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
                             <Input
-                                id={id("phone")}
-                                type="tel"
-                                placeholder="Phone Number"
-                                autoComplete="tel"
-                                {...register("phone")}
+                                id={id("city")}
+                                placeholder="City"
+                                autoComplete="address-level2"
+                                {...register("city")}
                                 className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                aria-invalid={!!errors.phone}
-                                aria-describedby={errors.phone ? id("phone-err") : undefined}
+                                aria-invalid={!!errors.city}
+                                aria-describedby={errors.city ? id("city-err") : undefined}
                             />
                         </div>
-                        <FieldError message={errors.phone?.message} />
+                        <FieldError message={errors.city?.message} />
                     </div>
 
-                    {/* ── Email ── */}
-                    <div>
-                        <label htmlFor={id("email")} className="sr-only">Email address</label>
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
-                            <Input
-                                id={id("email")}
-                                type="email"
-                                placeholder="Email Address"
-                                autoComplete="email"
-                                {...register("email")}
-                                className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                aria-invalid={!!errors.email}
-                                aria-describedby={errors.email ? id("email-err") : undefined}
-                            />
+                    {/* ── State & ZIP row ── */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* State */}
+                        <div>
+                            <label htmlFor={id("state")} className="sr-only">State</label>
+                            <div className="relative">
+                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
+                                <Input
+                                    id={id("state")}
+                                    placeholder="State"
+                                    autoComplete="address-level1"
+                                    {...register("state")}
+                                    className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                    aria-invalid={!!errors.state}
+                                    aria-describedby={errors.state ? id("state-err") : undefined}
+                                />
+                            </div>
+                            <FieldError message={errors.state?.message} />
                         </div>
-                        <FieldError message={errors.email?.message} />
+
+                        {/* ZIP Code */}
+                        <div>
+                            <label htmlFor={id("zipCode")} className="sr-only">ZIP Code</label>
+                            <div className="relative">
+                                <Hash className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
+                                <Input
+                                    id={id("zipCode")}
+                                    placeholder="ZIP Code"
+                                    autoComplete="postal-code"
+                                    inputMode="numeric"
+                                    {...register("zipCode")}
+                                    className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                    aria-invalid={!!errors.zipCode}
+                                    aria-describedby={errors.zipCode ? id("zipCode-err") : undefined}
+                                />
+                            </div>
+                            <FieldError message={errors.zipCode?.message} />
+                        </div>
                     </div>
 
                     {/* ── SMS / Communications Consent (optional) ── */}
