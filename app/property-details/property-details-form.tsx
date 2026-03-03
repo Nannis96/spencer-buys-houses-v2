@@ -11,7 +11,6 @@ import { MapPin, User, Phone, Mail, ArrowRight, Loader2, ShieldCheck, Building2,
 import { motion } from "framer-motion"
 
 /* ─── Schema ──────────────────────────────────────────────────────────────── */
-
 const propertyDetailsSchema = z.object({
     firstName: z.string().min(2, "Please enter your first name"),
     lastName: z.string().min(2, "Please enter your last name"),
@@ -25,7 +24,6 @@ const propertyDetailsSchema = z.object({
 type PropertyDetailsFormData = z.infer<typeof propertyDetailsSchema>
 
 /* ─── Field error ─────────────────────────────────────────────────────────── */
-
 function FieldError({ message }: { message?: string }) {
     if (!message) return null
     return (
@@ -36,7 +34,6 @@ function FieldError({ message }: { message?: string }) {
 }
 
 /* ─── Read-only summary row ───────────────────────────────────────────────── */
-
 function SummaryRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
     return (
         <div className="flex items-center gap-3 py-2 border-b border-white/10 last:border-0">
@@ -48,7 +45,6 @@ function SummaryRow({ icon, label, value }: { icon: React.ReactNode; label: stri
 }
 
 /* ─── Component ───────────────────────────────────────────────────────────── */
-
 export function PropertyDetailsForm() {
     const uid = useId()
     const id = (field: string) => `${uid}-${field}`
