@@ -11,7 +11,7 @@ import {
 } from "lucide-react"
 import { JsonLd } from "@/components/seo/json-ld"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
-import { ContactForm } from "@/components/forms/contact-form"
+import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 
 /* ─── Metadata ───────────────────────────────────────────────────────────── */
 
@@ -258,9 +258,9 @@ export default function ContactUsPage() {
                             </div>
                         </div>
 
-                        {/* ── Right column: Form ── */}
-                        <div>
-                            <ContactForm />
+                        {/* Right form – desktop */}
+                        <div className="hidden lg:block">
+                            <LeadFormConsent />
                         </div>
                     </div>
                 </div>

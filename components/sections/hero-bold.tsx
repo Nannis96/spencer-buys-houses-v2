@@ -9,7 +9,7 @@ export function HeroBold() {
                     <div>
                         {/* H1 SEO */}
                         <h1 className="block text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-                            Sell Your Memphis House Fast for Cash
+                            Sell Your Memphis House <span className="text-[#f59e0b]">Fast for Cash</span>
                         </h1>
 
                         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">

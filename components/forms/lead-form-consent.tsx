@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useState } from "react"
+import { useId, useState, useEffect, useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { MapPin, Phone, Mail, User, ArrowRight, Loader2, ShieldCheck, Building2, Hash } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+
+const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""
 
 /* ─── Schema ──────────────────────────────────────────────────────────────── */
 
@@ -51,10 +53,15 @@ export function LeadFormConsent() {
     const router = useRouter()
 
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [mapsLoaded, setMapsLoaded] = useState(false)
+
+    const addressInputRef = useRef<HTMLInputElement | null>(null)
+    const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
 
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<LeadConsentFormData>({
         resolver: zodResolver(leadConsentSchema),
@@ -63,6 +70,74 @@ export function LeadFormConsent() {
             privacyConsent: false,
         },
     })
+
+    // ── Load Google Maps script ──────────────────────────────────────────────
+    useEffect(() => {
+        if (!GOOGLE_MAPS_API_KEY || typeof window === "undefined") return
+        if (window.google?.maps) { setMapsLoaded(true); return }
+
+        const existing = document.getElementById("google-maps-script")
+        if (existing) {
+            existing.addEventListener("load", () => setMapsLoaded(true))
+            return
+        }
+
+        const script = document.createElement("script")
+        script.id = "google-maps-script"
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`
+        script.async = true
+        script.defer = true
+        script.onload = () => setMapsLoaded(true)
+        document.head.appendChild(script)
+    }, [])
+
+    // ── Initialize Places Autocomplete ───────────────────────────────────────
+    const initAutocomplete = useCallback(() => {
+        if (!addressInputRef.current || !window.google?.maps?.places) return
+
+        autocompleteRef.current = new window.google.maps.places.Autocomplete(
+            addressInputRef.current,
+            {
+                fields: ["address_components", "formatted_address", "geometry", "name"],
+                types: ["address"],
+                componentRestrictions: { country: "us" },
+            }
+        )
+
+        autocompleteRef.current.addListener("place_changed", () => {
+            const place = autocompleteRef.current?.getPlace()
+            if (!place?.address_components) return
+
+            // Print full API result to console
+            console.log("[Google Places] Place selected:", place)
+
+            const get = (type: string, short = false) => {
+                const comp = place.address_components?.find((c) => c.types.includes(type))
+                return short ? (comp?.short_name ?? "") : (comp?.long_name ?? "")
+            }
+
+            const fullAddress = place.formatted_address ?? ""
+            const city =
+                get("locality") ||
+                get("sublocality") ||
+                get("administrative_area_level_2")
+            const state = get("administrative_area_level_1", true) // e.g. "CA"
+            const zip = get("postal_code")
+
+            setValue("address", fullAddress, { shouldValidate: true })
+            setValue("city", city, { shouldValidate: true })
+            setValue("state", state, { shouldValidate: true })
+            setValue("zipCode", zip, { shouldValidate: true })
+
+            console.log("[Google Places] Parsed fields →", { address: fullAddress, city, state, zipCode: zip })
+        })
+    }, [setValue])
+
+    useEffect(() => {
+        if (mapsLoaded) initAutocomplete()
+    }, [mapsLoaded, initAutocomplete])
+
+    const { ref: registerAddressRef, ...registerAddressRest } = register("address")
 
     const onSubmit = (data: LeadConsentFormData) => {
         setIsSubmitting(true)
@@ -110,120 +185,18 @@ export function LeadFormConsent() {
                             <Input
                                 id={id("address")}
                                 placeholder="Property Address"
-                                autoComplete="street-address"
-                                {...register("address")}
+                                autoComplete="off"
+                                ref={(el) => {
+                                    registerAddressRef(el)
+                                    addressInputRef.current = el
+                                }}
+                                {...registerAddressRest}
                                 className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                                 aria-invalid={!!errors.address}
                                 aria-describedby={errors.address ? id("address-err") : undefined}
                             />
                         </div>
                         <FieldError message={errors.address?.message} />
-                    </div>
-
-                    {/* ── City ── */}
-                    <div>
-                        <label htmlFor={id("city")} className="sr-only">City</label>
-                        <div className="relative">
-                            <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
-                            <Input
-                                id={id("city")}
-                                placeholder="City"
-                                autoComplete="address-level2"
-                                {...register("city")}
-                                className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                aria-invalid={!!errors.city}
-                                aria-describedby={errors.city ? id("city-err") : undefined}
-                            />
-                        </div>
-                        <FieldError message={errors.city?.message} />
-                    </div>
-
-                    {/* ── State & ZIP row ── */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {/* State */}
-                        <div>
-                            <label htmlFor={id("state")} className="sr-only">State</label>
-                            <div className="relative">
-                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
-                                <Input
-                                    id={id("state")}
-                                    placeholder="State"
-                                    autoComplete="address-level1"
-                                    {...register("state")}
-                                    className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                    aria-invalid={!!errors.state}
-                                    aria-describedby={errors.state ? id("state-err") : undefined}
-                                />
-                            </div>
-                            <FieldError message={errors.state?.message} />
-                        </div>
-
-                        {/* ZIP Code */}
-                        <div>
-                            <label htmlFor={id("zipCode")} className="sr-only">ZIP Code</label>
-                            <div className="relative">
-                                <Hash className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
-                                <Input
-                                    id={id("zipCode")}
-                                    placeholder="ZIP Code"
-                                    autoComplete="postal-code"
-                                    inputMode="numeric"
-                                    {...register("zipCode")}
-                                    className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                    aria-invalid={!!errors.zipCode}
-                                    aria-describedby={errors.zipCode ? id("zipCode-err") : undefined}
-                                />
-                            </div>
-                            <FieldError message={errors.zipCode?.message} />
-                        </div>
-                    </div>
-
-                    {/* ── SMS / Communications Consent (optional) ── */}
-                    <div className="rounded-lg bg-white/[0.03] border border-white/10 p-3">
-                        <label htmlFor={id("smsConsent")} className="flex items-start gap-3 cursor-pointer">
-                            <input
-                                id={id("smsConsent")}
-                                type="checkbox"
-                                {...register("smsConsent")}
-                                className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/10 accent-[#f59e0b] cursor-pointer"
-                            />
-                            <span className="text-xs text-gray-400 leading-relaxed">
-                                <span className="font-semibold text-gray-300">SMS &amp; Communications Consent (optional)</span>
-                                {" — "}By checking this box you consent to receive SMS messages, emails, and calls from Spencer Buys Houses. Message frequency varies. Msg &amp; data rates may apply. Text <strong className="text-gray-300">HELP</strong> for help, <strong className="text-gray-300">STOP</strong> to cancel. Your information will not be sold to third parties.
-                            </span>
-                        </label>
-                    </div>
-
-                    {/* ── Privacy Consent (required) ── */}
-                    <div>
-                        <label htmlFor={id("privacyConsent")} className="flex items-start gap-3 cursor-pointer">
-                            <input
-                                id={id("privacyConsent")}
-                                type="checkbox"
-                                {...register("privacyConsent")}
-                                className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/10 accent-[#f59e0b] cursor-pointer"
-                                aria-required="true"
-                                aria-invalid={!!errors.privacyConsent}
-                                aria-describedby={errors.privacyConsent ? id("privacy-err") : undefined}
-                            />
-                            <span className="text-xs text-gray-400 leading-relaxed">
-                                I agree to the{" "}
-                                <a href="/terms" className="text-[#f59e0b] hover:underline focus:outline-none focus:ring-1 focus:ring-[#f59e0b] rounded">
-                                    Terms &amp; Conditions
-                                </a>
-                                {" "}and{" "}
-                                <a href="/privacy" className="text-[#f59e0b] hover:underline focus:outline-none focus:ring-1 focus:ring-[#f59e0b] rounded">
-                                    Privacy Policy
-                                </a>.{" "}
-                                <span className="text-red-400" aria-hidden="true">*</span>
-                                <span className="sr-only">(required)</span>
-                            </span>
-                        </label>
-                        {errors.privacyConsent && (
-                            <p id={id("privacy-err")} role="alert" className="mt-1.5 text-xs text-red-400 ml-7">
-                                {errors.privacyConsent.message}
-                            </p>
-                        )}
                     </div>
 
                     {/* ── Submit ── */}
