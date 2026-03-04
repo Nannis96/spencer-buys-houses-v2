@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import {
     Clock, Ban, Wrench, DollarSign, ShieldCheck, Handshake,
@@ -12,6 +13,7 @@ import { ProcessSection } from "@/components/sections/process-section"
 import { TestimonialsSection } from "@/components/sections/testimonials-section"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { getAllCitySlugs, CityFaq, CitySituation } from "@/lib/cities"
+import { section } from "framer-motion/m"
 
 const DEFAULT_BENEFITS: string[] = [
     "Same-day cash offers — no waiting weeks for a response.",
@@ -114,46 +116,44 @@ export default async function CityPage({ params }: Props) {
                         </div>
                     </div>
                 </section>
+                <section className="bg-[#13132b] py-20 lg:py-28" aria-labelledby="benefits-heading">
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                            {/* Left column — benefits & FAQs */}
+                            <div>
+                                <h2 id="benefits-heading" className="text-2xl font-bold mb-4">Why work with Spencer Buys Houses in {city.name}?</h2>
+                                <ul className="list-disc list-inside text-gray-300 space-y-2">
+                                    {benefits.map((b: string) => (
+                                        <li key={b}>{b}</li>
+                                    ))}
+                                </ul>
 
-                <div className="mx-auto max-w-7xl px-4 lg:px-8 py-12">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div className="lg:col-span-2">
-                            <h2 className="text-2xl font-bold mb-4">Why work with Spencer Buys Houses in {city.name}?</h2>
-                            <ul className="list-disc list-inside text-gray-300 space-y-2">
-                                {(city.benefits || []).map((b: string) => (
-                                    <li key={b}>{b}</li>
-                                ))}
-                            </ul>
-
-                            {city.faqs && (
                                 <div className="mt-8">
                                     <h3 className="text-xl font-semibold mb-3">Frequently Asked Questions</h3>
                                     <div className="space-y-4">
-                                        {city.faqs.map((f: any) => (
+                                        {faqs.map((f) => (
                                             <details key={f.q} className="bg-white/5 p-4 rounded-md">
-                                                <summary className="font-medium text-white">{f.q}</summary>
+                                                <summary className="font-medium text-white cursor-pointer">{f.q}</summary>
                                                 <div className="mt-2 text-gray-300">{f.a}</div>
                                             </details>
                                         ))}
                                     </div>
                                 </div>
-                            )}
-                        </div>
-
-                        <aside>
-                            <div className="rounded-2xl bg-[#1a1a2e] p-6 border border-white/10">
-                                <h4 className="font-bold text-white mb-2">Get An Offer Today</h4>
-                                <p className="text-sm text-gray-300 mb-4">Submit your property details and we’ll contact you with a cash offer.</p>
-                                <div className="lg:hidden">
-                                    <LeadFormConsent />
-                                </div>
-                                <div className="hidden lg:block">
-                                    <LeadFormConsent />
-                                </div>
                             </div>
-                        </aside>
+
+                            {/* Right column — city image with fallback */}
+                            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
+                                <Image
+                                    src={city.benefitsImage ?? "/var-a-exterior.jpg"}
+                                    alt={`We buy houses in ${city.name}`}
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 1024px) 100vw, 50vw"
+                                />
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </section>
             </main>
         </>
     )
