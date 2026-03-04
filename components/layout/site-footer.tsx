@@ -13,7 +13,7 @@ export function SiteFooter() {
                             {[
                                 { label: "Get your cash offer", href: "/get-a-cash-offer-today/" },
                                 { label: "About", href: "/about/" },
-                                { label: "How it works", href: "/how-we-buy-houses/" },
+                                { label: "How it works", href: "/how-it-works/" },
                                 { label: "Blog", href: "/blog/" },
                                 { label: "Contact us", href: "/contact-us/" },
                                 { label: "Get paid for referring", href: "/referral-program/" },

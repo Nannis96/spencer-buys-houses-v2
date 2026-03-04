@@ -118,7 +118,7 @@ export default function RootLayout({
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />
         <StickyHeader />
-        {children}
+        <div className="pt-6 md:pt-8">{children}</div>
         <SiteFooter />
         <Analytics />
       </body>

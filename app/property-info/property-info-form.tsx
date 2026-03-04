@@ -39,9 +39,6 @@ const propertyInfoSchema = z.object({
     fairPrice: z.string().optional(),
     bestTimeToCall: z.string().optional(),
     // Consent
-    isHuman: z
-        .boolean()
-        .refine((v) => v === true, { message: "Please confirm you are a human" }),
     smsConsent: z.boolean().optional(),
     privacyConsent: z
         .boolean()
@@ -72,9 +69,14 @@ const textareaClass =
     "w-full rounded-md bg-white/10 border border-white/20 text-white px-3 py-2.5 text-sm " +
     "placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f59e0b] focus:border-[#f59e0b] resize-none min-h-[90px]"
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
+function SectionHeading({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
-        <h4 className="text-base font-bold text-[#f59e0b] uppercase tracking-wider mb-4 pt-2 border-t border-white/10 first:border-0 first:pt-0">
+        <h4
+            className={
+                "text-base font-bold text-[#f59e0b] uppercase tracking-wider mb-4 pt-2 border-t border-white/10 first:border-0 first:pt-0 " +
+                (className ?? "")
+            }
+        >
             {children}
         </h4>
     )
@@ -229,7 +231,6 @@ export function PropertyInfoForm() {
     } = useForm<PropertyInfoFormData>({
         resolver: zodResolver(propertyInfoSchema),
         defaultValues: {
-            isHuman: false,
             smsConsent: smsConsentPrev === "true",
             privacyConsent: false,
         },
@@ -524,29 +525,11 @@ export function PropertyInfoForm() {
                     </div>
 
                     {/* ───────── CONSENT ───────── */}
-                    <SectionHeading>Consent</SectionHeading>
-
-                    {/* I'm a Human */}
-                    <div>
-                        <label htmlFor={id("isHuman")} className="flex items-start gap-3 cursor-pointer">
-                            <input
-                                id={id("isHuman")}
-                                type="checkbox"
-                                {...register("isHuman")}
-                                className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/10 accent-[#f59e0b] cursor-pointer"
-                                aria-required="true"
-                                aria-invalid={!!errors.isHuman}
-                            />
-                            <span className="text-xs text-gray-300 leading-relaxed font-medium">
-                                I&apos;m a Human{" "}
-                                <span className="text-red-400" aria-hidden="true">*</span>
-                            </span>
-                        </label>
-                        <FieldError message={errors.isHuman?.message} />
-                    </div>
+                    {/* <SectionHeading>Consent</SectionHeading> */}
+                    <SectionHeading className="mt-1">Consent</SectionHeading>
 
                     {/* SMS Consent */}
-                    <div className="rounded-lg bg-white/[0.03] border border-white/10 p-3">
+                    <div className="rounded-lg bg-white/[0.03] border border-white/10 p-3 -mt-3">
                         <label htmlFor={id("smsConsent")} className="flex items-start gap-3 cursor-pointer">
                             <input
                                 id={id("smsConsent")}
@@ -565,6 +548,8 @@ export function PropertyInfoForm() {
                             </span>
                         </label>
                     </div>
+
+
 
                     {/* Privacy Consent (required) */}
                     <div>

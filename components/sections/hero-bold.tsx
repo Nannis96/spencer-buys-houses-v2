@@ -1,4 +1,5 @@
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
+import { Phone } from "lucide-react"
 
 export function HeroBold() {
     return (
@@ -9,19 +10,23 @@ export function HeroBold() {
                     <div>
                         {/* H1 SEO */}
                         <h1 className="block text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-                            Sell Your Memphis House Fast for Cash
+                            Sell Your Memphis House <span className="text-[#f59e0b]">Fast for Cash</span>
                         </h1>
 
                         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-                            Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today! (901)-621-8799
+                            Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today!
                         </p>
 
-                        {/* <a
-                            href="/get-a-cash-offer-today/"
-                            className="mt-8 inline-block rounded-lg bg-brand-amber px-8 py-4 text-lg font-bold"
-                        >
-                            Get Your Free Cash Offer
-                        </a> */}
+                        <div className="mx-auto mt-6 max-w-2xl flex justify-center">
+                            <a
+                                href="tel:+19016218799"
+                                className="inline-flex items-center gap-2 px-8 py-4 rounded-lg border border-white/20 text-white hover:bg-white/5 font-semibold text-base transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+                                aria-label="Call Spencer Buys Houses at 901-621-8799"
+                            >
+                                <Phone className="h-5 w-5" aria-hidden="true" />
+                                (901) 621-8799
+                            </a>
+                        </div>
 
                         <div className="lg:hidden mt-8 mb-9">
                             <LeadFormConsent />

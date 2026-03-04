@@ -138,7 +138,7 @@ export function ReferralContent() {
                 />
 
                 <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start lg:items-center">
 
                         {/* ── Left copy ── */}
                         <div>

@@ -11,7 +11,7 @@ import {
 } from "lucide-react"
 import { JsonLd } from "@/components/seo/json-ld"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
-import { ContactForm } from "@/components/forms/contact-form"
+import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 
 /* ─── Metadata ───────────────────────────────────────────────────────────── */
 
@@ -108,12 +108,12 @@ const topicsList = [
 
 export default function ContactUsPage() {
     return (
-        <main className="bg-[#0f0f23] min-h-screen">
+        <main className="bg-[#0f0f23] min-h-screen pt-10 md:pt-12">
             <JsonLd data={jsonLd} />
 
             {/* ── Hero Banner ──────────────────────────────────────────────── */}
             <section
-                className="relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-20"
+                className="relative overflow-hidden pt-24 pb-10 lg:pt-30 lg:pb-20"
                 aria-labelledby="contact-hero-heading"
             >
                 {/* Background glow */}
@@ -258,9 +258,9 @@ export default function ContactUsPage() {
                             </div>
                         </div>
 
-                        {/* ── Right column: Form ── */}
-                        <div>
-                            <ContactForm />
+                        {/* Right form – desktop */}
+                        <div className="hidden lg:block">
+                            <LeadFormConsent />
                         </div>
                     </div>
                 </div>

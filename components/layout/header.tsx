@@ -7,11 +7,18 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { SocialLinks } from "./social-links"
+import { citiesData } from "@/lib/cities"
 
 export function StickyHeader() {
     const [scrolled, setScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [hoveredState, setHoveredState] = useState<string | null>(null)
     const pathname = usePathname()
+
+    const serveStates = citiesData.filter((s) => s.stateSlug === "tennessee" || s.stateSlug === "mississippi")
+
+    const normalizedPath = (pathname ?? "").replace(/\/$/, "")
+    const isCitiesActive = normalizedPath === "/we-serve" || normalizedPath.startsWith("/we-serve/")
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -87,29 +94,80 @@ export function StickyHeader() {
                         {[
                             { label: "Get your cash offer", href: "/get-a-cash-offer-today/" },
                             { label: "About", href: "/about/" },
-                            { label: "How it works", href: "/how-we-buy-houses/" },
+                            { label: "How it works", href: "/how-it-works/" },
                             { label: "Blog", href: "/blog/" },
                             { label: "Contact us", href: "/contact-us/" },
                             { label: "Get paid for referring", href: "/get-paid/" },
-                        ].map((item) => {
+                        ].map((item, idx) => {
                             const normalizedPath = pathname.replace(/\/$/, "")
                             const normalizedHref = item.href.replace(/\/$/, "")
                             const isActive = normalizedPath === normalizedHref || normalizedPath.startsWith(normalizedHref + "/")
                             return (
-                                <a
-                                    key={item.label}
-                                    href={item.href}
-                                    className={`relative px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md group ${isActive
-                                        ? "text-[#f59e0b] bg-[#f59e0b]/10"
-                                        : "text-gray-400 hover:text-white hover:bg-white/5"
-                                        }`}
-                                >
-                                    {item.label}
-                                    <span
-                                        className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[#f59e0b] transition-all duration-300 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-30"
+                                <div key={item.label} className="flex items-center">
+                                    <a
+                                        href={item.href}
+                                        className={`relative px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md ${isActive
+                                            ? "text-[#f59e0b] bg-[#f59e0b]/10"
+                                            : "text-gray-400 hover:text-white hover:bg-white/5"
                                             }`}
-                                    />
-                                </a>
+                                    >
+                                        {item.label}
+                                        <span
+                                            className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[#f59e0b] transition-all duration-300 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-30"
+                                                }`}
+                                        />
+                                    </a>
+
+                                    {idx === 0 && (
+                                        <div className="relative group">
+                                            <button className={`relative px-3 py-2 text-sm font-medium rounded-md ${isCitiesActive ? "text-[#f59e0b] bg-[#f59e0b]/10" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
+                                                Cities we serve
+                                                <span className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[#f59e0b] transition-all duration-300 ${isCitiesActive ? "opacity-100" : "opacity-0 group-hover:opacity-30"}`} />
+                                            </button>
+
+                                            <div onMouseLeave={() => setHoveredState(null)} className={`invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute top-full left-0 pt-2 z-50 ${hoveredState ? "w-[28rem]" : "w-48"}`}>
+                                                <div className="bg-[#0f0f23] border border-white/10 rounded-lg shadow-lg p-4 overflow-hidden transition-all duration-200">
+                                                    <div className="flex">
+                                                        <div className={hoveredState ? "w-1/3 pr-4 border-r border-white/5" : "w-full pr-0 border-r-0"}>
+                                                            <ul className="space-y-2">
+                                                                {serveStates.map((s) => (
+                                                                    <li key={s.stateSlug}>
+                                                                        <button
+                                                                            onMouseEnter={() => setHoveredState(s.stateSlug)}
+                                                                            onFocus={() => setHoveredState(s.stateSlug)}
+                                                                            className={`w-full text-left text-sm py-2 px-2 rounded ${hoveredState === s.stateSlug ? "bg-white/5 text-white font-semibold" : "text-gray-300 hover:text-white"}`}
+                                                                        >
+                                                                            {s.state}
+                                                                        </button>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+
+                                                        {hoveredState ? (
+                                                            <div className="w-2/3 pl-4">
+                                                                {serveStates.filter((s) => s.stateSlug === hoveredState).map((s) => (
+                                                                    <div key={s.stateSlug}>
+                                                                        <div className="font-semibold text-sm text-white mb-2">{s.state}</div>
+                                                                        <ul className="space-y-1">
+                                                                            {s.cities.map((c: any) => (
+                                                                                <li key={c.slug}>
+                                                                                    <a href={`/we-serve/${s.stateSlug}/${c.slug}/`} className="text-gray-300 hover:text-white text-sm block py-1">
+                                                                                        {c.name}
+                                                                                    </a>
+                                                                                </li>
+                                                                            ))}
+                                                                        </ul>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             )
                         })}
                     </nav>
@@ -152,7 +210,7 @@ export function StickyHeader() {
                             {[
                                 { label: "Get your cash offer", href: "/get-a-cash-offer-today/" },
                                 { label: "About", href: "/about/" },
-                                { label: "How it works", href: "/how-we-buy-houses/" },
+                                { label: "How it works", href: "/how-it-works/" },
                                 { label: "Blog", href: "/blog/" },
                                 { label: "Contact us", href: "/contact-us/" },
                                 { label: "Get paid for referring", href: "/get-paid/" },
@@ -175,6 +233,28 @@ export function StickyHeader() {
                                     </a>
                                 )
                             })}
+
+                            {/* Mobile: States & cities */}
+                            <div className="pt-2">
+                                <div className="text-xs text-gray-400 font-semibold mb-2">Cities we serve</div>
+                                {serveStates.map((s) => (
+                                    <div key={s.stateSlug} className="mb-3">
+                                        <div className="text-white font-medium mb-1">{s.state}</div>
+                                        <div className="pl-3">
+                                            {s.cities.map((c: any) => (
+                                                <a
+                                                    key={c.slug}
+                                                    href={`/we-serve/${s.stateSlug}/${c.slug}/`}
+                                                    className="block py-2 text-gray-300"
+                                                    onClick={() => setMobileMenuOpen(false)}
+                                                >
+                                                    {c.name}
+                                                </a>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
 
                             {/* CTA */}
                             <a
