@@ -197,6 +197,7 @@ export const citiesData: StateData[] = [
     },
 ]
 
+
 export function findCity(stateSlug: string, citySlug: string) {
     const state = citiesData.find((s) => s.stateSlug === stateSlug)
     if (!state) return null
