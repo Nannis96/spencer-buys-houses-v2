@@ -30,7 +30,7 @@ export function CashOfferContent() {
                 <div aria-hidden="true" className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#f59e0b]/5 rounded-full blur-3xl" />
 
                 <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start lg:items-center">
                         {/* Left copy */}
                         <div>
                             <p className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-6 uppercase tracking-wide">
@@ -64,7 +64,7 @@ export function CashOfferContent() {
                             </ul>
 
                             {/* Mobile form */}
-                            <div className="lg:hidden mt-8">
+                            <div className="lg:hidden mt-10">
                                 <LeadFormConsent />
                             </div>
                         </div>

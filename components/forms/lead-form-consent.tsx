@@ -16,20 +16,15 @@ const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""
 
 const leadConsentSchema = z.object({
     address: z.string().min(5, "Please enter a valid property address"),
-    city: z.string().min(2, "Please enter your city"),
-    state: z.string().min(2, "Please enter your state"),
+    // City/state/zip are optional here — we allow proceeding with just an address.
+    city: z.string().optional(),
+    state: z.string().optional(),
     zipCode: z
         .string()
-        .min(5, "Please enter a valid ZIP code")
-        .regex(/^\d{5}(-\d{4})?$/, "Please enter a valid ZIP code"),
+        .optional()
+        .refine((val) => !val || /^\d{5}(-\d{4})?$/.test(val), "Please enter a valid ZIP code"),
     // Optional – user can opt in to SMS
     smsConsent: z.boolean().optional(),
-    // Required – must explicitly agree to Privacy Policy
-    privacyConsent: z
-        .boolean()
-        .refine((val) => val === true, {
-            message: "You must agree to the Terms & Conditions and Privacy Policy",
-        }),
 })
 
 type LeadConsentFormData = z.infer<typeof leadConsentSchema>
@@ -54,6 +49,7 @@ export function LeadFormConsent() {
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [mapsLoaded, setMapsLoaded] = useState(false)
+    const [addressSelected, setAddressSelected] = useState(false)
 
     const addressInputRef = useRef<HTMLInputElement | null>(null)
     const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
@@ -62,14 +58,25 @@ export function LeadFormConsent() {
         register,
         handleSubmit,
         setValue,
+        watch,
         formState: { errors },
     } = useForm<LeadConsentFormData>({
         resolver: zodResolver(leadConsentSchema),
         defaultValues: {
             smsConsent: false,
-            privacyConsent: false,
         },
     })
+
+    // If the user types or the field is pre-filled (not only when a Place is selected),
+    // allow continuing once the address field contains non-empty text.
+    const watchedAddress = watch("address")
+    useEffect(() => {
+        if (typeof watchedAddress === "string" && watchedAddress.trim().length > 0) {
+            setAddressSelected(true)
+        } else {
+            setAddressSelected(false)
+        }
+    }, [watchedAddress])
 
     // ── Load Google Maps script ──────────────────────────────────────────────
     useEffect(() => {
@@ -128,6 +135,7 @@ export function LeadFormConsent() {
             setValue("city", city, { shouldValidate: true })
             setValue("state", state, { shouldValidate: true })
             setValue("zipCode", zip, { shouldValidate: true })
+            setAddressSelected(true)
 
             console.log("[Google Places] Parsed fields →", { address: fullAddress, city, state, zipCode: zip })
         })
@@ -143,13 +151,13 @@ export function LeadFormConsent() {
         setIsSubmitting(true)
         console.log("Lead form (consent) submitted:", data)
         // TODO: replace with real API call / CRM webhook
-        const params = new URLSearchParams({
-            address: data.address,
-            city: data.city,
-            state: data.state,
-            zipCode: data.zipCode,
-            smsConsent: String(data.smsConsent ?? false),
-        })
+        const params = new URLSearchParams()
+        params.append("address", data.address)
+        if (data.city) params.append("city", data.city)
+        if (data.state) params.append("state", data.state)
+        if (data.zipCode) params.append("zipCode", String(data.zipCode))
+        params.append("smsConsent", String(data.smsConsent ?? false))
+
         setTimeout(() => {
             router.push(`/property-details?${params.toString()}`)
         }, 1500)
@@ -197,13 +205,18 @@ export function LeadFormConsent() {
                             />
                         </div>
                         <FieldError message={errors.address?.message} />
+                        {/* Hidden fields so city/state/zipCode/smsConsent are included in form data */}
+                        <input type="hidden" {...register("city")} />
+                        <input type="hidden" {...register("state")} />
+                        <input type="hidden" {...register("zipCode")} />
+                        <input type="hidden" {...register("smsConsent")} />
                     </div>
 
                     {/* ── Submit ── */}
                     <Button
                         type="submit"
-                        disabled={isSubmitting}
-                        className="h-14 text-lg font-bold bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                        disabled={isSubmitting || !addressSelected}
+                        className="h-14 text-lg font-bold bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                         {isSubmitting ? (
                             <>

@@ -526,25 +526,6 @@ export function PropertyInfoForm() {
                     {/* ───────── CONSENT ───────── */}
                     <SectionHeading>Consent</SectionHeading>
 
-                    {/* I'm a Human */}
-                    <div>
-                        <label htmlFor={id("isHuman")} className="flex items-start gap-3 cursor-pointer">
-                            <input
-                                id={id("isHuman")}
-                                type="checkbox"
-                                {...register("isHuman")}
-                                className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/10 accent-[#f59e0b] cursor-pointer"
-                                aria-required="true"
-                                aria-invalid={!!errors.isHuman}
-                            />
-                            <span className="text-xs text-gray-300 leading-relaxed font-medium">
-                                I&apos;m a Human{" "}
-                                <span className="text-red-400" aria-hidden="true">*</span>
-                            </span>
-                        </label>
-                        <FieldError message={errors.isHuman?.message} />
-                    </div>
-
                     {/* SMS Consent */}
                     <div className="rounded-lg bg-white/[0.03] border border-white/10 p-3">
                         <label htmlFor={id("smsConsent")} className="flex items-start gap-3 cursor-pointer">

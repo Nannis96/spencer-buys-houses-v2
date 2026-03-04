@@ -32,12 +32,12 @@ export const metadata: Metadata = {
     description:
         "Learn how Spencer Buys Houses buys Memphis homes fast for cash. Our simple 4-step process means no fees, no repairs, and a fair all-cash offer in as little as 24 hours.",
     alternates: {
-        canonical: "/how-we-buy-houses/",
+        canonical: "/how-it-works/",
     },
     openGraph: {
         type: "website",
         locale: "en_US",
-        url: `${SITE_URL}/how-we-buy-houses/`,
+        url: `${SITE_URL}/how-it-works/`,
         siteName: "SpencerBuysHouses.com",
         title: "How We Buy Houses in Memphis | Spencer Buys Houses",
         description:
@@ -60,8 +60,8 @@ const jsonLd = {
     "@graph": [
         {
             "@type": "WebPage",
-            "@id": `${SITE_URL}/how-we-buy-houses/`,
-            url: `${SITE_URL}/how-we-buy-houses/`,
+            "@id": `${SITE_URL}/how-it-works/`,
+            url: `${SITE_URL}/how-it-works/`,
             name: "How We Buy Houses in Memphis | Spencer Buys Houses",
             description:
                 "Discover our simple, transparent 4-step process to sell your Memphis house fast for cash with Spencer Buys Houses.",
@@ -73,8 +73,8 @@ const jsonLd = {
                     {
                         "@type": "ListItem",
                         position: 2,
-                        name: "How We Buy Houses",
-                        item: `${SITE_URL}/how-we-buy-houses/`,
+                        name: "How It Works",
+                        item: `${SITE_URL}/how-it-works/`,
                     },
                 ],
             },
@@ -419,7 +419,7 @@ export default function HowWeBuyHousesPage() {
                     description="No fees. No repairs. No obligation. Close in as little as 7 days."
                     secondaryLabel="Get My Free Cash Offer"
                     secondaryHref="/get-a-cash-offer-today/"
-                    headingId="how-we-buy-cta-heading"
+                    headingId="how-it-works-cta-heading"
                 />
 
                 {/* ── 5. FAQ ── */}

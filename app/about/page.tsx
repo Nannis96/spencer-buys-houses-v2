@@ -195,7 +195,7 @@ function CompareCell({ value }: { value: CompareValue }) {
 
 export default function AboutPage() {
     return (
-        <main className="bg-[#0f0f23] min-h-screen">
+        <main className="bg-[#0f0f23] min-h-screen pt-10 md:pt-12">
             <JsonLd data={jsonLd} />
 
             {/* ── Hero Banner ──────────────────────────────────────────────── */}
