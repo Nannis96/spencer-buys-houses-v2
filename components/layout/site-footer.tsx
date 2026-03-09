@@ -3,8 +3,8 @@ import { SocialLinks } from "./social-links"
 
 export function SiteFooter() {
     return (
-        <footer className="bg-[#0a0a1a] text-white">
-            <div className="mx-auto max-w-7xl px-4 lg:px-8 py-16">
+        <footer className="bg-[var(--color-background)] text-white">
+            <div className="mx-auto max-w-7xl px-4 lg:px-8 py-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
                     {/* Quick Links */}
                     <div>
@@ -21,7 +21,7 @@ export function SiteFooter() {
                                 <a
                                     key={item.label}
                                     href={item.href}
-                                    className="text-sm text-gray-500 hover:text-[#f59e0b] transition-colors"
+                                    className="text-sm text-gray-500 hover:text-[var(--color-primary-dark)] transition-colors"
                                 >
                                     {item.label}
                                 </a>
@@ -45,7 +45,7 @@ export function SiteFooter() {
                         <div className="flex flex-col items-center md:items-end gap-3">
                             <a
                                 href="tel:+19016218799"
-                                className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#f59e0b]"
+                                className="flex items-center gap-2 text-sm text-gray-500 hover:text-[var(--color-primary-dark)]"
                             >
                                 <Phone className="h-4 w-4" />
                                 Call Today: (901) 621-8799
@@ -55,16 +55,16 @@ export function SiteFooter() {
                     </div>
                 </div>
 
-                <div className="mt-12 pt-8 border-t border-white/10">
+                <div className="mt-12 pt-8 border-t border-white/10 py-10">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                         <p className="text-sm text-gray-500">
                             {"© 2026 Spencer Buys Houses"}
                         </p>
                         <div className="flex gap-4">
-                            <a href="/terms/" className="text-sm text-gray-500 hover:text-[#f59e0b] transition-colors">
+                            <a href="/terms/" className="text-sm text-gray-500 hover:text-[var(--color-primary-dark)] transition-colors">
                                 Terms of Use
                             </a>
-                            <a href="/privacy/" className="text-sm text-gray-500 hover:text-[#f59e0b] transition-colors">
+                            <a href="/privacy/" className="text-sm text-gray-500 hover:text-[var(--color-primary-dark)] transition-colors">
                                 Privacy Policy
                             </a>
                         </div>

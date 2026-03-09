@@ -1,4 +1,5 @@
 import { ClipboardList, DollarSign, CalendarCheck } from "lucide-react"
+import { CTAButton } from "../ui/cta-button"
 
 const steps = [
     {
@@ -26,10 +27,10 @@ const steps = [
 
 export function ProcessSection() {
     return (
-        <section id="how-it-works" className="bg-[#13132b] py-20 lg:py-28">
+        <section id="how-it-works" className="bg-[var(--color-background)] py-20 lg:py-28">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
                 <div className="text-center mb-16">
-                    <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                         Discover How Our Home Buying Process Works!
                     </span>
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -41,16 +42,16 @@ export function ProcessSection() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-                    {/* Connector line (desktop) */}
-                    <div className="hidden md:block absolute top-10 left-1/6 right-1/6 h-px bg-gradient-to-r from-transparent via-[#f59e0b]/30 to-transparent" />
 
                     {steps.map(({ icon: Icon, step, title, description }) => (
-                        <div key={step} className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[#f59e0b]/30 transition-colors group">
-                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[#f59e0b] text-[#0f0f23] text-xs font-black">
+                        <div key={step} className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary-dark)]/30 transition-colors group">
+                            {/* Connector line (desktop) */}
+                            <div className="hidden md:block absolute top-8 left-1/20 right-1/20 h-px bg-gradient-to-r from-transparent via-[var(--color-primary-dark)]/30 to-transparent" />
+                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary-dark)] text-black text-xs font-black">
                                 {step}
                             </div>
-                            <div className="mt-4 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f59e0b]/10 group-hover:bg-[#f59e0b]/20 transition-colors">
-                                <Icon className="h-8 w-8 text-[#f59e0b]" />
+                            <div className="mt-4 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-primary-dark)]/10 group-hover:bg-[var(--color-primary-dark)]/20 transition-colors">
+                                <Icon className="h-8 w-8 text-[var(--color-primary-dark)]" />
                             </div>
                             <h3 className="text-lg font-bold text-white mb-3">{title}</h3>
                             <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
@@ -59,12 +60,7 @@ export function ProcessSection() {
                 </div>
 
                 <div className="mt-12 text-center">
-                    <a
-                        href="#top"
-                        className="inline-block rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] px-8 py-4 text-base font-bold transition-colors"
-                    >
-                        Get My Free Cash Offer Now
-                    </a>
+                    <CTAButton href="#top">Get My Free Cash Offer Now</CTAButton>
                 </div>
             </div>
         </section>
