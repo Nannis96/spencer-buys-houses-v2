@@ -1,0 +1,36 @@
+# Dependencias
+node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+
+# Next.js
+.next/
+out/
+build/
+
+# Archivos de entorno (mantener la seguridad o evitar conflictos con docker-compose)
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Git y sistema de archivos
+.git
+.gitignore
+.DS_Store
+*.pem
+
+# Archivos propios de Docker para evitar copiarlos al contenedor
+Dockerfile
+Dockerfile.dev
+.dockerignore
+docker-compose.yml
