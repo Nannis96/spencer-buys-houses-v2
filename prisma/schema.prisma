@@ -20,20 +20,6 @@ enum Role {
     ADMIN
 }
 
-model SellerProfile {
-    id     String @id @default(cuid())
-    userId String @unique
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    // Agrega aquí los demás campos de tu perfil
-}
-
-model AgentProfile {
-    id     String @id @default(cuid())
-    userId String @unique
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    // Agrega aquí los demás campos de tu perfil
-}
-
 // --- TUS MODELOS ---
 model User {
     id        String   @id @default(cuid())
@@ -48,10 +34,6 @@ model User {
     twoFactorSecret     String?
     isTwoFactorEnabled  Boolean @default(false)
     forcePasswordChange Boolean @default(true) // <-- NUEVO: Para el flujo de onboarding
-
-    // Relaciones de Perfiles
-    sellerProfile SellerProfile?
-    agentProfile  AgentProfile? // <-- NUEVO: Relación con el Agente
 }
 
 model Post {
