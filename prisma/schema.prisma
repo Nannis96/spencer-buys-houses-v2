@@ -7,7 +7,8 @@
 // prisma/schema.prisma
 
 generator client {
-    provider = "prisma-client-js"
+    provider = "prisma-client"
+    output   = "../app/generated/prisma"
 }
 
 datasource db {
@@ -29,11 +30,6 @@ model User {
     role      Role     @default(ADMIN)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    // Seguridad y Onboarding
-    twoFactorSecret     String?
-    isTwoFactorEnabled  Boolean @default(false)
-    forcePasswordChange Boolean @default(true) // <-- NUEVO: Para el flujo de onboarding
 }
 
 model Post {
