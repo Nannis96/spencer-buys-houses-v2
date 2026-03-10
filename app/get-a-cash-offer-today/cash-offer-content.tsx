@@ -17,13 +17,15 @@ import { TestimonialsSection } from "@/components/sections/testimonials-section"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { CheckCircle2 } from "lucide-react"
 import Image from "next/image"
+import { CallButton } from "@/components/ui/call-button"
+import { CTAButton } from "@/components/ui/cta-button"
 
 export function CashOfferContent() {
     return (
         <>
             {/* ───────── 1. HERO + FORM ───────── */}
             <section
-                className="relative bg-[#0f0f23] pt-28 md:pt-44 pb-16 lg:pb-24 overflow-hidden"
+                className="relative bg-[var(--color-background)] pt-28 md:pt-44 pb-16 lg:pb-24 overflow-hidden"
                 aria-labelledby="hero-heading"
             >
                 {/* Ambient glow — decorative */}
@@ -33,13 +35,13 @@ export function CashOfferContent() {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start lg:items-center">
                         {/* Left copy */}
                         <div>
-                            <p className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-6 uppercase tracking-wide">
+                            <p className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-6 uppercase tracking-wide">
                                 Sell Without An Agent
                             </p>
 
                             <h1 id="hero-heading" className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl text-white">
                                 Get A Cash Offer Today{" "}
-                                <span className="text-[#f59e0b]">Without An Agent!</span>
+                                <span className="text-[var(--color-text-yellow)]">Without An Agent!</span>
                             </h1>
 
                             <p className="mt-6 text-lg md:text-xl text-gray-300 font-medium">
@@ -57,7 +59,7 @@ export function CashOfferContent() {
                                     "Close on YOUR schedule",
                                 ].map((point) => (
                                     <li key={point} className="flex items-center gap-3">
-                                        <CheckCircle2 className="h-5 w-5 text-[#22c55e] shrink-0" aria-hidden="true" />
+                                        <CheckCircle2 className="h-5 w-5 text-[var(--color-primary)] shrink-0" aria-hidden="true" />
                                         <span className="text-gray-300">{point}</span>
                                     </li>
                                 ))}
@@ -80,16 +82,18 @@ export function CashOfferContent() {
             {/* ───────── 2. BENEFITS ───────── */}
             <section
                 id="benefits"
-                className="bg-[#13132b] py-20 lg:py-28"
+                className="bg-[var(--color-background)] py-10 lg:py-14"
                 aria-labelledby="benefits-heading"
             >
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
                     <div className="text-center mb-16">
-                        <p className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                        <p className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                             Why Choose Us
                         </p>
                         <h2 id="benefits-heading" className="text-3xl md:text-4xl font-bold text-white mb-4">
-                            {"Here's What Spencer Buys Houses Can Do For You…"}
+                            {"Here's What "}
+                            <span className="text-[var(--color-text-yellow)]">Spencer Buys Houses</span>
+                            {" Can Do For You…"}
                         </h2>
                         <p className="text-gray-400 max-w-2xl mx-auto">
                             Skip the traditional hassle of listing with an agent. Get a fair cash offer and sell your house fast.
@@ -105,7 +109,7 @@ export function CashOfferContent() {
             <TestimonialsSection count={3} />
 
             {/* ───────── 4. "BUT IT GETS BETTER" ───────── */}
-            <section className="bg-[#13132b] py-20 lg:py-28" aria-labelledby="better-heading">
+            <section className="bg-[var(--color-background)] py-10 lg:py-14" aria-labelledby="better-heading">
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                         {/* Image */}
@@ -125,13 +129,13 @@ export function CashOfferContent() {
 
                         {/* Copy */}
                         <div>
-                            <p className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-6 uppercase tracking-wide">
+                            <p className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-6 uppercase tracking-wide">
                                 But It Gets Better
                             </p>
 
                             <h2 id="better-heading" className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
                                 Sell Fast Without An Agent —{" "}
-                                <span className="text-[#f59e0b]">With No Rush to Move</span>
+                                <span className="text-[var(--color-text-yellow)]">With No Rush to Move</span>
                             </h2>
 
                             <p className="text-gray-400 leading-relaxed mb-4">
@@ -142,19 +146,9 @@ export function CashOfferContent() {
                                 We are confident that we can help you today – regardless of the situation.
                             </p>
 
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <a
-                                    href="#top"
-                                    className="inline-block rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] px-6 py-3 text-sm font-bold transition-colors text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b]"
-                                >
-                                    Get Your Free Cash Offer
-                                </a>
-                                <a
-                                    href="tel:+19016218799"
-                                    className="inline-block rounded-lg border border-white/20 hover:border-[#f59e0b]/50 text-white px-6 py-3 text-sm font-bold transition-colors text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b]"
-                                >
-                                    Call (901) 621-8799
-                                </a>
+                            <div className="flex flex-row items-center gap-4 mb-8">
+                                <CTAButton href="#top">Get Your Free Cash Offer</CTAButton>
+                                <CallButton inline />
                             </div>
                         </div>
                     </div>

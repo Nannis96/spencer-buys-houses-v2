@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Phone, Menu, X, Home } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -10,6 +10,7 @@ import { SocialLinks } from "./social-links"
 import { citiesData } from "@/lib/cities"
 
 export function StickyHeader() {
+    const headerRef = useRef<HTMLElement | null>(null)
     const [scrolled, setScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [hoveredState, setHoveredState] = useState<string | null>(null)
@@ -26,8 +27,20 @@ export function StickyHeader() {
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
 
+    useEffect(() => {
+        const setHeaderHeight = () => {
+            const h = headerRef.current?.offsetHeight ?? 0
+            document.documentElement.style.setProperty("--app-header-height", `${h}px`)
+        }
+
+        setHeaderHeight()
+        window.addEventListener("resize", setHeaderHeight)
+        return () => window.removeEventListener("resize", setHeaderHeight)
+    }, [])
+
     return (
         <header
+            ref={headerRef}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
                 ? "bg-[var(--color-background)]/98 backdrop-blur-md shadow-lg"
                 : "bg-[var(--color-background)]/90 backdrop-blur-sm"
@@ -53,7 +66,7 @@ export function StickyHeader() {
                                 aria-label="Spencer Buys Houses Home"
                             >
                                 <Image
-                                    src="/SpencerBuysHouses_White.png"
+                                    src="/SpencerBuysHouses_yellow.png"
                                     alt="SpencerBuysHouses.com"
                                     width={160}
                                     height={40}
@@ -107,7 +120,7 @@ export function StickyHeader() {
                                     <a
                                         href={item.href}
                                         className={`relative px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md ${isActive
-                                            ? "text-[#f59e0b] bg-[#f59e0b]/10"
+                                            ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10"
                                             : "text-gray-400 hover:text-white hover:bg-white/5"
                                             }`}
                                     >
@@ -120,13 +133,13 @@ export function StickyHeader() {
 
                                     {idx === 0 && (
                                         <div className="relative group">
-                                            <button className={`relative px-3 py-2 text-sm font-medium rounded-md ${isCitiesActive ? "text-[#f59e0b] bg-[#f59e0b]/10" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
+                                            <button className={`relative px-3 py-2 text-sm font-medium rounded-md ${isCitiesActive ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
                                                 Cities we serve
-                                                <span className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[#f59e0b] transition-all duration-300 ${isCitiesActive ? "opacity-100" : "opacity-0 group-hover:opacity-30"}`} />
+                                                <span className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[var] transition-all duration-300 ${isCitiesActive ? "opacity-100" : "opacity-0 group-hover:opacity-30"}`} />
                                             </button>
 
                                             <div onMouseLeave={() => setHoveredState(null)} className={`invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute top-full left-0 pt-2 z-50 ${hoveredState ? "w-[28rem]" : "w-48"}`}>
-                                                <div className="bg-[#0f0f23] border border-white/10 rounded-lg shadow-lg p-4 overflow-hidden transition-all duration-200">
+                                                <div className="bg-[var(--color-background)] border border-white/10 rounded-lg shadow-lg p-4 overflow-hidden transition-all duration-200">
                                                     <div className="flex">
                                                         <div className={hoveredState ? "w-1/3 pr-4 border-r border-white/5" : "w-full pr-0 border-r-0"}>
                                                             <ul className="space-y-2">

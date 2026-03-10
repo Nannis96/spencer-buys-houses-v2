@@ -1,6 +1,7 @@
 import { Suspense } from "react"
 import type { Metadata } from "next"
 import { PropertyDetailsForm } from "./property-details-form"
+import { PropertyInfoForm } from "@/app/property-info/property-info-form"
 import PropertyProgress from "@/components/progress/PropertyProgress"
 import { JsonLd } from "@/components/seo/json-ld"
 import { Loader2 } from "lucide-react"
@@ -148,7 +149,7 @@ export default function PropertyDetailsPage() {
     return (
         <>
             <JsonLd data={jsonLd} />
-            <main className="min-h-screen bg-[#0f0f23] flex flex-col items-center justify-center px-4 py-20">
+            <main className="min-h-screen bg-[var(--color-background)] flex flex-col items-center justify-center px-4 py-20">
                 {/* ── Page heading (SEO H1 — visually subtle, semantically required) ── */}
                 <div className="w-full max-w-lg mb-6 text-center">
                     <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight">
@@ -164,13 +165,13 @@ export default function PropertyDetailsPage() {
 
                 {/* Progress indicator — Suspense required for useSearchParams */}
                 <Suspense fallback={<div className="w-full max-w-lg mb-8 h-7" aria-hidden="true" />}>
-                    <PropertyProgress activeStep={2} />
+                    <PropertyProgress activeStep={3} />
                 </Suspense>
 
                 {/* Form with Suspense boundary (required for useSearchParams) */}
                 <Suspense
                     fallback={
-                        <div className="rounded-2xl bg-[#1a1a2e] p-10 border border-white/10 flex items-center justify-center">
+                        <div className="rounded-2xl bg-[var(--color-background)] p-10 border border-[var(--color-primary)]/60 flex items-center justify-center">
                             <Loader2 className="h-8 w-8 animate-spin text-[#f59e0b]" />
                         </div>
                     }

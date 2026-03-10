@@ -1,6 +1,7 @@
 import { Suspense } from "react"
 import type { Metadata } from "next"
 import { PropertyInfoForm } from "./property-info-form"
+import { PropertyDetailsForm } from "@/app/property-details/property-details-form"
 import PropertyProgress from "@/components/progress/PropertyProgress"
 import { JsonLd } from "@/components/seo/json-ld"
 import { Loader2 } from "lucide-react"
@@ -152,12 +153,12 @@ export default function PropertyInfoPage() {
     return (
         <>
             <JsonLd data={jsonLd} />
-            <main className="min-h-screen bg-[#0f0f23] flex flex-col items-center justify-center px-4 pt-32 pb-20">
+            <main className="min-h-screen bg-[var(--color-background)] flex flex-col items-center justify-center px-4 pt-32 pb-20">
                 {/* ── Page heading (SEO H1 — visually subtle, semantically required) ── */}
                 <div className="w-full max-w-2xl mb-6 text-center">
                     <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight">
                         Get Your Free Cash Offer —{" "}
-                        <span className="text-[#f59e0b]">Memphis, TN</span>
+                        <span className="text-[var(--color-primary-dark)]">Memphis, TN</span>
                     </h1>
                     <p className="text-gray-400 text-sm mt-2 leading-relaxed">
                         Almost done! Tell us a little about your property&apos;s condition and your situation so we can
@@ -166,14 +167,14 @@ export default function PropertyInfoPage() {
                 </div>
                 {/* Progress indicator — Suspense required for useSearchParams */}
                 <Suspense fallback={<div className="w-full max-w-2xl mb-8 h-7" aria-hidden="true" />}>
-                    <PropertyProgress />
+                    <PropertyProgress activeStep={2} />
                 </Suspense>
 
                 {/* Form — Suspense required for useSearchParams */}
                 <Suspense
                     fallback={
-                        <div className="rounded-2xl bg-[#1a1a2e] p-10 border border-white/10 flex items-center justify-center w-full max-w-2xl">
-                            <Loader2 className="h-8 w-8 animate-spin text-[#f59e0b]" />
+                        <div className="rounded-2xl bg-[var(--color-background)] p-10 border border-[var(--color-primary)]/60 flex items-center justify-center w-full max-w-2xl">
+                            <Loader2 className="h-8 w-8 animate-spin text-[var(--color-primary)]" />
                         </div>
                     }
                 >
