@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useState } from "react"
+import { useId, useState, useEffect } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -38,13 +38,6 @@ const propertyInfoSchema = z.object({
     askingPrice: z.string().optional(),
     fairPrice: z.string().optional(),
     bestTimeToCall: z.string().optional(),
-    // Consent
-    smsConsent: z.boolean().optional(),
-    privacyConsent: z
-        .boolean()
-        .refine((v) => v === true, {
-            message: "You must agree to the Terms & Conditions and Privacy Policy",
-        }),
 })
 
 type PropertyInfoFormData = z.infer<typeof propertyInfoSchema>
@@ -73,7 +66,7 @@ function SectionHeading({ children, className }: { children: React.ReactNode; cl
     return (
         <h4
             className={
-                "text-base font-bold text-[#f59e0b] uppercase tracking-wider mb-4 pt-2 border-t border-white/10 first:border-0 first:pt-0 " +
+                "text-base font-bold text-[var(--color-primary)] uppercase tracking-wider mb-4 pt-2 border-t border-white/10 first:border-0 first:pt-0 " +
                 (className ?? "")
             }
         >
@@ -210,71 +203,71 @@ export function PropertyInfoForm() {
     const router = useRouter()
     const pathname = usePathname()
 
-    // All data forwarded from previous steps
-    const firstName = searchParams.get("firstName") ?? ""
-    const lastName = searchParams.get("lastName") ?? ""
+    // All data forwarded from step 1 (address entry)
     const address = searchParams.get("address") ?? ""
-    const phone = searchParams.get("phone") ?? ""
-    const email = searchParams.get("email") ?? ""
     const city = searchParams.get("city") ?? ""
     const state = searchParams.get("state") ?? ""
     const zipCode = searchParams.get("zipCode") ?? ""
     const smsConsentPrev = searchParams.get("smsConsent") ?? "false"
 
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [submitted, setSubmitted] = useState(false)
 
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValid },
     } = useForm<PropertyInfoFormData>({
         resolver: zodResolver(propertyInfoSchema),
-        defaultValues: {
-            smsConsent: smsConsentPrev === "true",
-            privacyConsent: false,
-        },
+        defaultValues: {},
+        mode: "onChange",
     })
 
     const onSubmit = (data: PropertyInfoFormData) => {
         setIsSubmitting(true)
 
-        const fullPayload = {
-            // Step 1
-            firstName,
-            lastName,
-            address,
-            phone,
-            email,
-            smsConsentStep1: smsConsentPrev === "true",
-            // Step 2
-            city,
-            state,
-            zipCode,
-            // Step 3
-            ...data,
-        }
-
-        console.log("=== FULL LEAD SUBMISSION ===", fullPayload)
-        // TODO: send fullPayload to CRM / webhook
+        // Build params to forward to step 3 (property-details)
+        const params = new URLSearchParams()
+        // Forward step 1 address data
+        params.append("address", address)
+        if (city) params.append("city", city)
+        if (state) params.append("state", state)
+        if (zipCode) params.append("zipCode", zipCode)
+        // Property info fields from this step
+        if (data.garage) params.append("garage", data.garage)
+        if (data.basement) params.append("basement", data.basement)
+        if (data.yearsOwned) params.append("yearsOwned", data.yearsOwned)
+        params.append("condition", data.condition)
+        if (data.repairs) params.append("repairs", data.repairs)
+        params.append("occupied", data.occupied)
+        params.append("listedWithRealtor", data.listedWithRealtor)
+        if (data.closingTimeline) params.append("closingTimeline", data.closingTimeline)
+        params.append("ultimateGoal", data.ultimateGoal)
+        if (data.askingPrice) params.append("askingPrice", data.askingPrice)
+        if (data.fairPrice) params.append("fairPrice", data.fairPrice)
+        if (data.bestTimeToCall) params.append("bestTimeToCall", data.bestTimeToCall)
+        if (smsConsentPrev) params.append("smsConsent", smsConsentPrev)
 
         setTimeout(() => {
-            setIsSubmitting(false)
-            setSubmitted(true)
-
-            // preserve existing query params and add `submitted=true`
-            try {
-                const params = new URLSearchParams(Array.from(searchParams.entries()))
-                params.set("submitted", "true")
-                router.replace(`${pathname}?${params.toString()}`)
-            } catch (err) {
-                // ignore URL update failures
-                console.error(err)
-            }
+            router.push(`/property-details?${params.toString()}`)
         }, 1500)
     }
 
-    if (submitted) return <SuccessScreen />
+    // Report step completion in URL so progress indicator can update in real time
+    useEffect(() => {
+        const params = new URLSearchParams(Array.from(searchParams.entries()))
+        if (isValid) {
+            params.set("step2Complete", "true")
+        } else {
+            params.delete("step2Complete")
+        }
+        const qs = params.toString()
+        // Update the URL without triggering a Next navigation (which can cause
+        // a scroll-to-top). Use history.replaceState to avoid navigation while
+        // the user is interacting with the form.
+        if (typeof window !== "undefined") {
+            window.history.replaceState(null, "", `${pathname}${qs ? `?${qs}` : ""}`)
+        }
+    }, [isValid, router, pathname, searchParams])
 
     return (
         <AnimatePresence mode="wait">
@@ -287,7 +280,7 @@ export function PropertyInfoForm() {
                 onSubmit={handleSubmit(onSubmit)}
                 noValidate
                 aria-label="Property information"
-                className="rounded-2xl bg-[#1a1a2e] p-6 md:p-8 border border-white/10 w-full max-w-2xl mx-auto"
+                className="rounded-2xl bg-[var(--color-background)] p-6 md:p-8 border border-[var(--color-primary)]/60 w-full max-w-2xl mx-auto"
             >
                 <h3 className="text-xl font-bold text-white mb-1">Property Information</h3>
                 <p className="text-gray-400 text-sm mb-6 leading-relaxed">
@@ -524,65 +517,10 @@ export function PropertyInfoForm() {
                         </div>
                     </div>
 
-                    {/* ───────── CONSENT ───────── */}
-                    {/* <SectionHeading>Consent</SectionHeading> */}
-                    <SectionHeading className="mt-1">Consent</SectionHeading>
-
-                    {/* SMS Consent */}
-                    <div className="rounded-lg bg-white/[0.03] border border-white/10 p-3 -mt-3">
-                        <label htmlFor={id("smsConsent")} className="flex items-start gap-3 cursor-pointer">
-                            <input
-                                id={id("smsConsent")}
-                                type="checkbox"
-                                {...register("smsConsent")}
-                                className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/10 accent-[#f59e0b] cursor-pointer"
-                            />
-                            <span className="text-xs text-gray-400 leading-relaxed">
-                                <span className="font-semibold text-gray-300">SMS Consent (optional)</span>
-                                {" — "}By checking this box you consent to receive SMS messages, emails, and
-                                calls from Spencer Buys Houses. Message frequency varies. Msg &amp; data rates
-                                may apply. To unsubscribe, follow the instructions in our communications.
-                                Text <strong className="text-gray-300">HELP</strong> for help,{" "}
-                                <strong className="text-gray-300">STOP</strong> to cancel. Your information
-                                will not be sold to third parties.
-                            </span>
-                        </label>
-                    </div>
-
-
-
-                    {/* Privacy Consent (required) */}
-                    <div>
-                        <label htmlFor={id("privacyConsent")} className="flex items-start gap-3 cursor-pointer">
-                            <input
-                                id={id("privacyConsent")}
-                                type="checkbox"
-                                {...register("privacyConsent")}
-                                className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/10 accent-[#f59e0b] cursor-pointer"
-                                aria-required="true"
-                                aria-invalid={!!errors.privacyConsent}
-                            />
-                            <span className="text-xs text-gray-400 leading-relaxed">
-                                I agree to the{" "}
-                                <a href="/terms" className="text-[#f59e0b] hover:underline">
-                                    Terms &amp; Conditions
-                                </a>{" "}
-                                and{" "}
-                                <a href="/privacy" className="text-[#f59e0b] hover:underline">
-                                    Privacy Policy
-                                </a>
-                                .{" "}
-                                <span className="text-red-400" aria-hidden="true">*</span>
-                            </span>
-                        </label>
-                        <FieldError message={errors.privacyConsent?.message} />
-                    </div>
-
-                    {/* ── Submit ── */}
                     <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="h-14 text-lg font-bold bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                        className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                     >
                         {isSubmitting ? (
                             <>
@@ -591,7 +529,7 @@ export function PropertyInfoForm() {
                             </>
                         ) : (
                             <>
-                                GET MY FREE CASH OFFER
+                                NEXT
                                 <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
                             </>
                         )}

@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import { ShieldCheck, Eye, Lock, FileText } from "lucide-react"
 import { JsonLd } from "@/components/seo/json-ld"
+import { CallButton } from "@/components/ui/call-button"
+import { CTAButton } from "@/components/ui/cta-button"
 
 const SITE_URL = "https://www.spencerbuyshouses.com"
 const OG_IMAGE =
@@ -119,7 +121,7 @@ function SectionHeading({
             id={id}
             className="text-xl md:text-2xl font-bold text-white mb-4 flex items-center gap-3 scroll-mt-28"
         >
-            <span className="flex-shrink-0 w-1 h-6 rounded-full bg-[#f59e0b]" aria-hidden="true" />
+            <span className="flex-shrink-0 w-1 h-6 rounded-full bg-[var(--color-primary-dark)]" aria-hidden="true" />
             {children}
         </h2>
     )
@@ -127,7 +129,7 @@ function SectionHeading({
 
 function SubHeading({ children }: { children: React.ReactNode }) {
     return (
-        <h3 className="text-base font-semibold text-[#f59e0b] mt-6 mb-2">
+        <h3 className="text-base font-semibold text-[var(--color-primary-dark)] mt-6 mb-2">
             {children}
         </h3>
     )
@@ -157,41 +159,19 @@ function BulletList({ items }: { items: string[] }) {
 
 export default function PrivacyPolicyPage() {
     return (
-        <main className="bg-[#0f0f23] min-h-screen">
+        <main className="bg-[var(--color-background)] min-h-screen">
             <JsonLd data={jsonLd} />
 
             {/* ── Hero Banner ────────────────────────────────────────────── */}
             <section
-                className="relative bg-[#0a0a1a] border-b border-white/10 pt-32 pb-16 overflow-hidden"
+                className="relative bg-[var(--color-background)] border-b border-[white]/10 pt-32 pb-16 overflow-hidden"
                 aria-labelledby="privacy-heading"
             >
-                {/* Ambient glow */}
-                <div
-                    aria-hidden="true"
-                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#f59e0b]/5 rounded-full blur-3xl pointer-events-none"
-                />
 
                 <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
-                    {/* Breadcrumb */}
-                    <nav aria-label="Breadcrumb" className="flex justify-center mb-6">
-                        <ol className="flex items-center gap-2 text-sm text-gray-500">
-                            <li>
-                                <a
-                                    href="/"
-                                    className="hover:text-[#f59e0b] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
-                                >
-                                    Home
-                                </a>
-                            </li>
-                            <li aria-hidden="true" className="text-gray-600">/</li>
-                            <li>
-                                <span className="text-gray-400" aria-current="page">Privacy Policy</span>
-                            </li>
-                        </ol>
-                    </nav>
 
                     <div className="flex flex-col items-center text-center gap-4">
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold uppercase tracking-wide">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold uppercase tracking-wide">
                             <ShieldCheck className="h-4 w-4" aria-hidden="true" />
                             Legal
                         </span>
@@ -205,11 +185,11 @@ export default function PrivacyPolicyPage() {
                         </p>
                         <div className="flex flex-wrap justify-center gap-6 mt-2">
                             <div className="flex items-center gap-2 text-sm text-gray-500">
-                                <FileText className="h-4 w-4 text-[#f59e0b]" aria-hidden="true" />
+                                <FileText className="h-4 w-4 text-[var(--color-primary-dark)]" aria-hidden="true" />
                                 Applies to: spencerbuyshouses.com
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-500">
-                                <Lock className="h-4 w-4 text-[#f59e0b]" aria-hidden="true" />
+                                <Lock className="h-4 w-4 text-[var(--color-primary-dark)]" aria-hidden="true" />
                                 Your data is never sold to third parties
                             </div>
                         </div>
@@ -223,8 +203,8 @@ export default function PrivacyPolicyPage() {
 
                     {/* ── Table of Contents (sticky on desktop) ──────────── */}
                     <aside aria-label="Page navigation" className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0">
-                        <div className="sticky top-28 rounded-2xl bg-white/[0.03] border border-white/10 p-6">
-                            <p className="text-xs font-semibold text-[#f59e0b] uppercase tracking-widest mb-4">
+                        <div className="sticky top-28 rounded-2xl bg-[var(--color-background)]/[0.03] border border-[var(--color-primary)]/60 p-6">
+                            <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-widest mb-4">
                                 Contents
                             </p>
                             <nav aria-label="Page table of contents" className="flex flex-col gap-1">
@@ -232,20 +212,14 @@ export default function PrivacyPolicyPage() {
                                     <a
                                         key={s.id}
                                         href={`#${s.id}`}
-                                        className="text-sm text-gray-400 hover:text-[#f59e0b] transition-colors py-1 leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                        className="text-sm text-gray-400 hover:text-[var(--color-primary-dark)] transition-colors py-1 leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-dark)] rounded"
                                     >
                                         {s.label}
                                     </a>
                                 ))}
                             </nav>
-                            <div className="mt-6 pt-6 border-t border-white/10">
-                                <a
-                                    href="tel:+19016218799"
-                                    aria-label="Call Spencer Buys Houses at (901) 621-8799"
-                                    className="block text-center py-2.5 rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b]"
-                                >
-                                    (901) 621-8799
-                                </a>
+                            <div className="mt-4 border-t border-[var(--color-primary)]/60">
+                                <CallButton />
                             </div>
                         </div>
                     </aside>
@@ -254,8 +228,8 @@ export default function PrivacyPolicyPage() {
                     <article className="flex-1 min-w-0">
 
                         {/* Intro notice */}
-                        <div className="rounded-2xl bg-[#f59e0b]/5 border border-[#f59e0b]/20 p-6 mb-10 flex gap-4">
-                            <Eye className="h-5 w-5 text-[#f59e0b] flex-shrink-0 mt-0.5" aria-hidden="true" />
+                        <div className="rounded-2xl bg-[var(--color-secondary)]/5 border border-[var(--color-secondary)]/60 p-6 mb-10 flex gap-4">
+                            <Eye className="h-5 w-5 text-[var(--color-primary-dark)] flex-shrink-0 mt-0.5" aria-hidden="true" />
                             <div className="text-sm text-gray-300 leading-relaxed">
                                 <strong className="text-white">Your privacy matters.</strong> This
                                 online privacy policy applies only to information collected through
@@ -267,7 +241,7 @@ export default function PrivacyPolicyPage() {
                         <div className="space-y-10">
 
                             {/* 1 – What we collect */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="what-we-collect">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="what-we-collect">
                                 <SectionHeading id="what-we-collect">
                                     What information do we collect?
                                 </SectionHeading>
@@ -295,7 +269,7 @@ export default function PrivacyPolicyPage() {
                             </section>
 
                             {/* 2 – How we use */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="how-we-use">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="how-we-use">
                                 <SectionHeading id="how-we-use">
                                     What do we use your information for?
                                 </SectionHeading>
@@ -320,7 +294,7 @@ export default function PrivacyPolicyPage() {
                             </section>
 
                             {/* 3 – How we protect */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="how-we-protect">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="how-we-protect">
                                 <SectionHeading id="how-we-protect">
                                     How do we protect your information?
                                 </SectionHeading>
@@ -332,7 +306,7 @@ export default function PrivacyPolicyPage() {
                             </section>
 
                             {/* 4 – Disclosure */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="disclosure">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="disclosure">
                                 <SectionHeading id="disclosure">
                                     Do we disclose any information to outside parties?
                                 </SectionHeading>
@@ -353,7 +327,7 @@ export default function PrivacyPolicyPage() {
                             </section>
 
                             {/* 5 – Third-party links */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="third-party-links">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="third-party-links">
                                 <SectionHeading id="third-party-links">
                                     Third-party links
                                 </SectionHeading>
@@ -368,7 +342,7 @@ export default function PrivacyPolicyPage() {
                             </section>
 
                             {/* 6 – Third-party services */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="third-party-services">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="third-party-services">
                                 <SectionHeading id="third-party-services">
                                     Third-Party Services
                                 </SectionHeading>
@@ -393,7 +367,7 @@ export default function PrivacyPolicyPage() {
                                     become subject to the laws of the jurisdiction(s) in which that
                                     service provider or its facilities are located.
                                 </Prose>
-                                <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4 mt-4 text-sm text-gray-400 leading-relaxed">
+                                <div className="rounded-xl bg-white/[0.03] border border-[var(--color-primary)]/60 p-4 mt-4 text-sm text-gray-400 leading-relaxed">
                                     <strong className="text-gray-300">Example:</strong> If you are
                                     located in Canada and your transaction is processed by a payment
                                     gateway located in the United States, your personal information used
@@ -406,7 +380,7 @@ export default function PrivacyPolicyPage() {
                                     our website's{" "}
                                     <a
                                         href="/terms/"
-                                        className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                        className="text-[var(--color-primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded"
                                     >
                                         Terms of Use
                                     </a>
@@ -415,7 +389,7 @@ export default function PrivacyPolicyPage() {
                             </section>
 
                             {/* 7 – Remarketing */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="remarketing">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="remarketing">
                                 <SectionHeading id="remarketing">
                                     Remarketing
                                 </SectionHeading>
@@ -460,7 +434,7 @@ export default function PrivacyPolicyPage() {
                                         href="https://policies.google.com/privacy"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                        className="text-[var(--color-primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded"
                                     >
                                         Google&apos;s privacy policy
                                     </a>
@@ -469,7 +443,7 @@ export default function PrivacyPolicyPage() {
                             </section>
 
                             {/* 8 – California / COPPA */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="california">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="california">
                                 <SectionHeading id="california">
                                     California &amp; Children&apos;s Privacy Compliance
                                 </SectionHeading>
@@ -497,7 +471,7 @@ export default function PrivacyPolicyPage() {
                             </section>
 
                             {/* 9 – Personal, financial, property */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="personal-financial">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="personal-financial">
                                 <SectionHeading id="personal-financial">
                                     Personal, Financial, and Property Information
                                 </SectionHeading>
@@ -516,7 +490,7 @@ export default function PrivacyPolicyPage() {
                             </section>
 
                             {/* 10 – Changes */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="changes">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="changes">
                                 <SectionHeading id="changes">
                                     Changes to our Privacy Policy
                                 </SectionHeading>
@@ -528,7 +502,7 @@ export default function PrivacyPolicyPage() {
                             </section>
 
                             {/* 11 – Contact */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="contact">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="contact">
                                 <SectionHeading id="contact">
                                     Contacting Us
                                 </SectionHeading>
@@ -537,7 +511,7 @@ export default function PrivacyPolicyPage() {
                                     contact us using the information on our{" "}
                                     <a
                                         href="/contact-us/"
-                                        className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                        className="text-[var(--color-primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded"
                                     >
                                         contact page
                                     </a>
@@ -545,7 +519,7 @@ export default function PrivacyPolicyPage() {
                                     <a
                                         href="tel:+19016218799"
                                         aria-label="Call Spencer Buys Houses at (901) 621-8799"
-                                        className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                        className="text-[var(--color-primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded"
                                     >
                                         (901) 621-8799
                                     </a>
@@ -556,13 +530,13 @@ export default function PrivacyPolicyPage() {
                         </div>
 
                         {/* ── Footer notice ─────────────────────────────── */}
-                        <div className="mt-12 rounded-2xl bg-white/[0.02] border border-white/10 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div className="mt-12 rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                             <div className="text-sm text-gray-500">
                                 <p>
                                     Also see our{" "}
                                     <a
                                         href="/terms/"
-                                        className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                        className="text-[var(--color-primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded"
                                     >
                                         Terms of Use
                                     </a>
@@ -572,13 +546,7 @@ export default function PrivacyPolicyPage() {
                                     © 2026 Spencer Buys Houses. All rights reserved.
                                 </p>
                             </div>
-                            <a
-                                href="/get-a-cash-offer-today/"
-                                aria-label="Get your free cash offer from Spencer Buys Houses"
-                                className="flex-shrink-0 inline-block px-6 py-2.5 rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b]"
-                            >
-                                Get Your Cash Offer
-                            </a>
+                            <CTAButton href="/get-a-cash-offer-today/">Get Your Cash Offer</CTAButton>
                         </div>
 
                     </article>
