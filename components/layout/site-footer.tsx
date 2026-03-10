@@ -4,12 +4,12 @@ import { SocialLinks } from "./social-links"
 export function SiteFooter() {
     return (
         <footer className="bg-[var(--color-background)] text-white">
-            <div className="mx-auto max-w-7xl px-4 lg:px-8 py-10">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
+            <div className="mx-auto max-w-7xl px-4 lg:px-4 py-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
                     {/* Quick Links */}
                     <div>
-                        <h4 className="font-semibold mb-4">Quick Links</h4>
-                        <nav className="flex flex-col gap-2">
+                        <h4 className="font-semibold mb-2 text-left text-[var(--color-primary-dark)]">Quick Links</h4>
+                        <nav className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 sm:gap-x-4 items-start sm:w-70">
                             {[
                                 { label: "Get your cash offer", href: "/get-a-cash-offer-today/" },
                                 { label: "About", href: "/about/" },
@@ -30,8 +30,8 @@ export function SiteFooter() {
                     </div>
 
                     {/* Brand */}
-                    <div className="text-center">
-                        <a href="/" className="font-bold text-xl mb-4 inline-block">
+                    <div className="text-center text-[var(--color-primary-dark)]">
+                        <a href="/" className="font-bold text-xl mb-2 inline-block">
                             <span>Spencer Buys Houses</span>
                         </a>
                         <p className="text-sm leading-relaxed text-gray-500">
@@ -40,9 +40,9 @@ export function SiteFooter() {
                     </div>
 
                     {/* Contact */}
-                    <div className="text-center md:text-right">
-                        <h4 className="font-semibold mb-4">Contact Us</h4>
-                        <div className="flex flex-col items-center md:items-end gap-3">
+                    <div className="text-center md:text-right text-[var(--color-primary-dark)]">
+                        <h4 className="font-semibold mb-2">Contact Us</h4>
+                        <div className="flex flex-col items-center md:items-end gap-2">
                             <a
                                 href="tel:+19016218799"
                                 className="flex items-center gap-2 text-sm text-gray-500 hover:text-[var(--color-primary-dark)]"
@@ -54,8 +54,7 @@ export function SiteFooter() {
                         </div>
                     </div>
                 </div>
-
-                <div className="mt-12 pt-8 border-t border-white/10 py-10">
+                <div className="mt-8 pt-4 border-t border-white/10 py-6">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                         <p className="text-sm text-gray-500">
                             {"© 2026 Spencer Buys Houses"}

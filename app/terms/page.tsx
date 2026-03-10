@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import { Scale, ShieldCheck, FileText, AlertTriangle } from "lucide-react"
 import { JsonLd } from "@/components/seo/json-ld"
+import { CallButton } from "@/components/ui/call-button"
+import { CTAButton } from "@/components/ui/cta-button"
 
 const SITE_URL = "https://www.spencerbuyshouses.com"
 const OG_IMAGE =
@@ -116,9 +118,9 @@ function SectionHeading({
     return (
         <h2
             id={id}
-            className="text-xl md:text-2xl font-bold text-white mb-4 flex items-center gap-3 scroll-mt-28"
+            className="text-xl md:text-2xl font-bold text-[var(--color-primary-dark)] mb-4 flex items-center gap-3 scroll-mt-28"
         >
-            <span className="flex-shrink-0 w-1 h-6 rounded-full bg-[#f59e0b]" aria-hidden="true" />
+            <span className="flex-shrink-0 w-1 h-6 rounded-full bg-[var(--color-primary-dark)]" aria-hidden="true" />
             {children}
         </h2>
     )
@@ -126,7 +128,7 @@ function SectionHeading({
 
 function SubHeading({ children }: { children: React.ReactNode }) {
     return (
-        <h3 className="text-base font-semibold text-[#f59e0b] mt-6 mb-2">
+        <h3 className="text-base font-semibold text-[var(--color-primary-dark)] mt-6 mb-2">
             {children}
         </h3>
     )
@@ -164,41 +166,19 @@ function NumberedList({ items }: { items: string[] }) {
 
 export default function TermsOfUsePage() {
     return (
-        <main className="bg-[#0f0f23] min-h-screen">
+        <main className="bg-[var(--color-background)] min-h-screen">
             <JsonLd data={jsonLd} />
 
             {/* ── Hero Banner ────────────────────────────────────────────── */}
             <section
-                className="relative bg-[#0a0a1a] border-b border-white/10 pt-32 pb-16 overflow-hidden"
+                className="relative bg-[var(--color-background)] border-b border-white/10 pt-32 pb-16 overflow-hidden"
                 aria-labelledby="terms-heading"
             >
-                {/* Ambient glow */}
-                <div
-                    aria-hidden="true"
-                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#f59e0b]/5 rounded-full blur-3xl pointer-events-none"
-                />
 
                 <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
-                    {/* Breadcrumb */}
-                    <nav aria-label="Breadcrumb" className="flex justify-center mb-6">
-                        <ol className="flex items-center gap-2 text-sm text-gray-500">
-                            <li>
-                                <a
-                                    href="/"
-                                    className="hover:text-[#f59e0b] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
-                                >
-                                    Home
-                                </a>
-                            </li>
-                            <li aria-hidden="true" className="text-gray-600">/</li>
-                            <li>
-                                <span className="text-gray-400" aria-current="page">Terms of Use</span>
-                            </li>
-                        </ol>
-                    </nav>
 
                     <div className="flex flex-col items-center text-center gap-4">
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold uppercase tracking-wide">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold uppercase tracking-wide">
                             <Scale className="h-4 w-4" aria-hidden="true" />
                             Legal
                         </span>
@@ -212,11 +192,11 @@ export default function TermsOfUsePage() {
                         </p>
                         <div className="flex flex-wrap justify-center gap-6 mt-2">
                             <div className="flex items-center gap-2 text-sm text-gray-500">
-                                <FileText className="h-4 w-4 text-[#f59e0b]" aria-hidden="true" />
+                                <FileText className="h-4 w-4 text-[var(--color-primary)]" aria-hidden="true" />
                                 <time dateTime="2026">Last updated: 2026</time>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-gray-500">
-                                <ShieldCheck className="h-4 w-4 text-[#f59e0b]" aria-hidden="true" />
+                                <ShieldCheck className="h-4 w-4 text-[var(--color-primary)]" aria-hidden="true" />
                                 Volunteer Buyers GP DBA Spencer Buys Houses
                             </div>
                         </div>
@@ -225,13 +205,13 @@ export default function TermsOfUsePage() {
             </section>
 
             {/* ── Main Content ────────────────────────────────────────────── */}
-            <div className="mx-auto max-w-7xl px-4 lg:px-8 py-16">
-                <div className="flex flex-col lg:flex-row gap-12">
+            <div className="mx-auto max-w-7xl px-4 lg:px-8 py-12">
+                <div className="flex flex-col lg:flex-row gap-8">
 
                     {/* ── Table of Contents (sticky on desktop) ──────────── */}
                     <aside className="hidden lg:block lg:w-64 xl:w-72 flex-shrink-0">
-                        <div className="sticky top-28 rounded-2xl bg-white/[0.03] border border-white/10 p-6">
-                            <p className="text-xs font-semibold text-[#f59e0b] uppercase tracking-widest mb-4">
+                        <div className="sticky top-28 rounded-2xl bg-[var(--color-primary)]/[0.03] border border-[var(--color-primary)]/60 p-6">
+                            <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-widest mb-4">
                                 Contents
                             </p>
                             <nav aria-label="Page table of contents" className="flex flex-col gap-1">
@@ -239,20 +219,14 @@ export default function TermsOfUsePage() {
                                     <a
                                         key={s.id}
                                         href={`#${s.id}`}
-                                        className="text-sm text-gray-400 hover:text-[#f59e0b] transition-colors py-1 leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                        className="text-sm text-gray-400 hover:text-[var(--color-primary-dark)] transition-colors py-1 leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
                                     >
                                         {s.label}
                                     </a>
                                 ))}
                             </nav>
-                            <div className="mt-6 pt-6 border-t border-white/10">
-                                <a
-                                    href="tel:+19016218799"
-                                    aria-label="Call Spencer Buys Houses at (901) 621-8799"
-                                    className="block text-center py-2.5 rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b]"
-                                >
-                                    (901) 621-8799
-                                </a>
+                            <div className="mt-4 border-t border-[var(--color-primary)]/60">
+                                <CallButton />
                             </div>
                         </div>
                     </aside>
@@ -261,8 +235,8 @@ export default function TermsOfUsePage() {
                     <article className="flex-1 min-w-0">
 
                         {/* Intro notice */}
-                        <div className="rounded-2xl bg-[#f59e0b]/5 border border-[#f59e0b]/20 p-6 mb-10 flex gap-4">
-                            <AlertTriangle className="h-5 w-5 text-[#f59e0b] flex-shrink-0 mt-0.5" aria-hidden="true" />
+                        <div className="rounded-2xl bg-[var(--color-secondary)]/5 border border-[var(--color-secondary)]/60 p-6 mb-10 flex gap-4">
+                            <AlertTriangle className="h-5 w-5 text-[var(--color-primary-dark)] flex-shrink-0 mt-0.5" aria-hidden="true" />
                             <div className="text-sm text-gray-300 leading-relaxed">
                                 <strong className="text-white">Important:</strong> BY USING ANY WEBSITE, MOBILE APP
                                 OR SERVICE OF Volunteer Buyers GP otherwise known as
@@ -293,7 +267,7 @@ export default function TermsOfUsePage() {
                         <div className="space-y-10 mt-10">
 
                             {/* 1 */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="certification">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="certification">
                                 <SectionHeading id="certification">
                                     1. Certification of User
                                 </SectionHeading>
@@ -306,7 +280,7 @@ export default function TermsOfUsePage() {
                             </section>
 
                             {/* 2 */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="content-registration">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="content-registration">
                                 <SectionHeading id="content-registration">
                                     2. Content and Registration
                                 </SectionHeading>
@@ -354,7 +328,7 @@ export default function TermsOfUsePage() {
                             </section>
 
                             {/* 3 */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="limitations">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="limitations">
                                 <SectionHeading id="limitations">
                                     3. Limitations on Use and User Submissions
                                 </SectionHeading>
@@ -401,7 +375,7 @@ export default function TermsOfUsePage() {
                                     way that constitutes copyright infringement you may notify us by e-mail at {" "}
                                     <a
                                         href="mailto:marketing@volunteerbuyers.com"
-                                        className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                        className="text-[var(--color-primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
                                     >
                                         marketing@volunteerbuyers.com
                                     </a>
@@ -497,7 +471,7 @@ export default function TermsOfUsePage() {
                             </section>
 
                             {/* 4 */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="access-delays">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="access-delays">
                                 <SectionHeading id="access-delays">
                                     4. Access and Delays in Services
                                 </SectionHeading>
@@ -514,7 +488,7 @@ export default function TermsOfUsePage() {
                             </section>
 
                             {/* 5 */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="monitoring">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="monitoring">
                                 <SectionHeading id="monitoring">
                                     5. Monitoring by Volunteer Buyers GP
                                 </SectionHeading>
@@ -530,7 +504,7 @@ export default function TermsOfUsePage() {
                             </section>
 
                             {/* 6 */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="warranties">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="warranties">
                                 <SectionHeading id="warranties">
                                     6. Representations, Warranties and Limitation of Liability
                                 </SectionHeading>
@@ -602,7 +576,7 @@ export default function TermsOfUsePage() {
                             </section>
 
                             {/* 7 */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="indemnification">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="indemnification">
                                 <SectionHeading id="indemnification">
                                     7. Indemnification
                                 </SectionHeading>
@@ -625,13 +599,13 @@ export default function TermsOfUsePage() {
                             </section>
 
                             {/* 8 */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="privacy">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="privacy">
                                 <SectionHeading id="privacy">
                                     8. Privacy Policy
                                 </SectionHeading>
                                 <Prose>
                                     These Terms of Use include our{" "}
-                                    <a href="/privacy/" className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded">
+                                    <a href="/privacy/" className="text-[var(--color-primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded">
                                         Privacy Policy
                                     </a>{" "}
                                     as contained on our website, which is incorporated fully herein.
@@ -639,7 +613,7 @@ export default function TermsOfUsePage() {
                             </section>
 
                             {/* 9 */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="marketing">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="marketing">
                                 <SectionHeading id="marketing">
                                     9. Unsolicited Marketing
                                 </SectionHeading>
@@ -666,7 +640,7 @@ export default function TermsOfUsePage() {
                                     lists at any time by sending a message to the System administrator at{" "}
                                     <a
                                         href="mailto:admin@VolunteerBuyers.com"
-                                        className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                        className="text-[var(--color-primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
                                     >
                                         admin@VolunteerBuyers.com
                                     </a>
@@ -680,7 +654,7 @@ export default function TermsOfUsePage() {
                                     to{" "}
                                     <a
                                         href="mailto:admin@VolunteerBuyers.com"
-                                        className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                        className="text-[var(--color-primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
                                     >
                                         admin@VolunteerBuyers.com
                                     </a>
@@ -701,7 +675,7 @@ export default function TermsOfUsePage() {
                             </section>
 
                             {/* 10 */}
-                            <section className="rounded-2xl bg-white/[0.02] border border-white/10 p-6 md:p-8" aria-labelledby="miscellaneous">
+                            <section className="rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 md:p-8" aria-labelledby="miscellaneous">
                                 <SectionHeading id="miscellaneous">
                                     10. Miscellaneous
                                 </SectionHeading>
@@ -782,7 +756,7 @@ export default function TermsOfUsePage() {
                         </div>
 
                         {/* ── Footer notice ─────────────────────────────── */}
-                        <div className="mt-12 rounded-2xl bg-white/[0.02] border border-white/10 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div className="mt-12 rounded-2xl bg-white/[0.02] border border-[var(--color-primary)]/60 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                             <p className="text-sm text-gray-500">
                                 ANY RIGHTS NOT EXPRESSLY GRANTED HEREIN ARE RESERVED BY Volunteer Buyers GP.
                                 <br />
@@ -790,12 +764,7 @@ export default function TermsOfUsePage() {
                                     © 2023 Volunteer Buyers GP. All rights reserved.
                                 </span>
                             </p>
-                            <a
-                                href="/get-a-cash-offer-today/"
-                                className="flex-shrink-0 inline-block px-6 py-2.5 rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] text-sm font-bold transition-colors"
-                            >
-                                Get Your Cash Offer
-                            </a>
+                            <CTAButton href="/get-a-cash-offer-today/">Get Your Cash Offer</CTAButton>
                         </div>
 
                     </article>

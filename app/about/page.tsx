@@ -19,6 +19,8 @@ import {
 import Image from "next/image"
 import { JsonLd } from "@/components/seo/json-ld"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
+import { CallButton } from "@/components/ui/call-button"
+import { CTAButton } from "@/components/ui/cta-button"
 
 /* ─── Metadata ───────────────────────────────────────────────────────────── */
 
@@ -195,12 +197,12 @@ function CompareCell({ value }: { value: CompareValue }) {
 
 export default function AboutPage() {
     return (
-        <main className="bg-[#0f0f23] min-h-screen pt-10 md:pt-12">
+        <main className="bg-[var(--color-background)] min-h-screen pt-10 md:pt-12">
             <JsonLd data={jsonLd} />
 
             {/* ── Hero Banner ──────────────────────────────────────────────── */}
             <section
-                className="relative bg-[#0a0a1a] border-b border-white/10 pt-32 pb-20 overflow-hidden"
+                className="relative bg-[var(--color-background)] border-b border-white/10 pt-32 pb-20 overflow-hidden"
                 aria-labelledby="about-heading"
             >
                 {/* Ambient glow */}
@@ -211,7 +213,7 @@ export default function AboutPage() {
 
                 <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
                     <div className="text-center max-w-4xl mx-auto">
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-6 uppercase tracking-wide">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-6 uppercase tracking-wide">
                             <Users className="h-4 w-4" aria-hidden="true" />
                             Family-Owned Memphis Home Buyers
                         </span>
@@ -220,8 +222,8 @@ export default function AboutPage() {
                             id="about-heading"
                             className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6"
                         >
-                            We Are{" "}
-                            <span className="text-[#f59e0b]">Spencer Buys Houses</span>
+                            We Are {" "}
+                            <span className="text-[var(--color-text-yellow)]">Spencer Buys Houses</span>
                         </h1>
 
                         <p className="text-xl text-gray-400 leading-relaxed max-w-3xl mx-auto mb-10">
@@ -230,34 +232,21 @@ export default function AboutPage() {
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <a
-                                href="/get-a-cash-offer-today/"
-                                className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] font-bold text-base transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b]"
-                            >
-                                Get Your Free Cash Offer
-                                <ArrowRight className="h-5 w-5" aria-hidden="true" />
-                            </a>
-                            <a
-                                href="tel:+19016218799"
-                                className="inline-flex items-center gap-2 px-8 py-4 rounded-lg border border-white/20 text-white hover:bg-white/5 font-semibold text-base transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
-                                aria-label="Call Spencer Buys Houses at 901-621-8799"
-                            >
-                                <Phone className="h-5 w-5" aria-hidden="true" />
-                                (901) 621-8799
-                            </a>
+                            <CTAButton href="/get-a-cash-offer-today/">Get Your Free Cash Offer</CTAButton>
+                            <CallButton inline />
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* ── Stats Bar ────────────────────────────────────────────────── */}
-            <section className="bg-[#13132b] border-b border-white/10 py-12" aria-label="Company statistics">
+            <section className="bg-[var(--color-background)] border-t border-b border-[var(--color-secondary)] border-opacity-20 py-12" aria-label="Company statistics">
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                         {stats.map(({ value, label, icon: Icon }) => (
                             <div key={label} className="flex flex-col items-center text-center gap-3">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#f59e0b]/10">
-                                    <Icon className="h-6 w-6 text-[#f59e0b]" aria-hidden="true" />
+                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary-dark)]/10">
+                                    <Icon className="h-6 w-6 text-[var(--color-primary)]" aria-hidden="true" />
                                 </div>
                                 <span className="text-3xl md:text-4xl font-black text-white">{value}</span>
                                 <span className="text-sm text-gray-400 font-medium leading-tight">{label}</span>
@@ -288,14 +277,15 @@ export default function AboutPage() {
 
                         {/* Text */}
                         <div className="flex-1">
-                            <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                                 Our Story
                             </span>
                             <h2
                                 id="story-heading"
                                 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight"
                             >
-                                About Spencer Buys Houses
+                                About {" "}
+                                <span className="text-[var(--color-text-yellow)]">Spencer Buys Houses</span>
                             </h2>
                             <div className="space-y-4 text-gray-400 leading-relaxed text-sm md:text-base">
                                 <p>
@@ -317,11 +307,12 @@ export default function AboutPage() {
 
                     {/* How We Work: single column centered */}
                     <div className="text-center mb-6">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                             How We Work
                         </span>
                         <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
-                            How We Work With Homeowners
+                            How We {" "}
+                            <span className="text-[var(--color-text-yellow)]">Work With Homeowners</span>
                         </h2>
                     </div>
 
@@ -366,7 +357,7 @@ export default function AboutPage() {
                                 key={item}
                                 className="flex items-center gap-2 text-sm text-gray-300 justify-center"
                             >
-                                <Check className="h-4 w-4 text-[#f59e0b] flex-shrink-0" aria-hidden="true" />
+                                <Check className="h-4 w-4 text-[var(--color-text-yellow)] flex-shrink-0" aria-hidden="true" />
                                 {item}
                             </div>
                         ))}
@@ -375,13 +366,13 @@ export default function AboutPage() {
             </section>
 
             {/* ── Testimonial Quote ─────────────────────────────────────────── */}
-            <section className="bg-[#13132b] border-y border-white/10 py-16" aria-label="Our mission">
+            <section className="bg-[var(--color-background)] border-y border-white/10 py-16" aria-label="Our mission">
                 <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
                     <div className="flex justify-center mb-6">
                         {[...Array(5)].map((_, i) => (
                             <Star
                                 key={i}
-                                className="h-6 w-6 text-[#f59e0b] fill-[#f59e0b]"
+                                className="h-6 w-6 text-[var(--color-text-yellow)] fill-[var(--color-text-yellow)]"
                                 aria-hidden="true"
                             />
                         ))}
@@ -391,9 +382,9 @@ export default function AboutPage() {
                         quickly and for a fair cash amount or if you want to learn more about us, don&apos;t
                         hesitate to contact us anytime!
                     </blockquote>
-                    <p className="text-[#f59e0b] font-semibold">Call Spencer Buys Houses Today At 901-621-8799</p>
+                    <p className="text-[var(--color-text-yellow)] font-semibold">Call Spencer Buys Houses Today At 901-621-8799</p>
                     <div className="mt-8 flex items-center justify-center gap-2 text-gray-400 text-sm">
-                        <TrendingUp className="h-4 w-4 text-[#f59e0b]" aria-hidden="true" />
+                        <TrendingUp className="h-4 w-4 text-[var(--color-text-yellow)]" aria-hidden="true" />
                         Trusted by hundreds of Memphis homeowners
                     </div>
                 </div>
@@ -402,7 +393,7 @@ export default function AboutPage() {
             {/* ── Free Guide CTA ────────────────────────────────────────────── */}
             <section className="py-16 lg:py-20">
                 <div className="mx-auto max-w-3xl px-4 lg:px-8 text-center">
-                    <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                         Free Guide
                     </span>
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
@@ -418,7 +409,7 @@ export default function AboutPage() {
                             Get your FREE Guide and then give us a call at{" "}
                             <a
                                 href="tel:+19016218799"
-                                className="text-[#f59e0b] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b] rounded"
+                                className="text-[var(--color-text-yellow)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-text-yellow)] rounded"
                                 aria-label="Call Spencer Buys Houses at 901-621-8799"
                             >
                                 901-621-8799
@@ -427,13 +418,9 @@ export default function AboutPage() {
                             with our Cash Offer Program.
                         </p>
                     </div>
-                    <a
-                        href="/get-a-cash-offer-today/"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] font-bold text-base transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b]"
-                    >
-                        Get My Free Cash Offer
-                        <ArrowRight className="h-5 w-5" aria-hidden="true" />
-                    </a>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <CTAButton href="/get-a-cash-offer-today/">Get Your Free Cash Offer</CTAButton>
+                    </div>
                 </div>
             </section>
 

@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
+import { CallButton } from "@/components/ui/call-button"
+import { CTAButton } from "@/components/ui/cta-button"
 import {
     Clock, Ban, Wrench, DollarSign, ShieldCheck, Handshake,
     Home, Users, AlertTriangle, FileText,
@@ -59,7 +61,7 @@ export default async function CityPage({ params }: Props) {
     const found = findCity(stateSlug, citySlug)
     if (!found) {
         return (
-            <main className="min-h-screen bg-[#0f0f23] flex items-center justify-center">
+            <main className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
                 <div className="text-center text-white">
                     <h1 className="text-4xl font-bold mb-4">City not found</h1>
                     <Link href="/" className="text-[#f59e0b] underline">Go home</Link>
@@ -87,7 +89,7 @@ export default async function CityPage({ params }: Props) {
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
             <main id="top">
-                <section className="relative bg-[#0f0f23] pt-28 md:pt-44 pb-12 lg:pb-20 overflow-hidden">
+                <section className="relative bg-[var(--color-background)] pt-28 md:pt-44 pb-12 lg:pb-20 overflow-hidden">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[520px] bg-[#f59e0b]/5 rounded-full blur-3xl" />
                     <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -104,9 +106,8 @@ export default async function CityPage({ params }: Props) {
                                     <p className="mt-6 text-gray-300 max-w-3xl">{city.intro}</p>
                                 )}
 
-                                <div className="mt-6 flex flex-wrap gap-3">
-                                    <a href="tel:+19016218799" className="inline-block rounded-md bg-[#f59e0b] px-5 py-3 font-bold text-black">Call Now (901) 621-8799</a>
-                                    <Link href="/get-a-cash-offer-today/" className="inline-block rounded-md border border-white/10 px-5 py-3 text-white">Get a Cash Offer</Link>
+                                <div className="flex flex-row items-center gap-4 mb-8">
+                                    <CallButton />
                                 </div>
                             </div>
 
@@ -116,12 +117,14 @@ export default async function CityPage({ params }: Props) {
                         </div>
                     </div>
                 </section>
-                <section className="bg-[#13132b] py-20 lg:py-28" aria-labelledby="benefits-heading">
+                <section className="bg-[var(--color-background)] py-10 lg:py-14" aria-labelledby="benefits-heading">
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                             {/* Left column — benefits & FAQs */}
                             <div>
-                                <h2 id="benefits-heading" className="text-2xl font-bold mb-4">Why work with Spencer Buys Houses in {city.name}?</h2>
+                                <h2 id="benefits-heading" className="text-white text-2xl font-bold mb-4">Why work with Spencer Buys Houses in {" "}
+                                    <span className="text-[var(--color-text-yellow)]">{city.name}?</span>
+                                </h2>
                                 <ul className="list-disc list-inside text-gray-300 space-y-2">
                                     {benefits.map((b: string) => (
                                         <li key={b}>{b}</li>
@@ -129,10 +132,12 @@ export default async function CityPage({ params }: Props) {
                                 </ul>
 
                                 <div className="mt-8">
-                                    <h3 className="text-xl font-semibold mb-3">Frequently Asked Questions</h3>
+                                    <h3 className="text-white text-xl font-semibold mb-3">Frequently {" "}
+                                        <span className="text-[var(--color-text-yellow)]"> Asked Questions</span>
+                                    </h3>
                                     <div className="space-y-4">
                                         {faqs.map((f) => (
-                                            <details key={f.q} className="bg-white/5 p-4 rounded-md">
+                                            <details key={f.q} className="bg-white/5 p-4 border border-[var(--color-primary)]/60 rounded-md">
                                                 <summary className="font-medium text-white cursor-pointer">{f.q}</summary>
                                                 <div className="mt-2 text-gray-300">{f.a}</div>
                                             </details>

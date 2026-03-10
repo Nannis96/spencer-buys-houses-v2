@@ -11,10 +11,13 @@ export default function PropertyProgress({ activeStep = 3 }: PropertyProgressPro
     const searchParams = useSearchParams()
     // `submitted` is only relevant on step 3 (success state after final form submit)
     const submitted = activeStep === 3 && searchParams.get("submitted") === "true"
+    // allow in-page reporting of step completion (forms update these params)
+    const step2Complete = searchParams.get("step2Complete") === "true"
+    const step3Complete = searchParams.get("step3Complete") === "true"
 
     /* ── Derived state ─────────────────────────────────────────────────── */
-    const step2Done = activeStep > 2 // true when on step 3
-    const connector2Color = activeStep === 2 ? "bg-white/20" : submitted ? "bg-[#22c55e]" : "bg-[#f59e0b]"
+    const step2Done = activeStep > 2 || (activeStep === 2 && step2Complete)
+    const connector2Color = activeStep === 2 ? (step2Complete ? "bg-[#22c55e]" : "bg-white/20") : submitted || step3Complete ? "bg-[#22c55e]" : "bg-[#f59e0b]"
 
     return (
         <div className="w-full max-w-2xl mb-8">
@@ -24,11 +27,11 @@ export default function PropertyProgress({ activeStep = 3 }: PropertyProgressPro
                     <div className="h-7 w-7 rounded-full bg-[#22c55e] flex items-center justify-center text-xs font-bold text-white">
                         ✓
                     </div>
-                    <span className="hidden sm:inline text-sm text-[#22c55e] font-medium">Your Info</span>
+                    <span className="hidden sm:inline text-sm text-[#22c55e] font-medium">Location</span>
                 </div>
 
                 {/* Connector 1 → 2 */}
-                <div className={`flex-1 h-0.5 ${activeStep === 2 ? "bg-[#f59e0b]" : "bg-[#22c55e]"}`} />
+                <div className={`flex-1 h-0.5 ${activeStep === 2 ? "bg-[var(--color-primary)]" : "bg-[#22c55e]"}`} />
 
                 {/* Step 2 – active on step 2, done on step 3 */}
                 <div className="flex items-center gap-1.5 shrink-0">
@@ -37,14 +40,14 @@ export default function PropertyProgress({ activeStep = 3 }: PropertyProgressPro
                             <div className="h-7 w-7 rounded-full bg-[#22c55e] flex items-center justify-center text-xs font-bold text-white">
                                 ✓
                             </div>
-                            <span className="hidden sm:inline text-sm text-[#22c55e] font-medium">Location</span>
+                            <span className="hidden sm:inline text-sm text-[#22c55e] font-medium">Property Info</span>
                         </>
                     ) : (
                         <>
                             <div className="h-7 w-7 rounded-full bg-[#f59e0b] flex items-center justify-center text-xs font-bold text-[#0f0f23]">
                                 2
                             </div>
-                            <span className="hidden sm:inline text-sm text-[#f59e0b] font-medium">Location</span>
+                            <span className="hidden sm:inline text-sm text-[var(--color-primary)] font-medium">Property Info</span>
                         </>
                     )}
                 </div>
@@ -59,7 +62,7 @@ export default function PropertyProgress({ activeStep = 3 }: PropertyProgressPro
                             <div className="h-7 w-7 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-gray-400">
                                 3
                             </div>
-                            <span className="hidden sm:inline text-sm text-gray-400 font-medium">Property Info</span>
+                            <span className="hidden sm:inline text-sm text-gray-400 font-medium">Your Info</span>
                         </>
                     ) : (
                         <>

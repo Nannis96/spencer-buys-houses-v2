@@ -90,13 +90,13 @@ export function AnimatedBenefitCards() {
                     whileInView="visible"
                     viewport={{ once: true, margin: "-50px" }}
                     variants={fadeUp}
-                    className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#f59e0b]/30 transition-colors group"
+                    className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary)]/30 transition-colors group"
                 >
                     <div
                         aria-hidden="true"
-                        className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#f59e0b]/10 group-hover:bg-[#f59e0b]/20 transition-colors"
+                        className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary)]/10 group-hover:bg-[var(--color-primary)]/20 transition-colors"
                     >
-                        <Icon className="h-6 w-6 text-[#f59e0b]" />
+                        <Icon className="h-6 w-6 text-[var(--color-primary)]" />
                     </div>
                     <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
                     <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
@@ -124,7 +124,7 @@ export function AnimatedTestimonialCards() {
                     itemType="https://schema.org/Review"
                 >
                     <StarRating rating={t.rating} />
-                    <Quote className="h-6 w-6 text-[#f59e0b]/30 mt-4 mb-3" aria-hidden="true" />
+                    <Quote className="h-6 w-6 text-[var(--color-primary)]/30 mt-4 mb-3" aria-hidden="true" />
 
                     <blockquote
                         itemProp="reviewBody"
