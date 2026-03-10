@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// prisma/schema.prisma
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+// --- ENUMS & STUBS FALTANTES ---
+enum Role {
+    USER
+    ADMIN
+}
+
+model SellerProfile {
+    id     String @id @default(cuid())
+    userId String @unique
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    // Agrega aquí los demás campos de tu perfil
+}
+
+model AgentProfile {
+    id     String @id @default(cuid())
+    userId String @unique
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    // Agrega aquí los demás campos de tu perfil
+}
+
+// --- TUS MODELOS ---
+model User {
+    id        String   @id @default(cuid())
+    name      String?
+    email     String   @unique
+    password  String // Hash del password
+    role      Role     @default(ADMIN)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Seguridad y Onboarding
+    twoFactorSecret     String?
+    isTwoFactorEnabled  Boolean @default(false)
+    forcePasswordChange Boolean @default(true) // <-- NUEVO: Para el flujo de onboarding
+
+    // Relaciones de Perfiles
+    sellerProfile SellerProfile?
+    agentProfile  AgentProfile? // <-- NUEVO: Relación con el Agente
+}
+
+model Post {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    slug        String  @unique
+    isPublished Boolean @default(false)
+
+    // Contenido Bilingüe
+    titleEn   String
+    titleEs   String
+    contentEn String @db.Text // Puede ser Markdown o HTML
+    contentEs String @db.Text
+
+    // Multimedia Principal
+    mainImage String?
+
+    // --- Imágenes Inline del Post [NUEVO] ---
+    postImages PostImage[]
+
+    // --- Sección de Autor / Bio por Post [NUEVO] ---
+    authorName  String?
+    authorImage String?
+    authorBioEn String? @db.Text
+    authorBioEs String? @db.Text
+
+    // --- SEO Avanzado [ACTUALIZADO] ---
+    seoTitleEn     String?
+    seoDescEn      String?
+    focusKeywordEn String? // Keyword principal EN
+
+    seoTitleEs     String?
+    seoDescEs      String?
+    focusKeywordEs String? // Keyword principal ES
+    isCaseStudy    Boolean @default(false) // <-- NUEVO: Para el blog de casos de estudio
+}
+
+model PostImage {
+    id      String  @id @default(cuid())
+    url     String
+    altText String?
+
+    postId String
+    post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
