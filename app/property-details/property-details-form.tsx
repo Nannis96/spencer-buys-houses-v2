@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { MapPin, User, Phone, Mail, ArrowRight, Loader2, ShieldCheck, Building2, Hash, CheckCircle2, DollarSign, Clock, Wrench, Home, BadgeCheck, HeartHandshake } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import { CallButton } from "@/components/ui/call-button"
 
 /* ─── Schema ──────────────────────────────────────────────────────────────── */
 
@@ -84,6 +85,9 @@ export function PropertyDetailsForm() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitted, setSubmitted] = useState(false)
     const [editMode, setEditMode] = useState(false)
+    const [offerLoading, setOfferLoading] = useState(false)
+    const [repairCost, setRepairCost] = useState<number | null>(null)
+    const [finalOffer, setFinalOffer] = useState<number | null>(null)
 
     // Local editable copies of prior-step values (inline edit)
     const [localAddress, setLocalAddress] = useState(address)
@@ -104,20 +108,100 @@ export function PropertyDetailsForm() {
         mode: "onChange",
     })
 
-    const onSubmit = (data: PropertyDetailsFormData) => {
+    const onSubmit = async (data: PropertyDetailsFormData) => {
         setIsSubmitting(true)
-        // TODO: send data to CRM/API here
         console.log("Form completed:", { address: localAddress, city: localCity, state: localState, zipCode: localZipCode, ...data })
-        setTimeout(() => {
-            setIsSubmitting(false)
-            setSubmitted(true)
-            // reflect success in URL so progress indicator can show final state
+
+        // Begin offer calculation: fetch AVM (priceRangeLow) and compute repairs
+        try {
+            setOfferLoading(true)
             const params = new URLSearchParams(Array.from(searchParams.entries()))
-            params.set("submitted", "true")
-            params.set("step3Complete", "true")
-            const qs = params.toString()
-            router.replace(`${pathname}${qs ? `?${qs}` : ""}`)
-        }, 1500)
+            params.set("avm", "1")
+            params.set("maxRadius", "1")
+
+            const res = await fetch(`/api/rentcast?${params.toString()}`)
+            let avmData: any = null
+            if (res.ok) {
+                avmData = await res.json()
+            } else {
+                console.error("AVM fetch failed:", res.status)
+            }
+
+            // Extract priceRangeLow (fallback to price if missing)
+            const priceLow = (avmData && (avmData.priceRangeLow ?? avmData.price ?? null)) || null
+
+            // Determine inputs for repair calc
+            const sqft = Number(searchParams.get("squareFootage") ?? 0) || 0
+            const propertyType = (searchParams.get("propertyType") || "Single Family")
+            const cond = Number(searchParams.get("condition") || "3") || 3
+
+            // Try to get yearBuilt from AVM subjectProperty or search params
+            const yearBuiltRaw = avmData?.subjectProperty?.yearBuilt ?? searchParams.get("yearBuilt")
+            const yearBuilt = yearBuiltRaw ? Number(yearBuiltRaw) : undefined
+
+            // Calculate base cost per sqft following app.py logic
+            let baseCost = 15
+            if (yearBuilt !== undefined && !Number.isNaN(yearBuilt)) {
+                if (yearBuilt < 1950) baseCost = 75
+                else if (yearBuilt < 1978) baseCost = 60
+                else if (yearBuilt < 1990) baseCost = 40
+                else if (yearBuilt < 2000) baseCost = 25
+                else baseCost = 15
+            } else {
+                // conservative default when year built unknown
+                baseCost = 40
+            }
+
+            const typeMultipliers: Record<string, number> = {
+                "Single Family": 1.0,
+                "Multi-Family": 1.3,
+                Apartment: 1.3,
+                Condo: 0.6,
+                Townhouse: 0.8,
+                "Mobile Home": 1.5,
+                Land: 0.0,
+            }
+            const typeMult = typeMultipliers[propertyType] ?? 1.0
+
+            const conditionMultipliers: Record<number, number> = { 1: 0.4, 2: 0.7, 3: 1.0, 4: 1.35, 5: 1.75 }
+            const condMult = conditionMultipliers[cond] ?? 1.0
+
+            const repairPerSqft = baseCost * typeMult * condMult
+            const totalRepairs = Math.max(0, Math.round(sqft * repairPerSqft))
+
+            setRepairCost(totalRepairs)
+
+            // Compute final cash offer using priceRangeLow per instructions
+            let offer = null
+            if (priceLow !== null) {
+                offer = Math.max(0, Math.round((Number(priceLow) - totalRepairs) * 0.7))
+                setFinalOffer(offer)
+            }
+
+            // Log to console as requested
+            console.log("Calculated repair cost:", totalRepairs)
+            console.log("Final cash offer (70% of priceRangeLow - repairs):", offer)
+
+            // reflect success in URL so progress indicator can show final state
+            const outParams = new URLSearchParams(Array.from(searchParams.entries()))
+            outParams.set("submitted", "true")
+            outParams.set("step3Complete", "true")
+            const qs = outParams.toString()
+
+            // small delay to keep UX friendly, then show success screen
+            setTimeout(() => {
+                setIsSubmitting(false)
+                setOfferLoading(false)
+                setSubmitted(true)
+                router.replace(`${pathname}${qs ? `?${qs}` : ""}`)
+            }, 600)
+        } catch (err) {
+            console.error("Offer calculation failed:", err)
+            setIsSubmitting(false)
+            setOfferLoading(false)
+            // still mark submitted so the user sees confirmation even if calc failed
+            setSubmitted(true)
+        }
     }
 
     // Report step 3 partial-completion in URL so progress indicator updates in real time
@@ -156,14 +240,37 @@ export function PropertyDetailsForm() {
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                         className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#22c55e]/10"
+                        aria-hidden
                     >
-                        <CheckCircle2 className="h-10 w-10 text-[#22c55e]" aria-hidden="true" />
+                        <CheckCircle2 className="h-10 w-10 text-[#22c55e]" />
                     </motion.div>
-                    <h3 className="text-2xl font-bold text-white mb-2">{"You're All Set!"}</h3>
-                    <p className="text-gray-300 mb-4 leading-relaxed max-w-md mx-auto">
-                        {"We've received your information and one of our home buying specialists will reach out very soon with your personalized cash offer."}
+
+                    {/* Primary: Offer first (large, prominent) */}
+                    <div className="mt-2 text-center">
+                        {offerLoading ? (
+                            <div className="inline-flex items-center gap-3 text-sm text-gray-300">
+                                <Loader2 className="h-5 w-5 animate-spin" />
+                                Calculating your cash offer…
+                            </div>
+                        ) : finalOffer !== null ? (
+
+                            <div className="mt-1">
+                                <p className="text-3xl md:text-4xl font-extrabold text-white leading-tight">YOUR CAS OFFER ${finalOffer?.toLocaleString?.()}</p>
+                            </div>
+                        ) : (
+                            <div className="mt-1 text-sm text-gray-400">No offer available at this time.</div>
+                        )}
+                    </div>
+
+                    {/* Secondary: confirmation copy and security badge */}
+                    <h3 className="text-xl md:text-2xl font-semibold text-white my-4">You're All Set!</h3>
+                    <p className="text-gray-300 mb-4 leading-relaxed max-w-md mx-auto text-sm">
+                        We've received your information — one of our home buying specialists will reach out soon with details and next steps.
                     </p>
-                    <div className="inline-flex items-center gap-2 rounded-full bg-[#f59e0b]/10 px-4 py-2 text-sm font-medium text-[#f59e0b]">
+                    <p className="text-gray-300 mb-4 leading-relaxed max-w-md mx-auto text-sm">
+                        Estimated cash offer — approximate and subject to verification
+                    </p>
+                    <div className="inline-flex items-center gap-2 rounded-full bg-[var(--color-primary)]/10 px-4 py-2 text-sm font-medium text-[var(--color-primary)]">
                         <ShieldCheck className="h-4 w-4" aria-hidden="true" />
                         Your information is 100% secure &amp; never shared
                     </div>
@@ -185,7 +292,7 @@ export function PropertyDetailsForm() {
                             transition={{ delay: 0.1 }}
                             className="rounded-xl bg-[var(--color-background)] border border-white/10 p-5 flex gap-4 items-start"
                         >
-                            <div className="shrink-0 h-11 w-11 rounded-lg bg-[#f59e0b]/10 flex items-center justify-center text-[#f59e0b]">
+                            <div className="shrink-0 h-11 w-11 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)]">
                                 {b.icon}
                             </div>
                             <div>
@@ -197,15 +304,7 @@ export function PropertyDetailsForm() {
                 </div>
 
                 <div className="mt-8 text-center">
-                    <a
-                        href="tel:+19016218799"
-                        className="inline-flex items-center gap-2 rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] font-bold px-8 py-4 text-lg transition-all hover:scale-[1.02]"
-                    >
-                        Call Us Now — (901) 621-8799
-                    </a>
-                    <p className="text-gray-500 text-xs mt-3">
-                        Questions? Call or text anytime — we answer 7 days a week.
-                    </p>
+                    <CallButton />
                 </div>
             </motion.div>
         )

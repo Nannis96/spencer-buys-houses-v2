@@ -2,20 +2,11 @@ import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { CallButton } from "@/components/ui/call-button"
-import { CTAButton } from "@/components/ui/cta-button"
-import {
-    Clock, Ban, Wrench, DollarSign, ShieldCheck, Handshake,
-    Home, Users, AlertTriangle, FileText,
-    Phone, Star, CheckCircle2, ArrowRight,
-} from "lucide-react"
+import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 import { findCity } from "@/lib/cities"
-
-import { ProcessSection } from "@/components/sections/process-section"
-import { TestimonialsSection } from "@/components/sections/testimonials-section"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { getAllCitySlugs, CityFaq, CitySituation } from "@/lib/cities"
-import { section } from "framer-motion/m"
+import { AnimatedBenefitCards } from "@/app/get-a-cash-offer-today/animated-cards"
 
 const DEFAULT_BENEFITS: string[] = [
     "Same-day cash offers — no waiting weeks for a response.",
@@ -117,6 +108,33 @@ export default async function CityPage({ params }: Props) {
                         </div>
                     </div>
                 </section>
+
+                {/* ───────── 2. BENEFITS ───────── */}
+                <section
+                    id="benefits"
+                    className="bg-[var(--color-background)] py-10 lg:py-14"
+                    aria-labelledby="benefits-heading"
+                >
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                        <div className="text-center mb-16">
+                            <p className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
+                                Why Choose Us
+                            </p>
+                            <h2 id="benefits-heading" className="text-3xl md:text-4xl font-bold text-white mb-4">
+                                {"Here's What "}
+                                <span className="text-[var(--color-text-yellow)]">Spencer Buys Houses</span>
+                                {" Can Do For You…"}
+                            </h2>
+                            <p className="text-gray-400 max-w-2xl mx-auto">
+                                Skip the traditional hassle of listing with an agent. Get a fair cash offer and sell your house fast.
+                            </p>
+                        </div>
+
+                        {/* Animated cards — client leaf (data lives inside the client boundary) */}
+                        <AnimatedBenefitCards />
+                    </div>
+                </section>
+
                 <section className="bg-[var(--color-background)] py-10 lg:py-14" aria-labelledby="benefits-heading">
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -159,6 +177,17 @@ export default async function CityPage({ params }: Props) {
                         </div>
                     </div>
                 </section>
+
+                {/* ── CTA Banner ───────────────────────────────────────────────── */}
+                <CallNowBanner
+                    badge="GET YOUR CASH OFFER TODAY"
+                    heading={`Ready to Sell Your ${city.name} House Fast?`}
+                    description={`No agents. No repairs. No commissions. Close in as little as 7–10 days. Call Spencer Buys Houses at (901) 621-8799 — we're here to help.`}
+                    primaryLabel="(901) 621-8799"
+                    secondaryLabel="Get My Free Cash Offer"
+                    secondaryHref="#top"
+                    headingId="about-cta-heading"
+                />
             </main>
         </>
     )

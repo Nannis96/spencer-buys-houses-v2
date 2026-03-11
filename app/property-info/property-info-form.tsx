@@ -27,6 +27,11 @@ const propertyInfoSchema = z.object({
     // Property Information
     garage: z.string().optional(),
     basement: z.string().optional(),
+    // Added property fields (kept as strings to match existing schema style)
+    propertyType: z.string().optional(),
+    bedrooms: z.string().optional(),
+    bathrooms: z.string().optional(),
+    squareFootage: z.string().optional(),
     yearsOwned: z.string().optional(),
     condition: z.string().min(1, "Please select the property condition"),
     repairs: z.string().optional(),
@@ -211,6 +216,7 @@ export function PropertyInfoForm() {
     const smsConsentPrev = searchParams.get("smsConsent") ?? "false"
 
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [avmResult, setAvmResult] = useState<any>(null)
 
     const {
         register,
@@ -222,7 +228,7 @@ export function PropertyInfoForm() {
         mode: "onChange",
     })
 
-    const onSubmit = (data: PropertyInfoFormData) => {
+    const onSubmit = async (data: PropertyInfoFormData) => {
         setIsSubmitting(true)
 
         // Build params to forward to step 3 (property-details)
@@ -232,9 +238,14 @@ export function PropertyInfoForm() {
         if (city) params.append("city", city)
         if (state) params.append("state", state)
         if (zipCode) params.append("zipCode", zipCode)
+        if (smsConsentPrev) params.append("smsConsent", smsConsentPrev)
         // Property info fields from this step
         if (data.garage) params.append("garage", data.garage)
         if (data.basement) params.append("basement", data.basement)
+        if (data.propertyType) params.append("propertyType", data.propertyType)
+        if (data.bedrooms) params.append("bedrooms", data.bedrooms)
+        if (data.bathrooms) params.append("bathrooms", data.bathrooms)
+        if (data.squareFootage) params.append("squareFootage", data.squareFootage)
         if (data.yearsOwned) params.append("yearsOwned", data.yearsOwned)
         params.append("condition", data.condition)
         if (data.repairs) params.append("repairs", data.repairs)
@@ -245,7 +256,34 @@ export function PropertyInfoForm() {
         if (data.askingPrice) params.append("askingPrice", data.askingPrice)
         if (data.fairPrice) params.append("fairPrice", data.fairPrice)
         if (data.bestTimeToCall) params.append("bestTimeToCall", data.bestTimeToCall)
-        if (smsConsentPrev) params.append("smsConsent", smsConsentPrev)
+
+        // --- Call AVM API before moving to next step ---
+        try {
+            const avmParams = new URLSearchParams()
+            if (address) avmParams.append("address", address)
+            if (city) avmParams.append("city", city)
+            if (state) avmParams.append("state", state)
+            if (data.propertyType) avmParams.append("propertyType", data.propertyType)
+            if (data.bedrooms) avmParams.append("bedrooms", data.bedrooms)
+            if (data.bathrooms) avmParams.append("bathrooms", data.bathrooms)
+            if (data.squareFootage) avmParams.append("squareFootage", data.squareFootage)
+            // Request AVM behavior from the backend
+            avmParams.append("avm", "1")
+            // maxRadius default is set server-side (DEFAULT_MAX_RADIUS=10), but also send it explicitly
+            avmParams.append("maxRadius", String(10))
+
+            const res = await fetch(`/api/rentcast?${avmParams.toString()}`)
+            if (!res.ok) {
+                const txt = await res.text()
+                console.error("AVM API error:", res.status, txt)
+            } else {
+                const avmData = await res.json()
+                setAvmResult(avmData)
+                console.log("AVM result:", avmData)
+            }
+        } catch (err) {
+            console.error("Failed to fetch AVM:", err)
+        }
 
         setTimeout(() => {
             router.push(`/property-details?${params.toString()}`)
@@ -348,6 +386,80 @@ export function PropertyInfoForm() {
                             {...register("yearsOwned")}
                             className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                         />
+                    </div>
+
+                    {/* Property type + Bedrooms row (strings to match schema) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label htmlFor={id("propertyType")} className="block text-xs text-gray-400 mb-1.5">
+                                Property Type
+                            </label>
+                            <div className="relative">
+                                <select
+                                    id={id("propertyType")}
+                                    {...register("propertyType")}
+                                    className={selectClass}
+                                >
+                                    <option value="">Select…</option>
+                                    <option>Single Family</option>
+                                    <option>Condo</option>
+                                    <option>Townhouse</option>
+                                    <option>Manufactured</option>
+                                    <option>Multi-Family</option>
+                                    <option>Apartment</option>
+                                    <option>Land</option>
+                                </select>
+                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor={id("bedrooms")} className="block text-xs text-gray-400 mb-1.5">
+                                Bedrooms (use 0 for studio)
+                            </label>
+                            <Input
+                                id={id("bedrooms")}
+                                type="number"
+                                step="0.5"
+                                min={0}
+                                placeholder="e.g. 3 or 0 for studio"
+                                {...register("bedrooms")}
+                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Bathrooms + Square footage row (strings to match schema) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label htmlFor={id("bathrooms")} className="block text-xs text-gray-400 mb-1.5">
+                                Bathrooms
+                            </label>
+                            <Input
+                                id={id("bathrooms")}
+                                type="number"
+                                step="0.25"
+                                min={0}
+                                placeholder="e.g. 2.5"
+                                {...register("bathrooms")}
+                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor={id("squareFootage")} className="block text-xs text-gray-400 mb-1.5">
+                                Square Footage
+                            </label>
+                            <Input
+                                id={id("squareFootage")}
+                                type="number"
+                                step="1"
+                                min={0}
+                                placeholder="e.g. 1450"
+                                {...register("squareFootage")}
+                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                            />
+                        </div>
                     </div>
 
                     {/* Condition (required) */}
