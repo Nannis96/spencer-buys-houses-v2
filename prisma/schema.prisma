@@ -83,11 +83,9 @@ model Post {
     slug        String  @unique
     isPublished Boolean @default(false)
 
-    // Contenido Bilingüe
-    titleEn   String
-    titleEs   String
-    contentEn String @db.Text // Puede ser Markdown o HTML
-    contentEs String @db.Text
+    // Contenido Principal
+    title   String
+    content String @db.Text // Puede ser Markdown o HTML
 
     // Multimedia Principal
     mainImage String?
@@ -98,17 +96,13 @@ model Post {
     // --- Sección de Autor / Bio por Post [NUEVO] ---
     authorName  String?
     authorImage String?
-    authorBioEn String? @db.Text
-    authorBioEs String? @db.Text
+    authorBio   String? @db.Text
 
     // --- SEO Avanzado [ACTUALIZADO] ---
-    seoTitleEn     String?
-    seoDescEn      String?
-    focusKeywordEn String? // Keyword principal EN
+    seoTitle     String?
+    seoDesc      String?
+    focusKeyword String? // Keyword principal
 
-    seoTitleEs     String?
-    seoDescEs      String?
-    focusKeywordEs String? // Keyword principal ES
     isCaseStudy    Boolean @default(false) // <-- NUEVO: Para el blog de casos de estudio
 }
 

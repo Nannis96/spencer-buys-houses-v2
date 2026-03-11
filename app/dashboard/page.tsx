@@ -1,5 +1,4 @@
 import { auth } from "@/lib/auth"
-import { redirect } from "next/navigation"
 import { SignOutButton } from "@/components/dashboard/SignOutButton"
 import { User, Settings, LayoutDashboard, Home, ChevronRight } from "lucide-react"
 import Link from "next/link"
@@ -7,12 +6,8 @@ import Link from "next/link"
 export default async function Dashboard() {
     const session = await auth()
 
-    if (!session) {
-        redirect("/login")
-    }
-
     return (
-        <div className="min-h-screen bg-[var(--color-background)] text-white pt-24 pb-12">
+        <div className="text-white">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -22,8 +17,8 @@ export default async function Dashboard() {
                             <ChevronRight className="h-3 w-3" />
                             <span className="text-[var(--color-primary)]">Dashboard</span>
                         </div>
-                        <h1 className="text-3xl font-bold">Welcome back, {session.user?.name || "User"}!</h1>
-                        <p className="text-gray-400 mt-1">{session.user?.email}</p>
+                        <h1 className="text-3xl font-bold">Welcome back, {session?.user?.name || "User"}!</h1>
+                        <p className="text-gray-400 mt-1">{session?.user?.email}</p>
                     </div>
                     <div className="flex items-center gap-3">
                         <SignOutButton />
