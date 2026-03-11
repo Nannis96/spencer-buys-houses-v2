@@ -51,7 +51,7 @@ export function LeadForm() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="rounded-2xl bg-[#1a1a2e] p-8 md:p-10 text-center border border-white/10"
+                    className="rounded-2xl bg-[var(--color-background)] p-8 md:p-10 text-center border border-[var(--color-primary)]/60"
                 >
                     <motion.div
                         initial={{ scale: 0 }}
@@ -67,7 +67,7 @@ export function LeadForm() {
                     <p className="text-gray-300 mb-4 leading-relaxed">
                         {"One of our home buying specialists will reach out within the next 24 hours with your personalized cash offer."}
                     </p>
-                    <div className="inline-flex items-center gap-2 rounded-full bg-[#f59e0b]/10 px-4 py-2 text-sm font-medium text-[#f59e0b]">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-[var(--color-primary)]/10 px-4 py-2 text-sm font-medium text-[var(--color-primary)]">
                         <ShieldCheck className="h-4 w-4" />
                         Your information is 100% secure
                     </div>
@@ -90,71 +90,11 @@ export function LeadForm() {
                     </p> */}
 
                     <div className="flex flex-col gap-4">
-                        <div>
-                            <div className="relative">
-                                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" />
-                                <Input
-                                    placeholder="Your Name"
-                                    {...register("name")}
-                                    className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                    aria-invalid={!!errors.name}
-                                />
-                            </div>
-                            {errors.name && (
-                                <p className="mt-1.5 text-xs text-red-400">{errors.name.message}</p>
-                            )}
-                        </div>
-                        <div>
-                            <div className="relative">
-                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" />
-                                <Input
-                                    placeholder="Property Address"
-                                    {...register("address")}
-                                    className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                    aria-invalid={!!errors.address}
-                                />
-                            </div>
-                            {errors.address && (
-                                <p className="mt-1.5 text-xs text-red-400">{errors.address.message}</p>
-                            )}
-                        </div>
-
-                        <div>
-                            <div className="relative">
-                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" />
-                                <Input
-                                    type="tel"
-                                    placeholder="Phone Number"
-                                    {...register("phone")}
-                                    className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                    aria-invalid={!!errors.phone}
-                                />
-                            </div>
-                            {errors.phone && (
-                                <p className="mt-1.5 text-xs text-red-400">{errors.phone.message}</p>
-                            )}
-                        </div>
-
-                        <div>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" />
-                                <Input
-                                    type="email"
-                                    placeholder="Email Address"
-                                    {...register("email")}
-                                    className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                    aria-invalid={!!errors.email}
-                                />
-                            </div>
-                            {errors.email && (
-                                <p className="mt-1.5 text-xs text-red-400">{errors.email.message}</p>
-                            )}
-                        </div>
 
                         <Button
                             type="submit"
                             disabled={isSubmitting}
-                            className="h-14 text-lg font-bold bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                            className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)] text-[#0f0f23] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                         >
                             {isSubmitting ? (
                                 <Loader2 className="h-5 w-5 animate-spin" />

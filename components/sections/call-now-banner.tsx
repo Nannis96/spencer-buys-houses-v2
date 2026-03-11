@@ -1,5 +1,7 @@
 import { Phone, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { CallButton } from "@/components/ui/call-button"
+import { CTAButton } from "../ui/cta-button"
 
 interface CallNowBannerProps {
     /** Pill badge text above the heading */
@@ -28,7 +30,7 @@ export function CallNowBanner({
     headingId = "call-heading",
 }: CallNowBannerProps) {
     return (
-        <section className="bg-[#f59e0b] py-16 lg:py-20" aria-labelledby={headingId}>
+        <section className="bg-[var(--color-primary-dark)] py-16 lg:py-20" aria-labelledby={headingId}>
             <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
                 <div
                     className="inline-flex items-center gap-2 mb-6 rounded-full bg-[#0f0f23]/10 px-4 py-2"
@@ -50,31 +52,8 @@ export function CallNowBanner({
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Button
-                        asChild
-                        size="lg"
-                        className="bg-[#0f0f23] hover:bg-[#1a1a3e] text-white hover:text-[#f59e0b] text-lg px-8 h-14 font-bold"
-                    >
-                        <a
-                            href="tel:+19016218799"
-                            aria-label={`Call us at ${primaryLabel}`}
-                        >
-                            <Phone className="mr-2 h-5 w-5" aria-hidden="true" />
-                            {primaryLabel}
-                        </a>
-                    </Button>
-
-                    <Button
-                        asChild
-                        variant="outline"
-                        size="lg"
-                        className="border-[#0f0f23] text-white hover:bg-[#0f0f23] hover:text-[#f59e0b] text-lg px-8 h-14 font-bold"
-                    >
-                        <a href={secondaryHref}>
-                            {secondaryLabel}
-                            <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                        </a>
-                    </Button>
+                    <CTAButton href="#top">Get My Free Cash Offer Now</CTAButton>
+                    <CallButton inline className="px-14 py-4 text-base" />
                 </div>
             </div>
         </section>

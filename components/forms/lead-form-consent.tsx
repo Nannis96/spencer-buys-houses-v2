@@ -159,7 +159,7 @@ export function LeadFormConsent() {
         params.append("smsConsent", String(data.smsConsent ?? false))
 
         setTimeout(() => {
-            router.push(`/property-details?${params.toString()}`)
+            router.push(`/property-info?${params.toString()}`)
         }, 1500)
     }
 
@@ -175,12 +175,12 @@ export function LeadFormConsent() {
                 onSubmit={handleSubmit(onSubmit)}
                 noValidate
                 aria-label="Get a free cash offer"
-                className="rounded-2xl bg-[#1a1a2e] p-6 md:p-8 border border-white/10"
+                className="rounded-2xl bg-[var(--background)] p-6 md:p-8 border border-[var(--color-primary-dark)] shadow-sm"
             >
-                <h3 className="text-xl font-bold text-white mb-1">
+                <h3 className="text-xl font-bold text-[var(--color-primary)] mb-1">
                     Get An Offer Today, Sell In A Matter Of Days
                 </h3>
-                <p className="text-gray-400 text-sm mb-6">
+                <p className="text-[var(--color-text-white)] text-sm mb-6">
                     100% free. Zero obligation. Results in 24 hours.
                 </p>
 
@@ -189,7 +189,7 @@ export function LeadFormConsent() {
                     <div>
                         <label htmlFor={id("address")} className="sr-only">Property address</label>
                         <div className="relative">
-                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#f59e0b]" aria-hidden="true" />
+                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--color-primary)]" aria-hidden="true" />
                             <Input
                                 id={id("address")}
                                 placeholder="Property Address"
@@ -199,7 +199,7 @@ export function LeadFormConsent() {
                                     addressInputRef.current = el
                                 }}
                                 {...registerAddressRest}
-                                className="pl-11 h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                className="pl-11 h-12 bg-[var(--color-amber-05)] border-[rgba(255,255,255,0.08)] text-[var(--color-text-white)] placeholder:text-[rgba(255,255,255,0.6)] focus-visible:ring-[var(--color-primary)] focus-visible:border-[var(--color-primary)]"
                                 aria-invalid={!!errors.address}
                                 aria-describedby={errors.address ? id("address-err") : undefined}
                             />
@@ -216,7 +216,7 @@ export function LeadFormConsent() {
                     <Button
                         type="submit"
                         disabled={isSubmitting || !addressSelected}
-                        className="h-14 text-lg font-bold bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                        className="h-14 text-lg font-bold rounded-lg transition-transform transform-gpu bg-[linear-gradient(90deg,var(--color-secondary),var(--color-secondary))] text-[var(--color-text-white)] hover:brightness-95 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isSubmitting ? (
                             <>
@@ -232,8 +232,8 @@ export function LeadFormConsent() {
                     </Button>
                 </div>
 
-                <p className="text-xs text-gray-500 mt-4 text-center flex items-center justify-center gap-1.5">
-                    <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                <p className="text-xs text-[var(--color-text-white)]/70 mt-4 text-center flex items-center justify-center gap-1.5">
+                    <ShieldCheck className="h-3.5 w-3.5 text-[var(--color-primary)]" aria-hidden="true" />
                     Your information is secure and never shared with third parties.
                 </p>
             </motion.form>

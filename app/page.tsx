@@ -9,7 +9,7 @@ import { CTASection } from "@/components/sections/cta-section"
 
 export default function Home() {
   return (
-    <main>
+    <main className="bg-background min-h-screen">
       {/* 1. Hero with lead form */}
       <HeroBold />
 

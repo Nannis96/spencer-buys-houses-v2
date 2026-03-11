@@ -118,7 +118,7 @@ export default function RootLayout({
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />
         <StickyHeader />
-        <div className="pt-6 md:pt-8">{children}</div>
+        <div style={{ paddingTop: 'calc(var(--app-header-height, 4rem) / 2)' }}>{children}</div>
         <SiteFooter />
         <Analytics />
       </body>

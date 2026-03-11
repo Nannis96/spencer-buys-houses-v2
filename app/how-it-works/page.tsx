@@ -14,6 +14,7 @@ import {
 import { JsonLd } from "@/components/seo/json-ld"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
+import { CTAButton } from "@/components/ui/cta-button"
 import {
     Accordion,
     AccordionContent,
@@ -218,20 +219,22 @@ export default function HowWeBuyHousesPage() {
 
             <main>
                 {/* ── 1. Hero ── */}
-                <section className="relative bg-[#0f0f23] pt-28 md:pt-44 pb-16 lg:pb-24 overflow-hidden">
+                <section className="relative bg-[var(--color-background)] pt-28 md:pt-44 pb-16 lg:pb-24 overflow-hidden">
                     {/* Ambient glow */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#f59e0b]/5 rounded-full blur-3xl pointer-events-none" />
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[var(--color-primary-dark)]/5 rounded-full blur-3xl pointer-events-none" />
 
                     <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
                             {/* Left copy */}
                             <div>
-                                <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-5 uppercase tracking-wide">
+                                <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-5 uppercase tracking-wide">
                                     Our Simple Process
                                 </span>
                                 <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl text-white">
-                                    How We Buy Houses in Memphis
+                                    How We {" "}
+                                    <span className="text-[var(--color-text-yellow)]">Buy Houses </span>
+                                    in Memphis
                                 </h1>
                                 <p className="mt-6 text-lg text-gray-400 leading-relaxed">
                                     Our process is fair, works on your timeline, and is easy to follow.
@@ -248,7 +251,7 @@ export default function HowWeBuyHousesPage() {
                                         "100% transparent — no surprises",
                                     ].map((item) => (
                                         <li key={item} className="flex items-center gap-3 text-gray-300">
-                                            <CheckCircle2 className="h-5 w-5 text-[#f59e0b] shrink-0" aria-hidden="true" />
+                                            <CheckCircle2 className="h-5 w-5 text-[var(--color-primary)] shrink-0" aria-hidden="true" />
                                             {item}
                                         </li>
                                     ))}
@@ -269,11 +272,11 @@ export default function HowWeBuyHousesPage() {
                 </section>
 
                 {/* ── 2. Process Steps ── */}
-                <section id="process" className="bg-[#13132b] py-20 lg:py-28">
+                <section id="process" className="bg-[var(--color-background)] py-10 lg:py-14">
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
 
                         <div className="text-center mb-16">
-                            <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                                 How The Process Works
                             </span>
                             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -288,28 +291,28 @@ export default function HowWeBuyHousesPage() {
                         {/* Steps grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
                             {/* Connector bar (desktop) */}
-                            <div className="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-[#f59e0b]/30 to-transparent" />
 
                             {steps.map(({ icon: Icon, step, title, description, highlight }) => (
                                 <div
                                     key={step}
-                                    className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[#f59e0b]/30 transition-colors group"
+                                    className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary-dark)]/30 transition-colors group"
                                 >
+                                    <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-[var(--color-primary)]/30 to-transparent" />
                                     {/* Step badge */}
-                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[#f59e0b] text-[#0f0f23] text-xs font-black">
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary)] text-[var(--color-background)] text-xs font-black">
                                         {step}
                                     </div>
 
                                     {/* Icon */}
-                                    <div className="mt-4 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f59e0b]/10 group-hover:bg-[#f59e0b]/20 transition-colors">
-                                        <Icon className="h-8 w-8 text-[#f59e0b]" />
+                                    <div className="mt-4 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-primary)]/10 group-hover:bg-[var(--color-primary-dark)]/20 transition-colors">
+                                        <Icon className="h-8 w-8 text-[var(--color-primary)]" />
                                     </div>
 
                                     <h3 className="text-lg font-bold text-white mb-3">{title}</h3>
                                     <p className="text-gray-400 text-sm leading-relaxed mb-4">{description}</p>
 
                                     {/* Highlight pill */}
-                                    <span className="mt-auto inline-block rounded-full bg-[#f59e0b]/10 px-3 py-1 text-xs font-semibold text-[#f59e0b]">
+                                    <span className="mt-auto inline-block rounded-full bg-[var(--color-primary)]/10 px-3 py-1 text-xs font-semibold text-[var(--color-primary)]">
                                         {highlight}
                                     </span>
                                 </div>
@@ -317,20 +320,20 @@ export default function HowWeBuyHousesPage() {
                         </div>
 
                         {/* Timeframe callout */}
-                        <div className="mt-14 rounded-2xl border border-[#f59e0b]/20 bg-[#f59e0b]/5 p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-6">
-                            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#f59e0b]/15">
-                                <Clock className="h-7 w-7 text-[#f59e0b]" />
+                        <div className="mt-14 rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+                            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-primary)]/15">
+                                <Clock className="h-7 w-7 text-[var(--color-primary)]" />
                             </div>
                             <div>
-                                <p className="text-sm font-semibold uppercase tracking-wide text-[#f59e0b] mb-1">
+                                <p className="text-sm font-semibold uppercase tracking-wide text-[var(--color-primary)] mb-1">
                                     Timeframe
                                 </p>
                                 <p className="text-white leading-relaxed">
                                     After you provide us with your details, we can typically present you with a reasonable
-                                    all-cash offer in just{" "}
-                                    <strong className="text-[#f59e0b]">24 hours</strong>. Following that, we can finalize the
-                                    sale in as little as{" "}
-                                    <strong className="text-[#f59e0b]">7 days</strong>… or whenever works best for you.
+                                    all-cash offer in just {" "}
+                                    <strong className="text-[var(--color-primary-dark)]">24 hours</strong>. Following that, we can finalize the
+                                    sale in as little as {" "}
+                                    <strong className="text-[var(--color-primary-dark)]">7 days</strong>… or whenever works best for you.
                                 </p>
                             </div>
                         </div>
@@ -338,14 +341,14 @@ export default function HowWeBuyHousesPage() {
                 </section>
 
                 {/* ── 3. Why sell to us ── */}
-                <section className="bg-[#0f0f23] py-20 lg:py-28">
+                <section className="bg-[var(--color-background)] py-10 lg:py-14">
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
                             {/* Left: copy */}
                             <div>
-                                <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-5 uppercase tracking-wide">
+                                <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-5 uppercase tracking-wide">
                                     Why Choose Us
                                 </span>
                                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
@@ -372,8 +375,8 @@ export default function HowWeBuyHousesPage() {
                                         again for buyer after buyer. We don't care how dirty your house is or how many repairs are
                                         needed — we love projects.
                                     </p>
-                                    <div className="rounded-xl border border-[#f59e0b]/20 bg-[#f59e0b]/5 p-5">
-                                        <p className="text-white font-semibold">
+                                    <div className="rounded-xl border border-[var(--color-primary-dark)]/20 bg-[var(--color-primary-dark)]/5 p-5">
+                                        <p className="text-[var(--color-primary-dark)] font-semibold">
                                             From offer to close, cash in your hand in as little as 7 days.
                                         </p>
                                         <p className="text-gray-400 text-sm mt-2">
@@ -384,13 +387,9 @@ export default function HowWeBuyHousesPage() {
                                     </div>
                                 </div>
 
-                                <a
-                                    href="/get-a-cash-offer-today/"
-                                    className="mt-8 inline-flex items-center gap-2 rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] px-7 py-4 text-base font-bold transition-colors"
-                                >
-                                    See What We Can Offer You
-                                    <ArrowRight className="h-4 w-4" />
-                                </a>
+                                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                                    <CTAButton href="/get-a-cash-offer-today/">See What We Can Offer You</CTAButton>
+                                </div>
                             </div>
 
                             {/* Right: benefits cards */}
@@ -398,10 +397,10 @@ export default function HowWeBuyHousesPage() {
                                 {sellingBenefits.map(({ icon: Icon, title, description }) => (
                                     <div
                                         key={title}
-                                        className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#f59e0b]/30 transition-colors group"
+                                        className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary-dark)]/30 transition-colors group"
                                     >
-                                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#f59e0b]/10 group-hover:bg-[#f59e0b]/20 transition-colors">
-                                            <Icon className="h-6 w-6 text-[#f59e0b]" />
+                                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary-dark)]/10 group-hover:bg-[var(--color-primary-dark)]/20 transition-colors">
+                                            <Icon className="h-6 w-6 text-[var(--color-primary-dark)]" />
                                         </div>
                                         <h3 className="text-base font-bold text-white mb-2">{title}</h3>
                                         <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
@@ -423,10 +422,10 @@ export default function HowWeBuyHousesPage() {
                 />
 
                 {/* ── 5. FAQ ── */}
-                <section id="faq" className="bg-[#0f0f23] py-20 lg:py-28">
+                <section id="faq" className="bg-[var(--color-background)] py-10 lg:py-14">
                     <div className="mx-auto max-w-3xl px-4 lg:px-8">
                         <div className="text-center mb-12">
-                            <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                                 I Have Some Questions…
                             </span>
                             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -442,9 +441,9 @@ export default function HowWeBuyHousesPage() {
                                 <AccordionItem
                                     key={i}
                                     value={`item-${i}`}
-                                    className="rounded-xl border border-white/10 bg-white/5 px-6 data-[state=open]:border-[#f59e0b]/30"
+                                    className="rounded-xl border border-white/10 bg-white/5 px-6 data-[state=open]:border-[var(--color-primary-dark)]/30"
                                 >
-                                    <AccordionTrigger className="text-left text-white hover:text-[#f59e0b] font-semibold py-5 hover:no-underline">
+                                    <AccordionTrigger className="text-left text-white hover:text-[var(--color-primary)] font-semibold py-5 hover:no-underline">
                                         {faq.q}
                                     </AccordionTrigger>
                                     <AccordionContent className="text-gray-400 leading-relaxed pb-5">
@@ -457,17 +456,18 @@ export default function HowWeBuyHousesPage() {
                 </section>
 
                 {/* ── 6. Bottom form CTA ── */}
-                <section className="bg-[#13132b] py-20 lg:py-28">
+                <section className="bg-[var(--color-background)] py-10 lg:py-14">
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
                             {/* Left copy */}
                             <div>
-                                <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-5 uppercase tracking-wide">
+                                <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-5 uppercase tracking-wide">
                                     Ready to Get Started?
                                 </span>
                                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                                    See What We Can Offer You for Your House
+                                    See What We Can {" "}
+                                    <span className="text-[var(--color-text-yellow)]">Offer You for Your House </span>
                                 </h2>
                                 <p className="text-gray-400 leading-relaxed mb-8">
                                     Fill out the short form and one of our home buying specialists will reach out within
@@ -482,7 +482,7 @@ export default function HowWeBuyHousesPage() {
                                         "Your information is 100% secure",
                                     ].map((item) => (
                                         <li key={item} className="flex items-center gap-3">
-                                            <CheckCircle2 className="h-5 w-5 text-[#f59e0b] shrink-0" aria-hidden="true" />
+                                            <CheckCircle2 className="h-5 w-5 text-[var(--color-primary-dark)] shrink-0" aria-hidden="true" />
                                             {item}
                                         </li>
                                     ))}

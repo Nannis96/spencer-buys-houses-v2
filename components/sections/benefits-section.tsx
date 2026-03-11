@@ -72,12 +72,12 @@ function CompareCell({ value }: { value: CompareValue }) {
 
 export function BenefitsSection() {
     return (
-        <section id="benefits" className="bg-[#13132b] py-20 lg:py-28">
+        <section id="benefits" className="bg-[var(--color-background)] py-10 lg:py-14">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
 
                 {/* Benefit Cards */}
                 <div className="text-center mb-16">
-                    <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                         Why Choose Us
                     </span>
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -97,10 +97,10 @@ export function BenefitsSection() {
                             whileInView="visible"
                             viewport={{ once: true, margin: "-50px" }}
                             variants={cardVariants}
-                            className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#f59e0b]/30 transition-colors group"
+                            className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary)]/30 transition-colors group"
                         >
-                            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#f59e0b]/10 group-hover:bg-[#f59e0b]/20 transition-colors">
-                                <Icon className="h-6 w-6 text-[#f59e0b]" />
+                            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary)]/10 group-hover:bg-[var(--color-primary)]/20 transition-colors">
+                                <Icon className="h-6 w-6 text-[var(--color-primary)]" />
                             </div>
                             <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
                             <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
@@ -119,11 +119,11 @@ export function BenefitsSection() {
                 </div>
 
                 <div className="overflow-x-auto rounded-2xl border border-white/10">
-                    <table className="w-full text-sm">
+                    <table className="w-full text-base md:text-lg">
                         <thead>
                             <tr className="border-b border-white/10">
-                                <th className="py-4 px-6 text-left text-gray-400 font-medium w-1/2">Feature</th>
-                                <th className="py-4 px-4 text-center font-bold text-[#f59e0b] bg-[#f59e0b]/5">
+                                <th className="py-4 px-6 text-center text-gray-400 font-medium w-1/2">Feature</th>
+                                <th className="py-4 px-4 text-center font-bold text-[var(--color-primary)] bg-[var(--color-primary)]/5">
                                     Spencer Buys Houses
                                 </th>
                                 <th className="py-4 px-4 text-center text-gray-400 font-medium">Traditional Agent</th>
@@ -136,8 +136,8 @@ export function BenefitsSection() {
                                     key={row.label}
                                     className={`border-b border-white/5 ${i % 2 === 0 ? "bg-white/[0.02]" : ""}`}
                                 >
-                                    <td className="py-3 px-6 text-gray-300">{row.label}</td>
-                                    <td className="py-3 px-4 bg-[#f59e0b]/5">
+                                    <td className="py-3 px-6 text-center text-gray-300">{row.label}</td>
+                                    <td className="py-3 px-4 bg-[var(--color-primary)]/5">
                                         <CompareCell value={row.spencer} />
                                     </td>
                                     <td className="py-3 px-4">

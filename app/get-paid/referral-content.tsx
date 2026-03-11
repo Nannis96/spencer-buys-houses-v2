@@ -8,6 +8,8 @@
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 import { TestimonialsSection } from "@/components/sections/testimonials-section"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
+import { CallButton } from "@/components/ui/call-button"
+import { CTAButton } from "@/components/ui/cta-button"
 import {
     Share2,
     Handshake,
@@ -75,18 +77,18 @@ const benefits = [
 
 function FeaturedTestimonial() {
     return (
-        <div className="relative rounded-2xl bg-white/5 border border-white/10 p-8 md:p-10">
+        <div className="relative rounded-2xl bg-[var(--color-background)]/5 border border-[var(--color-primary)]/60 p-8 md:p-10">
             {/* Gold accent bar */}
-            <div className="absolute top-0 left-8 w-12 h-1 rounded-full bg-[#f59e0b]" />
+            <div className="absolute top-0 left-8 w-12 h-1 rounded-full bg-[var(--color-text-yellow)]" />
 
             <div className="flex items-center gap-1 mb-6 mt-2">
                 {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-[#f59e0b] text-[#f59e0b]" aria-hidden="true" />
+                    <Star key={i} className="h-4 w-4" fill="#f59e0b" stroke="none" aria-hidden="true" />
                 ))}
                 <span className="ml-2 text-xs font-semibold text-[#f59e0b]">5.0</span>
             </div>
 
-            <Quote className="h-8 w-8 text-[#f59e0b]/30 mb-4" aria-hidden="true" />
+            <Quote className="h-8 w-8 text-[var(--color-text-yellow)]/30 mb-4" aria-hidden="true" />
 
             <p className="text-gray-300 leading-relaxed text-base md:text-lg mb-8">
                 I had an amazing experience working with Spencer Buys Houses! From start to finish, the process was smooth,
@@ -98,7 +100,7 @@ function FeaturedTestimonial() {
 
             <div className="flex items-center justify-between flex-wrap gap-4 pt-6 border-t border-white/10">
                 <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-full bg-[#f59e0b]/20 flex items-center justify-center text-[#f59e0b] font-bold text-lg">
+                    <div className="h-12 w-12 rounded-full bg-[var(--color-primary-dark)]/20 flex items-center justify-center text-[var(--color-primary-dark)] font-bold text-lg">
                         C
                     </div>
                     <div>
@@ -110,7 +112,7 @@ function FeaturedTestimonial() {
                     href="https://g.co/kgs/spencerbuyshouses"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-[#f59e0b] hover:text-[#d97706] transition-colors"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary-dark)] hover:text-[var(--color-primary-dark)]/60 transition-colors"
                     aria-label="Read the full review on Google"
                 >
                     Read Full Review on Google
@@ -128,13 +130,13 @@ export function ReferralContent() {
         <>
             {/* ───────── 1. HERO + FORM ───────── */}
             <section
-                className="relative bg-[#0f0f23] pt-28 md:pt-44 pb-16 lg:pb-24 overflow-hidden"
+                className="relative bg-[var(--color-background)] pt-28 md:pt-44 pb-16 lg:pb-24 overflow-hidden"
                 aria-labelledby="referral-hero-heading"
             >
                 {/* Ambient glow */}
                 <div
                     aria-hidden="true"
-                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#f59e0b]/5 rounded-full blur-3xl"
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[var(--color-text-yellow)]/5 rounded-full blur-3xl"
                 />
 
                 <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
@@ -142,7 +144,7 @@ export function ReferralContent() {
 
                         {/* ── Left copy ── */}
                         <div>
-                            <p className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-6 uppercase tracking-wide">
+                            <p className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-6 uppercase tracking-wide">
                                 Referral Program
                             </p>
 
@@ -151,7 +153,7 @@ export function ReferralContent() {
                                 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl text-white"
                             >
                                 Get Paid for{" "}
-                                <span className="text-[#f59e0b]">Referring a Friend!</span>
+                                <span className="text-[var(--color-primary-dark)]">Referring a Friend!</span>
                             </h1>
 
                             <p className="mt-6 text-lg md:text-xl text-gray-300 font-medium">
@@ -170,12 +172,9 @@ export function ReferralContent() {
                                     "No fees, no commissions for you or your referral",
                                     "We handle all paperwork from start to finish",
                                 ].map((point) => (
-                                    <li key={point} className="flex items-center gap-3">
-                                        <CheckCircle2
-                                            className="h-5 w-5 text-[#22c55e] shrink-0"
-                                            aria-hidden="true"
-                                        />
-                                        <span className="text-gray-300">{point}</span>
+                                    <li key={point} className="flex items-center gap-3 ">
+                                        <CheckCircle2 className="h-5 w-5 text-[var(--color-primary)] shrink-0" aria-hidden="true" />
+                                        <span className="text-[var(--color-text-white)]">{point}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -197,19 +196,20 @@ export function ReferralContent() {
             {/* ───────── 2. HOW OUR REFERRAL PROCESS WORKS ───────── */}
             <section
                 id="referral-process"
-                className="bg-[#13132b] py-20 lg:py-28"
+                className="bg-[var(--color-background)] py-10 lg:py-14"
                 aria-labelledby="referral-process-heading"
             >
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                             How It Works
                         </span>
                         <h2
                             id="referral-process-heading"
                             className="text-3xl md:text-4xl font-bold text-white mb-4"
                         >
-                            3 Simple Steps to Start Earning
+                            3 Simple Steps to {" "}
+                            <span className="text-[var(--color-primary-dark)]">Start Earning</span>
                         </h2>
                         <p className="text-gray-400 max-w-2xl mx-auto">
                             Our referral program is designed to be effortless. Share someone&apos;s details and we take
@@ -219,21 +219,21 @@ export function ReferralContent() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
                         {/* Connector line (desktop) */}
-                        <div
-                            aria-hidden="true"
-                            className="hidden md:block absolute top-10 left-1/6 right-1/6 h-px bg-gradient-to-r from-transparent via-[#f59e0b]/30 to-transparent"
-                        />
 
                         {steps.map(({ icon: Icon, step, title, description }) => (
                             <div
                                 key={step}
-                                className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[#f59e0b]/30 transition-colors group"
+                                className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary-dark)]/30 transition-colors group"
                             >
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[#f59e0b] text-[#0f0f23] text-xs font-black">
+                                <div
+                                    aria-hidden="true"
+                                    className="hidden md:block absolute top-10 left-1/8 right-1/8 h-px bg-gradient-to-r from-transparent via-[var(--color-primary-dark)]/30 to-transparent"
+                                />
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary-dark)] text-[var(--color-background)] text-xs font-black">
                                     {step}
                                 </div>
-                                <div className="mt-4 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f59e0b]/10 group-hover:bg-[#f59e0b]/20 transition-colors">
-                                    <Icon className="h-8 w-8 text-[#f59e0b]" aria-hidden="true" />
+                                <div className="mt-4 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-primary-dark)]/10 group-hover:bg-[var(--color-primary-dark)]/20 transition-colors">
+                                    <Icon className="h-8 w-8 text-[var(--color-primary-dark)]" aria-hidden="true" />
                                 </div>
                                 <h3 className="text-lg font-bold text-white mb-3">{title}</h3>
                                 <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
@@ -242,12 +242,7 @@ export function ReferralContent() {
                     </div>
 
                     <div className="mt-12 text-center">
-                        <a
-                            href="#top"
-                            className="inline-block rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] px-8 py-4 text-base font-bold transition-colors"
-                        >
-                            Submit a Referral Now
-                        </a>
+                        <CTAButton href="#top">Get Your Free Cash Offer</CTAButton>
                     </div>
                 </div>
             </section>
@@ -255,7 +250,7 @@ export function ReferralContent() {
             {/* ───────── 3. WHY REFER TO SPENCER BUYS HOUSES ───────── */}
             <section
                 id="why-refer"
-                className="bg-[#0f0f23] py-20 lg:py-28"
+                className="bg-[var(--color-background)] py-10 lg:py-14s"
                 aria-labelledby="why-refer-heading"
             >
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -263,7 +258,7 @@ export function ReferralContent() {
 
                         {/* Left — copy */}
                         <div>
-                            <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-6 uppercase tracking-wide">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-6 uppercase tracking-wide">
                                 Why Choose Us
                             </span>
                             <h2
@@ -271,7 +266,7 @@ export function ReferralContent() {
                                 className="text-3xl md:text-4xl font-bold text-white mb-6"
                             >
                                 Why Refer to{" "}
-                                <span className="text-[#f59e0b]">Spencer Buys Houses?</span>
+                                <span className="text-[var(--color-primary-dark)]">Spencer Buys Houses?</span>
                             </h2>
 
                             <p className="text-gray-400 leading-relaxed mb-10">
@@ -284,8 +279,8 @@ export function ReferralContent() {
                             <ul className="space-y-6" aria-label="Benefits of the referral program">
                                 {benefits.map(({ icon: Icon, title, description }) => (
                                     <li key={title} className="flex items-start gap-4">
-                                        <div className="shrink-0 flex h-12 w-12 items-center justify-center rounded-xl bg-[#f59e0b]/10">
-                                            <Icon className="h-6 w-6 text-[#f59e0b]" aria-hidden="true" />
+                                        <div className="shrink-0 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary-dark)]/20">
+                                            <Icon className="h-6 w-6 text-[var(--color-primary-dark)]" aria-hidden="true" />
                                         </div>
                                         <div>
                                             <h3 className="font-bold text-white mb-1">{title}</h3>
@@ -308,9 +303,9 @@ export function ReferralContent() {
                                         className="object-cover"
                                     />
                                     {/* Overlay badge */}
-                                    <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-[#0f0f23]/80 backdrop-blur-sm border border-white/10 p-4 flex items-center gap-3">
-                                        <div className="shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-[#f59e0b]">
-                                            <DollarSign className="h-5 w-5 text-[#0f0f23]" aria-hidden="true" />
+                                    <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-[var(--color-background)]/80 backdrop-blur-sm border border-white/10 p-4 flex items-center gap-3">
+                                        <div className="shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-primary-dark)]">
+                                            <DollarSign className="h-5 w-5 text-[var(--color-background)]" aria-hidden="true" />
                                         </div>
                                         <div>
                                             <p className="text-white font-bold text-sm">Start Referring &amp; Earning Today</p>
@@ -327,12 +322,12 @@ export function ReferralContent() {
             {/* ───────── 4. TESTIMONIALS ───────── */}
             <section
                 id="referral-testimonials"
-                className="bg-[#13132b] py-20 lg:py-28"
+                className="bg-[var(--color-background)] py-10 lg:py-14"
                 aria-labelledby="testimonials-heading"
             >
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                             Real Reviews
                         </span>
                         <h2
@@ -364,7 +359,7 @@ export function ReferralContent() {
             {/* ───────── 6. SECOND FORM ───────── */}
             <section
                 id="referral-form"
-                className="bg-[#0f0f23] py-20 lg:py-28"
+                className="bg-[var(--color-background)] py-20 lg:py-28"
                 aria-labelledby="referral-form-heading"
             >
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -372,7 +367,7 @@ export function ReferralContent() {
 
                         {/* Left copy */}
                         <div>
-                            <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-6 uppercase tracking-wide">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-6 uppercase tracking-wide">
                                 Submit a Referral
                             </span>
                             <h2
@@ -395,10 +390,7 @@ export function ReferralContent() {
                                     "Your referral pays zero fees or commissions",
                                 ].map((point) => (
                                     <li key={point} className="flex items-center gap-3">
-                                        <CheckCircle2
-                                            className="h-5 w-5 text-[#22c55e] shrink-0"
-                                            aria-hidden="true"
-                                        />
+                                        <CheckCircle2 className="h-5 w-5 text-[var(--color-primary)] shrink-0" aria-hidden="true" />
                                         <span className="text-gray-300 text-sm">{point}</span>
                                     </li>
                                 ))}

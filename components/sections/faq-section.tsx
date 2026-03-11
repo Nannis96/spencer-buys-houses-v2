@@ -44,10 +44,10 @@ const faqs = [
 
 export function FAQSection() {
     return (
-        <section id="faq" className="bg-[#0f0f23] py-20 lg:py-28">
+        <section id="faq" className="bg-[var(--color-background)] py-10 lg:py-14">
             <div className="mx-auto max-w-3xl px-4 lg:px-8">
                 <div className="text-center mb-12">
-                    <span className="inline-block px-4 py-1.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-sm font-semibold mb-4 uppercase tracking-wide">
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                         FAQ
                     </span>
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -62,9 +62,9 @@ export function FAQSection() {
                         <AccordionItem
                             key={i}
                             value={`item-${i}`}
-                            className="rounded-xl border border-white/10 bg-white/5 px-6 data-[state=open]:border-[#f59e0b]/30"
+                            className="rounded-xl border border-white/10 bg-white/5 px-6 data-[state=open]:border-[var(--color-primary)]/30"
                         >
-                            <AccordionTrigger className="text-left text-white hover:text-[#f59e0b] font-semibold py-5 hover:no-underline">
+                            <AccordionTrigger className="text-left text-white hover:text-[var(--color-primary)] font-semibold py-5 hover:no-underline">
                                 {faq.q}
                             </AccordionTrigger>
                             <AccordionContent className="text-gray-400 leading-relaxed pb-5">
