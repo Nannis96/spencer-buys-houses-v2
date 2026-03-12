@@ -29,9 +29,29 @@ pnpm prisma db push
 ```
 
 ### Ejecutar Seeders
-Para poblar la base de datos con datos iniciales (asegúrate de tener configurado el script `seed` en `package.json` o usa `tsx`):
+
+El proyecto utiliza seeders para poblar la base de datos con datos de prueba.
+
+#### 1. Seeder General (Usuarios/Admin)
+Para ejecutar el seeder principal que crea el usuario administrador:
 ```bash
 pnpm prisma db seed
+```
+
+#### 2. Seeders Individuales
+
+Si deseas ejecutar un seeder específico sin correr todo el flujo de `prisma db seed`, puedes usar `tsx` para ejecutar el archivo directamente:
+
+```bash
+npx tsx prisma/seed/nombre-del-archivo.ts
+```
+
+#### Ejecución en Docker
+
+Si el proyecto se encuentra corriendo en Docker, puedes ejecutar un seeder individual de la siguiente manera:
+
+```bash
+docker compose exec web npx tsx prisma/seed/nombre-del-archivo.ts
 ```
 
 ## Administración Visual
