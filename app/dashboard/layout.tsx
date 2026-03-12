@@ -14,8 +14,8 @@ export default async function DashboardLayout({
     }
 
     return (
-        <main className="bg-[#1a1a1a] pt-24 min-h-screen">
+        <div className="min-h-screen bg-[#1a1a1a] text-white px-6 md:px-8 lg:px-22 pt-16 md:pt-22 font-sans">
             {children}
-        </main>
+        </div>
     )
 }

@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { deleteS3Object } from './s3-actions';
 
 // ─────────────────────────────────────────────
 // CREATE POST
@@ -74,12 +75,31 @@ export async function updatePost(formData: FormData) {
   redirect('/dashboard/blog');
 }
 
+
 // ─────────────────────────────────────────────
 // DELETE POST
 // ─────────────────────────────────────────────
 export async function deletePost(formData: FormData) {
   const id = formData.get('id') as string;
 
+  // 1. Fetch post to get image URLs
+  const post = await prisma.post.findUnique({
+    where: { id },
+    include: { postImages: true },
+  });
+
+  if (post) {
+    // 2. Delete main images from S3
+    if (post.mainImage) await deleteS3Object(post.mainImage);
+    if (post.authorImage) await deleteS3Object(post.authorImage);
+
+    // 3. Delete inline images if any
+    for (const img of post.postImages) {
+      await deleteS3Object(img.url);
+    }
+  }
+
+  // 4. Delete from Prisma (cascades to PostImage)
   await prisma.post.delete({ where: { id } });
 
   revalidatePath('/dashboard/blog');

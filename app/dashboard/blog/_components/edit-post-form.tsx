@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { updatePost } from '@/lib/blog-actions';
 import DeletePostButton from './delete-post-button';
+import ImageUpload, { ImageFile } from './image-upload';
 
 interface PostData {
   id: string;
@@ -69,10 +70,20 @@ const accentLabelCls = 'block text-xs font-bold text-[#f8ed1a] uppercase mb-1';
 
 // ── Main Component ─────────────────────────────────────────────────────────────
 export default function EditPostForm({ post }: { post: PostData }) {
+  const [mainImageFiles, setMainImageFiles] = useState<ImageFile[]>(
+    post.mainImage ? [{ url: post.mainImage }] : []
+  );
+  const [authorImageFiles, setAuthorImageFiles] = useState<ImageFile[]>(
+    post.authorImage ? [{ url: post.authorImage }] : []
+  );
+
   return (
     <form action={updatePost} className="space-y-6">
       {/* Hidden IDs */}
       <input type="hidden" name="id" value={post.id} />
+      {/* Hidden inputs for images */}
+      <input type="hidden" name="mainImage" value={mainImageFiles[0]?.url || ''} />
+      <input type="hidden" name="authorImage" value={authorImageFiles[0]?.url || ''} />
 
       {/* ── Form Header ── */}
       <div className="flex justify-between items-start border-b border-gray-700 pb-6 mb-6">
@@ -125,22 +136,12 @@ export default function EditPostForm({ post }: { post: PostData }) {
             </div>
           </div>
           <div>
-            <label className={accentLabelCls}>Cover Image URL</label>
-            <input
-              type="url"
-              name="mainImage"
-              defaultValue={post.mainImage || ''}
-              placeholder="https://..."
-              className={fieldCls}
+            <ImageUpload 
+              label="Cover Image" 
+              value={mainImageFiles} 
+              onChange={setMainImageFiles} 
+              multiple={false} 
             />
-            {post.mainImage && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={post.mainImage}
-                alt="Cover preview"
-                className="mt-3 w-full h-32 object-cover rounded border border-gray-700"
-              />
-            )}
           </div>
         </div>
       </AccordionSection>
@@ -197,13 +198,12 @@ export default function EditPostForm({ post }: { post: PostData }) {
               />
             </div>
             <div>
-              <label className={labelCls}>Author Photo URL</label>
-              <input
-                type="url"
-                name="authorImage"
-                defaultValue={post.authorImage || ''}
-                placeholder="https://..."
-                className={fieldCls}
+              <ImageUpload 
+                label="Author Photo" 
+                value={authorImageFiles} 
+                onChange={setAuthorImageFiles} 
+                multiple={false} 
+                disableMetadata={true}
               />
             </div>
           </div>
