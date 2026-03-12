@@ -22,8 +22,6 @@ export async function createPost(formData: FormData) {
       title:        rawTitle,
       slug,
       content:      formData.get('content') as string,
-      isPublished:  formData.get('isPublished') === 'on',
-      isCaseStudy:  formData.get('isCaseStudy') === 'on',
       mainImage:    (formData.get('mainImage') as string) || null,
 
       // Author
@@ -54,8 +52,6 @@ export async function updatePost(formData: FormData) {
       title:        formData.get('title') as string,
       slug:         (formData.get('slug') as string).trim(),
       content:      formData.get('content') as string,
-      isPublished:  formData.get('isPublished') === 'on',
-      isCaseStudy:  formData.get('isCaseStudy') === 'on',
       mainImage:    (formData.get('mainImage') as string) || null,
 
       // Author

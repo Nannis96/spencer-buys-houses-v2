@@ -81,7 +81,6 @@ model Post {
     updatedAt DateTime @updatedAt
 
     slug        String  @unique
-    isPublished Boolean @default(false)
 
     // Contenido Principal
     title   String
@@ -103,7 +102,6 @@ model Post {
     seoDesc      String?
     focusKeyword String? // Keyword principal
 
-    isCaseStudy    Boolean @default(false) // <-- NUEVO: Para el blog de casos de estudio
 }
 
 model PostImage {

@@ -9,8 +9,6 @@ import ImageUpload, { ImageFile } from './image-upload';
 interface PostData {
   id: string;
   slug: string;
-  isPublished: boolean;
-  isCaseStudy: boolean;
   title: string;
   content: string;
   mainImage: string | null;
@@ -100,40 +98,16 @@ export default function EditPostForm({ post }: { post: PostData }) {
       <AccordionSection title="Main Info & Cover" icon="📰" defaultOpen>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
-            <div>
-              <label className={accentLabelCls}>Slug (URL)</label>
-              <input
-                type="text"
-                name="slug"
-                defaultValue={post.slug}
-                className={fieldCls}
-                required
-              />
-            </div>
-            <div>
-              <label className="flex items-center cursor-pointer gap-3 p-3 bg-gray-900 rounded border border-gray-700 hover:border-[#529e14]">
+              <div>
+                <label className={accentLabelCls}>Slug (URL)</label>
                 <input
-                  type="checkbox"
-                  name="isPublished"
-                  defaultChecked={post.isPublished}
-                  className="w-5 h-5 accent-[#529e14]"
+                  type="text"
+                  name="slug"
+                  defaultValue={post.slug}
+                  className={fieldCls}
+                  required
                 />
-                <span className="font-bold uppercase text-sm text-white">
-                  Publish on Site
-                </span>
-              </label>
-              <label className="flex items-center cursor-pointer gap-3 p-3 mt-3 bg-gray-900 rounded border border-gray-700 hover:border-[#f8ed1a]">
-                <input
-                  type="checkbox"
-                  name="isCaseStudy"
-                  defaultChecked={post.isCaseStudy}
-                  className="w-5 h-5 accent-[#f8ed1a]"
-                />
-                <span className="font-bold uppercase text-sm text-[#f8ed1a]">
-                  Is Case Study
-                </span>
-              </label>
-            </div>
+              </div>
           </div>
           <div>
             <ImageUpload 

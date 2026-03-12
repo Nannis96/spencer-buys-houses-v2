@@ -70,24 +70,6 @@ export default async function AdminBlogPage() {
                 </h3>
 
                 <div className="flex items-center gap-3 mt-2 flex-wrap">
-                  {/* Published badge */}
-                  <span
-                    className={`text-[10px] font-black px-2 py-0.5 rounded border uppercase tracking-wider ${
-                      post.isPublished
-                        ? 'bg-[#529e14]/10 text-[#529e14] border-[#529e14]/20'
-                        : 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
-                    }`}
-                  >
-                    {post.isPublished ? 'Published' : 'Draft'}
-                  </span>
-
-                  {/* Case Study badge */}
-                  {post.isCaseStudy && (
-                    <span className="text-[10px] font-black px-2 py-0.5 rounded border uppercase tracking-wider bg-[#f8ed1a]/10 text-[#f8ed1a] border-[#f8ed1a]/20">
-                      Case Study
-                    </span>
-                  )}
-
                   <span className="text-xs text-gray-500 font-bold uppercase tracking-wide">
                     {new Date(post.createdAt).toLocaleDateString('en-US', {
                       year: 'numeric',
