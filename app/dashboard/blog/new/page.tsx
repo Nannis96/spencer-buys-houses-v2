@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { createPost } from '@/lib/blog-actions';
 import ImageUpload, { ImageFile } from '../_components/image-upload';
+import HtmlEditor from '../_components/html-editor';
 
 // ── Accordion helper ──────────────────────────────────────────────────────────
 function AccordionSection({
@@ -32,9 +33,8 @@ function AccordionSection({
           </h2>
         </div>
         <span
-          className={`transform transition-transform duration-200 text-[#f8ed1a] ${
-            isOpen ? 'rotate-180' : ''
-          }`}
+          className={`transform transition-transform duration-200 text-[#f8ed1a] ${isOpen ? 'rotate-180' : ''
+            }`}
         >
           ▼
         </span>
@@ -55,6 +55,9 @@ const accentLabelCls = 'block text-xs font-bold text-[#f8ed1a] uppercase mb-1';
 export default function NewPostPage() {
   const [mainImageFiles, setMainImageFiles] = useState<ImageFile[]>([]);
   const [authorImageFiles, setAuthorImageFiles] = useState<ImageFile[]>([]);
+  const [bodyImages, setBodyImages] = useState<ImageFile[]>([]);
+
+  const lastUploadedUrl = bodyImages.length > 0 ? bodyImages[bodyImages.length - 1].url : null;
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -107,11 +110,11 @@ export default function NewPostPage() {
               </div>
             </div>
             <div>
-              <ImageUpload 
-                label="Cover Image" 
-                value={mainImageFiles} 
-                onChange={setMainImageFiles} 
-                multiple={false} 
+              <ImageUpload
+                label="Cover Image"
+                value={mainImageFiles}
+                onChange={setMainImageFiles}
+                multiple={false}
               />
             </div>
           </div>
@@ -165,11 +168,11 @@ export default function NewPostPage() {
                 />
               </div>
               <div>
-                <ImageUpload 
-                  label="Author Photo" 
-                  value={authorImageFiles} 
-                  onChange={setAuthorImageFiles} 
-                  multiple={false} 
+                <ImageUpload
+                  label="Author Photo"
+                  value={authorImageFiles}
+                  onChange={setAuthorImageFiles}
+                  multiple={false}
                   disableMetadata={true}
                 />
               </div>
@@ -186,7 +189,39 @@ export default function NewPostPage() {
           </div>
         </AccordionSection>
 
-        {/* ── 4. Content Editor ── */}
+        {/* ── 4. Body Image Loader ── */}
+        <div className="bg-gray-800/50 border border-gray-700 p-4 rounded-lg">
+          <div className="flex items-center justify-between mb-4 border-b border-gray-700 pb-2">
+            <p className="text-xs font-bold text-[#f8ed1a] uppercase flex items-center gap-2">
+              📸 Body Image Loader
+            </p>
+            <span className="text-[10px] text-gray-500 uppercase font-bold">
+              Use this to add images inside the article
+            </span>
+          </div>
+          <div className="flex flex-col md:flex-row gap-6 items-start">
+            <div className="flex-1 w-full">
+              <ImageUpload
+                label=""
+                value={bodyImages}
+                onChange={setBodyImages}
+                multiple={true}
+                disableMetadata={true}
+              />
+            </div>
+            <div className="w-full md:w-1/3 bg-[#1a1a1a] p-4 rounded border border-gray-700 text-xs text-gray-400">
+              <p className="font-bold text-white mb-2 uppercase">How to insert:</p>
+              <ol className="list-decimal list-inside space-y-1">
+                <li>Upload image here.</li>
+                <li>Wait for the thumbnail to appear.</li>
+                <li>Go to the editor below.</li>
+                <li>Click the <span className="text-green-400 font-bold">&quot;Insert Uploaded Img&quot;</span> button.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        {/* ── 5. Content Editor ── */}
         <div className="border border-gray-800 p-6 rounded-xl bg-[#1a1a1a] shadow-lg pb-20">
           <h3 className="text-sm font-black text-[#f8ed1a] uppercase mb-4">
             📝 Post Content
@@ -202,16 +237,13 @@ export default function NewPostPage() {
                 required
               />
             </div>
-            <div>
-              <label className={labelCls}>Body Content (HTML / Markdown)</label>
-              <textarea
-                name="content"
-                rows={20}
-                placeholder="Write your article here..."
-                className="w-full bg-gray-900 rounded p-3 text-white border border-gray-700 focus:border-[#f8ed1a] outline-none text-sm font-mono"
-                required
-              />
-            </div>
+            <HtmlEditor
+              label="Body Content (HTML)"
+              name="content"
+              placeholder="Write your article here..."
+              required
+              latestUploadedImageUrl={lastUploadedUrl}
+            />
           </div>
         </div>
 
