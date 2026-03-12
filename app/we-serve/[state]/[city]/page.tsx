@@ -167,7 +167,7 @@ export default async function CityPage({ params }: Props) {
                             {/* Right column — city image with fallback */}
                             <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
                                 <Image
-                                    src={city.benefitsImage ?? "/var-a-exterior.jpg"}
+                                    src={city.benefitsImage ?? "/houses/Houses_21.png"}
                                     alt={`We buy houses in ${city.name}`}
                                     fill
                                     className="object-cover"

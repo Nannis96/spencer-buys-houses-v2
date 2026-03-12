@@ -266,7 +266,7 @@ export default function AboutPage() {
                         {/* Image */}
                         <div className="w-full lg:w-7/12 flex-shrink-0">
                             <Image
-                                src="/spencer.jpeg"
+                                src="/spencer_flayer.jpeg"
                                 alt="Spencer Buys Houses — Memphis local home buyer"
                                 width={520}
                                 height={600}
@@ -361,6 +361,71 @@ export default function AboutPage() {
                                 {item}
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Why Work With Spencer? ─────────────────────────────────────── */}
+            <section className="py-16 lg:py-20 border-t border-white/6" aria-labelledby="why-spencer-heading">
+                <div className="mx-auto max-w-6xl px-4 lg:px-8">
+                    <div className="text-center mb-10">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold uppercase tracking-wide">
+                            WHY WORK WITH SPENCER?
+                        </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                        <div>
+                            <h2 id="why-spencer-heading" className="text-2xl md:text-3xl font-bold text-white mb-4">
+                                A PROVEN TRACK RECORD
+                            </h2>
+                            <p className="text-gray-400 leading-relaxed mb-4">
+                                In the last 10 years I’ve helped hundreds of homeowners and closed on over
+                                500 homes. Along buying homes, my team has managed hundreds of rentals, built
+                                neighborhoods, and handled countless construction projects. My track record speaks
+                                for itself. I’ve been able to succeed time and time again by buying properties and
+                                helping homeowners sell their unwanted homes.
+                            </p>
+                            <div className="flex flex-wrap gap-3 mt-4">
+                                <div className="flex items-center gap-3 bg-[var(--color-primary-dark)]/5 rounded-lg px-4 py-3">
+                                    <Award className="h-6 w-6 text-[var(--color-text-yellow)]" />
+                                    <div>
+                                        <div className="text-sm text-gray-300 font-semibold">500+ Homes</div>
+                                        <div className="text-xs text-gray-500">Closed in 10 years</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 bg-[var(--color-primary-dark)]/5 rounded-lg px-4 py-3">
+                                    <Home className="h-6 w-6 text-[var(--color-text-yellow)]" />
+                                    <div>
+                                        <div className="text-sm text-gray-300 font-semibold">Hundreds Managed</div>
+                                        <div className="text-xs text-gray-500">Rentals & projects</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">TRUST & TRANSPARENCY</h3>
+                            <p className="text-gray-400 leading-relaxed mb-4">
+                                Clear communication, ethical practices, and building longterm relationships are at the
+                                center of what we do. Whether you’re a seller, lender, or investor, my goal is to create
+                                a transparent process that benefits everyone involved.
+                            </p>
+
+                            <ul className="space-y-3 mt-4">
+                                {[
+                                    "Clear, timely communication",
+                                    "Ethical and respectful service",
+                                    "Transparent offers with no hidden fees",
+                                    "Long-term relationships, not one-off deals",
+                                ].map((item) => (
+                                    <li key={item} className="flex items-start gap-3">
+                                        <Check className="h-5 w-5 text-[var(--color-text-yellow)] mt-1" />
+                                        <span className="text-gray-300">{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </section>

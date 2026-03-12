@@ -117,7 +117,7 @@ export function CashOfferContent() {
                             <div className="w-full overflow-hidden rounded-2xl shadow-md border border-white/10">
                                 <div className="relative w-full aspect-[16/9]">
                                     <Image
-                                        src="/var-a-exterior.jpg"
+                                        src="/houses/Houses_24.png"
                                         alt="A quiet Memphis neighborhood with tree-lined streets and homes in good condition"
                                         fill
                                         sizes="(max-width: 1024px) 100vw, 800px"

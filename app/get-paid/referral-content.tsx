@@ -296,7 +296,7 @@ export function ReferralContent() {
                             <div className="w-full overflow-hidden rounded-2xl shadow-md border border-white/10">
                                 <div className="relative w-full aspect-[4/3]">
                                     <Image
-                                        src="/var-a-exterior.jpg"
+                                        src="/houses/Houses_20.png"
                                         alt="Overhead view of a sunny suburban neighborhood in Memphis, TN"
                                         fill
                                         sizes="(max-width: 1024px) 100vw, 600px"

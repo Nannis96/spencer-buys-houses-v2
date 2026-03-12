@@ -42,7 +42,7 @@ export function AboutSection() {
                         <div className="w-full max-w-full lg:max-w-4xl overflow-hidden rounded-2xl shadow-md">
                             <div className="relative w-full aspect-[16/9]">
                                 <Image
-                                    src="/var-a-exterior.jpg"
+                                    src="/houses/Houses_22.png"
                                     alt="Exterior view of a house"
                                     fill
                                     sizes="(max-width: 1024px) 100vw, 1792px"

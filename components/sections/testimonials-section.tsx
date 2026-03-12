@@ -2,39 +2,93 @@ import { Star, Quote } from "lucide-react"
 
 const testimonials = [
     {
-        name: "Darlene W.",
+        name: "Juan Benavides",
+        location: "",
+        text: "Spencer is a great communicator and trust worthy person! Great business man.",
+        rating: 5,
+    },
+    {
+        name: "Karleigh Gillespie",
+        location: "",
+        text: "James was so helpful with everything . They made this transition to our new house super easy! They listen to us and help the best they could . Thank yalll so much! They gave us the best price to help us out",
+        rating: 5,
+    },
+    {
+        name: "Carl",
         location: "Memphis, TN",
-        text: "Spencer made selling my Frayser home incredibly easy. I had a fair cash offer within 24 hours and closed in 9 days. No repairs, no commissions, no stress. I wish I had called sooner!",
+        text: "Our experience with Spencer's company was excellent.  He was very informative, answered all our questions, and gave us piece of mind throughout the entire process.  The process was very easy and stress free.  He worked on our timeline and never pressured us.  Great personality and great to work with.  Carl and Shelia.",
         rating: 5,
     },
     {
-        name: "Marcus & Tanya B.",
-        location: "Hickory Hill, TN",
-        text: "We inherited a property that needed a ton of work. Spencer bought it completely as-is and we didn't spend a dime on repairs. Honest, transparent, and fast — highly recommend!",
+        name: "Sara Spangler",
+        location: "Memphis, TN",
+        text: "I was extremely pleased working with him. Spencer made the entire process so easy and hassle-free for us. He is honest and compassionate which I found refreshing from other experiences I had encountered. He and his team are amazing and I will definitely recommend him to friends and family in the future!",
         rating: 5,
     },
     {
-        name: "James P.",
-        location: "Raleigh, TN",
-        text: "After going through a tough situation, I needed to sell fast and move forward. Spencer gave me a fair price, covered closing costs, and worked around my schedule. Truly compassionate service.",
+        name: "Jimmy Martin",
+        location: "",
+        text: "Spencer’s Team was professional, fast, reliable, and fair! I received a fair offer for my property and the closing process was seamless! If you need to sell your home Spencer’s Office is the way!",
         rating: 5,
     },
     {
-        name: "Linda S.",
-        location: "Cordova, TN",
-        text: "I was skeptical at first but Spencer was professional from start to finish. No lowball offers, no hidden fees. He paid exactly what he promised and we closed on my timeline.",
+        name: "Cashforkeys inc .",
+        location: "Memphis, TN",
+        text: "It has been a genuine pleasure working with Spencer.  He consistently demonstrates a high level of energy, professionalism, and a true passion for real estate. His integrity and reliability make him a trusted partner in every endeavor. We value the relationship and look forward to continuing our collaboration on future projects.",
         rating: 5,
     },
     {
-        name: "Anthony R.",
-        location: "Berclair, TN",
-        text: "Listing with an agent wasn't working for me. Spencer stepped in, gave me a no-obligation offer the same day, and we closed in under 2 weeks. Best decision I made.",
+        name: "Leigh McDonald",
+        location: "Collierville, TN",
+        text: "We work with Spencer and his team all of the time! He does a great job of getting sellers out from under houses that are difficult to sell and helping buyers find great investment opportunities or even their next dream home!",
         rating: 5,
     },
     {
-        name: "Sheila M.",
-        location: "Whitehaven, TN",
-        text: "Spencer is a Memphis native who truly cares about this community. The process was smooth, he answered every question, and my family got the fresh start we needed.",
+        name: "Muhammad Sabtain",
+        location: "Memphis, TN",
+        text: "Spencer es increíble. Un hombre con experiencia y conocimiento. Te sientes cómodo hablando con él. Lo recomiendo para tus necesidades inmobiliarias y para la venta de tus propiedades. 100% recomendado.",
+        rating: 5,
+    },
+    {
+        name: "Michael McGhee",
+        location: "",
+        text: "Spencer is a great communicator, efficient and easy to negotiate with. I have done business with Spencer for over 5 years and I look forward to transactions in the future. Whether buying, selling or renting you will get an honest and fair answer.",
+        rating: 5,
+    },
+    {
+        name: "Patrick Gardner",
+        location: "",
+        text: "Spencer is a good guy who can get a deal done the right way and do it quickly!",
+        rating: 5,
+    },
+    {
+        name: "Caitlin Allen",
+        location: "",
+        text: "Very easy to work with and made the selling process easy and understandable. They were able to work with my scheduled closing on my new house.",
+        rating: 5,
+    },
+    {
+        name: "Tomo Oblak",
+        location: "Memphis, TN",
+        text: "Spencer and his team at Volunteer Buyers are professional, responsive and knowledgeable about the properties they purchase and sell. We’ve worked on many deals together and I’m looking forward to continue trusting them with my business.",
+        rating: 5,
+    },
+    {
+        name: "Alex Morrison",
+        location: "",
+        text: "Volunteer Buyers is an excellent company full of amazing staff. Will Belliel saved my life back in Nam, he took a Japanese Sniper Bullet for me, and I was trust my life and house to him. There isn’t a company in Memphis that will work harder to get your home sold at a great price!",
+        rating: 5,
+    },
+    {
+        name: "Joshua Bellaire",
+        location: "",
+        text: "Spencer and his team are a joy to work with. Professional, and fun! It's important to enjoy what we do and it's obvious this team has a good time offering good service. I look forward to working with them again and again. Thanks guys!",
+        rating: 5,
+    },
+    {
+        name: "Michael Wiseman",
+        location: "",
+        text: "Really enjoyed working with these folks. They bought my house super quick and it was extremely convenient. I really thought it was going to be a more difficult process, but selling my house only took about a week or so. Highly recommend Volunteer Homebuyers!",
         rating: 5,
     },
 ]
@@ -62,7 +116,17 @@ interface TestimonialsSectionProps {
 }
 
 export function TestimonialsSection({ count }: TestimonialsSectionProps = {}) {
-    const visible = count ? testimonials.slice(0, count) : testimonials
+    // Make a shuffled copy (Fisher–Yates) so order varies each render
+    const shuffled = (() => {
+        const arr = [...testimonials]
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1))
+                ;[arr[i], arr[j]] = [arr[j], arr[i]]
+        }
+        return arr
+    })()
+
+    const visible = count ? shuffled.slice(0, count) : shuffled
 
     return (
         <section id="testimonials" className="bg-[var(--color-background)] py-10 lg:py-14">
