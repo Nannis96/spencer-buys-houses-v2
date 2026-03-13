@@ -12,8 +12,9 @@ const nextConfig: NextConfig = {
         hostname: 'randomuser.me',
       },
       {
+        // Restricted to S3 subdomains only. AWS_BUCKET_NAME must not contain wildcards.
         protocol: 'https',
-        hostname: '*.amazonaws.com',
+        hostname: '*.s3.amazonaws.com',
       },
     ],
   },

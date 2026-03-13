@@ -4,6 +4,21 @@ import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import crypto from 'crypto';
 
+// Validate required environment variables at module load time (server-side only).
+// This surfaces missing config immediately instead of failing silently at runtime.
+const requiredEnvVars = [
+  'AWS_ACCESS_KEY_ID',
+  'AWS_SECRET_ACCESS_KEY',
+  'AWS_REGION',
+  'AWS_BUCKET_NAME',
+] as const;
+
+for (const key of requiredEnvVars) {
+  if (!process.env[key]) {
+    throw new Error(`Missing required environment variable: ${key}. Check your .env file.`);
+  }
+}
+
 const s3 = new S3Client({
   region: process.env.AWS_REGION!,
   credentials: {
