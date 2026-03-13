@@ -594,6 +594,135 @@ export default function HowWeBuyHousesPage() {
                     </div>
                 </section>
 
+                {/* ── New: Homeowner Checklist ── */}
+                <section id="homeowner-checklist" className="bg-[var(--color-background)] py-10 lg:py-14">
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                        <div className="text-center mb-8">
+                            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                                Homeowner  {" "}
+                                <span className="text-[var(--color-text-yellow)]">Checklist</span>
+                            </h2>
+                            <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                                We are now moving towards closing and wanted to give you
+                                an idea of what to expect. Everything moves super fast, so we
+                                need your cooperation to make things as speedy as possible.
+                                This can also serve as a checklist!
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">In person Appointments (Days 1-4)</h3>
+                                <ul className="text-gray-400 list-inside space-y-2">
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Access</strong> — This component is critical to a speedy closing. Generally,
+                                        we get photos of the home within 72 hours of signing the Purchase and
+                                        Sale Agreement.
+                                    </li>
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Keys</strong> — If the home is vacant or the owner doesn’t live nearby, we will place a
+                                        lockbox on the property to gain access and move things along quickly
+                                    </li>
+                                </ul>
+                            </article>
+
+                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">Buyer Walk-Throughs (Days 5-10)</h3>
+                                <ul className="text-gray-400 list-inside space-y-2">
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Contractor Bids</strong> — Firming up our numbers is vital to making a wise investment.
+                                        This is a crucial piece tour success.
+                                    </li>
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Walk-Throughs</strong> — Buying a home can be a very difficult task, but we’ve got it
+                                        down to a science. This involves getting our team inside the house within the
+                                        first ten days of the contract period. This might include contractors, insurance,
+                                        the finance team, the owner, and any specialists or experts needed to determine if this is the right fit for our needs as an investment company.
+                                    </li>
+                                </ul>
+                            </article>
+
+                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">Due Diligence (Days 11-21)</h3>
+                                <ul className="text-gray-400 list-inside space-y-2">
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Rental Property</strong> — Provide tenant information, lease, rent payment history,
+                                        and similar information. All of this will be placed on the settlement statement
+                                        and pro-rated.
+                                    </li>
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Mortgage or Liens</strong> — or liens, expected payoffs and documents to release the liens.
+                                    </li>
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Inherited Home</strong> — death certificates, affidavits, and other supporting
+                                        ownership documents.
+                                    </li>
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Vacate the Home</strong> — prepare to move out and gather your belongings.
+                                        Turn utilities off, cancel insurance, and confirm.
+                                    </li>
+                                </ul>
+                            </article>
+
+                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">Closing</h3>
+                                <p className="text-gray-400">
+                                    <strong className="text-[var(--color-primary-dark)]">Closing Day: </strong>You will show up for closing to sign the documents and
+                                    collect a cashier's check. If you prefer, we can mail the closing papers
+                                    to you, and you can receive a wire to your bank account.
+                                </p>
+                            </article>
+                        </div>
+
+                        <div className="mt-10 text-center">
+                            <h3 className="text-2xl font-bold text-white mb-3">
+                                SELL YOUR MEMPHIS HOUSE FAST FOR CASH — {" "}
+                                <span className="text-[var(--color-text-yellow)]">NO STRESS, NO DELAYS!</span>
+                            </h3>
+                            <p className="text-gray-400 max-w-3xl mx-auto">
+                                Spencer Buys Houses is your trusted local cash
+                                home buyer in Memphis, Tennessee, offering a fast,
+                                hassle-free solution to sell your house for cash.
+                                Whether you’re relocating, managing an inherited
+                                property, or need to sell your house fast in Memphis
+                                TN, our same-day cash offers eliminate stress and
+                                delays. Learn how our home buying process works!
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ── New: Closing Day (brief checklist) ── */}
+                <section id="closing-day" className="bg-[var(--color-background)] py-10 lg:py-14">
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                        <div className="text-center mb-6">
+                            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                <span className="text-[var(--color-text-yellow)]">Closing</span>
+                                {" "}Day</h2>
+                            <p className="text-gray-400 max-w-2xl mx-auto">
+                                What to bring and what to expect on the day you close the sale.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h4 className="text-[var(--color-primary-dark)] font-semibold mb-2">Bring Identification</h4>
+                                <p className="text-gray-400 text-sm">Have a valid government-issued ID (driver’s license or passport) for notarization.</p>
+                            </div>
+
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h4 className="text-[var(--color-primary-dark)] font-semibold mb-2">Sign the Documents</h4>
+                                <p className="text-gray-400 text-sm">You’ll sign the deed transfer, settlement statement, and any other required paperwork.</p>
+                            </div>
+
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h4 className="text-[var(--color-primary-dark)] font-semibold mb-2">Collect Your Funds</h4>
+                                <p className="text-gray-400 text-sm">Choose whether to receive your proceeds via wire transfer or a cashier's check.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* ── 4. CTA Banner ── */}
                 <CallNowBanner
                     badge="GET YOUR OFFER TODAY"

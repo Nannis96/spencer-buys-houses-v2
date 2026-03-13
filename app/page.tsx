@@ -2,6 +2,7 @@ import { HeroBold } from "@/components/sections/hero-bold"
 import { TrustBar } from "@/components/sections/trust-bar"
 import { ProcessSection } from "@/components/sections/process-section"
 import { AboutSection } from "@/components/sections/about-section"
+import { TypesOfHomesSection } from "@/components/sections/types-of-homes-section"
 import { BenefitsSection } from "@/components/sections/benefits-section"
 import { TestimonialsSection } from "@/components/sections/testimonials-section"
 import { FAQSection } from "@/components/sections/faq-section"
@@ -22,11 +23,14 @@ export default function Home() {
       {/* 4. About Spencer — local buyer */}
       <AboutSection />
 
+      {/* 4.5 Types of homes we buy */}
+      <TypesOfHomesSection />
+
       {/* 5. Benefits + comparison table */}
       <BenefitsSection />
 
       {/* 6. Testimonials — Memphis homeowners */}
-      <TestimonialsSection />
+      <TestimonialsSection count={6} />
 
       {/* 7. FAQ — SEO-rich Q&A */}
       <FAQSection />
