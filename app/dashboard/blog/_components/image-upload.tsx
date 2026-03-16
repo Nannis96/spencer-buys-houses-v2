@@ -42,7 +42,7 @@ export default function ImageUpload({
         const newImages: ImageFile[] = [];
 
         for (const file of acceptedFiles) {
-          const { signedUrl, publicUrl } = await getPresignedUrl(file.type, 'blog');
+          const { signedUrl, publicUrl } = await getPresignedUrl(file.type, file.size, 'blog');
           
           await fetch(signedUrl, {
             method: 'PUT',

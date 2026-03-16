@@ -38,7 +38,7 @@ const ALLOWED_TYPES = new Set([
 /**
  * Max file size (5MB)
  */
-export const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 /**
  * Map MIME → extension
@@ -89,7 +89,7 @@ export async function getPresignedUrl(
     expiresIn: 60,
   });
 
-  const publicUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${fileName}`;
+  const publicUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 
   return {
     signedUrl,
