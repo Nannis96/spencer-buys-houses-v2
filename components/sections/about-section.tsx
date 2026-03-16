@@ -22,7 +22,8 @@ export function AboutSection() {
                             About Spencer Buys Houses
                         </span>
                         <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
-                            Sell Your Memphis House Fast for Cash
+                            Sell Your Memphis House {" "}
+                            <span className="text-[var(--color-text-yellow)]">Fast for Cash</span>
                         </h2>
                         <p className="text-gray-400 leading-relaxed mb-4">
                             Spencer Buys Houses is your trusted local cash home buyer in Memphis, Tennessee, offering a fast, hassle-free solution to sell your Memphis house fast for cash. Whether you’re relocating, managing an inherited property, or need to sell your house fast in Memphis TN, our same-day cash offers eliminate stress and delays. Learn how our home buying process works!

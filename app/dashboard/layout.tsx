@@ -14,7 +14,7 @@ export default async function DashboardLayout({
     }
 
     return (
-        <div className="min-h-screen bg-[#1a1a1a] text-white px-6 md:px-8 lg:px-22 pt-16 md:pt-22 font-sans">
+        <div className="min-h-screen bg-[var(--color-background)] text-white px-6 md:px-10 lg:px-20 pt-16 md:pt-22 lg:pt-30 font-sans">
             {children}
         </div>
     )

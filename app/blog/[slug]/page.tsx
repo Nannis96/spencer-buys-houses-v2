@@ -57,7 +57,7 @@ export default async function BlogPostPage(props: {
   });
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-gray-200 font-sans">
+    <div className="min-h-screen bg-[var(--color-background)] text-gray-200 font-sans">
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
 
         {/* ── Breadcrumb ── */}
@@ -75,7 +75,7 @@ export default async function BlogPostPage(props: {
         </h1>
 
         {/* ── Meta Row ── */}
-        <div className="flex items-center gap-4 mb-10 pb-8 border-b border-gray-800">
+        <div className="flex items-center gap-4 mb-10 pb-8 border-b border-[var(--color-primary)]/60">
           {post.authorImage && (
             <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#529e14] flex-shrink-0">
               <Image src={post.authorImage} alt={post.authorName || 'Author'} fill className="object-cover" />
@@ -159,7 +159,7 @@ export default async function BlogPostPage(props: {
         <div className="mt-12 text-center">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-black text-[#f8ed1a] uppercase tracking-widest border border-[#f8ed1a]/30 hover:border-[#f8ed1a] px-6 py-3 rounded-lg transition-all hover:bg-[#f8ed1a]/5"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-lg border border-white/20 bg-[var(--color-secondary)] text-white hover:bg-[var(--color-secondary)]/80 font-semibold text-base transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
           >
             ← Back to All Articles
           </Link>

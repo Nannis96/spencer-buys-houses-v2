@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import prisma from '@/lib/prisma';
+import { LayoutDashboard, FileText } from "lucide-react"
 
 export default async function AdminBlogPage() {
   const posts = await prisma.post.findMany({
@@ -8,10 +9,10 @@ export default async function AdminBlogPage() {
   });
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="mx-auto max-w-7xl px-4 lg:px-10">
 
       {/* ── Header ── */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4 border-b border-gray-800 pb-8">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4 border-b border-[var(--color-primary)]/60 pb-8">
         <div>
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">
@@ -38,77 +39,100 @@ export default async function AdminBlogPage() {
         </Link>
       </div>
 
-      {/* ── Post List ── */}
-      <div className="space-y-4">
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="bg-[#222222] p-4 border border-gray-800 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-6 hover:border-gray-700 transition-colors shadow-md group"
-          >
-            <div className="flex items-center gap-5 w-full sm:w-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Sidebar/Quick Links */}
+        <div className="lg:col-span-1 space-y-6">
+          <div className="bg-white/5 border border-[var(--color-primary)]/60 rounded-2xl p-6 backdrop-blur-sm">
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <LayoutDashboard className="h-5 w-5 text-[var(--color-primary)]" />
+              Navigation
+            </h2>
+            <nav className="space-y-2">
+              <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
+                <LayoutDashboard className="h-5 w-5" />
+                Dashboard
+              </Link>
+              <Link href="/dashboard/blog" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-medium transition-colors">
+                <FileText className="h-5 w-5" />
+                Blog
+              </Link>
+            </nav>
+          </div>
+        </div>
 
-              {/* Thumbnail */}
-              <div className="relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-gray-800 bg-gray-900 group-hover:border-[#f8ed1a]/30 transition-colors">
-                {post.mainImage ? (
-                  <Image
-                    src={post.mainImage}
-                    alt={post.title}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-2xl grayscale opacity-50">
-                    📰
+        {/* ── Post List ── */}
+        <div className="lg:col-span-2 space-y-4">
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              className="bg-[#222222] p-4 border border-gray-800 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-6 hover:border-[var(--color-primary)]/60 transition-colors shadow-md group"
+            >
+              <div className="flex items-center gap-5 w-full sm:w-auto">
+
+                {/* Thumbnail */}
+                <div className="relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-gray-800 bg-gray-900 group-hover:border-[#f8ed1a]/30 transition-colors">
+                  {post.mainImage ? (
+                    <Image
+                      src={post.mainImage}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-2xl grayscale opacity-50">
+                      📰
+                    </div>
+                  )}
+                </div>
+
+                {/* Info */}
+                <div>
+                  <h3 className="font-bold text-white text-lg line-clamp-1 group-hover:text-[#f8ed1a] transition-colors">
+                    {post.title || 'Untitled Post'}
+                  </h3>
+
+                  <div className="flex items-center gap-3 mt-2 flex-wrap">
+                    <span className="text-xs text-gray-500 font-bold uppercase tracking-wide">
+                      {new Date(post.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })}
+                    </span>
                   </div>
-                )}
-              </div>
-
-              {/* Info */}
-              <div>
-                <h3 className="font-bold text-white text-lg line-clamp-1 group-hover:text-[#f8ed1a] transition-colors">
-                  {post.title || 'Untitled Post'}
-                </h3>
-
-                <div className="flex items-center gap-3 mt-2 flex-wrap">
-                  <span className="text-xs text-gray-500 font-bold uppercase tracking-wide">
-                    {new Date(post.createdAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </span>
                 </div>
               </div>
+
+              {/* Edit Button */}
+              <Link
+                href={`/dashboard/blog/${post.id}/edit`}
+                className="w-full sm:w-auto text-center text-[#f8ed1a] hover:text-[#1a1a1a] hover:bg-[#f8ed1a] font-black uppercase text-xs tracking-widest border border-[#f8ed1a]/30 hover:border-[#f8ed1a] px-6 py-3 rounded-lg transition-all"
+              >
+                Edit Post
+              </Link>
             </div>
+          ))}
 
-            {/* Edit Button */}
-            <Link
-              href={`/dashboard/blog/${post.id}/edit`}
-              className="w-full sm:w-auto text-center text-[#f8ed1a] hover:text-[#1a1a1a] hover:bg-[#f8ed1a] font-black uppercase text-xs tracking-widest border border-[#f8ed1a]/30 hover:border-[#f8ed1a] px-6 py-3 rounded-lg transition-all"
-            >
-              Edit Post
-            </Link>
-          </div>
-        ))}
+          {/* Empty State */}
+          {posts.length === 0 && (
+            <div className="text-center py-24 border-2 border-dashed border-gray-800 rounded-xl bg-white/5">
+              <div className="text-4xl mb-4 opacity-30">📭</div>
+              <p className="text-gray-500 font-bold uppercase tracking-widest">
+                No posts found
+              </p>
+              <p className="text-gray-600 text-sm mt-2">
+                Create your first blog post to see it here.
+              </p>
+              <Link
+                href="/dashboard/blog/new"
+                className="inline-block mt-6 bg-[#529e14] hover:bg-[#458510] text-white px-6 py-3 rounded-lg font-black uppercase tracking-wide transition-all"
+              >
+                + Create First Post
+              </Link>
+            </div>
+          )}
+        </div>
 
-        {/* Empty State */}
-        {posts.length === 0 && (
-          <div className="text-center py-24 border-2 border-dashed border-gray-800 rounded-xl bg-white/5">
-            <div className="text-4xl mb-4 opacity-30">📭</div>
-            <p className="text-gray-500 font-bold uppercase tracking-widest">
-              No posts found
-            </p>
-            <p className="text-gray-600 text-sm mt-2">
-              Create your first blog post to see it here.
-            </p>
-            <Link
-              href="/dashboard/blog/new"
-              className="inline-block mt-6 bg-[#529e14] hover:bg-[#458510] text-white px-6 py-3 rounded-lg font-black uppercase tracking-wide transition-all"
-            >
-              + Create First Post
-            </Link>
-          </div>
-        )}
       </div>
     </div>
   );
