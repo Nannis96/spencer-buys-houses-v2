@@ -67,6 +67,47 @@ function SectionHeading({ children, className }: { children: React.ReactNode; cl
     )
 }
 
+// Calcula las reparaciones base (copiado de route (1).ts)
+function calculateRepairs(sqft: number, yearBuilt: number, propertyType: string, conditionScale: number = 3) {
+    let baseCost = 15;
+
+    if (yearBuilt > 0) {
+        if (yearBuilt < 1950) baseCost = 75;
+        else if (yearBuilt < 1978) baseCost = 60;
+        else if (yearBuilt < 1990) baseCost = 40;
+        else if (yearBuilt < 2000) baseCost = 25;
+    }
+
+    const typeMultipliers: Record<string, number> = {
+        "Single Family": 1.0,
+        "Multi-Family": 1.3,
+        Apartment: 1.3,
+        Condo: 0.6,
+        Townhouse: 0.8,
+        "Mobile Home": 1.5,
+        Land: 0.0,
+    };
+
+    const conditionMultipliers: Record<number, number> = {
+        0: 0.0,
+        1: 0.30,
+        2: 0.60,
+        3: 1.0,
+        4: 1.5,
+        5: 2.0,
+    };
+
+    const typeMult = typeMultipliers[propertyType] || 1.0;
+    const conditionMult = conditionMultipliers[conditionScale] !== undefined ? conditionMultipliers[conditionScale] : 1.0;
+
+    const repairPerSqft = baseCost * typeMult * conditionMult;
+
+    return {
+        total: Math.round(sqft * repairPerSqft),
+        perSqft: Number(repairPerSqft.toFixed(2)),
+    };
+}
+
 /* ─── Component ───────────────────────────────────────────────────────────── */
 
 export function PropertyDetailsForm() {
@@ -133,42 +174,18 @@ export function PropertyDetailsForm() {
             // Determine inputs for repair calc
             const sqft = Number(searchParams.get("squareFootage") ?? 0) || 0
             const propertyType = (searchParams.get("propertyType") || "Single Family")
-            const cond = Number(searchParams.get("condition") || "3") || 3
 
-            // Try to get yearBuilt from AVM subjectProperty or search params
+            // Read condition scale properly (allow 0). Default to 3 if not provided.
+            const condRaw = searchParams.get("condition")
+            const cond = condRaw !== null ? Math.max(0, Math.min(5, Number(condRaw))) : 3
+
+            // Try to get yearBuilt from AVM subjectProperty or search params; default to 0
             const yearBuiltRaw = avmData?.subjectProperty?.yearBuilt ?? searchParams.get("yearBuilt")
-            const yearBuilt = yearBuiltRaw ? Number(yearBuiltRaw) : undefined
+            const yearBuilt = yearBuiltRaw ? Number(yearBuiltRaw) : 0
 
-            // Calculate base cost per sqft following app.py logic
-            let baseCost = 15
-            if (yearBuilt !== undefined && !Number.isNaN(yearBuilt)) {
-                if (yearBuilt < 1950) baseCost = 75
-                else if (yearBuilt < 1978) baseCost = 60
-                else if (yearBuilt < 1990) baseCost = 40
-                else if (yearBuilt < 2000) baseCost = 25
-                else baseCost = 15
-            } else {
-                // conservative default when year built unknown
-                baseCost = 40
-            }
-
-            const typeMultipliers: Record<string, number> = {
-                "Single Family": 1.0,
-                "Multi-Family": 1.3,
-                Apartment: 1.3,
-                Condo: 0.6,
-                Townhouse: 0.8,
-                "Mobile Home": 1.5,
-                Land: 0.0,
-            }
-            const typeMult = typeMultipliers[propertyType] ?? 1.0
-
-            const conditionMultipliers: Record<number, number> = { 1: 0.4, 2: 0.7, 3: 1.0, 4: 1.35, 5: 1.75 }
-            const condMult = conditionMultipliers[cond] ?? 1.0
-
-            const repairPerSqft = baseCost * typeMult * condMult
-            const totalRepairs = Math.max(0, Math.round(sqft * repairPerSqft))
-
+            // Use shared repair calculation (now supports 0-5 condition scale)
+            const repairs = calculateRepairs(sqft, yearBuilt, propertyType, cond)
+            const totalRepairs = Math.max(0, repairs.total)
             setRepairCost(totalRepairs)
 
             // Compute final cash offer using priceRangeLow per instructions
@@ -179,7 +196,7 @@ export function PropertyDetailsForm() {
             }
 
             // Log to console as requested
-            console.log("Calculated repair cost:", totalRepairs)
+            console.log("Calculated repair cost:", totalRepairs, "perSqft:", repairs.perSqft, "conditionScale:", cond)
             console.log("Final cash offer (70% of priceRangeLow - repairs):", offer)
 
             // reflect success in URL so progress indicator can show final state
