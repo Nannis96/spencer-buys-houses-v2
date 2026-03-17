@@ -587,7 +587,7 @@ export function PropertyInfoForm() {
                     </div>
 
                     {/* Price row */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label htmlFor={id("askingPrice")} className="block text-xs text-gray-400 mb-1.5">
                                 What is your asking price?
@@ -610,7 +610,7 @@ export function PropertyInfoForm() {
                                 className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                             />
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Best time to call */}
                     <div>

@@ -507,7 +507,7 @@ export default function AboutPage() {
                         </p>
                     </div>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <CTAButton href="/get-a-cash-offer-today/">Get Your Free Cash Offer</CTAButton>
+                        <CTAButton href="/free-guide/">Download the Free Guide</CTAButton>
                     </div>
                 </div>
             </section>
