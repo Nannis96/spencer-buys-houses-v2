@@ -502,7 +502,7 @@ export default function AboutPage() {
                             >
                                 901-621-8799
                             </a>
-                            . We would love to discuss what your home is worth and what we can offer
+                            We would love to discuss what your home is worth and what we can offer
                             with our Cash Offer Program.
                         </p>
                     </div>
