@@ -1,0 +1,39 @@
+# Utilizando la especificación moderna de Compose (ya no se requiere 'version')
+name: spencer-buys-houses-development
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # Sincroniza el código en tiempo real
+      - .:/app
+      # Volúmenes anónimos para evitar que host sobrescriba directorios del contenedor
+      - /app/node_modules
+      - /app/.next
+    environment:
+      # Sobrescribimos el host del DB para que apunte al servicio 'db'
+      - DATABASE_URL=postgresql://spencer_user:spencer_password@db:5432/spencer_db?schema=public
+    depends_on:
+      db:
+        condition: service_started
+    # Utilizando --host 0.0.0.0 para Next.js si fuera necesario en tu package.json
+    command: pnpm dev
+
+  db:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432" # Se mapea al puerto local 5432 para que puedas usar Prisma Studio en tu host
+    environment:
+      POSTGRES_USER: spencer_user
+      POSTGRES_PASSWORD: spencer_password
+      POSTGRES_DB: spencer_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+    name: spencer-postgres-data

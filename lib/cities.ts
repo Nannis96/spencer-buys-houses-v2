@@ -115,7 +115,7 @@ export const citiesData: StateData[] = [
                         description: "If you need to sell your house fast due to a divorce or job relocation, Spencer Buys Houses can offer you a quick cash offer for your house."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "How can I sell my house fast in Germantown?",
@@ -166,7 +166,7 @@ export const citiesData: StateData[] = [
                         description: "No need to fix anything weather it’s water damage or fire damage— we make the procedure easy."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "Do I need to make any repairs before selling my house in Hickory Hill?",
@@ -214,7 +214,7 @@ export const citiesData: StateData[] = [
                         description: "...you have inherited a property you don’t want, or life just threw you a curveball, we get it."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "Is Spencer Buys Houses a local Cordova company?",
@@ -267,7 +267,7 @@ export const citiesData: StateData[] = [
                         description: "We get it , selling a house in Whitehaven when you are already drowned seems like one more thing on your plate."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "Are there any fees or commissions?",
@@ -319,7 +319,7 @@ export const citiesData: StateData[] = [
                         description: "Inherited property can be a burden, especially if it needs repairs or is costing you money. We buy inherited homes fast and for cash, so you can walk away without lifting a finger."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "Do you buy houses in Berclair?",
@@ -369,7 +369,7 @@ export const citiesData: StateData[] = [
                         description: "If you’re behind on payments or getting notice of an auction, we can stop the foreclosure with a cash sale."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "Will I have to move out immediately after the sale?",
@@ -422,7 +422,7 @@ export const citiesData: StateData[] = [
                         description: "Expired listing? Vacant? We’ll pay cash where others won’t."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "Can you help if I’m facing foreclosure in Collierville or Whitehaven?",
@@ -485,7 +485,7 @@ export const citiesData: StateData[] = [
                         description: "Realtor couldn’t sell your Millington house? We’ll step in with a fast, fair cash deal."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "Can you help if I’m facing foreclosure in Millington?",
@@ -555,7 +555,7 @@ export const citiesData: StateData[] = [
                         description: "Empty houses just sitting there."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "How quickly can I sell my house in Somerville?",
@@ -600,7 +600,7 @@ export const citiesData: StateData[] = [
                         description: "Whether facing financial difficulties, relocating, downsizing, or seeking a fresh start, Spencer Buys Houses is here to assist."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "How does Spencer Buys Houses work to sell my home fast in Raleigh?",
@@ -664,7 +664,7 @@ export const citiesData: StateData[] = [
                         description: "Avoid the stress and sell now."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "How do I sell my Arlington, TN, house to Spencer Buys Houses?",
@@ -725,7 +725,7 @@ export const citiesData: StateData[] = [
             //             description: "Dealing with a probate home you don't want to manage? We make it simple and fast.",
             //         },
             //     ],
-            //     benefitsImage: "/var-a-exterior.jpg",
+            //     benefitsImage: "/houses/Houses_25.jpg.jpg",
             //     faqs: [
             //         {
             //             q: "Will I have to move out immediately after the sale?",
@@ -769,7 +769,7 @@ export const citiesData: StateData[] = [
                         description: "We work with you, no stress."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "Are there any hidden fees?",
@@ -816,7 +816,7 @@ export const citiesData: StateData[] = [
                         description: "Get rid of bad tenants and avoid costly fixes."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "What if I need to sell my house quickly in Hernando due to life changes??",
@@ -858,7 +858,7 @@ export const citiesData: StateData[] = [
                         description: "We help the house owners who want to sell their houses who want to sell their houses due to relocation."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "What if my house needs major repairs?",
@@ -904,7 +904,7 @@ export const citiesData: StateData[] = [
                         description: "Sell as-is, no work needed."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "Why Should I Choose Olive Branch Investments for My Real Estate Needs?",
@@ -946,7 +946,7 @@ export const citiesData: StateData[] = [
                         description: "Facing foreclosure, divorce, or inherited a property? We work with homeowners in any situation to provide a stress-free exit."
                     }
                 ],
-                benefitsImage: "/var-a-exterior.jpg",
+                benefitsImage: "/houses/Houses_25.jpg.jpg",
                 faqs: [
                     {
                         q: "What areas do you serve?",

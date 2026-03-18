@@ -11,6 +11,7 @@ import {
     ArrowRight,
     CheckCircle2,
 } from "lucide-react"
+import Image from "next/image"
 import { JsonLd } from "@/components/seo/json-ld"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
@@ -152,6 +153,35 @@ const steps = [
     },
 ]
 
+/* ─── sell to investor data ─────────────────────────────────────────────────── */
+
+const stepsInvestor = [
+    {
+        icon: Phone,
+        step: "01",
+        title: "Get a Quote",
+        description:
+            "Call us to receive a no-obligation cash offer for your property. We’ll gather basic details about your home(location, condition, your timeline) and provide a fair, competitive offer—usually within 24 hours.",
+        highlight: "Takes less than 2 minutes",
+    },
+    {
+        icon: ClipboardList,
+        step: "02",
+        title: "Due Diligence",
+        description:
+            "Once you accept the offer, we’ll handle all the paperwork and property evaluation. Our team verifies the property’s details while you sit back and relax—no repairs or inspections required from you.",
+        highlight: "No obligation whatsoever",
+    },
+    {
+        icon: CalendarCheck,
+        step: "03",
+        title: "Set a Closing Date",
+        description:
+            "Choose a closing date that works best for you—we can close in as little as 7 days or on your timeline. We work with a trusted local title company to ensure a smooth, transparent process.",
+        highlight: "Close in as little as 7 days",
+    },
+]
+
 /* ─── Selling benefits ───────────────────────────────────────────────────── */
 
 const sellingBenefits = [
@@ -280,7 +310,8 @@ export default function HowWeBuyHousesPage() {
                                 How The Process Works
                             </span>
                             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                                4 Simple Steps to Sell Your Memphis Home Fast
+                                <span className="text-[var(--color-text-yellow)]">4 Simple Steps</span>
+                                {" "} to Sell Your Memphis Home Fast
                             </h2>
                             <p className="text-gray-400 max-w-2xl mx-auto">
                                 We've made selling your house as straightforward as possible. Here's exactly what
@@ -352,60 +383,341 @@ export default function HowWeBuyHousesPage() {
                                     Why Choose Us
                                 </span>
                                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                                    Selling Your Memphis Home Can Be a Quick &amp; Easy Process
+                                    Selling Your Memphis Home Can Be A Quick & Easy Process
                                 </h2>
 
                                 <div className="space-y-5 text-gray-400 leading-relaxed">
                                     <p>
-                                        Spencer Buys Houses buys homes in and around Memphis (and other areas, too!). We're not
-                                        listing your house — we're actually the ones buying your home. Because we pay cash and
-                                        purchase your Memphis home directly from you, we're able to close quickly or on your
-                                        schedule.
+                                        Spencer Buys Houses buys houses in and around Memphis
+                                        (and other areas, too!). <strong className="text-white">
+                                            We’re not listing your house, we’re</strong>
+                                        actually the ones buying your home. Because <strong className="text-white">we pay cash</strong>
+                                        and are buying your Memphis home directly from you, we’re able
+                                        to close quickly (or on your schedule).
                                     </p>
                                     <p>
-                                        When you work with us there are <strong className="text-white">no fees and no commissions</strong> like
-                                        there are when you list your house with a traditional agent. You never have to worry about
-                                        extra costs coming out of your pocket or getting your house "market-ready." We want to buy
-                                        your house{" "}
+                                        When you work with us there are no fees and no commissions like
+                                        there are when you list your house with a traditional agent.
+                                        You never have to worry about any extra costs to sell your house
+                                        fast coming out of your pocket or even getting your house
+                                        “market-ready” to sell. We want to buy your house{" "}
                                         <strong className="text-white">as-is</strong>.
                                     </p>
                                     <p>
-                                        No matter how ugly or pretty it is, and no matter the location, we buy houses in Memphis
-                                        in any condition. Don't worry about fixing anything or cleaning your house again and
-                                        again for buyer after buyer. We don't care how dirty your house is or how many repairs are
-                                        needed — we love projects.
+                                        No matter how ugly or pretty it is and no matter the location,
+                                        we buy houses in Memphis in any condition.
                                     </p>
-                                    <div className="rounded-xl border border-[var(--color-primary-dark)]/20 bg-[var(--color-primary-dark)]/5 p-5">
-                                        <p className="text-[var(--color-primary-dark)] font-semibold">
-                                            From offer to close, cash in your hand in as little as 7 days.
-                                        </p>
-                                        <p className="text-gray-400 text-sm mt-2">
-                                            You can quickly eliminate the stress of that property and stop making utility,
-                                            tax, insurance, and mortgage payments. Don't wait 90+ days on the market when you
-                                            can have cash in hand next week.
-                                        </p>
-                                    </div>
-                                </div>
 
-                                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                                    <CTAButton href="/get-a-cash-offer-today/">See What We Can Offer You</CTAButton>
                                 </div>
                             </div>
 
                             {/* Right: benefits cards */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                {sellingBenefits.map(({ icon: Icon, title, description }) => (
-                                    <div
-                                        key={title}
-                                        className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary-dark)]/30 transition-colors group"
-                                    >
-                                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary-dark)]/10 group-hover:bg-[var(--color-primary-dark)]/20 transition-colors">
-                                            <Icon className="h-6 w-6 text-[var(--color-primary-dark)]" />
-                                        </div>
-                                        <h3 className="text-base font-bold text-white mb-2">{title}</h3>
-                                        <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
+                            <div className="flex items-center justify-center">
+                                <div className="w-full max-w-[500px] rounded-2xl overflow-hidden border border-white/10">
+                                    <Image
+                                        src="/houses/Houses_19.png"
+                                        alt="Houses"
+                                        width={560}
+                                        height={360}
+                                        className="w-full h-auto"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="rounded-xl border border-[var(--color-primary-dark)]/20 bg-[var(--color-primary-dark)]/5 p-5">
+                                <p className="text-[var(--color-primary-dark)] font-semibold">
+                                    From offer to close and cash in your hand in as little as 7 days.
+                                </p>
+                                <p className="text-gray-400 text-sm mt-2">
+                                    You can quickly eliminate the stress of that property and stop making
+                                    another utility payment, tax payment, insurance payment, mortgage
+                                    payment, or any other expenses tied to homeownership. If you decide
+                                    to put your house on the market and wait for over 90 days to finalize
+                                    the sale, you must consider all the costs of keeping that property
+                                    while it’s listed and during the waiting period before closing.
+                                </p>
+                            </div>
+                            <div className="rounded-xl border border-[var(--color-primary-dark)]/20 bg-[var(--color-primary-dark)]/5 p-5">
+                                <p className="text-[var(--color-primary-dark)] font-semibold">
+                                    Don’t worry about fixing anything or cleaning your house again and again for buyer after buyer.
+                                </p>
+                                <p className="text-gray-400 text-sm mt-2">
+                                    We don’t care how dirty your house is (we’ve seen worse!) or how many
+                                    repairs are needed. Is it a complete fixer? Great! We love projects.
+                                    We want to make an offer on your house today. Let us save you time
+                                    and put more money in your pocket.
+                                </p>
+                            </div>
+
+                        </div>
+                        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <CTAButton href="/get-a-cash-offer-today/">See What We Can Offer You</CTAButton>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ── 2. Process Steps ── */}
+                <section id="process" className="bg-[var(--color-background)] py-10 lg:py-14">
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8">
+
+                        <div className="text-center mb-16">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
+                                How The Process Works
+                            </span>
+                            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                                How To {" "}
+                                <span className="text-[var(--color-text-yellow)]">Sell My House To </span>
+                                An Investor
+                            </h2>
+                            <p className="text-gray-400 max-w-2xl mx-auto">
+                                The 3 Step Process:
+                            </p>
+                        </div>
+
+                        {/* Steps Investor grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative justify-items-center">
+                            {/* Connector bar (desktop) */}
+
+                            {stepsInvestor.map(({ icon: Icon, step, title, description, highlight }) => (
+                                <div
+                                    key={step}
+                                    className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary-dark)]/30 transition-colors group"
+                                >
+                                    <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-[var(--color-primary)]/30 to-transparent" />
+                                    {/* Step badge */}
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary)] text-[var(--color-background)] text-xs font-black">
+                                        {step}
                                     </div>
-                                ))}
+
+                                    {/* Icon */}
+                                    <div className="mt-4 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-primary)]/10 group-hover:bg-[var(--color-primary-dark)]/20 transition-colors">
+                                        <Icon className="h-8 w-8 text-[var(--color-primary)]" />
+                                    </div>
+
+                                    <h3 className="text-lg font-bold text-white mb-3">{title}</h3>
+                                    <p className="text-gray-400 text-sm leading-relaxed mb-4">{description}</p>
+
+                                    {/* Highlight pill */}
+                                    <span className="mt-auto inline-block rounded-full bg-[var(--color-primary)]/10 px-3 py-1 text-xs font-semibold text-[var(--color-primary)]">
+                                        {highlight}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* ── New: Benefits of selling to an investor ── */}
+                <section id="benefits-investor" className="bg-[var(--color-background)] py-10 lg:py-14">
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8">
+
+                        <div className="text-center mb-10">
+                            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+                                Benefits of Selling my House To {" "}
+                                <span className="text-[var(--color-text-yellow)]">An Investor?</span>
+
+                            </h2>
+                            <p className="text-gray-400 max-w-2xl mx-auto">
+                                Selling to an investor can simplify and speed up the sale of your home.
+                                Below are common benefits homeowners experience when working with investors.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <div className="flex items-start gap-4">
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary-dark)]/10">
+                                        <Clock className="h-6 w-6 text-[var(--color-primary-dark)]" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-white font-bold mb-1">Fast Closing</h3>
+                                        <p className="text-gray-400 text-sm">
+                                            One of the biggest benefits of selling to an investor is speed.
+                                            Traditional home sales can take weeks or even months, but investors
+                                            often close in as little as 7-14 days. This can be ideal if you’re facing a
+                                            time-sensitive situation like foreclosure, job relocation, or a family
+                                            emergency.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <div className="flex items-start gap-4">
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary-dark)]/10">
+                                        <Home className="h-6 w-6 text-[var(--color-primary-dark)]" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-white font-bold mb-1">Sell As-Is</h3>
+                                        <p className="text-gray-400 text-sm">
+                                            Investors typically buy homes "as-is," meaning you don’t have
+                                            to spend time or money on repairs. Whether your property needs
+                                            minor updates or major renovations, an investor will take it off
+                                            your hands.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <div className="flex items-start gap-4">
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary-dark)]/10">
+                                        <ShieldCheck className="h-6 w-6 text-[var(--color-primary-dark)]" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-white font-bold mb-1">No open houses</h3>
+                                        <p className="text-gray-400 text-sm">
+                                            No buyer contingencies, and no lengthy negotiations. Investors
+                                            usually pay in cash, which means fewer obstacles and a smoother
+                                            closing process.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <div className="flex items-start gap-4">
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary-dark)]/10">
+                                        <CalendarCheck className="h-6 w-6 text-[var(--color-primary-dark)]" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-white font-bold mb-1">Stay &amp; Pay</h3>
+                                        <p className="text-gray-400 text-sm">
+                                            Many investors offer flexible terms tailored to your needs, such as
+                                            allowing you to stay in the home after closing for a short period or
+                                            working around your schedule
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ── New: Homeowner Checklist ── */}
+                <section id="homeowner-checklist" className="bg-[var(--color-background)] py-10 lg:py-14">
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                        <div className="text-center mb-8">
+                            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                                Homeowner  {" "}
+                                <span className="text-[var(--color-text-yellow)]">Checklist</span>
+                            </h2>
+                            <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                                We are now moving towards closing and wanted to give you
+                                an idea of what to expect. Everything moves super fast, so we
+                                need your cooperation to make things as speedy as possible.
+                                This can also serve as a checklist!
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">In person Appointments (Days 1-4)</h3>
+                                <ul className="text-gray-400 list-inside space-y-2">
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Access</strong> — This component is critical to a speedy closing. Generally,
+                                        we get photos of the home within 72 hours of signing the Purchase and
+                                        Sale Agreement.
+                                    </li>
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Keys</strong> — If the home is vacant or the owner doesn’t live nearby, we will place a
+                                        lockbox on the property to gain access and move things along quickly
+                                    </li>
+                                </ul>
+                            </article>
+
+                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">Buyer Walk-Throughs (Days 5-10)</h3>
+                                <ul className="text-gray-400 list-inside space-y-2">
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Contractor Bids</strong> — Firming up our numbers is vital to making a wise investment.
+                                        This is a crucial piece tour success.
+                                    </li>
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Walk-Throughs</strong> — Buying a home can be a very difficult task, but we’ve got it
+                                        down to a science. This involves getting our team inside the house within the
+                                        first ten days of the contract period. This might include contractors, insurance,
+                                        the finance team, the owner, and any specialists or experts needed to determine if this is the right fit for our needs as an investment company.
+                                    </li>
+                                </ul>
+                            </article>
+
+                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">Due Diligence (Days 11-21)</h3>
+                                <ul className="text-gray-400 list-inside space-y-2">
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Rental Property</strong> — Provide tenant information, lease, rent payment history,
+                                        and similar information. All of this will be placed on the settlement statement
+                                        and pro-rated.
+                                    </li>
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Mortgage or Liens</strong> — or liens, expected payoffs and documents to release the liens.
+                                    </li>
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Inherited Home</strong> — death certificates, affidavits, and other supporting
+                                        ownership documents.
+                                    </li>
+                                    <li>
+                                        <strong className="text-[var(--color-primary-dark)]">Vacate the Home</strong> — prepare to move out and gather your belongings.
+                                        Turn utilities off, cancel insurance, and confirm.
+                                    </li>
+                                </ul>
+                            </article>
+
+                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">Closing</h3>
+                                <p className="text-gray-400">
+                                    <strong className="text-[var(--color-primary-dark)]">Closing Day: </strong>You will show up for closing to sign the documents and
+                                    collect a cashier's check. If you prefer, we can mail the closing papers
+                                    to you, and you can receive a wire to your bank account.
+                                </p>
+                            </article>
+                        </div>
+
+                        <div className="mt-10 text-center">
+                            <h3 className="text-2xl font-bold text-white mb-3">
+                                SELL YOUR MEMPHIS HOUSE FAST FOR CASH — {" "}
+                                <span className="text-[var(--color-text-yellow)]">NO STRESS, NO DELAYS!</span>
+                            </h3>
+                            <p className="text-gray-400 max-w-3xl mx-auto">
+                                Spencer Buys Houses is your trusted local cash
+                                home buyer in Memphis, Tennessee, offering a fast,
+                                hassle-free solution to sell your house for cash.
+                                Whether you’re relocating, managing an inherited
+                                property, or need to sell your house fast in Memphis
+                                TN, our same-day cash offers eliminate stress and
+                                delays. Learn how our home buying process works!
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ── New: Closing Day (brief checklist) ── */}
+                <section id="closing-day" className="bg-[var(--color-background)] py-10 lg:py-14">
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                        <div className="text-center mb-6">
+                            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                <span className="text-[var(--color-text-yellow)]">Closing</span>
+                                {" "}Day</h2>
+                            <p className="text-gray-400 max-w-2xl mx-auto">
+                                What to bring and what to expect on the day you close the sale.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h4 className="text-[var(--color-primary-dark)] font-semibold mb-2">Bring Identification</h4>
+                                <p className="text-gray-400 text-sm">Have a valid government-issued ID (driver’s license or passport) for notarization.</p>
+                            </div>
+
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h4 className="text-[var(--color-primary-dark)] font-semibold mb-2">Sign the Documents</h4>
+                                <p className="text-gray-400 text-sm">You’ll sign the deed transfer, settlement statement, and any other required paperwork.</p>
+                            </div>
+
+                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                                <h4 className="text-[var(--color-primary-dark)] font-semibold mb-2">Collect Your Funds</h4>
+                                <p className="text-gray-400 text-sm">Choose whether to receive your proceeds via wire transfer or a cashier's check.</p>
                             </div>
                         </div>
                     </div>

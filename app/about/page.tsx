@@ -266,7 +266,7 @@ export default function AboutPage() {
                         {/* Image */}
                         <div className="w-full lg:w-7/12 flex-shrink-0">
                             <Image
-                                src="/spencer.jpeg"
+                                src="/spencer_flayer.jpeg"
                                 alt="Spencer Buys Houses — Memphis local home buyer"
                                 width={520}
                                 height={600}
@@ -365,6 +365,94 @@ export default function AboutPage() {
                 </div>
             </section>
 
+            {/* ── Why Work With Spencer? (SEO + UX optimized) ───────────────────── */}
+            <section
+                id="why-spencer"
+                className="py-16 lg:py-20 border-t border-white/6"
+                aria-labelledby="why-spencer-heading"
+                role="region"
+            >
+                <div className="mx-auto max-w-6xl px-4 lg:px-8">
+                    <header className="text-center mb-10">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold uppercase tracking-wide">
+                            WHY WORK WITH SPENCER?
+                        </span>
+                        <h2 id="why-spencer-heading" className="mt-4 text-3xl md:text-4xl font-extrabold text-white leading-tight">
+                            Why Work With Spencer? — Trusted Memphis Cash Home Buyer
+                        </h2>
+                        <p className="mt-3 max-w-3xl mx-auto text-gray-400">
+                            For homeowners who need to sell their house fast in Memphis, Spencer offers a
+                            proven, transparent cash-sale process backed by 10+ years of experience and 500+ homes
+                            purchased. We provide fair cash offers, fast closings, and clear communication every
+                            step of the way.
+                        </p>
+                    </header>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                        <article>
+                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">A Proven Track Record</h3>
+                            <p className="text-gray-400 leading-relaxed mb-4">
+                                In the last 10 years Spencer Buys Houses has helped hundreds of homeowners and
+                                closed on over 500 homes across the Memphis area. Beyond home purchases, the team
+                                has managed rentals, overseen construction projects, and developed neighborhoods—so
+                                we understand the local market and how to deliver fast, reliable cash offers.
+                            </p>
+
+                            <div className="flex flex-wrap gap-3 mt-4">
+                                <div className="flex items-center gap-3 bg-[var(--color-primary-dark)]/5 rounded-lg px-4 py-3">
+                                    <Award className="h-6 w-6 text-[var(--color-text-yellow)]" />
+                                    <div>
+                                        <div className="text-sm text-gray-300 font-semibold">500+ Homes Purchased</div>
+                                        <div className="text-xs text-gray-500">Trusted local experience</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 bg-[var(--color-primary-dark)]/5 rounded-lg px-4 py-3">
+                                    <Home className="h-6 w-6 text-[var(--color-text-yellow)]" />
+                                    <div>
+                                        <div className="text-sm text-gray-300 font-semibold">Hundreds of Rentals Managed</div>
+                                        <div className="text-xs text-gray-500">Operations & rehabs</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="mt-6">
+                                <CTAButton href="/get-a-cash-offer-today/">Get Your Free Cash Offer</CTAButton>
+                            </div>
+                        </article>
+
+                        <aside>
+                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Trust & Transparency</h3>
+                            <p className="text-gray-400 leading-relaxed mb-4">
+                                Clear communication, ethical practices, and long-term relationships are at the
+                                center of everything we do. Whether you are selling, lending, or investing,
+                                Spencer's process is designed to be straightforward and fully transparent.
+                            </p>
+
+                            <ul className="space-y-3 mt-4">
+                                {[
+                                    "Clear, timely communication",
+                                    "Ethical and respectful service",
+                                    "Transparent offers—no hidden fees or surprises",
+                                    "Long-term relationships, not one-off transactions",
+                                ].map((item) => (
+                                    <li key={item} className="flex items-start gap-3">
+                                        <Check className="h-5 w-5 text-[var(--color-text-yellow)] mt-1" />
+                                        <span className="text-gray-300">{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <div className="mt-6 text-sm text-gray-400">
+                                <p>
+                                    Call us at <a href="tel:+19016218799" className="text-[var(--color-text-yellow)] hover:underline">(901) 621-8799</a> or
+                                    request a cash offer online to start a quick, no-obligation evaluation of your property.
+                                </p>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+
             {/* ── Testimonial Quote ─────────────────────────────────────────── */}
             <section className="bg-[var(--color-background)] border-y border-white/10 py-16" aria-label="Our mission">
                 <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
@@ -419,7 +507,7 @@ export default function AboutPage() {
                         </p>
                     </div>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <CTAButton href="/get-a-cash-offer-today/">Get Your Free Cash Offer</CTAButton>
+                        <CTAButton href="/free-guide/">Download the Free Guide</CTAButton>
                     </div>
                 </div>
             </section>

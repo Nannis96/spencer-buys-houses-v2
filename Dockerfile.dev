@@ -1,0 +1,30 @@
+FROM node:20-alpine
+
+# Alpine necesita esta librería para evitar problemas con SWC de Next.js y el motor de Prisma
+RUN apk add --no-cache libc6-compat
+
+# Establecer el directorio de trabajo
+WORKDIR /app
+
+# Habilitar corepack para poder usar pnpm
+RUN corepack enable pnpm
+
+# Copiar archivos de dependencias
+COPY package.json pnpm-lock.yaml* ./
+
+# Instalar dependencias
+RUN pnpm install
+
+# Copiar el código fuente
+COPY . .
+
+# Exponer el puerto
+EXPOSE 3000
+
+# Variables de entorno por defecto para desarrollo
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+ENV NODE_ENV=development
+
+# Comando para iniciar el modo de desarrollo
+CMD ["pnpm", "dev"]
