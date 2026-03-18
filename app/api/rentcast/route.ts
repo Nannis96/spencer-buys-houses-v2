@@ -101,6 +101,18 @@ export async function GET(request: NextRequest) {
         }
 
         const data = await response.json()
+
+        // If caller asked for a single property result, and the API returned an array,
+        // return only the first item to simplify client-side pre-filling.
+        const single = searchParams.get("single")
+        if (single === "1") {
+            if (Array.isArray(data)) {
+                return NextResponse.json(data[0] ?? {})
+            }
+            // If the API already returned an object, return it as-is
+            return NextResponse.json(data)
+        }
+
         return NextResponse.json(data)
     } catch (err) {
         console.error("[Rentcast] Fetch failed:", err)

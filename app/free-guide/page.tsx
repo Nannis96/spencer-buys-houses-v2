@@ -54,19 +54,19 @@ function GuideForm() {
             setIsSubmitting(false)
 
             // Trigger PDF download from public folder. The file currently lives at
-            // `/Pros and Cons.pdf` (space in name). We use encodeURI to ensure proper URL.
+            // `/TheMemphisHomeowners_Straight-Talk_ Guide.pdf` (space in name). We use encodeURI to ensure proper URL.
             try {
-                const fileUrl = encodeURI("/Pros and Cons.pdf")
+                const fileUrl = encodeURI("/TheMemphisHomeowners_Straight-Talk_ Guide.pdf")
                 const a = document.createElement("a")
                 a.href = fileUrl
                 // Suggest a clean filename for the downloaded file
-                a.download = "Pros-and-Cons.pdf"
+                a.download = "TheMemphisHomeowners_Straight-Talk_Guide.pdf"
                 document.body.appendChild(a)
                 a.click()
                 a.remove()
             } catch (e) {
                 // Fallback: open the file in a new tab
-                window.open(encodeURI("/Pros and Cons.pdf"), "_blank")
+                window.open(encodeURI("/TheMemphisHomeowners_Straight-Talk_ Guide.pdf"), "_blank")
             }
 
             setSubmitted(true)

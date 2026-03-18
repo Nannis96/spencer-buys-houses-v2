@@ -13,9 +13,18 @@ export async function createPost(formData: FormData) {
   const rawSlug = formData.get('slug') as string;
 
   // Auto-generate slug from title if not provided
-  const slug = rawSlug?.trim()
+  const baseSlug = rawSlug?.trim()
     ? rawSlug.trim().toLowerCase().replace(/\s+/g, '-')
     : rawTitle.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+  // Ensure slug uniqueness by appending a numeric suffix when needed
+  let slug = baseSlug;
+  let suffix = 1;
+  // Loop until we find a slug that doesn't exist yet
+  while (await prisma.post.findUnique({ where: { slug } })) {
+    suffix += 1;
+    slug = `${baseSlug}-${suffix}`;
+  }
 
   await prisma.post.create({
     data: {

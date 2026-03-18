@@ -32,9 +32,13 @@ const propertyInfoSchema = z.object({
     bedrooms: z.string().optional(),
     bathrooms: z.string().optional(),
     squareFootage: z.string().optional(),
+    yearBuilt: z.string().optional(),
     yearsOwned: z.string().optional(),
     condition: z.string().min(1, "Please select the property condition"),
-    repairs: z.string().optional(),
+    // Structured repairs input: checklist of common items, an estimated repair cost, and optional notes
+    repairsChecklist: z.array(z.string()).optional(),
+    repairsEstimate: z.string().optional(),
+    repairsNotes: z.string().optional(),
     occupied: z.string().min(1, "Please select who is living in the house"),
     listedWithRealtor: z.string().min(1, "Please indicate if the property is listed"),
     // Situation
@@ -221,12 +225,49 @@ export function PropertyInfoForm() {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors, isValid },
     } = useForm<PropertyInfoFormData>({
         resolver: zodResolver(propertyInfoSchema),
         defaultValues: {},
         mode: "onChange",
     })
+
+    const [isPrefilling, setIsPrefilling] = useState(false)
+
+    // Repairs UI state: checklist and a global estimated repair cost (slider)
+    const repairOptions = [
+        "Roof",
+        "HVAC",
+        "Foundation",
+        "Plumbing",
+        "Electrical",
+        "Windows/Doors",
+        "Interior (paint/floor)",
+        "Other",
+    ]
+    const [repairsChecklist, setRepairsChecklist] = useState<string[]>([])
+    const [repairsEstimate, setRepairsEstimate] = useState<number>(5000)
+
+    useEffect(() => {
+        setValue("repairsChecklist", repairsChecklist)
+    }, [repairsChecklist, setValue])
+
+    useEffect(() => {
+        setValue("repairsEstimate", String(repairsEstimate))
+    }, [repairsEstimate, setValue])
+
+    function toggleRepair(option: string) {
+        setRepairsChecklist((prev) => (prev.includes(option) ? prev.filter((p) => p !== option) : [...prev, option]))
+    }
+
+    function formatCurrency(n: number) {
+        try {
+            return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n)
+        } catch {
+            return `$${n}`
+        }
+    }
 
     const onSubmit = async (data: PropertyInfoFormData) => {
         setIsSubmitting(true)
@@ -248,13 +289,18 @@ export function PropertyInfoForm() {
         if (data.squareFootage) params.append("squareFootage", data.squareFootage)
         if (data.yearsOwned) params.append("yearsOwned", data.yearsOwned)
         params.append("condition", data.condition)
-        if (data.repairs) params.append("repairs", data.repairs)
+        // Repairs: checklist + estimate + notes (kept as strings for URL params)
+        if (data.repairsChecklist && data.repairsChecklist.length > 0)
+            params.append("repairsChecklist", data.repairsChecklist.join(","))
+        if (data.repairsEstimate) params.append("repairsEstimate", data.repairsEstimate)
+        if (data.repairsNotes) params.append("repairsNotes", data.repairsNotes)
         params.append("occupied", data.occupied)
         params.append("listedWithRealtor", data.listedWithRealtor)
         if (data.closingTimeline) params.append("closingTimeline", data.closingTimeline)
         params.append("ultimateGoal", data.ultimateGoal)
         if (data.askingPrice) params.append("askingPrice", data.askingPrice)
         if (data.fairPrice) params.append("fairPrice", data.fairPrice)
+        if (data.yearBuilt) params.append("yearBuilt", data.yearBuilt)
         if (data.bestTimeToCall) params.append("bestTimeToCall", data.bestTimeToCall)
 
         // --- Call AVM API before moving to next step ---
@@ -307,6 +353,102 @@ export function PropertyInfoForm() {
         }
     }, [isValid, router, pathname, searchParams])
 
+    // Prefill form from Rentcast when address (or city/state/zip) is present
+    useEffect(() => {
+        // Only run in browser and when we have an address or city/state
+        if (typeof window === "undefined") return
+        if (!address && !(city && state)) return
+
+        let mounted = true
+        const prefill = async () => {
+            try {
+                setIsPrefilling(true)
+                const params = new URLSearchParams()
+                if (address) params.append("address", address)
+                if (city) params.append("city", city)
+                if (state) params.append("state", state)
+                if (zipCode) params.append("zipCode", zipCode)
+                // Ask backend to return a single property object
+                params.append("single", "1")
+
+                const res = await fetch(`/api/rentcast?${params.toString()}`)
+                if (!res.ok) {
+                    console.error("Rentcast prefill failed:", res.status)
+                    return
+                }
+
+                const prop = await res.json()
+                if (!mounted || !prop) return
+
+                // Save the raw result for debugging / later steps
+                setAvmResult(prop)
+                // Also print full API response to browser console
+                console.log("Rentcast prefill result:", prop)
+
+                // Map common Rentcast fields into our form fields (strings expected)
+                try {
+                    if (prop.bedrooms !== undefined && prop.bedrooms !== null) {
+                        setValue("bedrooms", String(prop.bedrooms))
+                    }
+
+                    if (prop.bathrooms !== undefined && prop.bathrooms !== null) {
+                        setValue("bathrooms", String(prop.bathrooms))
+                    }
+
+                    if (prop.squareFootage !== undefined && prop.squareFootage !== null) {
+                        setValue("squareFootage", String(prop.squareFootage))
+                    }
+
+                    if (prop.propertyType) {
+                        setValue("propertyType", prop.propertyType)
+                    }
+
+                    // Garage mapping: prefer explicit garageSpaces or garageType
+                    const garageSpaces = prop?.features?.garageSpaces ?? prop?.garageSpaces
+                    if (garageSpaces !== undefined && garageSpaces !== null) {
+                        // Normalize to one of the select options (best-effort)
+                        const spaces = Number(garageSpaces)
+                        if (!Number.isNaN(spaces)) {
+                            if (spaces >= 2) setValue("garage", "2 Car Attached")
+                            else if (spaces === 1) setValue("garage", "1 Car Attached")
+                            else setValue("garage", "None")
+                        }
+                    } else if (prop?.features?.garageType) {
+                        setValue("garage", String(prop.features.garageType))
+                    }
+
+                    // Basement heuristics: if foundation type mentions slab, mark as None
+                    const foundation = prop?.features?.foundationType
+                    if (foundation && /slab/i.test(String(foundation))) {
+                        setValue("basement", "None")
+                    }
+
+                    // Prices: try to populate asking/fair price from last sale or AVM if present
+                    if (prop.lastSalePrice) {
+                        setValue("askingPrice", String(prop.lastSalePrice))
+                    } else if (prop?.avm?.value) {
+                        setValue("askingPrice", String(prop.avm.value))
+                    }
+                    if (prop.yearBuilt !== undefined && prop.yearBuilt !== null) {
+                        setValue("yearBuilt", String(prop.yearBuilt))
+                    }
+                } catch (err) {
+                    console.error("Failed to map Rentcast data to form fields:", err)
+                }
+            } catch (err) {
+                console.error("Failed to prefill from Rentcast:", err)
+            } finally {
+                setIsPrefilling(false)
+            }
+        }
+
+        prefill()
+
+        return () => {
+            mounted = false
+        }
+    }, [address, city, state, zipCode])
+
     return (
         <AnimatePresence mode="wait">
             <motion.form
@@ -330,6 +472,22 @@ export function PropertyInfoForm() {
                         fields, just leave them blank for now.
                     </span>
                 </p>
+
+                {/* Prefill loading indicator */}
+                {isPrefilling && (
+                    <div className="mb-4 flex items-center gap-2 rounded-md bg-[#0f1724] p-3 text-sm text-gray-200 border border-white/10">
+                        <Loader2 className="h-4 w-4 animate-spin text-[#f59e0b]" />
+                        <span>Obteniendo datos de la propiedad…</span>
+                    </div>
+                )}
+
+                {/* Rentcast: minimal summary (no detailed fields displayed) */}
+                {avmResult && (
+                    <div className="mb-4 rounded-lg bg-[#0b1220] p-3 border border-white/10 text-sm text-gray-200">
+                        <div className="font-semibold text-white">{avmResult.formattedAddress ?? avmResult.addressLine1}</div>
+                        <div className="text-xs text-gray-300 mt-1">Datos obtenidos y aplicados al formulario.</div>
+                    </div>
+                )}
 
                 <div className="flex flex-col gap-5">
 
@@ -462,6 +620,22 @@ export function PropertyInfoForm() {
                         </div>
                     </div>
 
+                    {/* Year built */}
+                    <div>
+                        <label htmlFor={id("yearBuilt")} className="block text-xs text-gray-400 mb-1.5">
+                            Year Built
+                        </label>
+                        <Input
+                            id={id("yearBuilt")}
+                            type="number"
+                            step="1"
+                            min={0}
+                            placeholder="e.g. 1973"
+                            {...register("yearBuilt")}
+                            className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                        />
+                    </div>
+
                     {/* Condition (required) */}
                     <div>
                         <label htmlFor={id("condition")} className="block text-xs text-gray-400 mb-1.5">
@@ -477,6 +651,7 @@ export function PropertyInfoForm() {
                                 aria-describedby={errors.condition ? id("condition-err") : undefined}
                             >
                                 <option value="">Select condition…</option>
+                                <option>Excelent</option>
                                 <option>Good</option>
                                 <option>Fair</option>
                                 <option>Poor</option>
@@ -487,17 +662,58 @@ export function PropertyInfoForm() {
                         <FieldError message={errors.condition?.message} />
                     </div>
 
-                    {/* Repairs */}
+                    {/* Repairs: structured checklist + estimate + notes */}
                     <div>
-                        <label htmlFor={id("repairs")} className="block text-xs text-gray-400 mb-1.5">
-                            What kind of repairs and maintenance does the house need?
-                        </label>
-                        <textarea
-                            id={id("repairs")}
-                            placeholder="e.g. New roof, HVAC servicing, foundation cracks…"
-                            {...register("repairs")}
-                            className={textareaClass}
-                        />
+                        <label className="block text-xs text-gray-400 mb-1.5">What kind of repairs and maintenance does the house need?</label>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+                            {repairOptions.map((opt) => (
+                                <label key={opt} className="inline-flex items-center gap-2 text-sm text-gray-200">
+                                    <input
+                                        type="checkbox"
+                                        checked={repairsChecklist.includes(opt)}
+                                        onChange={() => toggleRepair(opt)}
+                                        className="h-4 w-4 rounded border-gray-300 bg-white/5"
+                                    />
+                                    <span>{opt}</span>
+                                </label>
+                            ))}
+                        </div>
+
+                        <div className="mb-3">
+                            <label htmlFor={id("repairsEstimate")} className="block text-xs text-gray-400 mb-1.5">
+                                Estimated repair cost
+                            </label>
+                            <div className="flex items-center gap-3">
+                                <input
+                                    id={id("repairsEstimate")}
+                                    type="range"
+                                    min={0}
+                                    max={50000}
+                                    step={500}
+                                    value={repairsEstimate}
+                                    onChange={(e) => setRepairsEstimate(Number(e.target.value))}
+                                    className="w-full"
+                                />
+                                <div className="text-sm text-gray-200 w-28 text-right">{formatCurrency(repairsEstimate)}</div>
+                            </div>
+                            <div className="flex justify-between text-xs text-gray-400 mt-1">
+                                <span>$0</span>
+                                <span>$50,000</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor={id("repairsNotes")} className="block text-xs text-gray-400 mb-1.5">
+                                Additional details (optional)
+                            </label>
+                            <textarea
+                                id={id("repairsNotes")}
+                                placeholder="e.g. Roof missing shingles on north side, HVAC not working…"
+                                {...register("repairsNotes")}
+                                className={textareaClass}
+                            />
+                        </div>
                     </div>
 
                     {/* Occupied (required) */}
@@ -514,9 +730,9 @@ export function PropertyInfoForm() {
                                 aria-invalid={!!errors.occupied}
                             >
                                 <option value="">Select…</option>
-                                <option>Yes – Owner Occupied</option>
-                                <option>Yes – Tenant Occupied</option>
-                                <option>No – Vacant</option>
+                                <option>Yes</option>
+                                <option>No</option>
+                                <option>Rental</option>
                             </select>
                             <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
                         </div>
@@ -560,11 +776,10 @@ export function PropertyInfoForm() {
                         <div className="relative">
                             <select id={id("closingTimeline")} {...register("closingTimeline")} className={selectClass}>
                                 <option value="">Select…</option>
-                                <option>30 days or less</option>
-                                <option>30 – 60 days</option>
-                                <option>60 – 90 days</option>
-                                <option>90+ days</option>
-                                <option>Flexible</option>
+                                <option>7 days</option>
+                                <option>14 days</option>
+                                <option>30 days</option>
+                                <option>Not sure yet</option>
                             </select>
                             <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
                         </div>
