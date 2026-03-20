@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Phone, Menu, X, Home } from "lucide-react"
+import { Phone, Menu, X, Home, ChevronDown, ChevronUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
@@ -13,6 +13,8 @@ export function StickyHeader() {
     const headerRef = useRef<HTMLElement | null>(null)
     const [scrolled, setScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [mobileCitiesOpen, setMobileCitiesOpen] = useState(false)
+    const [mobileOpenState, setMobileOpenState] = useState<string | null>(null)
     const [hoveredState, setHoveredState] = useState<string | null>(null)
     const pathname = usePathname()
 
@@ -42,8 +44,8 @@ export function StickyHeader() {
         <header
             ref={headerRef}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                ? "bg-[var(--color-background)]/98 backdrop-blur-md shadow-lg"
-                : "bg-[var(--color-background)]/90 backdrop-blur-sm"
+                ? "bg-[var(--color-background)] shadow-lg"
+                : "bg-[var(--color-background)] shadow"
                 }`}
             itemScope
             itemType="https://schema.org/Organization"
@@ -55,7 +57,7 @@ export function StickyHeader() {
             <meta itemProp="description" content="Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today! (901)-979-9848" />
 
             <div className="mx-auto max-w-7xl px-4 lg:px-8 w-full">
-                <div className="flex flex-col py-3">
+                <div className="flex flex-col py-2">
                     <div className="grid grid-cols-3 items-center">
 
                         {/* Logo */}
@@ -103,7 +105,7 @@ export function StickyHeader() {
                         </div>
                     </div>
 
-                    <nav className="hidden md:flex justify-center pt-3 gap-1">
+                    <nav className="hidden md:flex justify-center pt-1 gap-1">
                         {[
                             { label: "Get your cash offer", href: "/get-a-cash-offer-today/" },
                             { label: "About", href: "/about/" },
@@ -119,7 +121,7 @@ export function StickyHeader() {
                                 <div key={item.label} className="flex items-center">
                                     <a
                                         href={item.href}
-                                        className={`relative px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md ${isActive
+                                        className={`relative px-3 py-1 text-sm font-medium transition-all duration-200 rounded-md ${isActive
                                             ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10"
                                             : "text-gray-400 hover:text-white hover:bg-white/5"
                                             }`}
@@ -133,7 +135,7 @@ export function StickyHeader() {
 
                                     {idx === 0 && (
                                         <div className="relative group">
-                                            <button className={`relative px-3 py-2 text-sm font-medium rounded-md ${isCitiesActive ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
+                                            <button className={`relative px-3 py-1 text-sm font-medium rounded-md ${isCitiesActive ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
                                                 Cities we serve
                                                 <span className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[var] transition-all duration-300 ${isCitiesActive ? "opacity-100" : "opacity-0 group-hover:opacity-30"}`} />
                                             </button>
@@ -195,7 +197,7 @@ export function StickyHeader() {
                     {/* fondo oscuro */}
                     <div
                         className="absolute inset-0 bg-black/60"
-                        onClick={() => setMobileMenuOpen(false)}
+                        onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileOpenState(null); }}
                     />
 
                     {/* panel */}
@@ -209,7 +211,7 @@ export function StickyHeader() {
                             </span>
 
                             <button
-                                onClick={() => setMobileMenuOpen(false)}
+                                onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileOpenState(null); }}
                                 aria-label="Close menu"
                             >
                                 <X className="h-6 w-6 text-white" />
@@ -237,7 +239,7 @@ export function StickyHeader() {
                                         href={item.href}
                                         className={`flex items-center justify-between py-4 border-b border-white/10 transition-colors ${isActive ? "text-[#f59e0b] font-medium" : "text-white"
                                             }`}
-                                        onClick={() => setMobileMenuOpen(false)}
+                                        onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileOpenState(null); }}
                                     >
                                         {item.label}
                                         {isActive && (
@@ -249,24 +251,52 @@ export function StickyHeader() {
 
                             {/* Mobile: States & cities */}
                             <div className="pt-2">
-                                <div className="text-xs text-gray-400 font-semibold mb-2">Cities we serve</div>
-                                {serveStates.map((s) => (
-                                    <div key={s.stateSlug} className="mb-3">
-                                        <div className="text-white font-medium mb-1">{s.state}</div>
-                                        <div className="pl-3">
-                                            {s.cities.map((c: any) => (
-                                                <a
-                                                    key={c.slug}
-                                                    href={`/we-serve/${s.stateSlug}/${c.slug}/`}
-                                                    className="block py-2 text-gray-300"
-                                                    onClick={() => setMobileMenuOpen(false)}
-                                                >
-                                                    {c.name}
-                                                </a>
+                                <button
+                                    onClick={() => setMobileCitiesOpen((v) => !v)}
+                                    aria-expanded={mobileCitiesOpen}
+                                    className="w-full flex items-center justify-between text-white py-3 border-b border-white/10"
+                                >
+                                    <span className="text-sm font-medium">Cities we serve</span>
+                                    <span className="text-gray-300">
+                                        {mobileCitiesOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+                                    </span>
+                                </button>
+
+                                {mobileCitiesOpen && (
+                                    <div className="pt-2">
+                                        <ul className="space-y-2">
+                                            {serveStates.map((s) => (
+                                                <li key={s.stateSlug} className="mb-1">
+                                                    <button
+                                                        onClick={() => setMobileOpenState((prev) => prev === s.stateSlug ? null : s.stateSlug)}
+                                                        aria-expanded={mobileOpenState === s.stateSlug}
+                                                        className="w-full flex items-center justify-between text-white py-3"
+                                                    >
+                                                        <span className="text-sm font-medium">{s.state}</span>
+                                                        <span className="text-gray-300">
+                                                            {mobileOpenState === s.stateSlug ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                                                        </span>
+                                                    </button>
+
+                                                    {mobileOpenState === s.stateSlug && (
+                                                        <div className="pl-4 pt-2">
+                                                            {s.cities.map((c: any) => (
+                                                                <a
+                                                                    key={c.slug}
+                                                                    href={`/we-serve/${s.stateSlug}/${c.slug}/`}
+                                                                    className="block py-2 text-gray-300"
+                                                                    onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileOpenState(null); }}
+                                                                >
+                                                                    {c.name}
+                                                                </a>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </li>
                                             ))}
-                                        </div>
+                                        </ul>
                                     </div>
-                                ))}
+                                )}
                             </div>
 
                             {/* CTA */}

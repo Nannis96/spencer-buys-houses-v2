@@ -145,37 +145,37 @@ export default function ContactUsPage() {
             </section>
 
             {/* ── Why Choose Us (quick trust strip) ───────────────────────── */}
-            <section className="py-10 lg:py-14 bg-[var(--color-background)] border-t border-white/5" aria-label="Why work with Spencer Buys Houses">
+            <section className="py-10 lg:py-14 bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)]" aria-label="Why work with Spencer Buys Houses">
                 <div className="mx-auto max-w-7xl px-4 lg:px-8 text-center">
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-6 uppercase tracking-wide">
+                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-sm font-semibold mb-6 uppercase tracking-wide">
                         Why homeowners across Memphis choose us
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
                         {[
                             {
                                 icon: (
-                                    <DollarSign className="h-8 w-8 text-[var(--color-primary-dark)]" aria-hidden="true" />
+                                    <DollarSign className="mb-4 flex h-12 w-12 items-center justify-center text-[var(--color-secondary)] bg-[var(--color-secondary)]/10 group-hover:bg-[var(--color-secondary)]/20 rounded-xl " aria-hidden="true" />
                                 ),
                                 title: "Fair Cash Offer",
                                 desc: "Receive a no-obligation offer within 24 hours — backed by proof of funds.",
                             },
                             {
                                 icon: (
-                                    <Calendar className="h-8 w-8 text-[var(--color-primary-dark)]" aria-hidden="true" />
+                                    <Calendar className="mb-4 flex h-12 w-12 items-center justify-center text-[var(--color-secondary)] bg-[var(--color-secondary)]/10 group-hover:bg-[var(--color-secondary)]/20 rounded-xl " aria-hidden="true" />
                                 ),
                                 title: "Close in 7 Days",
                                 desc: "We work on your schedule — as fast or as flexible as you need.",
                             },
                             {
                                 icon: (
-                                    <Percent className="h-8 w-8 text-[var(--color-primary-dark)]" aria-hidden="true" />
+                                    <Percent className="mb-4 flex h-12 w-12 items-center justify-center text-[var(--color-secondary)] bg-[var(--color-secondary)]/10 group-hover:bg-[var(--color-secondary)]/20 rounded-xl " aria-hidden="true" />
                                 ),
                                 title: "Zero Fees",
                                 desc: "No agent commissions, no closing costs. The offer is what you take home.",
                             },
                             {
                                 icon: (
-                                    <Home className="h-8 w-8 text-[var(--color-primary-dark)]" aria-hidden="true" />
+                                    <Home className="mb-4 flex h-12 w-12 items-center justify-center text-[var(--color-secondary)] bg-[var(--color-secondary)]/10 group-hover:bg-[var(--color-secondary)]/20 rounded-xl " aria-hidden="true" />
                                 ),
                                 title: "Any Condition",
                                 desc: "Repairs, inherited homes, foreclosure — we buy houses as-is.",
@@ -183,11 +183,11 @@ export default function ContactUsPage() {
                         ].map((item) => (
                             <div
                                 key={item.title}
-                                className="flex flex-col items-center text-center p-6 rounded-2xl bg-white/5 border border-[var(--color-primary)]/60 hover:border-[#f59e0b]/30 transition-colors"
+                                className="flex flex-col items-center text-center p-6 rounded-2xl bg-white/5 border border-gray-100 hover:border-[var(--color-secondary)]/30 transition-colors"
                             >
                                 <span className="mb-3" aria-hidden="true">{item.icon}</span>
-                                <h3 className="text-[var(--color-primary)] font-bold mb-2">{item.title}</h3>
-                                <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+                                <h3 className="text-[var(--color-secondary)] font-bold mb-2">{item.title}</h3>
+                                <p className="text-[var(--color-text-black)] text-sm leading-relaxed">{item.desc}</p>
                             </div>
                         ))}
                     </div>

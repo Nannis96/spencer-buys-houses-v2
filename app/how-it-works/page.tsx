@@ -451,58 +451,86 @@ export default function HowWeBuyHousesPage() {
 
                         </div>
                         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <CTAButton href="/get-a-cash-offer-today/">See What We Can Offer You</CTAButton>
+                            <CTAButton href="#top">See What We Can Offer You</CTAButton>
                         </div>
                     </div>
                 </section>
 
-                {/* ── 2. Process Steps ── */}
-                <section id="process" className="bg-[var(--color-background)] py-10 lg:py-14">
+                {/* ── Sell To Investor Process Steps ── */}
+                <section
+                    id="process-investor"
+                    className="bg-[var(--background-white)] border-t-4 border-[var(--color-secondary)] py-16 lg:py-20"
+                    style={{
+                        backgroundImage: "url('/buildings.png')",
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        backgroundSize: '90%',
+                    }}
+                >
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
 
-                        <div className="text-center mb-16">
-                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
+                        {/* Section header */}
+                        <div className="text-center mb-14">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-sm font-semibold mb-4 uppercase tracking-wide border border-[var(--color-secondary)]/20">
                                 How The Process Works
                             </span>
-                            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                            <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-black)] mb-4">
                                 How To {" "}
-                                <span className="text-[var(--color-text-yellow)]">Sell My House To </span>
-                                An Investor
+                                <span className="text-[var(--color-secondary)]">Sell My House </span>
+                                To An Investor
                             </h2>
-                            <p className="text-gray-400 max-w-2xl mx-auto">
-                                The 3 Step Process:
+                            <p className="text-[var(--color-text-black)] max-w-2xl mx-auto">
+                                A simple 3-step process designed to get you from offer to cash as fast as possible.
                             </p>
+                            <div className="mt-6 mx-auto w-16 h-1 rounded-full bg-[var(--color-secondary)]" />
                         </div>
 
                         {/* Steps Investor grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative justify-items-center">
-                            {/* Connector bar (desktop) */}
-
-                            {stepsInvestor.map(({ icon: Icon, step, title, description, highlight }) => (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {stepsInvestor.map(({ icon: Icon, step, title, description, highlight }, idx) => (
                                 <div
                                     key={step}
-                                    className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary-dark)]/30 transition-colors group"
+                                    className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white shadow-md border border-gray-100 hover:shadow-xl hover:border-[var(--color-secondary)]/30 transition-all duration-300 group"
                                 >
-                                    <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-[var(--color-primary)]/30 to-transparent" />
+                                    {/* Connector arrow between cards (desktop) */}
+                                    {idx < stepsInvestor.length - 1 && (
+                                        <ArrowRight className="hidden md:block absolute -right-5 top-1/2 -translate-y-1/2 z-10 h-6 w-6 text-[var(--color-secondary)]/40" />
+                                    )}
+
                                     {/* Step badge */}
-                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary)] text-[var(--color-background)] text-xs font-black">
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-secondary)] text-[var(--color-text-white)] text-xs font-black shadow-sm ring-4 ring-white">
                                         {step}
                                     </div>
 
                                     {/* Icon */}
-                                    <div className="mt-4 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-primary)]/10 group-hover:bg-[var(--color-primary-dark)]/20 transition-colors">
-                                        <Icon className="h-8 w-8 text-[var(--color-primary)]" />
+                                    <div className="mt-6 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-secondary)]/10 group-hover:bg-[var(--color-secondary)]/15 transition-colors">
+                                        <Icon className="h-8 w-8 text-[var(--color-secondary)]" />
                                     </div>
 
-                                    <h3 className="text-lg font-bold text-white mb-3">{title}</h3>
-                                    <p className="text-gray-400 text-sm leading-relaxed mb-4">{description}</p>
+                                    <h3 className="text-lg font-bold text-[var(--color-text-black)] mb-3">{title}</h3>
+                                    <p className="text-gray-500 text-sm leading-relaxed mb-4">{description}</p>
 
                                     {/* Highlight pill */}
-                                    <span className="mt-auto inline-block rounded-full bg-[var(--color-primary)]/10 px-3 py-1 text-xs font-semibold text-[var(--color-primary)]">
+                                    <span className="mt-auto inline-block rounded-full bg-[var(--color-secondary)]/10 border border-[var(--color-secondary)]/20 px-4 py-1 text-xs font-semibold text-[var(--color-secondary)]">
                                         {highlight}
                                     </span>
                                 </div>
                             ))}
+                        </div>
+
+                        {/* Bottom CTA strip */}
+                        <div className="mt-12 rounded-2xl bg-[var(--color-secondary)] p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div>
+                                <p className="text-[var(--color-text-white)] font-bold text-lg mb-1">Ready to get your cash offer?</p>
+                                <p className="text-white/80 text-sm">No fees, no repairs, no obligation — close in as little as 7 days.</p>
+                            </div>
+                            <CTAButton
+                                href="#top"
+                                className="shrink-0 bg-white hover:bg-gray-50"
+                                textColor="text-[var(--color-secondary-dark)]"
+                            >
+                                Get My Cash Offer
+                            </CTAButton>
                         </div>
                     </div>
                 </section>
@@ -611,30 +639,30 @@ export default function HowWeBuyHousesPage() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">In person Appointments (Days 1-4)</h3>
-                                <ul className="text-gray-400 list-inside space-y-2">
+                            <article className="p-6 rounded-2xl bg-[var(--color-background-white)] border border-white/10 hover:border-[var(--color-secondary)]/30">
+                                <h3 className="text-[var(--color-text-red)] font-bold mb-3">In person Appointments (Days 1-4)</h3>
+                                <ul className="text-[var(--color-text-black)] list-inside space-y-2">
                                     <li>
-                                        <strong className="text-[var(--color-primary-dark)]">Access</strong> — This component is critical to a speedy closing. Generally,
+                                        <strong className="text-[var(--color-text-red)]">Access</strong> — This component is critical to a speedy closing. Generally,
                                         we get photos of the home within 72 hours of signing the Purchase and
                                         Sale Agreement.
                                     </li>
                                     <li>
-                                        <strong className="text-[var(--color-primary-dark)]">Keys</strong> — If the home is vacant or the owner doesn’t live nearby, we will place a
+                                        <strong className="text-[var(--color-text-red)]">Keys</strong> — If the home is vacant or the owner doesn’t live nearby, we will place a
                                         lockbox on the property to gain access and move things along quickly
                                     </li>
                                 </ul>
                             </article>
 
-                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">Buyer Walk-Throughs (Days 5-10)</h3>
-                                <ul className="text-gray-400 list-inside space-y-2">
+                            <article className="p-6 rounded-2xl bg-[var(--color-background-white)] border border-white/10">
+                                <h3 className="text-[var(--color-text-red)] font-bold mb-3">Buyer Walk-Throughs (Days 5-10)</h3>
+                                <ul className="text-[var(--color-text-black)] list-inside space-y-2">
                                     <li>
-                                        <strong className="text-[var(--color-primary-dark)]">Contractor Bids</strong> — Firming up our numbers is vital to making a wise investment.
+                                        <strong className="text-[var(--color-text-red)]">Contractor Bids</strong> — Firming up our numbers is vital to making a wise investment.
                                         This is a crucial piece tour success.
                                     </li>
                                     <li>
-                                        <strong className="text-[var(--color-primary-dark)]">Walk-Throughs</strong> — Buying a home can be a very difficult task, but we’ve got it
+                                        <strong className="text-[var(--color-text-red)]">Walk-Throughs</strong> — Buying a home can be a very difficult task, but we’ve got it
                                         down to a science. This involves getting our team inside the house within the
                                         first ten days of the contract period. This might include contractors, insurance,
                                         the finance team, the owner, and any specialists or experts needed to determine if this is the right fit for our needs as an investment company.
@@ -642,32 +670,32 @@ export default function HowWeBuyHousesPage() {
                                 </ul>
                             </article>
 
-                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">Due Diligence (Days 11-21)</h3>
-                                <ul className="text-gray-400 list-inside space-y-2">
+                            <article className="p-6 rounded-2xl bg-[var(--color-background-white)] border border-white/10">
+                                <h3 className="text-[var(--color-text-red)] font-bold mb-3">Due Diligence (Days 11-21)</h3>
+                                <ul className="text-[var(--color-text-black)] list-inside space-y-2">
                                     <li>
-                                        <strong className="text-[var(--color-primary-dark)]">Rental Property</strong> — Provide tenant information, lease, rent payment history,
+                                        <strong className="text-[var(--color-text-red)]">Rental Property</strong> — Provide tenant information, lease, rent payment history,
                                         and similar information. All of this will be placed on the settlement statement
                                         and pro-rated.
                                     </li>
                                     <li>
-                                        <strong className="text-[var(--color-primary-dark)]">Mortgage or Liens</strong> — or liens, expected payoffs and documents to release the liens.
+                                        <strong className="text-[var(--color-text-red)]">Mortgage or Liens</strong> — or liens, expected payoffs and documents to release the liens.
                                     </li>
                                     <li>
-                                        <strong className="text-[var(--color-primary-dark)]">Inherited Home</strong> — death certificates, affidavits, and other supporting
+                                        <strong className="text-[var(--color-text-red)]">Inherited Home</strong> — death certificates, affidavits, and other supporting
                                         ownership documents.
                                     </li>
                                     <li>
-                                        <strong className="text-[var(--color-primary-dark)]">Vacate the Home</strong> — prepare to move out and gather your belongings.
+                                        <strong className="text-[var(--color-text-red)]">Vacate the Home</strong> — prepare to move out and gather your belongings.
                                         Turn utilities off, cancel insurance, and confirm.
                                     </li>
                                 </ul>
                             </article>
 
-                            <article className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                                <h3 className="text-[var(--color-primary-dark)] font-bold mb-3">Closing</h3>
-                                <p className="text-gray-400">
-                                    <strong className="text-[var(--color-primary-dark)]">Closing Day: </strong>You will show up for closing to sign the documents and
+                            <article className="p-6 rounded-2xl bg-[var(--color-background-white)] border border-white/10">
+                                <h3 className="text-[var(--color-text-red)] font-bold mb-3">Closing</h3>
+                                <p className="text-[var(--color-text-black)] leading-relaxed">
+                                    <strong className="text-[var(--color-text-red)]">Closing Day: </strong>You will show up for closing to sign the documents and
                                     collect a cashier's check. If you prefer, we can mail the closing papers
                                     to you, and you can receive a wire to your bank account.
                                 </p>
@@ -693,45 +721,35 @@ export default function HowWeBuyHousesPage() {
                 </section>
 
                 {/* ── New: Closing Day (brief checklist) ── */}
-                <section id="closing-day" className="bg-[var(--color-background)] py-10 lg:py-14">
+                <section id="closing-day" className="bg-[var(--color-background-white)] py-10 lg:py-14">
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="text-center mb-6">
-                            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                                <span className="text-[var(--color-text-yellow)]">Closing</span>
+                            <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-text-black)] mb-2">
+                                <span className="text-[var(--color-text-red)]">Closing</span>
                                 {" "}Day</h2>
-                            <p className="text-gray-400 max-w-2xl mx-auto">
+                            <p className="text-[var(--color-text-black)] max-w-2xl mx-auto">
                                 What to bring and what to expect on the day you close the sale.
                             </p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                                <h4 className="text-[var(--color-primary-dark)] font-semibold mb-2">Bring Identification</h4>
-                                <p className="text-gray-400 text-sm">Have a valid government-issued ID (driver’s license or passport) for notarization.</p>
+                            <div className="p-6 rounded-2xl bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30">
+                                <h4 className="text-[var(--color-text-red)] font-semibold mb-2">Bring Identification</h4>
+                                <p className="text-[var(--color-text-black)] text-sm">Have a valid government-issued ID (driver’s license or passport) for notarization.</p>
                             </div>
 
-                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                                <h4 className="text-[var(--color-primary-dark)] font-semibold mb-2">Sign the Documents</h4>
-                                <p className="text-gray-400 text-sm">You’ll sign the deed transfer, settlement statement, and any other required paperwork.</p>
+                            <div className="p-6 rounded-2xl bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30">
+                                <h4 className="text-[var(--color-text-red)] font-semibold mb-2">Sign the Documents</h4>
+                                <p className="text-[var(--color-text-black)] text-sm">You’ll sign the deed transfer, settlement statement, and any other required paperwork.</p>
                             </div>
 
-                            <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                                <h4 className="text-[var(--color-primary-dark)] font-semibold mb-2">Collect Your Funds</h4>
-                                <p className="text-gray-400 text-sm">Choose whether to receive your proceeds via wire transfer or a cashier's check.</p>
+                            <div className="p-6 rounded-2xl bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30">
+                                <h4 className="text-[var(--color-text-red)] font-semibold mb-2">Collect Your Funds</h4>
+                                <p className="text-[var(--color-text-black)] text-sm">Choose whether to receive your proceeds via wire transfer or a cashier's check.</p>
                             </div>
                         </div>
                     </div>
                 </section>
-
-                {/* ── 4. CTA Banner ── */}
-                <CallNowBanner
-                    badge="GET YOUR OFFER TODAY"
-                    heading="Contact Us Today to Get Your Offer!"
-                    description="No fees. No repairs. No obligation. Close in as little as 7 days."
-                    secondaryLabel="Get My Free Cash Offer"
-                    secondaryHref="/get-a-cash-offer-today/"
-                    headingId="how-it-works-cta-heading"
-                />
 
                 {/* ── 5. FAQ ── */}
                 <section id="faq" className="bg-[var(--color-background)] py-10 lg:py-14">
@@ -808,6 +826,16 @@ export default function HowWeBuyHousesPage() {
                         </div>
                     </div>
                 </section>
+
+                {/* ── 4. CTA Banner ── */}
+                <CallNowBanner
+                    badge="GET YOUR OFFER TODAY"
+                    heading="Contact Us Today to Get Your Offer!"
+                    description="No fees. No repairs. No obligation. Close in as little as 7 days."
+                    secondaryLabel="Get My Free Cash Offer"
+                    secondaryHref="/get-a-cash-offer-today/"
+                    headingId="how-it-works-cta-heading"
+                />
             </main>
         </>
     )

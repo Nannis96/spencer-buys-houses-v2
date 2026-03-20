@@ -6,7 +6,7 @@
  */
 
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
-import { TestimonialsSection } from "@/components/sections/testimonials-section"
+import { testimonials } from "@/components/sections/testimonials-section"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { CallButton } from "@/components/ui/call-button"
 import { CTAButton } from "@/components/ui/cta-button"
@@ -76,44 +76,50 @@ const benefits = [
 /* ─── Featured testimonial ───────────────────────────────────────────────── */
 
 function FeaturedTestimonial() {
+    const t = (() => {
+        if (!testimonials || testimonials.length === 0) return { name: "Customer", location: "", text: "", rating: 5 }
+        const idx = Math.floor(Math.random() * testimonials.length)
+        return testimonials[idx]
+    })()
+
     return (
-        <div className="relative rounded-2xl bg-[var(--color-background)]/5 border border-[var(--color-primary)]/60 p-8 md:p-10">
+        <div className="relative rounded-2xl bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30 p-8 md:p-10">
             {/* Gold accent bar */}
-            <div className="absolute top-0 left-8 w-12 h-1 rounded-full bg-[var(--color-text-yellow)]" />
+            <div className="absolute top-0 left-8 w-12 h-1 rounded-full bg-[var(--color-secondary)]" />
 
             <div className="flex items-center gap-1 mb-6 mt-2">
                 {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4" fill="#f59e0b" stroke="none" aria-hidden="true" />
+                    <Star
+                        key={i}
+                        className={`h-4 w-4 ${i < t.rating ? "fill-[#f59e0b] text-[#f59e0b]" : "fill-transparent text-gray-600"
+                            }`}
+                        stroke="none"
+                        aria-hidden="true"
+                    />
                 ))}
-                <span className="ml-2 text-xs font-semibold text-[#f59e0b]">5.0</span>
+                <span className="ml-2 text-xs font-semibold text-[#f59e0b]">{t.rating}.0</span>
             </div>
 
-            <Quote className="h-8 w-8 text-[var(--color-text-yellow)]/30 mb-4" aria-hidden="true" />
+            <Quote className="h-8 w-8 text-[var(--color-text-red)]/30 mb-4" aria-hidden="true" />
 
-            <p className="text-gray-300 leading-relaxed text-base md:text-lg mb-8">
-                I had an amazing experience working with Spencer Buys Houses! From start to finish, the process was smooth,
-                transparent, and stress-free. Spencer and his team were professional, honest, and extremely knowledgeable.
-                If you&apos;re looking to sell your house fast without the hassle of repairs, showings, or agent fees, I
-                highly recommend Spencer Buys Houses. Their customer service is top-notch, and they truly care about
-                helping homeowners.
-            </p>
+            <p className="text-[var(--color-text-black)] leading-relaxed text-base md:text-lg mb-8">{t.text}</p>
 
             <div className="flex items-center justify-between flex-wrap gap-4 pt-6 border-t border-white/10">
                 <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-full bg-[var(--color-primary-dark)]/20 flex items-center justify-center text-[var(--color-primary-dark)] font-bold text-lg">
-                        C
+                    <div className="h-12 w-12 rounded-full bg-[var(--color-secondary)]/20 flex items-center justify-center text-[var(--color-secondary)] font-bold text-lg">
+                        {t.name.charAt(0)}
                     </div>
                     <div>
-                        <p className="font-bold text-white">Christina Josephine</p>
-                        <p className="text-sm text-gray-500">Memphis, TN</p>
+                        <p className="font-bold text-[var(--color-text-black)]">{t.name}</p>
+                        <p className="text-sm text-[var(--color-text-black)]">{t.location}</p>
                     </div>
                 </div>
                 <a
-                    href="https://g.co/kgs/spencerbuyshouses"
+                    href="https://www.google.com/search?sca_esv=bcc33a35ba758be7&sxsrf=AHTn8zqZnH3MJTMgocMcMH9qe8pwKbKfmw:1739816269184&kgmid=/g/11jnny9nkl&q=Spencer+Buys+Houses&shndl=30&shem=lcuae,uaasie&source=sh/x/loc/uni/m1/1&kgs=ba24ee0e0bb416e9"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary-dark)] hover:text-[var(--color-primary-dark)]/60 transition-colors"
-                    aria-label="Read the full review on Google"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-secondary)] hover:text-[var(--color-secondary)]/60 transition-colors"
+                    aria-label="Read the full review"
                 >
                     Read Full Review on Google
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -196,22 +202,22 @@ export function ReferralContent() {
             {/* ───────── 2. HOW OUR REFERRAL PROCESS WORKS ───────── */}
             <section
                 id="referral-process"
-                className="bg-[var(--color-background)] py-10 lg:py-14"
+                className="bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)] py-10 lg:py-14"
                 aria-labelledby="referral-process-heading"
             >
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-sm font-semibold mb-4 uppercase tracking-wide">
                             How It Works
                         </span>
                         <h2
                             id="referral-process-heading"
-                            className="text-3xl md:text-4xl font-bold text-white mb-4"
+                            className="text-3xl md:text-4xl font-bold text-[var(--color-text-black)] mb-4"
                         >
                             3 Simple Steps to {" "}
-                            <span className="text-[var(--color-primary-dark)]">Start Earning</span>
+                            <span className="text-[var(--color-text-red)]">Start Earning</span>
                         </h2>
-                        <p className="text-gray-400 max-w-2xl mx-auto">
+                        <p className="text-[var(--color-text-black)] max-w-2xl mx-auto">
                             Our referral program is designed to be effortless. Share someone&apos;s details and we take
                             care of everything else.
                         </p>
@@ -223,20 +229,20 @@ export function ReferralContent() {
                         {steps.map(({ icon: Icon, step, title, description }) => (
                             <div
                                 key={step}
-                                className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary-dark)]/30 transition-colors group"
+                                className="relative flex flex-col items-center text-center p-8 rounded-2xl bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30 transition-colors group"
                             >
                                 <div
                                     aria-hidden="true"
-                                    className="hidden md:block absolute top-10 left-1/8 right-1/8 h-px bg-gradient-to-r from-transparent via-[var(--color-primary-dark)]/30 to-transparent"
+                                    className="hidden md:block absolute top-10 left-1/8 right-1/8 h-px bg-gradient-to-r from-transparent via-[var(--color-secondary)]/30 to-transparent"
                                 />
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary-dark)] text-[var(--color-background)] text-xs font-black">
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-secondary)] text-[var(--color-text-white)] text-xs font-black">
                                     {step}
                                 </div>
-                                <div className="mt-4 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-primary-dark)]/10 group-hover:bg-[var(--color-primary-dark)]/20 transition-colors">
-                                    <Icon className="h-8 w-8 text-[var(--color-primary-dark)]" aria-hidden="true" />
+                                <div className="mt-4 mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-secondary)]/10 group-hover:bg-[var(--color-secondary)]/20 transition-colors">
+                                    <Icon className="h-8 w-8 text-[var(--color-secondary)]" aria-hidden="true" />
                                 </div>
-                                <h3 className="text-lg font-bold text-white mb-3">{title}</h3>
-                                <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
+                                <h3 className="text-lg font-bold text-[var(--color-text-black)] mb-3">{title}</h3>
+                                <p className="text-[var(--color-text-black)] text-sm leading-relaxed">{description}</p>
                             </div>
                         ))}
                     </div>
@@ -322,21 +328,22 @@ export function ReferralContent() {
             {/* ───────── 4. TESTIMONIALS ───────── */}
             <section
                 id="referral-testimonials"
-                className="bg-[var(--color-background)] py-10 lg:py-14"
+                className="bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)] py-10 lg:py-14"
                 aria-labelledby="testimonials-heading"
             >
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-sm font-semibold mb-4 uppercase tracking-wide">
                             Real Reviews
                         </span>
                         <h2
                             id="testimonials-heading"
-                            className="text-3xl md:text-4xl font-bold text-white mb-4"
+                            className="text-3xl md:text-4xl font-bold text-[var(--color-text-black)] mb-4"
                         >
-                            What Memphis Homeowners Are Saying
+                            What Memphis Homeowners {" "}
+                            <span className="text-[var(--color-secondary)]">Are Saying </span>
                         </h2>
-                        <p className="text-gray-400 max-w-2xl mx-auto">
+                        <p className="text-[var(--color-text-black)] max-w-2xl mx-auto">
                             Real stories from real people who trusted Spencer Buys Houses to deliver a fast, fair, and
                             stress-free experience.
                         </p>
@@ -345,16 +352,6 @@ export function ReferralContent() {
                     <FeaturedTestimonial />
                 </div>
             </section>
-
-            {/* ───────── 5. CTA BANNER ───────── */}
-            <CallNowBanner
-                badge="Start Earning Today"
-                heading="Know Someone Who Needs to Sell Fast?"
-                description="Refer them now and earn cash when we close the deal. No fees, no hassle — just a reward for helping a friend."
-                secondaryLabel="Submit a Referral"
-                secondaryHref="#top"
-                headingId="referral-cta-heading"
-            />
 
             {/* ───────── 6. SECOND FORM ───────── */}
             <section
@@ -404,6 +401,16 @@ export function ReferralContent() {
                     </div>
                 </div>
             </section>
+
+            {/* ───────── 5. CTA BANNER ───────── */}
+            <CallNowBanner
+                badge="Start Earning Today"
+                heading="Know Someone Who Needs to Sell Fast?"
+                description="Refer them now and earn cash when we close the deal. No fees, no hassle — just a reward for helping a friend."
+                secondaryLabel="Submit a Referral"
+                secondaryHref="#top"
+                headingId="referral-cta-heading"
+            />
         </>
     )
 }

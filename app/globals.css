@@ -2,15 +2,19 @@
 
 :root {
   --background: #0f1012;
+  --background-white: #f8f8f8;
   --foreground: #171717;
   /* Brand colors */
   --color-primary: #ffd600;
   --color-secondary: #cc0000;
   --color-tertiary: #0f1012;
   --color-primary-dark: #e6c000;
+  --color-secondary-dark: #bd0202;
 
   --color-text-white: #ffffff;
+  --color-text-black: #0f1012;
   --color-text-yellow: #fbe441;
+  --color-text-red: #e40404;
 
   --color-bg-900: #0f0f23;
   /* primary page background */
@@ -29,6 +33,7 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-white: var(--background-white);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);

@@ -115,7 +115,7 @@ export const citiesData: StateData[] = [
                         description: "If you need to sell your house fast due to a divorce or job relocation, Spencer Buys Houses can offer you a quick cash offer for your house."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_1.png",
                 faqs: [
                     {
                         q: "How can I sell my house fast in Germantown?",
@@ -166,7 +166,7 @@ export const citiesData: StateData[] = [
                         description: "No need to fix anything weather it’s water damage or fire damage— we make the procedure easy."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_2.png",
                 faqs: [
                     {
                         q: "Do I need to make any repairs before selling my house in Hickory Hill?",
@@ -214,7 +214,7 @@ export const citiesData: StateData[] = [
                         description: "...you have inherited a property you don’t want, or life just threw you a curveball, we get it."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_3.png",
                 faqs: [
                     {
                         q: "Is Spencer Buys Houses a local Cordova company?",
@@ -267,7 +267,7 @@ export const citiesData: StateData[] = [
                         description: "We get it , selling a house in Whitehaven when you are already drowned seems like one more thing on your plate."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_4.png",
                 faqs: [
                     {
                         q: "Are there any fees or commissions?",
@@ -319,7 +319,7 @@ export const citiesData: StateData[] = [
                         description: "Inherited property can be a burden, especially if it needs repairs or is costing you money. We buy inherited homes fast and for cash, so you can walk away without lifting a finger."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_4.png",
                 faqs: [
                     {
                         q: "Do you buy houses in Berclair?",
@@ -369,7 +369,7 @@ export const citiesData: StateData[] = [
                         description: "If you’re behind on payments or getting notice of an auction, we can stop the foreclosure with a cash sale."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_5.png",
                 faqs: [
                     {
                         q: "Will I have to move out immediately after the sale?",
@@ -422,7 +422,7 @@ export const citiesData: StateData[] = [
                         description: "Expired listing? Vacant? We’ll pay cash where others won’t."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_6.png",
                 faqs: [
                     {
                         q: "Can you help if I’m facing foreclosure in Collierville or Whitehaven?",
@@ -485,7 +485,7 @@ export const citiesData: StateData[] = [
                         description: "Realtor couldn’t sell your Millington house? We’ll step in with a fast, fair cash deal."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_7.png",
                 faqs: [
                     {
                         q: "Can you help if I’m facing foreclosure in Millington?",
@@ -555,7 +555,7 @@ export const citiesData: StateData[] = [
                         description: "Empty houses just sitting there."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_8.png",
                 faqs: [
                     {
                         q: "How quickly can I sell my house in Somerville?",
@@ -600,7 +600,7 @@ export const citiesData: StateData[] = [
                         description: "Whether facing financial difficulties, relocating, downsizing, or seeking a fresh start, Spencer Buys Houses is here to assist."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_9.png",
                 faqs: [
                     {
                         q: "How does Spencer Buys Houses work to sell my home fast in Raleigh?",
@@ -664,7 +664,7 @@ export const citiesData: StateData[] = [
                         description: "Avoid the stress and sell now."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_10.png",
                 faqs: [
                     {
                         q: "How do I sell my Arlington, TN, house to Spencer Buys Houses?",
@@ -688,59 +688,6 @@ export const citiesData: StateData[] = [
                     }
                 ]
             },
-
-            // {
-            //     name: "Bartlett",
-            //     slug: "bartlett",
-            //     seoTitle: "Sell My House Fast In Bartlett For Cash | Spencer Buys Houses",
-            //     seoDescription:
-            //         "Get a fair cash offer from a trusted cash home buyer in Bartlett. Fast closings, no fees, sell as-is. Call (901) 621-8799.",
-            //     heroTitle: "Sell Your House Fast In Bartlett — For Cash, No Hassle, No Fees",
-            //     heroSubtitle:
-            //         "We buy houses in Bartlett for cash – same-day offers, 7-day closings, and zero commissions.",
-            //     intro: `Whether you are stressed about a slow sale or facing a tough situation, Spencer Buys Houses offers a fast, fair solution. Spencer Buys Houses is a trusted Memphis-area home buyer serving Bartlett homeowners. We provide same-day cash offers to eliminate delays and sell your house in as little as 7 days. There are no realtor fees, no hidden costs, and no last-minute surprises – you keep 100% of the cash. As your local Bartlett, TN cash home buyers, we know the community and the market inside-out so you can be confident in our straightforward, stress-free process.`,
-            //     benefits: [
-            //         "Same-day cash offers — no waiting weeks for a response.",
-            //         "Close in as little as 7 days — or on your own schedule.",
-            //         "No fees, no commissions — keep 100% of the proceeds.",
-            //         "Sell as-is — no repairs, cleaning, or staging required.",
-            //         "Local Bartlett & Memphis market expertise.",
-            //         "Guaranteed cash sale — no financing fall-throughs.",
-            //     ],
-            //     situations: [
-            //         {
-            //             title: "Damaged or distressed home",
-            //             description: "Fire, flood, mold, or storm damage? We buy your house as-is — no matter the condition.",
-            //         },
-            //         {
-            //             title: "Problem tenants or squatters",
-            //             description: "We take properties with difficult tenants or squatters off your hands — solving landlord headaches fast.",
-            //         },
-            //         {
-            //             title: "Facing foreclosure",
-            //             description: "Behind on payments or facing auction? A quick cash sale can stop foreclosure in its tracks.",
-            //         },
-            //         {
-            //             title: "Inherited property",
-            //             description: "Dealing with a probate home you don't want to manage? We make it simple and fast.",
-            //         },
-            //     ],
-            //     benefitsImage: "/houses/Houses_25.jpg.jpg",
-            //     faqs: [
-            //         {
-            //             q: "Will I have to move out immediately after the sale?",
-            //             a: "Not necessarily. We are flexible — you choose a move-out date that works for you.",
-            //         },
-            //         {
-            //             q: "Can you help if I'm behind on taxes or mortgage payments?",
-            //             a: "Absolutely. Many homeowners reach out when struggling financially. We step in quickly, without judgment.",
-            //         },
-            //         {
-            //             q: "What types of properties do you buy in Bartlett, TN?",
-            //             a: "We buy single-family homes, duplexes, inherited properties, vacant homes, fire-damaged houses, and more.",
-            //         },
-            //     ],
-            // },
         ],
     },
     {
@@ -769,7 +716,7 @@ export const citiesData: StateData[] = [
                         description: "We work with you, no stress."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_11.png",
                 faqs: [
                     {
                         q: "Are there any hidden fees?",
@@ -816,7 +763,7 @@ export const citiesData: StateData[] = [
                         description: "Get rid of bad tenants and avoid costly fixes."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_12.png",
                 faqs: [
                     {
                         q: "What if I need to sell my house quickly in Hernando due to life changes??",
@@ -858,7 +805,7 @@ export const citiesData: StateData[] = [
                         description: "We help the house owners who want to sell their houses who want to sell their houses due to relocation."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_13.png",
                 faqs: [
                     {
                         q: "What if my house needs major repairs?",
@@ -904,7 +851,7 @@ export const citiesData: StateData[] = [
                         description: "Sell as-is, no work needed."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_14.png",
                 faqs: [
                     {
                         q: "Why Should I Choose Olive Branch Investments for My Real Estate Needs?",
@@ -946,7 +893,7 @@ export const citiesData: StateData[] = [
                         description: "Facing foreclosure, divorce, or inherited a property? We work with homeowners in any situation to provide a stress-free exit."
                     }
                 ],
-                benefitsImage: "/houses/Houses_25.jpg.jpg",
+                benefitsImage: "/houses/Houses_15.png",
                 faqs: [
                     {
                         q: "What areas do you serve?",
