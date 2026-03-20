@@ -119,7 +119,7 @@ function FeaturedTestimonial() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-secondary)] hover:text-[var(--color-secondary)]/60 transition-colors"
-                    aria-label="Read the full review"
+                    aria-label="Read the full reviews"
                 >
                     Read Full Review on Google
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
