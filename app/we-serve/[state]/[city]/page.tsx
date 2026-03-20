@@ -112,20 +112,20 @@ export default async function CityPage({ params }: Props) {
                 {/* ───────── 2. BENEFITS ───────── */}
                 <section
                     id="benefits"
-                    className="bg-[var(--color-background)] py-10 lg:py-14"
+                    className="bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)] py-10 lg:py-14"
                     aria-labelledby="benefits-heading"
                 >
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="text-center mb-16">
-                            <p className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
+                            <p className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-sm font-semibold mb-4 uppercase tracking-wide">
                                 Why Choose Us
                             </p>
-                            <h2 id="benefits-heading" className="text-3xl md:text-4xl font-bold text-white mb-4">
+                            <h2 id="benefits-heading" className="text-3xl md:text-4xl font-bold text-[var(--color-text-black)] mb-4">
                                 {"Here's What "}
-                                <span className="text-[var(--color-text-yellow)]">Spencer Buys Houses</span>
+                                <span className="text-[var(--color-text-red)]">Spencer Buys Houses</span>
                                 {" Can Do For You…"}
                             </h2>
-                            <p className="text-gray-400 max-w-2xl mx-auto">
+                            <p className="text-[var(--color-text-black)] max-w-2xl mx-auto">
                                 Skip the traditional hassle of listing with an agent. Get a fair cash offer and sell your house fast.
                             </p>
                         </div>
@@ -167,7 +167,7 @@ export default async function CityPage({ params }: Props) {
                             {/* Right column — city image with fallback */}
                             <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
                                 <Image
-                                    src={city.benefitsImage ?? "/houses/Houses_21.png"}
+                                    src={city.benefitsImage ?? "/houses/Houses_22.png"}
                                     alt={`We buy houses in ${city.name}`}
                                     fill
                                     className="object-cover"

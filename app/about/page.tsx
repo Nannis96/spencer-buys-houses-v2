@@ -240,7 +240,7 @@ export default function AboutPage() {
             </section>
 
             {/* ── Stats Bar ────────────────────────────────────────────────── */}
-            <section className="bg-[var(--color-background)] border-t border-b border-[var(--color-secondary)] border-opacity-20 py-12" aria-label="Company statistics">
+            <section className="bg-[var(--color-background)] py-12" aria-label="Company statistics">
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                         {stats.map(({ value, label, icon: Icon }) => (
@@ -257,7 +257,7 @@ export default function AboutPage() {
             </section>
 
             {/* ── About Content ─────────────────────────────────────────────── */}
-            <section className="py-20 lg:py-28" aria-labelledby="story-heading">
+            <section className="bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)] py-12 lg:py-20" aria-labelledby="story-heading">
                 <div className="mx-auto max-w-5xl px-4 lg:px-8">
 
                     {/* Our Story: image + text side by side */}
@@ -277,17 +277,17 @@ export default function AboutPage() {
 
                         {/* Text */}
                         <div className="flex-1">
-                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-sm font-semibold mb-4 uppercase tracking-wide">
                                 Our Story
                             </span>
                             <h2
                                 id="story-heading"
-                                className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight"
+                                className="text-3xl md:text-4xl font-bold text-[var(--color-text-black)] mb-6 leading-tight"
                             >
                                 About {" "}
-                                <span className="text-[var(--color-text-yellow)]">Spencer Buys Houses</span>
+                                <span className="text-[var(--color-text-red)]">Spencer Buys Houses</span>
                             </h2>
-                            <div className="space-y-4 text-gray-400 leading-relaxed text-sm md:text-base">
+                            <div className="space-y-4 text-[var(--color-text-black)] leading-relaxed text-sm md:text-base">
                                 <p>
                                     For years, the only option for most Memphis house sellers has been to list
                                     their property on the market, try to sell it yourself, or hold on to it,
@@ -304,7 +304,11 @@ export default function AboutPage() {
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
 
+            <section className="bg-[var(--color-background)] py-20 lg:py-28" aria-labelledby="story-heading">
+                <div className="mx-auto max-w-5xl px-4 lg:px-8">
                     {/* How We Work: single column centered */}
                     <div className="text-center mb-6">
                         <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
@@ -454,25 +458,25 @@ export default function AboutPage() {
             </section>
 
             {/* ── Testimonial Quote ─────────────────────────────────────────── */}
-            <section className="bg-[var(--color-background)] border-y border-white/10 py-16" aria-label="Our mission">
+            <section className="bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)] py-16" aria-label="Our mission">
                 <div className="mx-auto max-w-4xl px-4 lg:px-8 text-center">
                     <div className="flex justify-center mb-6">
                         {[...Array(5)].map((_, i) => (
                             <Star
                                 key={i}
-                                className="h-6 w-6 text-[var(--color-text-yellow)] fill-[var(--color-text-yellow)]"
+                                className="h-6 w-6 text-[var(--color-primary-dark)] fill-[var(--color-text-yellow)]"
                                 aria-hidden="true"
                             />
                         ))}
                     </div>
-                    <blockquote className="text-xl md:text-2xl font-medium text-white leading-relaxed mb-6">
+                    <blockquote className="text-xl md:text-2xl font-medium text-[var(--color-text-black)] leading-relaxed mb-6">
                         &ldquo;If you have any questions about our process for helping you sell a house
                         quickly and for a fair cash amount or if you want to learn more about us, don&apos;t
                         hesitate to contact us anytime!
                     </blockquote>
-                    <p className="text-[var(--color-text-yellow)] font-semibold">Call Spencer Buys Houses Today At 901-621-8799</p>
-                    <div className="mt-8 flex items-center justify-center gap-2 text-gray-400 text-sm">
-                        <TrendingUp className="h-4 w-4 text-[var(--color-text-yellow)]" aria-hidden="true" />
+                    <p className="text-[var(--color-text-red)] font-semibold">Call Spencer Buys Houses Today At 901-621-8799</p>
+                    <div className="mt-8 flex items-center justify-center gap-2 text-[var(--color-text-black)] text-sm">
+                        <TrendingUp className="h-4 w-4 text-[var(--color-text-red)]" aria-hidden="true" />
                         Trusted by hundreds of Memphis homeowners
                     </div>
                 </div>
