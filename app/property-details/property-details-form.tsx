@@ -117,11 +117,11 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                     mainLabel="Cash in Your Pocket"
                     mainValue={fastCash !== null ? fmt(fastCash) : null}
                     rows={[
-                        { label: "After Repair Value", value: arvVal > 0 ? fmt(arvVal) : "—" },
-                        { label: "Est. Repair Costs", value: repairs > 0 ? fmt(repairs) : "—" },
-                        { label: "Investor Discount (30%)", value: arvVal > 0 ? fmt(arvVal * 0.30) : "—" },
+                        { label: "After Repair Value (ARV)", value: arvVal > 0 ? fmt(arvVal) : "—" },
+                        { label: "Est. Repair Costs", value: arvVal > 0 ? fmt(repairs) : "—" },
+                        { label: "Investor Discount (30%)", value: arvVal > 0 ? fmt((arvVal - repairs) * 0.30) : "—" },
                     ]}
-                    note="Approximate. Subject to inspection and final offer terms."
+                    note="Offer = (ARV − Repairs) × 70%. Approximate, subject to inspection."
                 />
                 <StrategyCard
                     accent="border-blue-500/40"
