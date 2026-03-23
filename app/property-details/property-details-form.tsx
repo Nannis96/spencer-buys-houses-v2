@@ -11,6 +11,168 @@ import { MapPin, User, Phone, Mail, ArrowRight, Loader2, ShieldCheck, Building2,
 import { motion, AnimatePresence } from "framer-motion"
 import { CallButton } from "@/components/ui/call-button"
 
+/* ─── Helpers ─────────────────────────────────────────────────────────────── */
+function fmt(val: number) {
+    return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(val)
+}
+
+function calcMonthlyPayment(principal: number, annualRatePct: number, years: number): number {
+    const r = annualRatePct / 100 / 12
+    const n = years * 12
+    if (r === 0) return principal / n
+    return (principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1)
+}
+
+interface StrategyCardProps {
+    accent: string
+    icon: React.ReactNode
+    tag: string
+    title: string
+    subtitle: string
+    mainLabel: string
+    mainValue: string | null
+    rows: { label: string; value: string }[]
+    note?: string
+}
+
+function StrategyCard({ accent, icon, tag, title, subtitle, mainLabel, mainValue, rows, note }: StrategyCardProps) {
+    return (
+        <div className={`rounded-xl border ${accent} bg-white/[0.03] p-5 flex flex-col gap-3`}>
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400">
+                <span className="text-lg">{icon}</span>
+                <span>{tag}</span>
+            </div>
+            <div>
+                <p className="text-base font-bold text-white leading-tight">{title}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{subtitle}</p>
+            </div>
+            {mainValue !== null ? (
+                <div className="rounded-lg bg-white/5 p-3 text-center">
+                    <p className="text-xs text-gray-400 mb-0.5">{mainLabel}</p>
+                    <p className="text-2xl font-extrabold text-white">{mainValue}</p>
+                </div>
+            ) : (
+                <div className="rounded-lg bg-white/5 p-3 text-center">
+                    <p className="text-xs text-gray-400 italic">Data unavailable</p>
+                </div>
+            )}
+            <div className="flex flex-col gap-1.5 mt-1">
+                {rows.map((r) => (
+                    <div key={r.label} className="flex justify-between text-xs">
+                        <span className="text-gray-400">{r.label}</span>
+                        <span className="text-white font-semibold">{r.value}</span>
+                    </div>
+                ))}
+            </div>
+            {note && <p className="text-[10px] text-gray-500 leading-relaxed mt-auto pt-2 border-t border-white/10">{note}</p>}
+        </div>
+    )
+}
+
+interface OfferStrategiesGridProps {
+    cashOffer: number | null
+    repairCosts: number | null
+    arv: number | null
+    estimatedRent: number | null
+    annualTaxes: number | null
+    insuranceAnnual: number | null
+}
+
+function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annualTaxes, insuranceAnnual }: OfferStrategiesGridProps) {
+    const repairs = repairCosts ?? 0
+    const arvVal = arv ?? 0
+
+    // 1. Fast Cash Sale
+    const fastCash = cashOffer
+
+    // 2. Fix & List
+    const realtorFee = arvVal * 0.06
+    const fixListNet = arvVal > 0 ? arvVal - repairs - realtorFee : null
+
+    // 3. Seller Financing (Become the Bank)
+    const sfSalePrice = arvVal
+    const sfDownPayment = sfSalePrice * 0.10
+    const sfLoan = sfSalePrice - sfDownPayment
+    const sfMonthly = arvVal > 0 ? calcMonthlyPayment(sfLoan, 6.5, 30) : null
+    const sfTotalYield = sfMonthly !== null ? sfDownPayment + sfMonthly * 360 : null
+
+    // 4. Rent It Out
+    const rent = estimatedRent ?? 0
+    const taxes = annualTaxes ?? 0
+    const insurance = insuranceAnnual ?? 0
+    const monthlyExpenses = taxes / 12 + insurance / 12 + 150 + 100  // admin $150 + maintenance $100
+    const netMonthlyRent = rent > 0 ? rent - monthlyExpenses : null
+    const netAnnualRent = netMonthlyRent !== null ? netMonthlyRent * 12 : null
+
+    return (
+        <div className="text-left">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 text-center">Your 4 Options — Estimated</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <StrategyCard
+                    accent="border-[#f59e0b]/40"
+                    icon="⚡"
+                    tag="Fast Cash Sale"
+                    title="Sell As-Is to Cash Buyer"
+                    subtitle="Close in days, zero repairs needed"
+                    mainLabel="Cash in Your Pocket"
+                    mainValue={fastCash !== null ? fmt(fastCash) : null}
+                    rows={[
+                        { label: "After Repair Value", value: arvVal > 0 ? fmt(arvVal) : "—" },
+                        { label: "Est. Repair Costs", value: repairs > 0 ? fmt(repairs) : "—" },
+                        { label: "Investor Discount (30%)", value: arvVal > 0 ? fmt(arvVal * 0.30) : "—" },
+                    ]}
+                    note="Approximate. Subject to inspection and final offer terms."
+                />
+                <StrategyCard
+                    accent="border-blue-500/40"
+                    icon="🔨"
+                    tag="Fix & List"
+                    title="Rehab &amp; Sell on Market"
+                    subtitle="Invest in repairs to get top dollar"
+                    mainLabel="Estimated Net Profit"
+                    mainValue={fixListNet !== null && fixListNet > 0 ? fmt(fixListNet) : null}
+                    rows={[
+                        { label: "Market Value (ARV)", value: arvVal > 0 ? fmt(arvVal) : "—" },
+                        { label: "Rehab Investment", value: repairs > 0 ? fmt(repairs) : "—" },
+                        { label: "Realtor Fees (6%)", value: arvVal > 0 ? fmt(realtorFee) : "—" },
+                    ]}
+                    note="Net = ARV − repair costs − 6% realtor commission."
+                />
+                <StrategyCard
+                    accent="border-[#529e14]/40"
+                    icon="🏦"
+                    tag="Become the Bank"
+                    title="Seller Financing"
+                    subtitle="Collect a down payment + monthly income"
+                    mainLabel="Monthly Income (P&amp;I)"
+                    mainValue={sfMonthly !== null ? fmt(sfMonthly) + "/mo" : null}
+                    rows={[
+                        { label: "Sale Price (100% ARV)", value: arvVal > 0 ? fmt(sfSalePrice) : "—" },
+                        { label: "Down Payment (10%)", value: arvVal > 0 ? fmt(sfDownPayment) : "—" },
+                        { label: "Total Yield (30 yrs)", value: sfTotalYield !== null ? fmt(sfTotalYield) : "—" },
+                    ]}
+                    note="Based on 6.5% interest, 30-year term, 10% down. Illustrative only."
+                />
+                <StrategyCard
+                    accent="border-purple-500/40"
+                    icon="🏠"
+                    tag="Rent It Out"
+                    title="Traditional Rental"
+                    subtitle="Hold the property and earn monthly rent"
+                    mainLabel="Est. Net Monthly Cashflow"
+                    mainValue={netMonthlyRent !== null ? fmt(netMonthlyRent) + "/mo" : null}
+                    rows={[
+                        { label: "Gross Monthly Rent", value: rent > 0 ? fmt(rent) : "—" },
+                        { label: "Est. Monthly Expenses", value: rent > 0 ? fmt(monthlyExpenses) : "—" },
+                        { label: "Net Annual Cashflow", value: netAnnualRent !== null ? fmt(netAnnualRent) : "—" },
+                    ]}
+                    note="Expenses include taxes, insurance, property mgmt ($150) and maintenance ($100)."
+                />
+            </div>
+        </div>
+    )
+}
+
 /* ─── Schema ──────────────────────────────────────────────────────────────── */
 const propertyDetailsSchema = z.object({
     firstName: z.string().min(2, "Please enter your first name"),
@@ -64,47 +226,6 @@ function SectionHeading({ children, className }: { children: React.ReactNode; cl
     )
 }
 
-// Calcula las reparaciones base (copiado de route (1).ts)
-function calculateRepairs(sqft: number, yearBuilt: number, propertyType: string, conditionScale: number = 3) {
-    let baseCost = 15;
-
-    if (yearBuilt > 0) {
-        if (yearBuilt < 1950) baseCost = 75;
-        else if (yearBuilt < 1978) baseCost = 60;
-        else if (yearBuilt < 1990) baseCost = 40;
-        else if (yearBuilt < 2000) baseCost = 25;
-    }
-
-    const typeMultipliers: Record<string, number> = {
-        "Single Family": 1.0,
-        "Multi-Family": 1.3,
-        Apartment: 1.3,
-        Condo: 0.6,
-        Townhouse: 0.8,
-        "Mobile Home": 1.5,
-        Land: 0.0,
-    };
-
-    const conditionMultipliers: Record<number, number> = {
-        0: 0.0,
-        1: 0.30,
-        2: 0.60,
-        3: 1.0,
-        4: 1.5,
-        5: 2.0,
-    };
-
-    const typeMult = typeMultipliers[propertyType] || 1.0;
-    const conditionMult = conditionMultipliers[conditionScale] !== undefined ? conditionMultipliers[conditionScale] : 1.0;
-
-    const repairPerSqft = baseCost * typeMult * conditionMult;
-
-    return {
-        total: Math.round(sqft * repairPerSqft),
-        perSqft: Number(repairPerSqft.toFixed(2)),
-    };
-}
-
 /* ─── Component ───────────────────────────────────────────────────────────── */
 export function PropertyDetailsForm() {
     const uid = useId()
@@ -122,9 +243,23 @@ export function PropertyDetailsForm() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitted, setSubmitted] = useState(false)
     const [editMode, setEditMode] = useState(false)
+
+    // Offer may have been precomputed in property-info-form and passed via URL params
+    const precomputedCashOffer = searchParams.get("cashOffer") !== null ? Number(searchParams.get("cashOffer")) : null
+    const precomputedRepairCosts = searchParams.get("repairCosts") !== null ? Number(searchParams.get("repairCosts")) : null
+    const precomputedArv = searchParams.get("arv") !== null ? Number(searchParams.get("arv")) : null
+    const precomputedEstimatedRent = searchParams.get("estimatedRent") !== null ? Number(searchParams.get("estimatedRent")) : null
+    const precomputedAnnualTaxes = searchParams.get("annualTaxes") !== null ? Number(searchParams.get("annualTaxes")) : null
+    const precomputedInsuranceAnnual = searchParams.get("insuranceAnnual") !== null ? Number(searchParams.get("insuranceAnnual")) : null
+    console.log('Precomputed offer (from URL):', { precomputedCashOffer, precomputedRepairCosts })
+
     const [offerLoading, setOfferLoading] = useState(false)
-    const [repairCost, setRepairCost] = useState<number | null>(null)
-    const [finalOffer, setFinalOffer] = useState<number | null>(null)
+    const [repairCost, setRepairCost] = useState<number | null>(precomputedRepairCosts)
+    const [finalOffer, setFinalOffer] = useState<number | null>(precomputedCashOffer)
+    const [arv, setArv] = useState<number | null>(precomputedArv)
+    const [estimatedRent, setEstimatedRent] = useState<number | null>(precomputedEstimatedRent)
+    const [annualTaxes, setAnnualTaxes] = useState<number | null>(precomputedAnnualTaxes)
+    const [insuranceAnnual, setInsuranceAnnual] = useState<number | null>(precomputedInsuranceAnnual)
 
     // Local editable copies of prior-step values (inline edit)
     const [localAddress, setLocalAddress] = useState(address)
@@ -149,71 +284,64 @@ export function PropertyDetailsForm() {
         setIsSubmitting(true)
         console.log("Form completed:", { address: localAddress, city: localCity, state: localState, zipCode: localZipCode, ...data })
 
-        // Begin offer calculation: fetch AVM (priceRangeLow) and compute repairs
+        // Update URL to reflect completion
+        const outParams = new URLSearchParams(Array.from(searchParams.entries()))
+        outParams.set("submitted", "true")
+        outParams.set("step3Complete", "true")
+        const qs = outParams.toString()
+
+        // If offer was precomputed in the previous step, show success immediately — no spinner needed
+        if (precomputedCashOffer !== null) {
+            setIsSubmitting(false)
+            setSubmitted(true)
+            router.replace(`${pathname}${qs ? `?${qs}` : ""}`)
+            return
+        }
+
+        // Otherwise show success screen with spinner and fetch offer in the background
+        setIsSubmitting(false)
+        setOfferLoading(true)
+        setSubmitted(true)
+        router.replace(`${pathname}${qs ? `?${qs}` : ""}`)
+
         try {
-            setOfferLoading(true)
-            const params = new URLSearchParams(Array.from(searchParams.entries()))
-            params.set("avm", "1")
-            params.set("maxRadius", "1")
+            const fullAddress = [localAddress, localCity, localState, localZipCode]
+                .filter(Boolean)
+                .join(", ")
 
-            const res = await fetch(`/api/rentcast?${params.toString()}`)
-            let avmData: any = null
-            if (res.ok) {
-                avmData = await res.json()
-            } else {
-                console.error("AVM fetch failed:", res.status)
-            }
-
-            // Extract priceRangeLow (fallback to price if missing)
-            const priceLow = (avmData && (avmData.priceRangeLow ?? avmData.price ?? null)) || null
-
-            // Determine inputs for repair calc
-            const sqft = Number(searchParams.get("squareFootage") ?? 0) || 0
-            const propertyType = (searchParams.get("propertyType") || "Single Family")
-
-            // Read condition scale properly (allow 0). Default to 3 if not provided.
             const condRaw = searchParams.get("condition")
-            const cond = condRaw !== null ? Math.max(0, Math.min(5, Number(condRaw))) : 3
+            const conditionScale = condRaw !== null ? Math.max(0, Math.min(5, Number(condRaw))) : 3
 
-            // Try to get yearBuilt from AVM subjectProperty or search params; default to 0
-            const yearBuiltRaw = avmData?.subjectProperty?.yearBuilt ?? searchParams.get("yearBuilt")
-            const yearBuilt = yearBuiltRaw ? Number(yearBuiltRaw) : 0
+            const res = await fetch("/api/offers", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ address: fullAddress, conditionScale }),
+            })
 
-            // Use shared repair calculation (now supports 0-5 condition scale)
-            const repairs = calculateRepairs(sqft, yearBuilt, propertyType, cond)
-            const totalRepairs = Math.max(0, repairs.total)
-            setRepairCost(totalRepairs)
-
-            // Compute final cash offer using priceRangeLow per instructions
-            let offer = null
-            if (priceLow !== null) {
-                offer = Math.max(0, Math.round((Number(priceLow) - totalRepairs) * 0.7))
-                setFinalOffer(offer)
+            if (res.ok) {
+                const offerData = await res.json()
+                const cashOffer = offerData?.cashOffer ?? null
+                const repairCosts = offerData?.repairCosts ?? 0
+                setRepairCost(repairCosts)
+                if (cashOffer !== null) setFinalOffer(cashOffer)
+                if (offerData.arv != null) setArv(offerData.arv)
+                if (offerData.estimatedRent != null) setEstimatedRent(offerData.estimatedRent)
+                if (offerData.annualTaxes != null) setAnnualTaxes(offerData.annualTaxes)
+                if (offerData.insuranceAnnual != null) setInsuranceAnnual(offerData.insuranceAnnual)
+                console.log("Offer API response:", offerData)
+                console.log('Offer calc (client):', {
+                    baseAvmPrice: offerData.baseAvmPrice,
+                    repairCosts: offerData.repairCosts,
+                    netBefore70: (offerData.baseAvmPrice ?? 0) - (offerData.repairCosts ?? 0),
+                    cashOffer: offerData.cashOffer,
+                })
+            } else {
+                console.error("Offer fetch failed:", res.status)
             }
-
-            // Log to console as requested
-            console.log("Calculated repair cost:", totalRepairs, "perSqft:", repairs.perSqft, "conditionScale:", cond)
-            console.log("Final cash offer (70% of priceRangeLow - repairs):", offer)
-
-            // reflect success in URL so progress indicator can show final state
-            const outParams = new URLSearchParams(Array.from(searchParams.entries()))
-            outParams.set("submitted", "true")
-            outParams.set("step3Complete", "true")
-            const qs = outParams.toString()
-
-            // small delay to keep UX friendly, then show success screen
-            setTimeout(() => {
-                setIsSubmitting(false)
-                setOfferLoading(false)
-                setSubmitted(true)
-                router.replace(`${pathname}${qs ? `?${qs}` : ""}`)
-            }, 600)
         } catch (err) {
             console.error("Offer calculation failed:", err)
-            setIsSubmitting(false)
+        } finally {
             setOfferLoading(false)
-            // still mark submitted so the user sees confirmation even if calc failed
-            setSubmitted(true)
         }
     }
 
@@ -241,7 +369,7 @@ export function PropertyDetailsForm() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="w-full max-w-lg mx-auto"
+                className="w-full max-w-2xl mx-auto"
             >
                 <div
                     className="rounded-2xl bg-[var(--color-background)] p-8 md:p-10 text-center border border-[var(--color-primary)]/60 mb-8"
@@ -258,30 +386,29 @@ export function PropertyDetailsForm() {
                         <CheckCircle2 className="h-10 w-10 text-[#22c55e]" />
                     </motion.div>
 
-                    {/* Primary: Offer first (large, prominent) */}
-                    <div className="mt-2 text-center">
+                    {/* Primary: 4-strategy offer grid */}
+                    <div className="mt-4">
                         {offerLoading ? (
-                            <div className="inline-flex items-center gap-3 text-sm text-gray-300">
+                            <div className="inline-flex items-center gap-3 text-sm text-gray-300 justify-center w-full">
                                 <Loader2 className="h-5 w-5 animate-spin" />
-                                Calculating your cash offer…
-                            </div>
-                        ) : finalOffer !== null ? (
-
-                            <div className="mt-1">
-                                <p className="text-3xl md:text-4xl font-extrabold text-white leading-tight">YOUR CAS OFFER ${finalOffer?.toLocaleString?.()}</p>
+                                Calculating your options…
                             </div>
                         ) : (
-                            <div className="mt-1 text-sm text-gray-400">No offer available at this time.</div>
+                            <OfferStrategiesGrid
+                                cashOffer={finalOffer}
+                                repairCosts={repairCost}
+                                arv={arv}
+                                estimatedRent={estimatedRent}
+                                annualTaxes={annualTaxes}
+                                insuranceAnnual={insuranceAnnual}
+                            />
                         )}
                     </div>
 
                     {/* Secondary: confirmation copy and security badge */}
-                    <h3 className="text-xl md:text-2xl font-semibold text-white my-4">You're All Set!</h3>
+                    <h3 className="text-xl md:text-2xl font-semibold text-white mt-6 mb-2">You're All Set!</h3>
                     <p className="text-gray-300 mb-4 leading-relaxed max-w-md mx-auto text-sm">
                         We've received your information — one of our home buying specialists will reach out soon with details and next steps.
-                    </p>
-                    <p className="text-gray-300 mb-4 leading-relaxed max-w-md mx-auto text-sm">
-                        Estimated cash offer — approximate and subject to verification
                     </p>
                     <div className="inline-flex items-center gap-2 rounded-full bg-[var(--color-primary)]/10 px-4 py-2 text-sm font-medium text-[var(--color-primary)]">
                         <ShieldCheck className="h-4 w-4" aria-hidden="true" />

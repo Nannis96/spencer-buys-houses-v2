@@ -303,7 +303,7 @@ export function PropertyInfoForm() {
         if (data.yearBuilt) params.append("yearBuilt", data.yearBuilt)
         if (data.bestTimeToCall) params.append("bestTimeToCall", data.bestTimeToCall)
 
-        // --- Call AVM API before moving to next step ---
+        // --- Fire AVM + offer calculation in parallel before moving to next step ---
         try {
             const avmParams = new URLSearchParams()
             if (address) avmParams.append("address", address)
@@ -313,27 +313,42 @@ export function PropertyInfoForm() {
             if (data.bedrooms) avmParams.append("bedrooms", data.bedrooms)
             if (data.bathrooms) avmParams.append("bathrooms", data.bathrooms)
             if (data.squareFootage) avmParams.append("squareFootage", data.squareFootage)
-            // Request AVM behavior from the backend
             avmParams.append("avm", "1")
-            // maxRadius default is set server-side (DEFAULT_MAX_RADIUS=10), but also send it explicitly
             avmParams.append("maxRadius", String(10))
 
-            const res = await fetch(`/api/rentcast?${avmParams.toString()}`)
-            if (!res.ok) {
-                const txt = await res.text()
-                console.error("AVM API error:", res.status, txt)
+            // Build full address for the offer endpoint
+            const fullAddress = [address, city, state, zipCode].filter(Boolean).join(", ")
+            const conditionScale = data.condition ? Math.max(0, Math.min(5, Number(data.condition))) : 3
+
+            // Only call our offers API here; RentCast AVM is computed server-side in /api/offers
+            const offerRes = await fetch("/api/offers", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ address: fullAddress, conditionScale }),
+            })
+
+            if (offerRes.ok) {
+                const offerData = await offerRes.json()
+                if (offerData.cashOffer != null) params.set("cashOffer", String(offerData.cashOffer))
+                if (offerData.repairCosts != null) params.set("repairCosts", String(offerData.repairCosts))
+                if (offerData.arv != null) params.set("arv", String(offerData.arv))
+                if (offerData.estimatedRent != null) params.set("estimatedRent", String(offerData.estimatedRent))
+                if (offerData.annualTaxes != null) params.set("annualTaxes", String(offerData.annualTaxes))
+                if (offerData.insuranceAnnual != null) params.set("insuranceAnnual", String(offerData.insuranceAnnual))
+                console.log("Offer precomputed:", offerData.cashOffer)
+                console.log("Offer precomputed details:", {
+                    baseAvmPrice: offerData.baseAvmPrice,
+                    repairCosts: offerData.repairCosts,
+                    netBefore70: (offerData.baseAvmPrice ?? 0) - (offerData.repairCosts ?? 0),
+                })
             } else {
-                const avmData = await res.json()
-                setAvmResult(avmData)
-                console.log("AVM result:", avmData)
+                console.error("Offer API error:", offerRes.status)
             }
         } catch (err) {
-            console.error("Failed to fetch AVM:", err)
+            console.error("Failed to fetch AVM / offer:", err)
         }
 
-        setTimeout(() => {
-            router.push(`/property-details?${params.toString()}`)
-        }, 1500)
+        router.push(`/property-details?${params.toString()}`)
     }
 
     // Report step completion in URL so progress indicator can update in real time
@@ -651,11 +666,12 @@ export function PropertyInfoForm() {
                                 aria-describedby={errors.condition ? id("condition-err") : undefined}
                             >
                                 <option value="">Select condition…</option>
-                                <option>Excelent</option>
-                                <option>Good</option>
-                                <option>Fair</option>
-                                <option>Poor</option>
-                                <option>Terrible</option>
+                                <option value="0">Excellent – Move-in ready</option>
+                                <option value="1">Good – Light cosmetic only</option>
+                                <option value="2">Fair – Minor repairs needed</option>
+                                <option value="3">Poor – Average wear &amp; tear</option>
+                                <option value="4">Bad – Heavy work (kitchen/bath/roof)</option>
+                                <option value="5">Terrible – Major rehab / gut</option>
                             </select>
                             <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
                         </div>
