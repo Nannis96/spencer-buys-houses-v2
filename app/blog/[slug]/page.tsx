@@ -57,7 +57,8 @@ export default async function BlogPostPage(props: {
   });
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] text-gray-200 font-sans">
+    <div className="min-h-screen bg-[var(--color-background)] text-gray-200 font-sans"
+      style={{ paddingTop: 'calc(var(--app-header-height) / 3)' }}>
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
 
         {/* ── Breadcrumb ── */}
