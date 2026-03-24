@@ -3,16 +3,7 @@ import { CallButton } from "@/components/ui/call-button"
 
 export function HeroBold() {
     return (
-        <section
-            className="relative bg-[var(--color-background)] bg-bottom pt-32 md:pt-48 pb-8 lg:pb-12 flex flex-col justify-end"
-            style={{
-                backgroundImage: "url('/home.png')",
-                backgroundPosition: 'center 10%',
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                minHeight: '85vh',
-            }}
-        >
+        <section className="relative bg-[var(--color-background)] bg-bottom pt-32 md:pt-48 pb-8 lg:pb-12 flex flex-col justify-end">
             <div className="relative mx-auto max-w-7xl px-4 lg:px-20">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                     <div>

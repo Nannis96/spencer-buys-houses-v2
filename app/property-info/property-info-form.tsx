@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { RehabConditionWheel } from "@/components/ui/rehab-condition-wheel"
 import {
     ArrowRight,
     Loader2,
@@ -226,6 +227,7 @@ export function PropertyInfoForm() {
         register,
         handleSubmit,
         setValue,
+        watch,
         formState: { errors, isValid },
     } = useForm<PropertyInfoFormData>({
         resolver: zodResolver(propertyInfoSchema),
@@ -653,28 +655,29 @@ export function PropertyInfoForm() {
 
                     {/* Condition (required) */}
                     <div>
-                        <label htmlFor={id("condition")} className="block text-xs text-gray-400 mb-1.5">
+                        <label className="block text-xs text-gray-400 mb-3">
                             What is the current condition of the property?{" "}
                             <span className="text-red-400" aria-hidden="true">*</span>
                         </label>
-                        <div className="relative">
-                            <select
-                                id={id("condition")}
-                                {...register("condition")}
-                                className={selectClass}
-                                aria-invalid={!!errors.condition}
-                                aria-describedby={errors.condition ? id("condition-err") : undefined}
-                            >
-                                <option value="">Select condition…</option>
-                                <option value="0">Excellent – Move-in ready</option>
-                                <option value="1">Good – Light cosmetic only</option>
-                                <option value="2">Fair – Minor repairs needed</option>
-                                <option value="3">Poor – Average wear &amp; tear</option>
-                                <option value="4">Bad – Heavy work (kitchen/bath/roof)</option>
-                                <option value="5">Terrible – Major rehab / gut</option>
-                            </select>
-                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                        </div>
+                        {/* Wheel IDs map 1-to-1 with condition levels 0-5 */}
+                        <RehabConditionWheel
+                            value={(() => {
+                                const v = watch("condition")
+                                const ids = ["turnkey", "cosmetic", "mid-light", "mid-heavy", "major", "full-gut"]
+                                return v !== "" && v !== undefined ? (ids[Number(v)] ?? undefined) : undefined
+                            })()}
+                            onChange={(wheelId) => {
+                                const levelMap: Record<string, string> = {
+                                    turnkey: "0",
+                                    cosmetic: "1",
+                                    "mid-light": "2",
+                                    "mid-heavy": "3",
+                                    major: "4",
+                                    "full-gut": "5",
+                                }
+                                setValue("condition", levelMap[wheelId] ?? "1", { shouldValidate: true })
+                            }}
+                        />
                         <FieldError message={errors.condition?.message} />
                     </div>
 
