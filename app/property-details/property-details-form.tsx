@@ -33,29 +33,33 @@ interface StrategyCardProps {
     mainValue: string | null
     rows: { label: string; value: string }[]
     note?: string
+    centered?: boolean
+    prominent?: boolean
+    highlighted?: boolean
 }
 
-function StrategyCard({ accent, icon, tag, title, subtitle, mainLabel, mainValue, rows, note }: StrategyCardProps) {
+function StrategyCard({ accent, icon, tag, title, subtitle, mainLabel, mainValue, rows, note, centered, prominent, highlighted }: StrategyCardProps) {
+    const baseClasses = `rounded-xl border ${accent} p-5 flex flex-col gap-3 h-full`
+    // allow highlighting to override visuals for hero offer
+    const highlight = highlighted ?? prominent ?? false
+    const highlightedBg = highlight
+        ? 'bg-gradient-to-br from-[#f59e0b]/10 via-[#f59e0b]/6 to-white/5 shadow-xl'
+        : 'bg-white/[0.03]'
+
     return (
-        <div className={`rounded-xl border ${accent} bg-white/[0.03] p-5 flex flex-col gap-3`}>
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400">
+        <div className={`${baseClasses} ${highlightedBg} ${highlight ? 'ring-2 ring-[#f59e0b]/20 scale-[1.01]' : ''}`}>
+            <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400 ${centered ? "justify-center" : ""}`}>
                 <span className="text-lg">{icon}</span>
                 <span>{tag}</span>
+                {highlight && (
+                    <span className="ml-2 inline-flex items-center px-2 py-0.5 text-xs font-semibold text-[#78350f] bg-[#fef3c7] rounded-full">Best For Quick Sale</span>
+                )}
             </div>
-            <div>
+            <div className={centered ? "text-center" : ""}>
                 <p className="text-base font-bold text-white leading-tight">{title}</p>
                 <p className="text-xs text-gray-400 mt-0.5">{subtitle}</p>
             </div>
-            {mainValue !== null ? (
-                <div className="rounded-lg bg-white/5 p-3 text-center">
-                    <p className="text-xs text-gray-400 mb-0.5">{mainLabel}</p>
-                    <p className="text-2xl font-extrabold text-white">{mainValue}</p>
-                </div>
-            ) : (
-                <div className="rounded-lg bg-white/5 p-3 text-center">
-                    <p className="text-xs text-gray-400 italic">Data unavailable</p>
-                </div>
-            )}
+
             <div className="flex flex-col gap-1.5 mt-1">
                 {rows.map((r) => (
                     <div key={r.label} className="flex justify-between text-xs">
@@ -64,7 +68,19 @@ function StrategyCard({ accent, icon, tag, title, subtitle, mainLabel, mainValue
                     </div>
                 ))}
             </div>
-            {note && <p className="text-[10px] text-gray-500 leading-relaxed mt-auto pt-2 border-t border-white/10">{note}</p>}
+
+            {mainValue !== null ? (
+                <div className="rounded-lg bg-white/5 p-3 text-center mt-auto">
+                    <p className="text-xs text-gray-400 mb-0.5">{mainLabel}</p>
+                    <p className={`${highlight ? 'text-3xl' : 'text-2xl'} font-extrabold ${highlight ? 'text-[#f59e0b]' : 'text-white'}`}>{mainValue}</p>
+                </div>
+            ) : (
+                <div className="rounded-lg bg-white/5 p-3 text-center mt-auto">
+                    <p className="text-xs text-gray-400 italic">Data unavailable</p>
+                </div>
+            )}
+
+            {note && <p className="text-[10px] text-gray-500 leading-relaxed pt-2 border-t border-white/10">{note}</p>}
         </div>
     )
 }
@@ -82,12 +98,46 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
     const repairs = repairCosts ?? 0
     const arvVal = arv ?? 0
 
-    // 1. Fast Cash Sale
+    // 1. Fast Cash Sale - compute a range based on ARV and rehab cost variations
     const fastCash = cashOffer
+    let fastCashRange: { min: number; max: number } | null = null
+    if (arvVal > 0) {
+        const repairsLow = repairs * 0.85
+        const repairsHigh = repairs * 1.15
+        const arvLow = arvVal * 0.95
+        const arvHigh = arvVal * 1.05
 
-    // 2. Fix & List
+        const baseNetLow = Math.max(0, arvLow - repairsHigh)
+        const baseNetHigh = Math.max(0, arvHigh - repairsLow)
+
+        // assume investor purchase at ~70% of net after repairs
+        const cashMin = Math.round(baseNetLow * 0.7)
+        const cashMax = Math.round(baseNetHigh * 0.7)
+        fastCashRange = { min: cashMin, max: cashMax }
+    } else if (fastCash != null) {
+        // fallback: +/-10% around provided offer
+        const min = Math.round(fastCash * 0.9)
+        const max = Math.round(fastCash * 1.1)
+        fastCashRange = { min, max }
+    }
+
+    // 2. Fix & List (Rehab & Sell) — include realistic holding and closing costs
     const realtorFee = arvVal * 0.06
-    const fixListNet = arvVal > 0 ? arvVal - repairs - realtorFee : null
+    const buyerPrepayPct = 0.05
+    const closingCostPct = 0.01
+    const domDays = 90
+    const holdingMonths = domDays / 30
+    const monthlyTaxes = (annualTaxes ?? 0) / 12
+    const monthlyInsurance = (insuranceAnnual ?? 0) / 12
+    const utilitiesMonthly = 150 // assumed average utilities while holding
+    const monthlyMortgage = 0 // placeholder — set >0 if you want to include carrying mortgage
+
+    const buyerPrepay = arvVal * buyerPrepayPct
+    const closingCosts = arvVal * closingCostPct
+    const holdingCosts = utilitiesMonthly * holdingMonths + monthlyTaxes * holdingMonths + monthlyInsurance * holdingMonths + monthlyMortgage * holdingMonths
+
+    // Deduct all costs before computing the net profit
+    const fixListNet = arvVal > 0 ? arvVal - repairs - realtorFee - buyerPrepay - closingCosts - holdingCosts : null
 
     // 3. Seller Financing (Become the Bank)
     const sfSalePrice = arvVal
@@ -106,23 +156,34 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
 
     return (
         <div className="text-left">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 text-center">Your 4 Options — Estimated</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 text-center">Your 3 Options — Estimated</p>
+            {/* Top: Fast Cash Sale — full width */}
+            <div className="mb-3">
                 <StrategyCard
                     accent="border-[#f59e0b]/40"
                     icon="⚡"
                     tag="Fast Cash Sale"
                     title="Sell As-Is to Cash Buyer"
                     subtitle="Close in days, zero repairs needed"
+                    centered
                     mainLabel="Cash in Your Pocket"
-                    mainValue={fastCash !== null ? fmt(fastCash) : null}
+                    mainValue={
+                        fastCashRange
+                            ? `${fmt(fastCashRange.min)} - ${fmt(fastCashRange.max)}`
+                            : fastCash !== null
+                                ? fmt(fastCash)
+                                : null
+                    }
+                    prominent
                     rows={[
                         { label: "After Repair Value (ARV)", value: arvVal > 0 ? fmt(arvVal) : "—" },
                         { label: "Est. Repair Costs", value: arvVal > 0 ? fmt(repairs) : "—" },
-                        { label: "Investor Discount (30%)", value: arvVal > 0 ? fmt((arvVal - repairs) * 0.30) : "—" },
+                        { label: "Investor Discount (30%)", value: arvVal > 0 ? fmt((arvVal - repairs) * 0.3) : "—" },
                     ]}
-                    note="Offer = (ARV − Repairs) × 70%. Approximate, subject to inspection."
                 />
+            </div>
+            {/* Bottom: Fix & List + Rent It Out — side by side, centered */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:max-w-xl sm:mx-auto">
                 <StrategyCard
                     accent="border-blue-500/40"
                     icon="🔨"
@@ -135,23 +196,10 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                         { label: "Market Value (ARV)", value: arvVal > 0 ? fmt(arvVal) : "—" },
                         { label: "Rehab Investment", value: repairs > 0 ? fmt(repairs) : "—" },
                         { label: "Realtor Fees (6%)", value: arvVal > 0 ? fmt(realtorFee) : "—" },
+                        { label: "Buyer Prepay (5%)", value: arvVal > 0 ? fmt(buyerPrepay) : "—" },
+                        { label: "Closing Costs (1%)", value: arvVal > 0 ? fmt(closingCosts) : "—" },
+                        { label: `Holding Costs (${domDays} days)`, value: arvVal > 0 ? fmt(Math.round(holdingCosts)) : "—" },
                     ]}
-                    note="Net = ARV − repair costs − 6% realtor commission."
-                />
-                <StrategyCard
-                    accent="border-[#529e14]/40"
-                    icon="🏦"
-                    tag="Become the Bank"
-                    title="Seller Financing"
-                    subtitle="Collect a down payment + monthly income"
-                    mainLabel="Monthly Income (P&amp;I)"
-                    mainValue={sfMonthly !== null ? fmt(sfMonthly) + "/mo" : null}
-                    rows={[
-                        { label: "Sale Price (100% ARV)", value: arvVal > 0 ? fmt(sfSalePrice) : "—" },
-                        { label: "Down Payment (10%)", value: arvVal > 0 ? fmt(sfDownPayment) : "—" },
-                        { label: "Total Yield (30 yrs)", value: sfTotalYield !== null ? fmt(sfTotalYield) : "—" },
-                    ]}
-                    note="Based on 6.5% interest, 30-year term, 10% down. Illustrative only."
                 />
                 <StrategyCard
                     accent="border-purple-500/40"
@@ -166,7 +214,6 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                         { label: "Est. Monthly Expenses", value: rent > 0 ? fmt(monthlyExpenses) : "—" },
                         { label: "Net Annual Cashflow", value: netAnnualRent !== null ? fmt(netAnnualRent) : "—" },
                     ]}
-                    note="Expenses include taxes, insurance, property mgmt ($150) and maintenance ($100)."
                 />
             </div>
         </div>
@@ -357,8 +404,15 @@ export function PropertyDetailsForm() {
         const newUrl = `${pathname}${qs ? `?${qs}` : ""}`
 
         // only replace if the URL actually changes (prevents repeated router.replace calls)
+        // Use history.replaceState here to update the query string without triggering
+        // a navigation/scroll to top when the user simply checks the consent checkbox.
         if (typeof window !== "undefined" && newUrl !== window.location.pathname + window.location.search) {
-            router.replace(newUrl)
+            try {
+                window.history.replaceState({}, "", newUrl)
+            } catch (e) {
+                // fallback to router.replace if replaceState is unavailable
+                router.replace(newUrl)
+            }
         }
     }, [isValid, pathname, router, spString])
 
@@ -386,7 +440,7 @@ export function PropertyDetailsForm() {
                         <CheckCircle2 className="h-10 w-10 text-[#22c55e]" />
                     </motion.div>
 
-                    {/* Primary: 4-strategy offer grid */}
+                    {/* Primary: -strategy offer grid */}
                     <div className="mt-4">
                         {offerLoading ? (
                             <div className="inline-flex items-center gap-3 text-sm text-gray-300 justify-center w-full">
@@ -463,8 +517,8 @@ export function PropertyDetailsForm() {
                 className="rounded-2xl bg-[var(--color-background)] p-6 md:p-8 border border-[var(--color-primary)]/60 w-full max-w-lg mx-auto"
             >
                 <h3 className="text-xl font-bold text-white mb-1">
-                    One More Step — Tell Us {" "}
-                    <span className="text-[var(--color-text-yellow)]">About The Property</span>
+                    One More Step — Confirm {" "}
+                    <span className="text-[var(--color-text-yellow)]">Your information</span>
                 </h3>
                 <p className="text-gray-400 text-sm mb-6">
                     100% free. Zero obligation. Results in 24&nbsp;hours.

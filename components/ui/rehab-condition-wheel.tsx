@@ -83,10 +83,10 @@ interface RehabConditionWheelProps {
 }
 
 export function RehabConditionWheel({ value, onChange }: RehabConditionWheelProps) {
-    const [internalValue, setInternalValue] = useState<string>("cosmetic")
+    const [internalValue, setInternalValue] = useState<string>("")
 
     const selectedLevelId = value ?? internalValue
-    const selectedLevel = rehabLevels.find((l) => l.id === selectedLevelId) ?? rehabLevels[1]
+    const selectedLevel = rehabLevels.find((l) => l.id === selectedLevelId)
 
     const handleSelect = useCallback(
         (id: string) => {
@@ -158,7 +158,7 @@ export function RehabConditionWheel({ value, onChange }: RehabConditionWheelProp
         <div className="w-full max-w-4xl mx-auto">
             {/* Header */}
             <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-400">Rehab Condition Wheel</h2>
+                <h2 className="text-2xl font-bold text-gray-400">Tell us about the condition of your home</h2>
                 <p className="text-sm text-[var(--color-text-white)]/70 uppercase tracking-wide">Click a slice to explore each level</p>
             </div>
 
@@ -245,8 +245,14 @@ export function RehabConditionWheel({ value, onChange }: RehabConditionWheelProp
                     {/* Center Circle with Level Info */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div className="w-24 h-24 rounded-full bg-white shadow-inner flex flex-col items-center justify-center">
-                            <span className="text-2xl font-bold text-[#1a3a5c]">LVL {selectedLevel.level}</span>
-                            <span className="text-xs text-[#1a3a5c]/70 uppercase tracking-wide">Rehab</span>
+                            {selectedLevel ? (
+                                <>
+                                    <span className="text-2xl font-bold text-[#1a3a5c]">LVL {selectedLevel.level}</span>
+                                    <span className="text-xs text-[#1a3a5c]/70 uppercase tracking-wide">Rehab</span>
+                                </>
+                            ) : (
+                                <span className="text-sm text-[#1a3a5c]/50">Select</span>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -283,32 +289,34 @@ export function RehabConditionWheel({ value, onChange }: RehabConditionWheelProp
                 </div>
             </div>
 
-            {/* Detail Card */}
-            <div className="mt-8 p-6 rounded-xl bg-[var(--color-background-white)] border-2 border-[var(--color-primary)]">
-                <div className="flex items-start justify-between gap-4">
-                    <div>
-                        <h3 className="text-xl font-bold text-[var(--color-text-black)]">
-                            Level {selectedLevel.level} — {selectedLevel.name}
-                        </h3>
-                        <p className="mt-2 text-[#1a3a5c]/80">{selectedLevel.description}</p>
-                        {selectedLevel.tags.length > 0 && (
-                            <div className="mt-4 flex flex-wrap gap-2">
-                                {selectedLevel.tags.map((tag) => (
-                                    <span
-                                        key={tag}
-                                        className="px-3 py-1 text-sm rounded-full bg-[var(--color-primary-dark)]/10 text-[var(--color-primary-dark)] font-medium"
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                    <div className="text-right shrink-0">
-                        <span className="text-xl font-bold text-[var(--color-primary-dark)]">{selectedLevel.cost}</span>
+            {/* Detail Card (only show when a level is selected) */}
+            {selectedLevel && (
+                <div className="mt-8 p-6 rounded-xl bg-[var(--color-background-white)] border-2 border-[var(--color-primary)]">
+                    <div className="flex items-start justify-between gap-4">
+                        <div>
+                            <h3 className="text-xl font-bold text-[var(--color-text-black)]">
+                                Level {selectedLevel.level} — {selectedLevel.name}
+                            </h3>
+                            <p className="mt-2 text-[#1a3a5c]/80">{selectedLevel.description}</p>
+                            {selectedLevel.tags.length > 0 && (
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    {selectedLevel.tags.map((tag) => (
+                                        <span
+                                            key={tag}
+                                            className="px-3 py-1 text-sm rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-text-black)] font-medium"
+                                        >
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        <div className="text-right shrink-0">
+                            <span className="text-xl font-bold text-[var(--color-primary-dark)]">{selectedLevel.cost}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }

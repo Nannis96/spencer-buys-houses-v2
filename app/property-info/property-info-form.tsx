@@ -35,6 +35,7 @@ const propertyInfoSchema = z.object({
     squareFootage: z.string().optional(),
     yearBuilt: z.string().optional(),
     yearsOwned: z.string().optional(),
+    ownerName: z.string().optional(),
     condition: z.string().min(1, "Please select the property condition"),
     // Structured repairs input: checklist of common items, an estimated repair cost, and optional notes
     repairsChecklist: z.array(z.string()).optional(),
@@ -236,6 +237,26 @@ export function PropertyInfoForm() {
     })
 
     const [isPrefilling, setIsPrefilling] = useState(false)
+    const [lastSaleDateDisplay, setLastSaleDateDisplay] = useState<string | null>(null)
+
+    /** Returns a human-readable string like "~2 years (last sold Jan 2023)" */
+    function formatYearsOwned(isoDate: string): string {
+        try {
+            const sold = new Date(isoDate)
+            const now = new Date()
+            const diffMs = now.getTime() - sold.getTime()
+            const years = diffMs / (1000 * 60 * 60 * 24 * 365.25)
+            const monthStr = sold.toLocaleDateString("en-US", { month: "short", year: "numeric" })
+            if (years < 1) {
+                const months = Math.round(years * 12)
+                return `~${months} month${months !== 1 ? "s" : ""} (last sold ${monthStr})`
+            }
+            const yrs = Math.floor(years)
+            return `~${yrs} year${yrs !== 1 ? "s" : ""} (last sold ${monthStr})`
+        } catch {
+            return isoDate
+        }
+    }
 
     // Repairs UI state: checklist and a global estimated repair cost (slider)
     const repairOptions = [
@@ -283,27 +304,28 @@ export function PropertyInfoForm() {
         if (zipCode) params.append("zipCode", zipCode)
         if (smsConsentPrev) params.append("smsConsent", smsConsentPrev)
         // Property info fields from this step
-        if (data.garage) params.append("garage", data.garage)
-        if (data.basement) params.append("basement", data.basement)
-        if (data.propertyType) params.append("propertyType", data.propertyType)
-        if (data.bedrooms) params.append("bedrooms", data.bedrooms)
-        if (data.bathrooms) params.append("bathrooms", data.bathrooms)
-        if (data.squareFootage) params.append("squareFootage", data.squareFootage)
-        if (data.yearsOwned) params.append("yearsOwned", data.yearsOwned)
-        params.append("condition", data.condition)
+        if (data.garage !== undefined && data.garage !== "") params.append("garage", data.garage)
+        if (data.basement !== undefined && data.basement !== "") params.append("basement", data.basement)
+        if (data.propertyType !== undefined && data.propertyType !== "") params.append("propertyType", data.propertyType)
+        if (data.bedrooms !== undefined && data.bedrooms !== "") params.append("bedrooms", data.bedrooms)
+        if (data.bathrooms !== undefined && data.bathrooms !== "") params.append("bathrooms", data.bathrooms)
+        if (data.squareFootage !== undefined && data.squareFootage !== "") params.append("squareFootage", data.squareFootage)
+        if (data.yearsOwned !== undefined && data.yearsOwned !== "") params.append("yearsOwned", data.yearsOwned)
+        if (data.ownerName !== undefined && data.ownerName !== "") params.append("ownerName", data.ownerName)
+        if (data.condition !== undefined && data.condition !== "") params.append("condition", data.condition)
         // Repairs: checklist + estimate + notes (kept as strings for URL params)
         if (data.repairsChecklist && data.repairsChecklist.length > 0)
             params.append("repairsChecklist", data.repairsChecklist.join(","))
-        if (data.repairsEstimate) params.append("repairsEstimate", data.repairsEstimate)
-        if (data.repairsNotes) params.append("repairsNotes", data.repairsNotes)
-        params.append("occupied", data.occupied)
-        params.append("listedWithRealtor", data.listedWithRealtor)
-        if (data.closingTimeline) params.append("closingTimeline", data.closingTimeline)
-        params.append("ultimateGoal", data.ultimateGoal)
-        if (data.askingPrice) params.append("askingPrice", data.askingPrice)
-        if (data.fairPrice) params.append("fairPrice", data.fairPrice)
-        if (data.yearBuilt) params.append("yearBuilt", data.yearBuilt)
-        if (data.bestTimeToCall) params.append("bestTimeToCall", data.bestTimeToCall)
+        if (data.repairsEstimate !== undefined && data.repairsEstimate !== "") params.append("repairsEstimate", data.repairsEstimate)
+        if (data.repairsNotes !== undefined && data.repairsNotes !== "") params.append("repairsNotes", data.repairsNotes)
+        if (data.occupied !== undefined && data.occupied !== "") params.append("occupied", data.occupied)
+        if (data.listedWithRealtor !== undefined && data.listedWithRealtor !== "") params.append("listedWithRealtor", data.listedWithRealtor)
+        if (data.closingTimeline !== undefined && data.closingTimeline !== "") params.append("closingTimeline", data.closingTimeline)
+        if (data.ultimateGoal !== undefined && data.ultimateGoal !== "") params.append("ultimateGoal", data.ultimateGoal)
+        if (data.askingPrice !== undefined && data.askingPrice !== "") params.append("askingPrice", data.askingPrice)
+        if (data.fairPrice !== undefined && data.fairPrice !== "") params.append("fairPrice", data.fairPrice)
+        if (data.yearBuilt !== undefined && data.yearBuilt !== "") params.append("yearBuilt", data.yearBuilt)
+        if (data.bestTimeToCall !== undefined && data.bestTimeToCall !== "") params.append("bestTimeToCall", data.bestTimeToCall)
 
         // --- Fire AVM + offer calculation in parallel before moving to next step ---
         try {
@@ -449,6 +471,19 @@ export function PropertyInfoForm() {
                     if (prop.yearBuilt !== undefined && prop.yearBuilt !== null) {
                         setValue("yearBuilt", String(prop.yearBuilt))
                     }
+
+                    // Owner name
+                    if (prop.owner?.names && Array.isArray(prop.owner.names) && prop.owner.names.length > 0) {
+                        setValue("ownerName", (prop.owner.names as string[]).join(" / "))
+                    }
+
+                    // Last sale date → years owned
+                    if (prop.lastSaleDate) {
+                        const iso = String(prop.lastSaleDate)
+                        const friendly = new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+                        setLastSaleDateDisplay(friendly)
+                        setValue("yearsOwned", formatYearsOwned(iso))
+                    }
                 } catch (err) {
                     console.error("Failed to map Rentcast data to form fields:", err)
                 }
@@ -474,7 +509,9 @@ export function PropertyInfoForm() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(onSubmit, (errors) => {
+                    console.log("Validation errors:", errors)
+                })}
                 noValidate
                 aria-label="Property information"
                 className="rounded-2xl bg-[var(--color-background)] p-6 md:p-8 border border-[var(--color-primary)]/60 w-full max-w-2xl mx-auto"
@@ -498,11 +535,16 @@ export function PropertyInfoForm() {
                     </div>
                 )}
 
-                {/* Rentcast: minimal summary (no detailed fields displayed) */}
+                {/* Rentcast: minimal summary */}
                 {avmResult && (
                     <div className="mb-4 rounded-lg bg-[#0b1220] p-3 border border-white/10 text-sm text-gray-200">
                         <div className="font-semibold text-white">{avmResult.formattedAddress ?? avmResult.addressLine1}</div>
-                        <div className="text-xs text-gray-300 mt-1">Datos obtenidos y aplicados al formulario.</div>
+                        {lastSaleDateDisplay && (
+                            <div className="text-xs text-gray-400 mt-1">
+                                Last sold: <span className="text-gray-200">{lastSaleDateDisplay}</span>
+                            </div>
+                        )}
+                        <div className="text-xs text-gray-500 mt-0.5">Data obtained and applied to the form. You can edit any field below.</div>
                     </div>
                 )}
 
@@ -550,17 +592,30 @@ export function PropertyInfoForm() {
                         </div>
                     </div>
 
-                    {/* Years owned */}
-                    <div>
-                        <label htmlFor={id("yearsOwned")} className="block text-xs text-gray-400 mb-1.5">
-                            How long have you owned the property?
-                        </label>
-                        <Input
-                            id={id("yearsOwned")}
-                            placeholder="e.g. 5 years, inherited, just bought…"
-                            {...register("yearsOwned")}
-                            className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                        />
+                    {/* Owner name + Years owned row */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label htmlFor={id("ownerName")} className="block text-xs text-gray-400 mb-1.5">
+                                Current Owner
+                            </label>
+                            <Input
+                                id={id("ownerName")}
+                                placeholder="e.g. John Smith"
+                                {...register("ownerName")}
+                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor={id("yearsOwned")} className="block text-xs text-gray-400 mb-1.5">
+                                How long have you owned the property?
+                            </label>
+                            <Input
+                                id={id("yearsOwned")}
+                                placeholder="e.g. 5 years, inherited, just bought…"
+                                {...register("yearsOwned")}
+                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                            />
+                        </div>
                     </div>
 
                     {/* Property type + Bedrooms row (strings to match schema) */}
@@ -595,10 +650,12 @@ export function PropertyInfoForm() {
                             <Input
                                 id={id("bedrooms")}
                                 type="number"
-                                step="0.5"
+                                step="1"
                                 min={0}
                                 placeholder="e.g. 3 or 0 for studio"
-                                {...register("bedrooms")}
+                                {...register("bedrooms", {
+                                    setValueAs: (v) => (v === "" ? "" : String(Math.round(Number(v)))),
+                                })}
                                 className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                             />
                         </div>
@@ -683,7 +740,7 @@ export function PropertyInfoForm() {
 
                     {/* Repairs: structured checklist + estimate + notes */}
                     <div>
-                        <label className="block text-xs text-gray-400 mb-1.5">What kind of repairs and maintenance does the house need?</label>
+                        <label className="block text-xs text-gray-400 mb-1.5">What has been upgraded in the last 10 years? Please select all that apply.</label>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
                             {repairOptions.map((opt) => (
@@ -697,29 +754,6 @@ export function PropertyInfoForm() {
                                     <span>{opt}</span>
                                 </label>
                             ))}
-                        </div>
-
-                        <div className="mb-3">
-                            <label htmlFor={id("repairsEstimate")} className="block text-xs text-gray-400 mb-1.5">
-                                Estimated repair cost
-                            </label>
-                            <div className="flex items-center gap-3">
-                                <input
-                                    id={id("repairsEstimate")}
-                                    type="range"
-                                    min={0}
-                                    max={50000}
-                                    step={500}
-                                    value={repairsEstimate}
-                                    onChange={(e) => setRepairsEstimate(Number(e.target.value))}
-                                    className="w-full"
-                                />
-                                <div className="text-sm text-gray-200 w-28 text-right">{formatCurrency(repairsEstimate)}</div>
-                            </div>
-                            <div className="flex justify-between text-xs text-gray-400 mt-1">
-                                <span>$0</span>
-                                <span>$50,000</span>
-                            </div>
                         </div>
 
                         <div>
