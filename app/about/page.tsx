@@ -8,8 +8,6 @@ import {
     Handshake,
     Star,
     MapPin,
-    Phone,
-    ArrowRight,
     Check,
     X,
     Minus,
