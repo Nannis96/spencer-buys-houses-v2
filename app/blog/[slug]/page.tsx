@@ -4,13 +4,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
+export const dynamic = 'force-dynamic';
 
 // ── Static Params for SSG ──────────────────────────────────────────────────────
 export async function generateStaticParams() {
-  const posts = await prisma.post.findMany({ select: { slug: true } });
-  return posts.map((p) => ({ slug: p.slug }));
+  try {
+    const posts = await prisma.post.findMany({ select: { slug: true } });
+    return posts.map((p) => ({ slug: p.slug }));
+  } catch (error) {
+    // Retorna un arreglo vacío si no hay conexión (ej. durante el build de Docker)
+    return [];
+  }
 }
-
 // ── SEO Metadata ───────────────────────────────────────────────────────────────
 export async function generateMetadata(
   props: { params: Promise<{ slug: string }> }
