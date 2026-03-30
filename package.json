@@ -17,7 +17,6 @@
     "@prisma/client": "^7.4.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-slot": "^1.2.4",
-    "@react-google-maps/api": "^2.20.8",
     "@vercel/analytics": "^1.6.1",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",

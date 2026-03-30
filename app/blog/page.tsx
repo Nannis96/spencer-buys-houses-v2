@@ -3,6 +3,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 
+// Pages are cached and revalidated every hour (ISR)
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: 'Blog & News | Spencer Buys Houses',
   description:
@@ -10,9 +13,14 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogIndexPage() {
-  const posts = await prisma.post.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
+  // During Docker build the DB is not yet available — return empty list.
+  // ISR (revalidate = 3600) will re-render with real data on the first request.
+  let posts: Awaited<ReturnType<typeof prisma.post.findMany>> = [];
+  try {
+    posts = await prisma.post.findMany({ orderBy: { createdAt: 'desc' } });
+  } catch {
+    // DB unreachable at build time — handled by ISR at runtime
+  }
 
   return (
     <div

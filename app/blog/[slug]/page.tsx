@@ -5,11 +5,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
 
-// ── Static Params for SSG ──────────────────────────────────────────────────────
-export async function generateStaticParams() {
-  const posts = await prisma.post.findMany({ select: { slug: true } });
-  return posts.map((p) => ({ slug: p.slug }));
-}
+// Pages are cached and revalidated every hour (ISR)
+export const revalidate = 3600;
 
 // ── SEO Metadata ───────────────────────────────────────────────────────────────
 export async function generateMetadata(
