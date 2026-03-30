@@ -378,15 +378,17 @@ export function PropertyInfoForm() {
     // Report step completion in URL so progress indicator can update in real time
     useEffect(() => {
         const params = new URLSearchParams(Array.from(searchParams.entries()))
+        const alreadySet = params.get("step2Complete") === "true"
+        // Skip replaceState if nothing would change — avoids triggering a
+        // Next.js searchParams update that can remount the form inside Suspense.
+        if (isValid && alreadySet) return
+        if (!isValid && !alreadySet) return
         if (isValid) {
             params.set("step2Complete", "true")
         } else {
             params.delete("step2Complete")
         }
         const qs = params.toString()
-        // Update the URL without triggering a Next navigation (which can cause
-        // a scroll-to-top). Use history.replaceState to avoid navigation while
-        // the user is interacting with the form.
         if (typeof window !== "undefined") {
             window.history.replaceState(null, "", `${pathname}${qs ? `?${qs}` : ""}`)
         }

@@ -165,7 +165,7 @@ export function RehabConditionWheel({ value, onChange }: RehabConditionWheelProp
             {/* Main content - Wheel and List */}
             <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-12">
                 {/* Donut Chart */}
-                <div className="relative p-3">
+                <div className="relative p-3" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
                     <svg width={size} height={size} className="transform -rotate-0" overflow="visible">
                         {slices.map((slice) => {
                             const innerRadius = radius - strokeWidth / 2
@@ -181,7 +181,7 @@ export function RehabConditionWheel({ value, onChange }: RehabConditionWheelProp
                                             "cursor-pointer transition-all duration-200",
                                             isSelected ? "opacity-100 drop-shadow-lg" : "opacity-90 hover:opacity-100"
                                         )}
-                                        onClick={() => handleSelect(slice.id)}
+                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleSelect(slice.id); }}
                                         style={{
                                             filter: isSelected ? "brightness(1.15) drop-shadow(0 0 6px rgba(0,0,0,0.4))" : undefined,
                                             transform: isSelected ? "scale(1.1)" : "scale(1)",
