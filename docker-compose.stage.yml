@@ -1,0 +1,54 @@
+name: spencer-buys-houses-staging
+
+services:
+  # ── One-shot: run Prisma migrations before web starts ──────────────
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.stage
+      target: builder            # reuse the builder stage (has prisma + node_modules)
+    command: pnpm prisma migrate deploy
+    environment:
+      - DATABASE_URL=postgresql://spencer_user:spencer_password@db:5432/spencer_db?schema=public
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"                # run once and exit
+
+  # ── Web (Next.js production server) ────────────────────────────────
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.stage
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://spencer_user:spencer_password@db:5432/spencer_db?schema=public
+      - NODE_ENV=production
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  # ── PostgreSQL ─────────────────────────────────────────────────────
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: spencer_user
+      POSTGRES_PASSWORD: spencer_password
+      POSTGRES_DB: spencer_db
+    volumes:
+      - postgres_stage_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spencer_user -d spencer_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    # No port mapping — DB only accessible within Docker network
+
+volumes:
+  postgres_stage_data:
+    name: spencer-postgres-stage-data
