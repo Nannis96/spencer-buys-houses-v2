@@ -26,6 +26,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Generate Prisma client (outputs to app/generated/prisma)
 RUN pnpm prisma generate
 
+# Migrate Prisma schema (if needed)
+RUN pnpm prisma migrate deploy
+
 # Build the Next.js application (standalone output)
 RUN pnpm build
 

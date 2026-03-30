@@ -1,20 +1,6 @@
 name: spencer-buys-houses-staging
 
 services:
-  # ── One-shot: run Prisma migrations before web starts ──────────────
-  migrate:
-    build:
-      context: .
-      dockerfile: Dockerfile.stage
-      target: builder            # reuse the builder stage (has prisma + node_modules)
-    command: pnpm prisma migrate deploy
-    environment:
-      - DATABASE_URL=postgresql://spencer_user:spencer_password@db:5432/spencer_db?schema=public
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: "no"                # run once and exit
-
   # ── Web (Next.js production server) ────────────────────────────────
   web:
     build:
@@ -28,8 +14,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      migrate:
-        condition: service_completed_successfully
     restart: unless-stopped
 
   # ── PostgreSQL ─────────────────────────────────────────────────────
