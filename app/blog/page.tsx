@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
+export const dynamic = 'force-dynamic';
 
 // Pages are cached and revalidated every hour (ISR)
 export const revalidate = 3600;

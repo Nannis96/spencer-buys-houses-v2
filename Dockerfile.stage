@@ -1,18 +1,20 @@
 # ── Stage 1: Dependencies ──────────────────────────────────────────────
 FROM node:20-alpine AS deps
 
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 RUN corepack enable pnpm
 
 COPY package.json pnpm-lock.yaml* ./
-RUN pnpm install --frozen-lockfile
+COPY prisma ./prisma/
+
+RUN pnpm install
 
 # ── Stage 2: Builder ──────────────────────────────────────────────────
 FROM node:20-alpine AS builder
 
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 RUN corepack enable pnpm
@@ -20,10 +22,9 @@ RUN corepack enable pnpm
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Disable Next.js telemetry during build
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Generate Prisma client (outputs to app/generated/prisma)
+# Generar Prisma client
 RUN pnpm prisma generate
 
 # Build the Next.js application (standalone output)
@@ -32,7 +33,7 @@ RUN pnpm build
 # ── Stage 3: Runner (minimal production image) ───────────────────────
 FROM node:20-alpine AS runner
 
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -40,16 +41,24 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Copy public assets
 COPY --from=builder /app/public ./public
 
-# Next.js standalone output includes only the necessary node_modules
+# ... código anterior ...
+
+# IMPORTANTE: Asegúrate de tener output: 'standalone' en tu next.config.ts
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# ... código anterior ...
+
+# Copiar Prisma y su configuración para las migraciones en producción
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma.config.ts ./
+
+COPY --from=builder /app/node_modules ./node_modules
 
 USER nextjs
 
