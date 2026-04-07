@@ -71,7 +71,7 @@ export default function PropertyProgress({ activeStep = 3 }: PropertyProgressPro
                                 {submitted ? "✓" : "3"}
                             </div>
                             <span className={`hidden sm:inline text-sm font-medium ${submitted ? "text-[#22c55e]" : "text-[#f59e0b]"}`}>
-                                Property Info
+                                Your Info
                             </span>
                         </>
                     )}

@@ -19,6 +19,9 @@ import {
     Wrench,
     BadgeCheck,
     HeartHandshake,
+    MapPin,
+    Building2,
+    Hash,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -72,6 +75,17 @@ const selectClass =
 const textareaClass =
     "w-full rounded-md bg-white/10 border border-white/20 text-white px-3 py-2.5 text-sm " +
     "placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f59e0b] focus:border-[#f59e0b] resize-none min-h-[90px]"
+
+/* ─── Read-only summary row ───────────────────────────────────────────────── */
+function SummaryRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+    return (
+        <div className="flex items-center gap-3 py-2 border-b border-white/10 last:border-0">
+            <span className="text-[#f59e0b] shrink-0">{icon}</span>
+            <span className="text-xs text-gray-400 w-20 shrink-0">{label}</span>
+            <span className="text-sm text-white truncate">{value}</span>
+        </div>
+    )
+}
 
 function SectionHeading({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
@@ -223,6 +237,22 @@ export function PropertyInfoForm() {
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [avmResult, setAvmResult] = useState<any>(null)
+
+    // Local editable copies of address from step 1
+    const [editMode, setEditMode] = useState(false)
+    const [localAddress, setLocalAddress] = useState(address)
+    const [localCity, setLocalCity] = useState(city)
+    const [localState, setLocalState] = useState(state)
+    const [localZipCode, setLocalZipCode] = useState(zipCode)
+    // Confirmed/saved address — changes here re-trigger the Rentcast prefill
+    const [savedAddress, setSavedAddress] = useState(address)
+    const [savedCity, setSavedCity] = useState(city)
+    const [savedState, setSavedState] = useState(state)
+    const [savedZipCode, setSavedZipCode] = useState(zipCode)
+    // Geocoding state (for Street View lat/lng)
+    const [geoLatLng, setGeoLatLng] = useState<{ lat: number; lng: number } | null>(null)
+    const [isGeocoding, setIsGeocoding] = useState(false)
+    const [geocodeError, setGeocodeError] = useState<string | null>(null)
 
     const {
         register,
@@ -398,17 +428,17 @@ export function PropertyInfoForm() {
     useEffect(() => {
         // Only run in browser and when we have an address or city/state
         if (typeof window === "undefined") return
-        if (!address && !(city && state)) return
+        if (!savedAddress && !(savedCity && savedState)) return
 
         let mounted = true
         const prefill = async () => {
             try {
                 setIsPrefilling(true)
                 const params = new URLSearchParams()
-                if (address) params.append("address", address)
-                if (city) params.append("city", city)
-                if (state) params.append("state", state)
-                if (zipCode) params.append("zipCode", zipCode)
+                if (savedAddress) params.append("address", savedAddress)
+                if (savedCity) params.append("city", savedCity)
+                if (savedState) params.append("state", savedState)
+                if (savedZipCode) params.append("zipCode", savedZipCode)
                 // Ask backend to return a single property object
                 params.append("single", "1")
 
@@ -501,7 +531,54 @@ export function PropertyInfoForm() {
         return () => {
             mounted = false
         }
-    }, [address, city, state, zipCode])
+    }, [savedAddress, savedCity, savedState, savedZipCode])
+
+    // Geocode helper: fetch lat/lng for the provided address string
+    const geocodeAddress = async (addr: string) => {
+        const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+        if (!key) {
+            setGeocodeError("Missing Google Maps API key")
+            setGeoLatLng(null)
+            return
+        }
+
+        try {
+            setIsGeocoding(true)
+            setGeocodeError(null)
+            const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addr)}&key=${key}`
+            const res = await fetch(url)
+            if (!res.ok) throw new Error(`HTTP ${res.status}`)
+            const json = await res.json()
+            if (json.status === "OK" && Array.isArray(json.results) && json.results.length > 0) {
+                const loc = json.results[0].geometry.location
+                setGeoLatLng({ lat: Number(loc.lat), lng: Number(loc.lng) })
+                setGeocodeError(null)
+            } else {
+                setGeoLatLng(null)
+                setGeocodeError(json.status || "No results")
+            }
+        } catch (err: any) {
+            console.error("Geocode error:", err)
+            setGeoLatLng(null)
+            setGeocodeError(err?.message ?? String(err))
+        } finally {
+            setIsGeocoding(false)
+        }
+    }
+
+    // Auto-run geocode when the editable address fields change
+    useEffect(() => {
+        if (typeof window === "undefined") return
+        const addr = [localAddress, localCity, localState, localZipCode].filter(Boolean).join(", ")
+        if (!addr) {
+            setGeoLatLng(null)
+            setGeocodeError(null)
+            return
+        }
+        // debounce a bit to avoid many requests while typing
+        const t = setTimeout(() => geocodeAddress(addr), 600)
+        return () => clearTimeout(t)
+    }, [localAddress, localCity, localState, localZipCode])
 
     return (
         <AnimatePresence mode="wait">
@@ -529,6 +606,154 @@ export function PropertyInfoForm() {
                     </span>
                 </p>
 
+                {/* ── Summary of previous step (inline editable) ── */}
+                <div className="rounded-lg bg-white/[0.03] border border-[var(--color-primary)]/60 p-3 mb-6">
+                    <div className="flex items-start justify-between mb-2">
+                        <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
+                            Address
+                        </p>
+                        {!editMode && (
+                            <button
+                                type="button"
+                                onClick={() => setEditMode(true)}
+                                className="text-xs text-[var(--color-primary)] hover:underline focus:outline-none"
+                            >
+                                Edit
+                            </button>
+                        )}
+                    </div>
+
+                    {editMode ? (
+                        <div className="space-y-3">
+                            <Input
+                                placeholder="Property address"
+                                value={localAddress}
+                                onChange={(e) => setLocalAddress(e.target.value)}
+                                className="h-10 bg-white/5 text-white placeholder:text-gray-400"
+                            />
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <Input
+                                    placeholder="City"
+                                    value={localCity}
+                                    onChange={(e) => setLocalCity(e.target.value)}
+                                    className="h-10 bg-white/5 text-white placeholder:text-gray-400"
+                                />
+                                <Input
+                                    placeholder="State"
+                                    value={localState}
+                                    onChange={(e) => setLocalState(e.target.value)}
+                                    className="h-10 bg-white/5 text-white placeholder:text-gray-400"
+                                />
+                            </div>
+
+                            <Input
+                                placeholder="Zip code"
+                                value={localZipCode}
+                                onChange={(e) => setLocalZipCode(e.target.value)}
+                                className="h-10 bg-white/5 text-white placeholder:text-gray-400"
+                            />
+
+                            <div className="flex gap-3">
+                                <Button
+                                    type="button"
+                                    onClick={() => {
+                                        setSavedAddress(localAddress)
+                                        setSavedCity(localCity)
+                                        setSavedState(localState)
+                                        setSavedZipCode(localZipCode)
+                                        setEditMode(false)
+                                    }}
+                                    className="h-10 px-4 bg-[#f59e0b] text-[#0f0f23]"
+                                >
+                                    Save
+                                </Button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setLocalAddress(address)
+                                        setLocalCity(city)
+                                        setLocalState(state)
+                                        setLocalZipCode(zipCode)
+                                        setEditMode(false)
+                                    }}
+                                    className="h-10 px-4 rounded-lg border border-white/10 text-sm text-white"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <SummaryRow icon={<MapPin className="h-4 w-4 text-[var(--color-primary)]" />} label="Address" value={localAddress} />
+                            <SummaryRow icon={<Building2 className="h-4 w-4 text-[var(--color-primary)]" />} label="City" value={localCity} />
+                            <SummaryRow icon={<Building2 className="h-4 w-4 text-[var(--color-primary)]" />} label="State" value={localState} />
+                            <SummaryRow icon={<Hash className="h-4 w-4 text-[var(--color-primary)]" />} label="Zip Code" value={localZipCode} />
+                        </>
+                    )}
+                </div>
+
+                {/* ── Street View + Map ── */}
+                {(localAddress || localCity) && (
+                    <div className="grid grid-cols-2 gap-3 mb-6">
+                        {/* Fachada / Street View */}
+                        <div className="flex flex-col gap-1.5">
+                            <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
+                                Street View
+                            </p>
+                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-44 w-full flex items-center justify-center bg-[#0b0f1a]">
+                                {isGeocoding ? (
+                                    <div className="text-xs text-gray-400">Resolving address for Street View…</div>
+                                ) : geoLatLng ? (
+                                    <iframe
+                                        title="Street view of property"
+                                        width="100%"
+                                        height="100%"
+                                        loading="lazy"
+                                        allowFullScreen
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        src={`https://www.google.com/maps/embed/v1/streetview?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&location=${geoLatLng.lat},${geoLatLng.lng}&fov=80&heading=0&pitch=0`}
+                                    />
+                                ) : (
+                                    <div className="p-3 text-center">
+                                        <div className="text-xs text-gray-400 mb-1">Street View unavailable for this address.</div>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const addr = [localAddress, localCity, localState, localZipCode].filter(Boolean).join(", ")
+                                                if (addr) geocodeAddress(addr)
+                                            }}
+                                            className="text-xs px-3 py-1 rounded bg-[#f59e0b] text-[#0f0f23]"
+                                        >
+                                            Try again
+                                        </button>
+                                        {geocodeError && <div className="text-xs text-red-400 mt-2">{geocodeError}</div>}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Mapa */}
+                        <div className="flex flex-col gap-1.5">
+                            <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
+                                Location
+                            </p>
+                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-44 w-full">
+                                <iframe
+                                    title="Property location on map"
+                                    width="100%"
+                                    height="100%"
+                                    loading="lazy"
+                                    allowFullScreen
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${geoLatLng ? `${geoLatLng.lat},${geoLatLng.lng}` : encodeURIComponent([localAddress, localCity, localState, localZipCode].filter(Boolean).join(", "))
+                                        }&zoom=15`}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Prefill loading indicator */}
                 {isPrefilling && (
                     <div className="mb-4 flex items-center gap-2 rounded-md bg-[#0f1724] p-3 text-sm text-gray-200 border border-white/10">
@@ -538,7 +763,7 @@ export function PropertyInfoForm() {
                 )}
 
                 {/* Rentcast: minimal summary */}
-                {avmResult && (
+                {/* {avmResult && (
                     <div className="mb-4 rounded-lg bg-[#0b1220] p-3 border border-white/10 text-sm text-gray-200">
                         <div className="font-semibold text-white">{avmResult.formattedAddress ?? avmResult.addressLine1}</div>
                         {lastSaleDateDisplay && (
@@ -548,7 +773,7 @@ export function PropertyInfoForm() {
                         )}
                         <div className="text-xs text-gray-500 mt-0.5">Data obtained and applied to the form. You can edit any field below.</div>
                     </div>
-                )}
+                )} */}
 
                 <div className="flex flex-col gap-5">
 
@@ -846,13 +1071,24 @@ export function PropertyInfoForm() {
                             {"What's your ultimate goal with your house? "}
                             <span className="text-red-400" aria-hidden="true">*</span>
                         </label>
-                        <textarea
-                            id={id("ultimateGoal")}
-                            placeholder="e.g. Sell fast for cash, avoid foreclosure, relocate…"
-                            {...register("ultimateGoal")}
-                            className={textareaClass}
-                            aria-invalid={!!errors.ultimateGoal}
-                        />
+                        <div className="relative">
+                            <select
+                                id={id("ultimateGoal")}
+                                {...register("ultimateGoal")}
+                                className={selectClass}
+                                aria-invalid={!!errors.ultimateGoal}
+                            >
+                                <option value="">Select…</option>
+                                <option>Foreclosure</option>
+                                <option>Need Cash</option>
+                                <option>Inherited</option>
+                                <option>Bad Tenants</option>
+                                <option>Moving</option>
+                                <option>Downsizing</option>
+                                <option>Other</option>
+                            </select>
+                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                        </div>
                         <FieldError message={errors.ultimateGoal?.message} />
                     </div>
 

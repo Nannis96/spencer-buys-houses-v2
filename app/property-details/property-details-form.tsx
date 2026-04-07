@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { MapPin, User, Phone, Mail, ArrowRight, Loader2, ShieldCheck, Building2, Hash, CheckCircle2, DollarSign, Clock, Wrench, Home, BadgeCheck, HeartHandshake } from "lucide-react"
+import { User, Phone, Mail, ArrowRight, Loader2, ShieldCheck, CheckCircle2, DollarSign, Clock, Wrench, Home, BadgeCheck, HeartHandshake } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { CallButton } from "@/components/ui/call-button"
 
@@ -249,17 +249,6 @@ function FieldError({ message }: { message?: string }) {
     )
 }
 
-/* ─── Read-only summary row ───────────────────────────────────────────────── */
-function SummaryRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
-    return (
-        <div className="flex items-center gap-3 py-2 border-b border-white/10 last:border-0">
-            <span className="text-[#f59e0b] shrink-0">{icon}</span>
-            <span className="text-xs text-gray-400 w-20 shrink-0">{label}</span>
-            <span className="text-sm text-white truncate">{value}</span>
-        </div>
-    )
-}
-
 function SectionHeading({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
         <h4
@@ -285,11 +274,9 @@ export function PropertyDetailsForm() {
     const city = searchParams.get("city") ?? ""
     const state = searchParams.get("state") ?? ""
     const zipCode = searchParams.get("zipCode") ?? ""
-    const smsConsent = searchParams.get("smsConsent") ?? "false"
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitted, setSubmitted] = useState(false)
-    const [editMode, setEditMode] = useState(false)
 
     // Offer may have been precomputed in property-info-form and passed via URL params
     const precomputedCashOffer = searchParams.get("cashOffer") !== null ? Number(searchParams.get("cashOffer")) : null
@@ -308,12 +295,11 @@ export function PropertyDetailsForm() {
     const [annualTaxes, setAnnualTaxes] = useState<number | null>(precomputedAnnualTaxes)
     const [insuranceAnnual, setInsuranceAnnual] = useState<number | null>(precomputedInsuranceAnnual)
 
-    // Local editable copies of prior-step values (inline edit)
+    // Local copies of prior-step address values
     const [localAddress, setLocalAddress] = useState(address)
     const [localCity, setLocalCity] = useState(city)
     const [localState, setLocalState] = useState(state)
     const [localZipCode, setLocalZipCode] = useState(zipCode)
-    const [localSmsConsent, setLocalSmsConsent] = useState(smsConsent)
 
     const router = useRouter()
     const pathname = usePathname()
@@ -517,94 +503,12 @@ export function PropertyDetailsForm() {
                 className="rounded-2xl bg-[var(--color-background)] p-6 md:p-8 border border-[var(--color-primary)]/60 w-full max-w-lg mx-auto"
             >
                 <h3 className="text-xl font-bold text-white mb-1">
-                    One More Step — Confirm {" "}
-                    <span className="text-[var(--color-text-yellow)]">Your information</span>
+                    One More Step — {" "}
+                    <span className="text-[var(--color-text-yellow)]">To See Your <span className="font-bold underline">OFFER</span></span>
                 </h3>
                 <p className="text-gray-400 text-sm mb-6">
                     100% free. Zero obligation. Results in 24&nbsp;hours.
                 </p>
-
-                {/* ── Summary of previous step (inline editable) ── */}
-                <div className="rounded-lg bg-white/[0.03] border border-[var(--color-primary)]/60 p-3 mb-6">
-                    <div className="flex items-start justify-between mb-2">
-                        <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
-                            Your information
-                        </p>
-                        {!editMode && (
-                            <button
-                                type="button"
-                                onClick={() => setEditMode(true)}
-                                className="text-xs text-[var(--color-primary)] hover:underline focus:outline-none"
-                            >
-                                Edit
-                            </button>
-                        )}
-                    </div>
-
-                    {editMode ? (
-                        <div className="space-y-3">
-                            <Input
-                                placeholder="Property address"
-                                value={localAddress}
-                                onChange={(e) => setLocalAddress(e.target.value)}
-                                className="h-10 bg-white/5 text-white placeholder:text-gray-400"
-                            />
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                <Input
-                                    placeholder="City"
-                                    value={localCity}
-                                    onChange={(e) => setLocalCity(e.target.value)}
-                                    className="h-10 bg-white/5 text-white placeholder:text-gray-400"
-                                />
-                                <Input
-                                    placeholder="State"
-                                    value={localState}
-                                    onChange={(e) => setLocalState(e.target.value)}
-                                    className="h-10 bg-white/5 text-white placeholder:text-gray-400"
-                                />
-                            </div>
-
-                            <Input
-                                placeholder="Zip code"
-                                value={localZipCode}
-                                onChange={(e) => setLocalZipCode(e.target.value)}
-                                className="h-10 bg-white/5 text-white placeholder:text-gray-400"
-                            />
-
-                            <div className="flex gap-3">
-                                <Button
-                                    type="button"
-                                    onClick={() => setEditMode(false)}
-                                    className="h-10 px-4 bg-[#f59e0b] text-[#0f0f23]"
-                                >
-                                    Save
-                                </Button>
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setLocalAddress(address)
-                                        setLocalCity(city)
-                                        setLocalState(state)
-                                        setLocalZipCode(zipCode)
-                                        setLocalSmsConsent(smsConsent)
-                                        setEditMode(false)
-                                    }}
-                                    className="h-10 px-4 rounded-lg border border-white/10 text-sm text-white"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    ) : (
-                        <>
-                            <SummaryRow icon={<MapPin className="h-4 w-4 text-[var(--color-primary)]" />} label="Address" value={localAddress} />
-                            <SummaryRow icon={<Building2 className="h-4 w-4 text-[var(--color-primary)]" />} label="City" value={localCity} />
-                            <SummaryRow icon={<Building2 className="h-4 w-4 text-[var(--color-primary)]" />} label="State" value={localState} />
-                            <SummaryRow icon={<Hash className="h-4 w-4 text-[var(--color-primary)]" />} label="Zip Code" value={localZipCode} />
-                        </>
-                    )}
-                </div>
 
                 <div className="flex flex-col gap-4">
                     {/* ── Name row ── */}

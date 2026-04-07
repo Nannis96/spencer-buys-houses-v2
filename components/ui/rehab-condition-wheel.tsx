@@ -154,6 +154,9 @@ export function RehabConditionWheel({ value, onChange }: RehabConditionWheelProp
         return polarToCartesian(center, center, centroidRadius, midAngle)
     }
 
+    // Levels included by the currently selected level (previous, lower severity)
+    const includedLevels = selectedLevel ? rehabLevels.filter((l) => l.level < selectedLevel.level) : []
+
     return (
         <div className="w-full max-w-4xl mx-auto">
             {/* Header */}
@@ -308,6 +311,22 @@ export function RehabConditionWheel({ value, onChange }: RehabConditionWheelProp
                                             {tag}
                                         </span>
                                     ))}
+                                </div>
+                            )}
+                            {includedLevels.length > 0 && (
+                                <div className="mt-4">
+                                    <div className="text-sm font-medium text-gray-500 mb-2">Incluye niveles previos:</div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {includedLevels.map((l) => (
+                                            <span
+                                                key={l.id}
+                                                className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700 border"
+                                                style={{ borderColor: l.color + "33" }}
+                                            >
+                                                Nivel {l.level} — {l.name}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
                             )}
                         </div>
