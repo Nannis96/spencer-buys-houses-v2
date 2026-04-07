@@ -1,4 +1,5 @@
 import { HeroBold } from "@/components/sections/hero-bold"
+import { VideoSection } from "@/components/sections/video-section"
 import { TrustBar } from "@/components/sections/trust-bar"
 import { ProcessSection } from "@/components/sections/process-section"
 import { AboutSection } from "@/components/sections/about-section"
@@ -13,6 +14,9 @@ export default function Home() {
     <main className="bg-background min-h-screen">
       {/* 1. Hero with lead form */}
       <HeroBold />
+
+      {/* 1.5. Video — social proof */}
+      <VideoSection />
 
       {/* 2. Trust signals bar */}
       <TrustBar />

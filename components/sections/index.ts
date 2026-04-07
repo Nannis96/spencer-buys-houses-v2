@@ -1,4 +1,5 @@
 export { HeroBold } from "./hero-bold"
+export { VideoSection } from "./video-section"
 export { TrustBar } from "./trust-bar"
 export { ProcessSection } from "./process-section"
 export { AboutSection } from "./about-section"
