@@ -153,7 +153,7 @@ export default function PropertyInfoPage() {
     return (
         <>
             <JsonLd data={jsonLd} />
-            <main className="min-h-screen bg-[var(--color-background)] flex flex-col items-center justify-center px-4 pt-32 pb-20">
+            <main className="min-h-screen bg-[var(--color-background)] flex flex-col items-center justify-center px-4 pt-24 md:pt-32 pb-16 md:pb-20">
                 {/* ── Page heading (SEO H1 — visually subtle, semantically required) ── */}
                 <div className="w-full max-w-2xl mb-6 text-center">
                     <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight">

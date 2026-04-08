@@ -146,9 +146,9 @@ export default function PropertyDetailsPage() {
     return (
         <>
             <JsonLd data={jsonLd} />
-            <main className="min-h-screen bg-[var(--color-background)] flex flex-col items-center justify-center px-4 py-20">
+            <main className="min-h-screen bg-[var(--color-background)] flex flex-col items-center justify-center px-4 pt-24 md:pt-32 pb-16 md:pb-20">
                 {/* ── Page heading (SEO H1 — visually subtle, semantically required) ── */}
-                <div className="w-full max-w-lg mb-6 text-center">
+                <div className="w-full max-w-2xl mb-6 text-center">
                     <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight">
                         Get Your Free Cash Offer —{" "}
                         <span className="text-[#f59e0b]">Memphis, TN</span>
@@ -161,14 +161,14 @@ export default function PropertyDetailsPage() {
                 </div>
 
                 {/* Progress indicator — Suspense required for useSearchParams */}
-                <Suspense fallback={<div className="w-full max-w-lg mb-8 h-7" aria-hidden="true" />}>
+                <Suspense fallback={<div className="w-full max-w-2xl mb-8 h-7" aria-hidden="true" />}>
                     <PropertyProgress activeStep={3} />
                 </Suspense>
 
                 {/* Form with Suspense boundary (required for useSearchParams) */}
                 <Suspense
                     fallback={
-                        <div className="rounded-2xl bg-[var(--color-background)] p-10 border border-[var(--color-primary)]/60 flex items-center justify-center">
+                        <div className="rounded-2xl bg-[var(--color-background)] p-10 border border-[var(--color-primary)]/60 flex items-center justify-center w-full max-w-3xl lg:max-w-4xl mx-auto">
                             <Loader2 className="h-8 w-8 animate-spin text-[#f59e0b]" />
                         </div>
                     }

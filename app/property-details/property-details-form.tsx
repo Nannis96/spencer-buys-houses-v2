@@ -31,6 +31,7 @@ interface StrategyCardProps {
     subtitle: string
     mainLabel: string
     mainValue: string | null
+    mainSize?: string
     rows: { label: string; value: string }[]
     note?: string
     centered?: boolean
@@ -38,7 +39,7 @@ interface StrategyCardProps {
     highlighted?: boolean
 }
 
-function StrategyCard({ accent, icon, tag, title, subtitle, mainLabel, mainValue, rows, note, centered, prominent, highlighted }: StrategyCardProps) {
+function StrategyCard({ accent, icon, tag, title, subtitle, mainLabel, mainValue, rows, note, centered, prominent, highlighted, mainSize }: StrategyCardProps) {
     const baseClasses = `rounded-xl border ${accent} p-5 flex flex-col gap-3 h-full`
     // allow highlighting to override visuals for hero offer
     const highlight = highlighted ?? prominent ?? false
@@ -72,7 +73,12 @@ function StrategyCard({ accent, icon, tag, title, subtitle, mainLabel, mainValue
             {mainValue !== null ? (
                 <div className="rounded-lg bg-white/5 p-3 text-center mt-auto">
                     <p className="text-xs text-gray-400 mb-0.5">{mainLabel}</p>
-                    <p className={`${highlight ? 'text-3xl' : 'text-2xl'} font-extrabold ${highlight ? 'text-[#f59e0b]' : 'text-white'}`}>{mainValue}</p>
+                    {(() => {
+                        const sizeClass = mainSize ?? (highlight ? 'text-3xl' : 'text-2xl')
+                        return (
+                            <p className={`${sizeClass} font-extrabold ${highlight ? 'text-[#f59e0b]' : 'text-white'}`}>{mainValue}</p>
+                        )
+                    })()}
                 </div>
             ) : (
                 <div className="rounded-lg bg-white/5 p-3 text-center mt-auto">
@@ -92,9 +98,45 @@ interface OfferStrategiesGridProps {
     estimatedRent: number | null
     annualTaxes: number | null
     insuranceAnnual: number | null
+    sellerName?: string | null
+    localAddress?: string
+    localCity?: string
+    localState?: string
+    localZipCode?: string
 }
 
-function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annualTaxes, insuranceAnnual }: OfferStrategiesGridProps) {
+function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annualTaxes, insuranceAnnual, sellerName, localAddress, localCity, localState, localZipCode }: OfferStrategiesGridProps) {
+    const [isGeocoding, setIsGeocoding] = useState(false)
+    const [geoLatLng, setGeoLatLng] = useState<{ lat: number; lng: number } | null>(null)
+    const [geocodeError, setGeocodeError] = useState<string | null>(null)
+
+    const geocodeAddress = async (addr: string) => {
+        setIsGeocoding(true)
+        setGeocodeError(null)
+        try {
+            const res = await fetch(
+                `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addr)}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+            )
+            const data = await res.json()
+            if (data.status === "OK" && data.results?.[0]?.geometry?.location) {
+                const { lat, lng } = data.results[0].geometry.location
+                setGeoLatLng({ lat, lng })
+            } else {
+                setGeocodeError("Could not resolve address.")
+            }
+        } catch {
+            setGeocodeError("Geocoding request failed.")
+        } finally {
+            setIsGeocoding(false)
+        }
+    }
+
+    useEffect(() => {
+        const addr = [localAddress, localCity, localState, localZipCode].filter(Boolean).join(", ")
+        if (addr) geocodeAddress(addr)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [localAddress, localCity, localState, localZipCode])
+
     const repairs = repairCosts ?? 0
     const arvVal = arv ?? 0
 
@@ -156,65 +198,152 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
 
     return (
         <div className="text-left">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 text-center">Your 3 Options — Estimated</p>
-            {/* Top: Fast Cash Sale — full width */}
-            <div className="mb-3">
-                <StrategyCard
-                    accent="border-[#f59e0b]/40"
-                    icon="⚡"
-                    tag="Fast Cash Sale"
-                    title="Sell As-Is to Cash Buyer"
-                    subtitle="Close in days, zero repairs needed"
-                    centered
-                    mainLabel="Cash in Your Pocket"
-                    mainValue={
-                        fastCashRange
-                            ? `${fmt(fastCashRange.min)} - ${fmt(fastCashRange.max)}`
-                            : fastCash !== null
-                                ? fmt(fastCash)
-                                : null
-                    }
-                    prominent
-                    rows={[
-                        { label: "After Repair Value (ARV)", value: arvVal > 0 ? fmt(arvVal) : "—" },
-                        { label: "Est. Repair Costs", value: arvVal > 0 ? fmt(repairs) : "—" },
-                        { label: "Investor Discount (30%)", value: arvVal > 0 ? fmt((arvVal - repairs) * 0.3) : "—" },
-                    ]}
-                />
-            </div>
-            {/* Bottom: Fix & List + Rent It Out — side by side, centered */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:max-w-xl sm:mx-auto">
-                <StrategyCard
-                    accent="border-blue-500/40"
-                    icon="🔨"
-                    tag="Fix & List"
-                    title="Rehab &amp; Sell on Market"
-                    subtitle="Invest in repairs to get top dollar"
-                    mainLabel="Estimated Net Profit"
-                    mainValue={fixListNet !== null && fixListNet > 0 ? fmt(fixListNet) : null}
-                    rows={[
-                        { label: "Market Value (ARV)", value: arvVal > 0 ? fmt(arvVal) : "—" },
-                        { label: "Rehab Investment", value: repairs > 0 ? fmt(repairs) : "—" },
-                        { label: "Realtor Fees (6%)", value: arvVal > 0 ? fmt(realtorFee) : "—" },
-                        { label: "Buyer Prepay (5%)", value: arvVal > 0 ? fmt(buyerPrepay) : "—" },
-                        { label: "Closing Costs (1%)", value: arvVal > 0 ? fmt(closingCosts) : "—" },
-                        { label: `Holding Costs (${domDays} days)`, value: arvVal > 0 ? fmt(Math.round(holdingCosts)) : "—" },
-                    ]}
-                />
-                <StrategyCard
-                    accent="border-purple-500/40"
-                    icon="🏠"
-                    tag="Rent It Out"
-                    title="Traditional Rental"
-                    subtitle="Hold the property and earn monthly rent"
-                    mainLabel="Est. Net Monthly Cashflow"
-                    mainValue={netMonthlyRent !== null ? fmt(netMonthlyRent) + "/mo" : null}
-                    rows={[
-                        { label: "Gross Monthly Rent", value: rent > 0 ? fmt(rent) : "—" },
-                        { label: "Est. Monthly Expenses", value: rent > 0 ? fmt(monthlyExpenses) : "—" },
-                        { label: "Net Annual Cashflow", value: netAnnualRent !== null ? fmt(netAnnualRent) : "—" },
-                    ]}
-                />
+            {sellerName ? (
+                <div className="mb-3 text-center">
+                    <div className="inline-flex items-baseline justify-center gap-4 flex-wrap">
+                        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold text-white leading-tight">{sellerName}</p>
+                        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-400 leading-tight">Weigh your options</p>
+                    </div>
+                </div>
+            ) : (
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 text-center">Your 3 Options — Estimated</p>
+            )}
+
+            {/* ── Street View + Map ── */}
+            {(localAddress || localCity) && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                    {/* Street View */}
+                    <div className="flex flex-col gap-1.5">
+                        <p className="text-xs font-semibold text-[var(--color-primary)] uppercase tracking-wider">
+                            Street View
+                        </p>
+                        <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full flex items-center justify-center bg-[#0b0f1a]">
+                            {isGeocoding ? (
+                                <div className="text-xs text-gray-400">Resolving address for Street View…</div>
+                            ) : geoLatLng ? (
+                                <iframe
+                                    title="Street view of property"
+                                    width="100%"
+                                    height="100%"
+                                    loading="lazy"
+                                    allowFullScreen
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    src={`https://www.google.com/maps/embed/v1/streetview?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&location=${geoLatLng.lat},${geoLatLng.lng}&fov=80&heading=0&pitch=0`}
+                                />
+                            ) : (
+                                <div className="p-3 text-center">
+                                    <div className="text-xs text-gray-400 mb-1">Street View unavailable for this address.</div>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const addr = [localAddress, localCity, localState, localZipCode].filter(Boolean).join(", ")
+                                            if (addr) geocodeAddress(addr)
+                                        }}
+                                        className="text-xs px-3 py-1 rounded bg-[#f59e0b] text-[#0f0f23]"
+                                    >
+                                        Try again
+                                    </button>
+                                    {geocodeError && <div className="text-xs text-red-400 mt-2">{geocodeError}</div>}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Map */}
+                    <div className="flex flex-col gap-1.5">
+                        <p className="text-xs font-semibold text-[var(--color-primary)] uppercase tracking-wider">
+                            Location
+                        </p>
+                        <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full">
+                            <iframe
+                                title="Property location on map"
+                                width="100%"
+                                height="100%"
+                                loading="lazy"
+                                allowFullScreen
+                                referrerPolicy="no-referrer-when-downgrade"
+                                src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${geoLatLng
+                                    ? `${geoLatLng.lat},${geoLatLng.lng}`
+                                    : encodeURIComponent([localAddress, localCity, localState, localZipCode].filter(Boolean).join(", "))
+                                    }&zoom=15`}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Offers grid: show three equal-width, equal-height cards aligned */}
+            <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 items-stretch">
+                <motion.div
+                    aria-hidden
+                    initial={{ opacity: 1 }}
+                    animate={{ opacity: [1, 0.7, 1] }}
+                    transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
+                    className="h-full"
+                >
+                    <StrategyCard
+                        accent="border-[#f59e0b]/40"
+                        icon="⚡"
+                        tag="Fast Cash Sale"
+                        title="Sell As-Is to Cash Spencer Buys Houses"
+                        subtitle="Close in days, zero repairs needed"
+                        centered
+                        mainLabel="Offer Range From Spencer"
+                        mainValue={
+                            fastCashRange
+                                ? `${fmt(fastCashRange.min)} - ${fmt(fastCashRange.max)}`
+                                : fastCash !== null
+                                    ? fmt(fastCash)
+                                    : null
+                        }
+                        mainSize="text-2xl"
+                        prominent
+                        highlighted
+                        rows={[
+                            { label: "Estimated value based upon comps (ARV)", value: arvVal > 0 ? fmt(arvVal) : "—" },
+                            { label: "Estimated Repair Costs (materials, labor, permits, disposal)", value: arvVal > 0 ? fmt(repairs) : "—" },
+                            { label: "Investor Discount (30%)", value: arvVal > 0 ? fmt((arvVal - repairs) * 0.3) : "—" },
+                        ]}
+                        note="Book an hour for Spencer’s team to walk your home and deliver your cash within 7–10 days."
+                    />
+                </motion.div>
+
+                <div className="h-full transform-gpu transition-transform lg:scale-95">
+                    <StrategyCard
+                        accent="border-blue-500/40"
+                        icon="🔨"
+                        tag="Fix & List"
+                        title="Rehab &amp; Sell on Market"
+                        subtitle="Invest in repairs to get top dollar"
+                        mainLabel="Estimated Net Profit"
+                        mainValue={fixListNet !== null && fixListNet > 0 ? fmt(fixListNet) : null}
+                        rows={[
+                            { label: "Estimated value based upon comps (ARV)", value: arvVal > 0 ? fmt(arvVal) : "—" },
+                            { label: "Rehab Investment", value: repairs > 0 ? fmt(repairs) : "—" },
+                            { label: "Realtor Fees (6%)", value: arvVal > 0 ? fmt(realtorFee) : "—" },
+                            { label: "Buyer Prepay (5%)", value: arvVal > 0 ? fmt(buyerPrepay) : "—" },
+                            { label: "Closing Costs (1%)", value: arvVal > 0 ? fmt(closingCosts) : "—" },
+                            { label: `Holding Costs (${domDays} days)`, value: arvVal > 0 ? fmt(Math.round(holdingCosts)) : "—" },
+                        ]}
+                    />
+                </div>
+
+                <div className="h-full transform-gpu transition-transform lg:scale-95">
+                    <StrategyCard
+                        accent="border-purple-500/40"
+                        icon="🏠"
+                        tag="Rent It Out"
+                        title="Traditional Rental"
+                        subtitle="Hold the property and earn monthly rent"
+                        mainLabel="Est. Net Monthly Cashflow"
+                        mainValue={netMonthlyRent !== null ? fmt(netMonthlyRent) + "/mo" : null}
+                        rows={[
+                            { label: "Gross Monthly Rent", value: rent > 0 ? fmt(rent) : "—" },
+                            { label: "Est. Monthly Expenses", value: rent > 0 ? fmt(monthlyExpenses) : "—" },
+                            { label: "Net Annual Cashflow", value: netAnnualRent !== null ? fmt(netAnnualRent) : "—" },
+                        ]}
+                    />
+                </div>
             </div>
         </div>
     )
@@ -295,6 +424,9 @@ export function PropertyDetailsForm() {
     const [annualTaxes, setAnnualTaxes] = useState<number | null>(precomputedAnnualTaxes)
     const [insuranceAnnual, setInsuranceAnnual] = useState<number | null>(precomputedInsuranceAnnual)
 
+    // store seller's name to personalize the offer heading after submit
+    const [sellerName, setSellerName] = useState<string | null>(null)
+
     // Local copies of prior-step address values
     const [localAddress, setLocalAddress] = useState(address)
     const [localCity, setLocalCity] = useState(city)
@@ -317,6 +449,9 @@ export function PropertyDetailsForm() {
         setIsSubmitting(true)
         console.log("Form completed:", { address: localAddress, city: localCity, state: localState, zipCode: localZipCode, ...data })
 
+        // persist seller name for the success screen header
+        setSellerName(`${data.firstName} ${data.lastName}`)
+
         // Update URL to reflect completion
         const outParams = new URLSearchParams(Array.from(searchParams.entries()))
         outParams.set("submitted", "true")
@@ -327,6 +462,7 @@ export function PropertyDetailsForm() {
         if (precomputedCashOffer !== null) {
             setIsSubmitting(false)
             setSubmitted(true)
+            // ensure URL reflects submission and name is available on success screen
             router.replace(`${pathname}${qs ? `?${qs}` : ""}`)
             return
         }
@@ -409,10 +545,10 @@ export function PropertyDetailsForm() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="w-full max-w-2xl mx-auto"
+                className="w-full max-w-3xl lg:max-w-4xl mx-auto"
             >
                 <div
-                    className="rounded-2xl bg-[var(--color-background)] p-8 md:p-10 text-center border border-[var(--color-primary)]/60 mb-8"
+                    className="rounded-2xl bg-[var(--color-background)] p-4 sm:p-6 md:p-8 lg:p-10 text-center border border-[var(--color-primary)]/60 mb-8"
                     role="status"
                     aria-live="polite"
                 >
@@ -441,6 +577,11 @@ export function PropertyDetailsForm() {
                                 estimatedRent={estimatedRent}
                                 annualTaxes={annualTaxes}
                                 insuranceAnnual={insuranceAnnual}
+                                sellerName={sellerName}
+                                localAddress={localAddress}
+                                localCity={localCity}
+                                localState={localState}
+                                localZipCode={localZipCode}
                             />
                         )}
                     </div>
@@ -500,7 +641,7 @@ export function PropertyDetailsForm() {
                 onSubmit={handleSubmit(onSubmit)}
                 noValidate
                 aria-label="Property details"
-                className="rounded-2xl bg-[var(--color-background)] p-6 md:p-8 border border-[var(--color-primary)]/60 w-full max-w-lg mx-auto"
+                className="rounded-2xl bg-[var(--color-background)] p-4 sm:p-6 md:p-8 lg:p-10 border border-[var(--color-primary)]/60 w-full max-w-3xl lg:max-w-4xl mx-auto"
             >
                 <h3 className="text-xl font-bold text-white mb-1">
                     One More Step — {" "}

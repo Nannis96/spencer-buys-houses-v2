@@ -68,12 +68,12 @@ function FieldError({ message }: { message?: string }) {
 }
 
 const selectClass =
-    "w-full h-12 rounded-md bg-white/10 border border-white/20 text-white px-3 text-sm " +
+    "w-full h-12 rounded-md bg-white/10 border border-white/20 text-white px-3 text-base sm:text-sm " +
     "focus:outline-none focus:ring-2 focus:ring-[#f59e0b] focus:border-[#f59e0b] " +
     "appearance-none cursor-pointer [&>option]:bg-[#1a1a2e] [&>option]:text-white"
 
 const textareaClass =
-    "w-full rounded-md bg-white/10 border border-white/20 text-white px-3 py-2.5 text-sm " +
+    "w-full rounded-md bg-white/10 border border-white/20 text-white px-3 py-2.5 text-base sm:text-sm " +
     "placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f59e0b] focus:border-[#f59e0b] resize-none min-h-[90px]"
 
 /* ─── Read-only summary row ───────────────────────────────────────────────── */
@@ -593,7 +593,7 @@ export function PropertyInfoForm() {
                 })}
                 noValidate
                 aria-label="Property information"
-                className="rounded-2xl bg-[var(--color-background)] p-6 md:p-8 border border-[var(--color-primary)]/60 w-full max-w-2xl mx-auto"
+                className="rounded-2xl bg-[var(--color-background)] p-4 sm:p-6 md:p-8 lg:p-10 border border-[var(--color-primary)]/60 w-full max-w-3xl lg:max-w-4xl mx-auto"
             >
                 <h3 className="text-xl font-bold text-white mb-1">Property Information</h3>
                 <p className="text-gray-400 text-sm mb-6 leading-relaxed">
@@ -695,13 +695,13 @@ export function PropertyInfoForm() {
 
                 {/* ── Street View + Map ── */}
                 {(localAddress || localCity) && (
-                    <div className="grid grid-cols-2 gap-3 mb-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                         {/* Fachada / Street View */}
                         <div className="flex flex-col gap-1.5">
                             <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
                                 Street View
                             </p>
-                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-44 w-full flex items-center justify-center bg-[#0b0f1a]">
+                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full flex items-center justify-center bg-[#0b0f1a]">
                                 {isGeocoding ? (
                                     <div className="text-xs text-gray-400">Resolving address for Street View…</div>
                                 ) : geoLatLng ? (
@@ -738,7 +738,7 @@ export function PropertyInfoForm() {
                             <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
                                 Location
                             </p>
-                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-44 w-full">
+                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full">
                                 <iframe
                                     title="Property location on map"
                                     width="100%"
@@ -829,7 +829,7 @@ export function PropertyInfoForm() {
                                 id={id("ownerName")}
                                 placeholder="e.g. John Smith"
                                 {...register("ownerName")}
-                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                             />
                         </div>
                         <div>
@@ -840,7 +840,7 @@ export function PropertyInfoForm() {
                                 id={id("yearsOwned")}
                                 placeholder="e.g. 5 years, inherited, just bought…"
                                 {...register("yearsOwned")}
-                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                             />
                         </div>
                     </div>
@@ -883,7 +883,7 @@ export function PropertyInfoForm() {
                                 {...register("bedrooms", {
                                     setValueAs: (v) => (v === "" ? "" : String(Math.round(Number(v)))),
                                 })}
-                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                             />
                         </div>
                     </div>
@@ -901,7 +901,7 @@ export function PropertyInfoForm() {
                                 min={0}
                                 placeholder="e.g. 2.5"
                                 {...register("bathrooms")}
-                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                             />
                         </div>
 
@@ -916,7 +916,7 @@ export function PropertyInfoForm() {
                                 min={0}
                                 placeholder="e.g. 1450"
                                 {...register("squareFootage")}
-                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                             />
                         </div>
                     </div>
@@ -933,7 +933,7 @@ export function PropertyInfoForm() {
                             min={0}
                             placeholder="e.g. 1973"
                             {...register("yearBuilt")}
-                            className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                            className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                         />
                     </div>
 
