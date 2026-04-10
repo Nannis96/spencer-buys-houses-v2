@@ -84,7 +84,7 @@ export function StickyHeader() {
                                 href="tel:+19016218799"
                                 itemProp="telephone"
                                 aria-label="Call Spencer Buys Houses at 901-621-8799"
-                                className="text-white font-semibold text-lg"
+                                className="text-[var(--color-primary-dark)] font-semibold text-lg"
                             >
                                 Call Today: (901) 621-8799
                             </a>
@@ -100,7 +100,7 @@ export function StickyHeader() {
                                 aria-expanded={mobileMenuOpen}
                                 aria-controls="mobile-navigation"
                             >
-                                <Menu className="h-6 w-6" />
+                                <Menu className="h-6 w-6 text-[var(--color-primary-dark)]" />
                             </button>
                         </div>
                     </div>
@@ -214,7 +214,7 @@ export function StickyHeader() {
                                 onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileOpenState(null); }}
                                 aria-label="Close menu"
                             >
-                                <X className="h-6 w-6 text-white" />
+                                <X className="h-6 w-6 text-[var(--color-primary-dark)]" />
                             </button>
 
                         </div>
@@ -258,7 +258,7 @@ export function StickyHeader() {
                                 >
                                     <span className="text-sm font-medium">Cities we serve</span>
                                     <span className="text-gray-300">
-                                        {mobileCitiesOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+                                        {mobileCitiesOpen ? <ChevronUp className="h-5 w-5 text-[var(--color-primary-dark)]" /> : <ChevronDown className="h-5 w-5 text-[var(--color-primary-dark)]" />}
                                     </span>
                                 </button>
 
@@ -274,7 +274,7 @@ export function StickyHeader() {
                                                     >
                                                         <span className="text-sm font-medium">{s.state}</span>
                                                         <span className="text-gray-300">
-                                                            {mobileOpenState === s.stateSlug ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                                                            {mobileOpenState === s.stateSlug ? <ChevronUp className="h-4 w-4 text-[var(--color-primary-dark)]" /> : <ChevronDown className="h-4 w-4 text-[var(--color-primary-dark)]" />}
                                                         </span>
                                                     </button>
 

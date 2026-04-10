@@ -1,4 +1,4 @@
-import { Star, Quote } from "lucide-react"
+import { Star, Quote, ArrowRight, } from "lucide-react"
 
 export const testimonials = [
     {
@@ -129,7 +129,7 @@ export function TestimonialsSection({ count }: TestimonialsSectionProps = {}) {
     const visible = count ? shuffled.slice(0, count) : shuffled
 
     return (
-        <section id="testimonials" className="bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)] py-10 lg:py-14">
+        <section id="testimonials" className="bg-[var(--color-background-yellow)] border-t-4 border-[var(--color-secondary)] py-10 lg:py-14">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
                 <div className="text-center mb-16">
                     <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-sm font-semibold mb-4">
@@ -146,7 +146,7 @@ export function TestimonialsSection({ count }: TestimonialsSectionProps = {}) {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {visible.map((t) => (
-                        <div key={t.name} className="p-6 rounded-2xl bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30 flex flex-col">
+                        <div key={t.name} className="p-6 rounded-2xl bg-yellow-50 border border-gray-100 hover:border-[var(--color-secondary)]/30 flex flex-col">
                             <StarRating rating={t.rating} />
                             <Quote className="h-6 w-6 text-[var(--color-primary-dark)]/30 mt-4 mb-3" />
                             <p className="text-[var(--color-text-black)] leading-relaxed mb-6 flex-1">{t.text}</p>
@@ -163,19 +163,28 @@ export function TestimonialsSection({ count }: TestimonialsSectionProps = {}) {
                     ))}
                 </div>
 
-                {/* Aggregate review badge */}
-                <div className="mt-12 flex items-center justify-center">
-                    {/* <div className="inline-flex items-center gap-3 rounded-full bg-white/5 border border-white/10 px-6 py-3">
+                <div className="mt-12 flex flex-col items-center md:flex-row md:justify-between md:items-center">
+                    <div className="inline-flex items-center gap-3 rounded-full bg-yellow-50 border border-[var(--color-secondary)]/10 px-6 py-3">
                         <div className="flex items-center gap-0.5">
                             {Array.from({ length: 5 }).map((_, i) => (
                                 <Star key={i} className="h-4 w-4 fill-[#f59e0b] text-[#f59e0b]" />
                             ))}
                         </div>
-                        <span className="text-sm text-gray-300">
-                            <span className="font-bold text-white">4.9 out of 5</span>
+                        <span className="text-sm text-[var(--color-text-black)]">
+                            <span className="font-bold text-[var(--color-text-black)]">4.9 out of 5</span>
                             {" based on 500+ reviews"}
                         </span>
-                    </div> */}
+                    </div>
+
+                    <a
+                        href="https://www.google.com/search?kgmid=/g/11jnny9nkl&q=Spencer+Buys+Houses"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-4 md:mt-0 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-secondary)] hover:text-[var(--color-secondary)]/60 transition-colors"
+                    >
+                        Read Full Reviews on Google
+                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </a>
                 </div>
             </div>
         </section>
