@@ -3,6 +3,7 @@
 :root {
   --background: #0f1012;
   --background-white: #f8f8f8;
+  --background-yellow: #e6c000;
   --foreground: #171717;
   /* Brand colors */
   --color-primary: #ffd600;
@@ -34,6 +35,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-background-white: var(--background-white);
+  --color-background-yellow: var(--background-yellow);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);

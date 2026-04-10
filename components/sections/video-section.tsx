@@ -3,7 +3,7 @@ export function VideoSection() {
         <section
             id="watch-how-it-works"
             aria-label="Watch how Spencer Buys Houses works"
-            className="bg-[var(--color-background)] py-20 lg:py-28"
+            className="bg-[var(--color-background)] py-16 lg:py-20"
         >
             <div className="mx-auto max-w-5xl px-4 lg:px-8">
                 {/* Header */}

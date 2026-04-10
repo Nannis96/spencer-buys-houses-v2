@@ -1092,34 +1092,8 @@ export function PropertyInfoForm() {
                         <FieldError message={errors.ultimateGoal?.message} />
                     </div>
 
-                    {/* Price row */}
-                    {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label htmlFor={id("askingPrice")} className="block text-xs text-gray-400 mb-1.5">
-                                What is your asking price?
-                            </label>
-                            <Input
-                                id={id("askingPrice")}
-                                placeholder="$ e.g. 120,000"
-                                {...register("askingPrice")}
-                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor={id("fairPrice")} className="block text-xs text-gray-400 mb-1.5">
-                                As-is fair price for both of us?
-                            </label>
-                            <Input
-                                id={id("fairPrice")}
-                                placeholder="$ e.g. 110,000"
-                                {...register("fairPrice")}
-                                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                            />
-                        </div>
-                    </div> */}
-
                     {/* Best time to call */}
-                    <div>
+                    {/* <div>
                         <label htmlFor={id("bestTimeToCall")} className="block text-xs text-gray-400 mb-1.5">
                             When is the best time to call?
                         </label>
@@ -1133,7 +1107,7 @@ export function PropertyInfoForm() {
                             </select>
                             <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
                         </div>
-                    </div>
+                    </div> */}
 
                     <Button
                         type="submit"
