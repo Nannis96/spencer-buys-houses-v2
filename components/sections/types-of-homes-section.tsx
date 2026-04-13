@@ -17,7 +17,7 @@ export function TypesOfHomesSection() {
     };
 
     return (
-        <section id="types-of-homes" className="bg-[var(--color-background-yellow)] border-t-4 border-[var(--color-secondary)] py-10 lg:py-14">
+        <section id="types-of-homes" className="bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)] py-10 lg:py-14">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
                 <div className="grid gap-8 md:grid-cols-2 items-center mb-16">
                     <div className="text-center md:text-left">
@@ -59,7 +59,7 @@ export function TypesOfHomesSection() {
 
                 <div className="mt-8">
                     <div className="max-w-7xl mx-auto grid gap-6 grid-cols-1 md:grid-cols-3 items-stretch justify-center">
-                        <article aria-labelledby="moms-old-house" role="link" tabIndex={0} onClick={() => navigate('/blog')} onKeyDown={(e) => handleKeyDown(e, '/blog')} className="p-6 rounded-lg bg-yellow-50 border border-gray-100 hover:border-[var(--color-secondary)]/30 cursor-pointer w-full h-full flex flex-col justify-between">
+                        <article aria-labelledby="moms-old-house" role="link" tabIndex={0} onClick={() => navigate('/blog')} onKeyDown={(e) => handleKeyDown(e, '/blog')} className="p-6 rounded-lg bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30 cursor-pointer w-full h-full flex flex-col justify-between">
                             <h3 id="moms-old-house" className="text-xl font-semibold text-[var(--color-text-black)] mb-2">
                                 MOM’S {" "}
                                 <span className="text-[var(--color-text-red)]">OLD HOUSE</span>
@@ -72,7 +72,7 @@ export function TypesOfHomesSection() {
                             </ul>
                         </article>
 
-                        <article aria-labelledby="tired-landlords" role="link" tabIndex={0} onClick={() => navigate('/blog')} onKeyDown={(e) => handleKeyDown(e, '/blog')} className="p-6 rounded-lg bg-yellow-50 border border-gray-100 hover:border-[var(--color-secondary)]/30 cursor-pointer w-full h-full flex flex-col justify-between">
+                        <article aria-labelledby="tired-landlords" role="link" tabIndex={0} onClick={() => navigate('/blog')} onKeyDown={(e) => handleKeyDown(e, '/blog')} className="p-6 rounded-lg bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30 cursor-pointer w-full h-full flex flex-col justify-between">
                             <h3 id="tired-landlords" className="text-xl font-semibold text-[var(--color-text-black)] mb-2">
                                 TIRED {" "}
                                 <span className="text-[var(--color-text-red)]">LANDLORDS</span>
@@ -85,7 +85,7 @@ export function TypesOfHomesSection() {
                             </ul>
                         </article>
 
-                        <article aria-labelledby="fixer-uppers" role="link" tabIndex={0} onClick={() => navigate('/blog')} onKeyDown={(e) => handleKeyDown(e, '/blog')} className="p-6 rounded-lg bg-yellow-50 border border-gray-100 hover:border-[var(--color-secondary)]/30 cursor-pointer w-full h-full flex flex-col justify-between">
+                        <article aria-labelledby="fixer-uppers" role="link" tabIndex={0} onClick={() => navigate('/blog')} onKeyDown={(e) => handleKeyDown(e, '/blog')} className="p-6 rounded-lg bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30 cursor-pointer w-full h-full flex flex-col justify-between">
                             <h3 id="fixer-uppers" className="text-xl font-semibold text-[var(--color-text-black)] mb-2">
                                 FIXER {" "}
                                 <span className="text-[var(--color-text-red)]">UPPERS</span>

@@ -52,7 +52,7 @@ export default async function CityPage({ params }: Props) {
     const found = findCity(stateSlug, citySlug)
     if (!found) {
         return (
-            <main className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
+            <main className="min-h-screen bg-[url('/background-we-serve.png')] bg-no-repeat bg-center bg-cover flex items-center justify-center">
                 <div className="text-center text-white">
                     <h1 className="text-4xl font-bold mb-4">City not found</h1>
                     <Link href="/" className="text-[#f59e0b] underline">Go home</Link>
@@ -80,29 +80,35 @@ export default async function CityPage({ params }: Props) {
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
             <main id="top">
-                <section className="relative bg-[var(--color-background)] pt-28 md:pt-44 pb-12 lg:pb-20 overflow-hidden">
+                <section className="relative bg-[url('/background-we-serve.png')] bg-no-repeat bg-right-top bg-cover bg-[position:75%_30%] md:bg-[position:60%_30%] lg:bg-[position:50%_25%] pt-28 md:pt-44 pb-12 lg:pb-20 overflow-hidden">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[520px] bg-[#f59e0b]/5 rounded-full blur-3xl" />
                     <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                            <div>
-                                <h1 className="block text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl text-white">
-                                    {city.heroTitle}
-                                </h1>
+                            <div className="relative z-10">
+                                <div className="bg-gradient-to-r from-white/60 via-white/50 to-white/30 dark:from-black/50 dark:via-black/30 dark:to-black/12 p-6 md:p-8 rounded-xl backdrop-blur-sm text-[var(--color-text-black)] dark:text-white">
+                                    <h1 className="block text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
+                                        {city.heroTitle}
+                                    </h1>
+                                </div>
 
-                                {city.heroSubtitle && (
-                                    <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300">{city.heroSubtitle}</p>
+                                {(city.heroSubtitle || city.intro) && (
+                                    <div className="mt-6 bg-gradient-to-r from-white/50 via-white/40 to-white/20 dark:from-black/40 dark:via-black/20 dark:to-black/8 p-4 md:p-6 rounded-xl backdrop-blur-sm text-[var(--color-text-black)] dark:text-white">
+                                        {city.heroSubtitle && (
+                                            <p className="mx-auto max-w-2xl text-lg text">{city.heroSubtitle}</p>
+                                        )}
+
+                                        {city.intro && (
+                                            <p className="mt-4 max-w-3xl">{city.intro}</p>
+                                        )}
+                                    </div>
                                 )}
 
-                                {city.intro && (
-                                    <p className="mt-6 text-gray-300 max-w-3xl">{city.intro}</p>
-                                )}
-
-                                <div className="flex flex-row items-center gap-4 mb-8">
+                                <div className="flex flex-row items-center gap-4 mb-8 mt-4">
                                     <CallButton />
                                 </div>
                             </div>
 
-                            <div className="hidden lg:block">
+                            <div className="block">
                                 <LeadFormConsent />
                             </div>
                         </div>

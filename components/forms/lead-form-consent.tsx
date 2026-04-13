@@ -147,6 +147,10 @@ export function LeadFormConsent() {
 
     const { ref: registerAddressRef, ...registerAddressRest } = register("address")
 
+    // Button blink class applied only when not submitting and address present
+    const blinkClass = !isSubmitting && addressSelected ? "blink" : ""
+    const buttonClass = `h-14 text-lg font-bold rounded-lg transition-transform transform-gpu bg-red-600 hover:bg-red-700 text-[var(--color-text-white)] ${blinkClass} disabled:opacity-50 disabled:cursor-not-allowed`
+
     const onSubmit = (data: LeadConsentFormData) => {
         setIsSubmitting(true)
         console.log("Lead form (consent) submitted:", data)
@@ -199,7 +203,7 @@ export function LeadFormConsent() {
                                     addressInputRef.current = el
                                 }}
                                 {...registerAddressRest}
-                                className="pl-11 h-12 bg-[var(--color-amber-05)] border-[rgba(255,255,255,0.08)] text-[var(--color-text-white)] placeholder:text-[rgba(255,255,255,0.6)] focus-visible:ring-[var(--color-primary)] focus-visible:border-[var(--color-primary)]"
+                                className="pl-11 h-12 bg-[var(--color-amber-05)] border-[rgba(255,255,255,0.08)] text-[var(--color-text-white)] placeholder:text-[rgba(255,255,255,0.7)] font-semibold text-lg focus-visible:ring-yellow-400/60 focus-visible:border-yellow-400/60 address-glow"
                                 aria-invalid={!!errors.address}
                                 aria-describedby={errors.address ? id("address-err") : undefined}
                             />
@@ -216,7 +220,7 @@ export function LeadFormConsent() {
                     <Button
                         type="submit"
                         disabled={isSubmitting || !addressSelected}
-                        className="h-14 text-lg font-bold rounded-lg transition-transform transform-gpu bg-[linear-gradient(90deg,var(--color-secondary),var(--color-secondary))] text-[var(--color-text-white)] hover:brightness-95 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={buttonClass}
                     >
                         {isSubmitting ? (
                             <>
@@ -230,6 +234,10 @@ export function LeadFormConsent() {
                             </>
                         )}
                     </Button>
+
+                    <p className="text-sm text-[var(--color-text-white)]/90 mt-2 text-center">
+                        Receive your offer in approximately <span className="font-bold">2 minutes</span>.
+                    </p>
                 </div>
 
                 <p className="text-xs text-[var(--color-text-white)]/70 mt-4 text-center flex items-center justify-center gap-1.5">

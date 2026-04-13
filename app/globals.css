@@ -93,3 +93,32 @@ body {
 .pac-logo::after {
   display: none;
 }
+
+/* ── Utilities: Blink animation + address highlight ───────────────────────── */
+@keyframes blink {
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0.25;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.blink {
+  animation: blink 1s linear infinite;
+}
+
+.blink-fast {
+  animation: blink 0.7s linear infinite;
+}
+
+.address-glow {
+  box-shadow: 0 6px 18px rgba(246, 192, 46, 0.12);
+}

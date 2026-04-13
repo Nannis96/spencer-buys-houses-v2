@@ -16,6 +16,7 @@ import {
 import { JsonLd } from "@/components/seo/json-ld"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
+import SpencerVideo from "@/components/sections/spencer-video"
 
 /* ─── Metadata ───────────────────────────────────────────────────────────── */
 
@@ -125,22 +126,32 @@ export default function ContactUsPage() {
                     <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-[var(--color-primary-dark)]/5 blur-3xl" />
                 </div>
 
-                <div className="relative mx-auto max-w-7xl px-4 lg:px-8 text-center">
-                    <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-text-yellow)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-6 uppercase tracking-wide">
-                        Connect With Us
-                    </span>
-                    <h1
-                        id="contact-hero-heading"
-                        className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight text-balance"
-                    >
-                        Have Questions?{" "}
-                        <span className="text-[var(--color-text-yellow)]">We{"'"}re Here to Help.</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                        Our goal is to make selling your home simple and stress-free. Whether
-                        you{"'"}re ready to get a cash offer or just have questions, we{"'"}d
-                        love to hear from you.
-                    </p>
+                <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div className="text-center lg:text-left">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-text-yellow)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-6 uppercase tracking-wide">
+                                Connect With Us
+                            </span>
+                            <h1
+                                id="contact-hero-heading"
+                                className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight text-balance"
+                            >
+                                Have Questions?{" "}
+                                <span className="text-[var(--color-text-yellow)]">We{"'"}re Here to Help.</span>
+                            </h1>
+                            <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
+                                Our goal is to make selling your home simple and stress-free. Whether
+                                you{"'"}re ready to get a cash offer or just have questions, we{"'"}d
+                                love to hear from you.
+                            </p>
+                        </div>
+
+                        {/* Spencer video alongside the text on large screens */}
+                        <div className="mt-6 lg:mt-0">
+                            {/* Client component controls playback when visible */}
+                            <SpencerVideo />
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -209,20 +220,41 @@ export default function ContactUsPage() {
                                 <span className="text-[var(--color-text-yellow)]">Talk About Your Home</span>
                             </h2>
                             <p className="text-gray-400 leading-relaxed mb-6">
-                                If you{"'"}ve been thinking{" "}
+                                If you{"'"}ve been thinking, {" "}
                                 <em className="text-gray-300">
-                                    &ldquo;I need to sell my house fast,&rdquo;
+                                    &ldquo;I need to sell my house fast, &rdquo;
                                 </em>{" "}
-                                you{"'"}ve come to the right place. We offer cash for houses in
-                                Memphis, providing a fair, no-obligation cash offer{" "}
+                                you{"'"}e come to the right place. We offer cash for houses in
+                                Memphis, providing you with a fair, no-obligation cash offer {" "}
                                 <strong className="text-white">within 24 hours</strong>. We
-                                understand time is often critical, and we work on your schedule
-                                to close as quickly as possible — often in as little as{" "}
-                                <strong className="text-white">7 days</strong>.
+                                understand that time is often critical, and we work on your
+                                schedule to close as quickly as possible, often in as little
+                                as{" "} <strong className="text-white">7 days</strong>.
                             </p>
 
                             {/* Topics list */}
                             <div className="mb-8">
+                                <div className="mb-6 text-gray-300 leading-relaxed">
+                                    <p>Excellent! We love talking with people to see how we can help you reach your goals.</p>
+
+                                    <p>If you have questions about:</p>
+
+                                    <ul className="list-disc list-inside mb-3">
+                                        <li>The history of our company and who we are.</li>
+                                        <li>Our process for making you an all-cash offer for your house.</li>
+                                        <li>Our process for helping homeowners stop foreclosure in Memphis, for situations that qualify.</li>
+                                        <li>Or anything else you want to ask us, even if it’s just to make sure we’re real people!</li>
+                                    </ul>
+
+                                    <p>Just give us a ring at the phone number below or shoot us an email through the form. We’ll get back to you within 48 hours. If you need us quicker, make sure to call as we’re able to answer phone calls more quickly than we’re able to return emails.</p>
+
+                                    <p>With Spencer Buys Houses, there are no hidden fees, commissions, or closing costs. You get cash in your hand for your house without the delays and uncertainty of traditional real estate transactions. We are local experts who know the Memphis market, and we take pride in helping homeowners find solutions tailored to their needs.</p>
+
+                                    <p>So, if you’re asking yourself, “Who will buy my house for cash in Memphis?” or “How can I sell my house fast?” – Spencer Buys Houses is your answer. Contact us today to learn more about how we buy houses for cash in Memphis and how we can help you move forward with a fast, fair, and reliable home sale. Let us put cash in your pocket and provide the peace of mind you deserve.</p>
+
+                                    <p>Chat with you soon!</p>
+                                </div>
+
                                 <p className="text-gray-300 font-semibold mb-4">
                                     Feel free to ask us about:
                                 </p>
@@ -248,9 +280,14 @@ export default function ContactUsPage() {
                                     much faster than we can reply to emails.
                                 </p>
                             </div>
+                        </div>
+
+                        {/* Right form – desktop */}
+                        <div className="hidden lg:block">
+                            <LeadFormConsent />
 
                             {/* Contact info card */}
-                            <div className="rounded-2xl bg-[var(--color-background)] border border-[var(--color-primary)]/60 p-6">
+                            <div className="mt-8 rounded-2xl bg-[var(--color-background)] border border-[var(--color-primary)]/60 p-6">
                                 <h3 className="text-lg font-bold text-[var(--color-text-yellow)] mb-5">Contact Info</h3>
                                 <div className="flex flex-col gap-4">
                                     <a
@@ -310,11 +347,23 @@ export default function ContactUsPage() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Right form – desktop */}
-                        <div className="hidden lg:block">
-                            <LeadFormConsent />
+                            {/* ── Map (embedded) ───────────────────────────────────────────── */}
+                            <div className="mx-auto max-w-7xl px-4 lg:px-8 mt-8">
+                                <h3 className="text-lg font-bold text-white mb-4">Visit Our Office</h3>
+                                <div className="w-full h-64 sm:h-80 lg:h-96 rounded-2xl overflow-hidden border border-[var(--color-primary)]/40">
+                                    <iframe
+                                        title="Spencer Buys Houses - Memphis location"
+                                        src="https://maps.google.com/maps?q=35.1176518,-89.9116545&z=15&output=embed"
+                                        width="100%"
+                                        height="100%"
+                                        style={{ border: 0 }}
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                    />
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -19,6 +19,7 @@ import { CheckCircle2 } from "lucide-react"
 import Image from "next/image"
 import { CallButton } from "@/components/ui/call-button"
 import { CTAButton } from "@/components/ui/cta-button"
+import { PurchasedHousesMap } from "@/components/sections/purchased-houses-map"
 
 export function CashOfferContent() {
     return (
@@ -78,6 +79,9 @@ export function CashOfferContent() {
                     </div>
                 </div>
             </section>
+
+            {/* ───────── NEW: PURCHASED HOUSES MAP ───────── */}
+            <PurchasedHousesMap />
 
             {/* ───────── 2. BENEFITS ───────── */}
             <section

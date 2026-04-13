@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { User, Phone, Mail, ArrowRight, Loader2, ShieldCheck, CheckCircle2, DollarSign, Clock, Wrench, Home, BadgeCheck, HeartHandshake } from "lucide-react"
+import { User, Users, Phone, Mail, ArrowRight, Loader2, ShieldCheck, CheckCircle2, DollarSign, Clock, Wrench, Home, BadgeCheck, HeartHandshake, ChevronLeft, ChevronRight, CalendarDays } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { CallButton } from "@/components/ui/call-button"
 
@@ -349,6 +349,257 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
     )
 }
 
+/* ─── AppointmentPicker ──────────────────────────────────────────────────── */
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+const DAY_HEADERS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+
+// ── Agents ──────────────────────────────────────────────────────────────────
+// Replace with real agent data fetched from your backend as needed.
+export interface Agent {
+    id: string
+    name: string
+    role: string
+    initials: string
+    color: string // tailwind bg class for avatar
+}
+
+const AGENTS: Agent[] = [
+    { id: "agent-1", name: "Spencer", role: "Lead Buyer", initials: "SP", color: "bg-amber-500" },
+    { id: "agent-2", name: "Marcus", role: "Home Specialist", initials: "MA", color: "bg-blue-500" },
+    { id: "agent-3", name: "Janelle", role: "Property Advisor", initials: "JA", color: "bg-purple-500" },
+]
+
+// ── Time slots ──────────────────────────────────────────────────────────────
+// This function will be replaced by an API call once the backend is ready.
+// agentId is passed so the future API can filter by agent availability.
+function buildTimeSlots(_agentId?: string): string[] {
+    // TODO: replace with `await fetch(`/api/availability?agent=${agentId}&date=...`)`
+    const slots: string[] = []
+    for (let h = 7; h <= 15; h++) {
+        for (let m = 0; m < 60; m += 30) {
+            if (h === 15 && m > 0) break
+            const hour12 = h > 12 ? h - 12 : h === 12 ? 12 : h
+            const ampm = h >= 12 ? "PM" : "AM"
+            slots.push(`${hour12}:${m === 0 ? "00" : "30"} ${ampm}`)
+        }
+    }
+    return slots
+}
+
+interface AppointmentPickerProps {
+    selectedAgent: Agent | null
+    selectedDate: Date | null
+    selectedTime: string | null
+    onAgentChange: (agent: Agent | null) => void
+    onDateChange: (date: Date) => void
+    onTimeChange: (time: string | null) => void
+}
+
+function AppointmentPicker({ selectedAgent, selectedDate, selectedTime, onAgentChange, onDateChange, onTimeChange }: AppointmentPickerProps) {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    const [viewYear, setViewYear] = useState(today.getFullYear())
+    const [viewMonth, setViewMonth] = useState(today.getMonth())
+
+    // Time slots: agent-specific when an agent is selected, otherwise show all
+    const timeSlots = buildTimeSlots(selectedAgent?.id)
+
+    const firstDay = new Date(viewYear, viewMonth, 1)
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
+    const startDow = firstDay.getDay()
+
+    const prevMonth = () => {
+        if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11) }
+        else setViewMonth(m => m - 1)
+    }
+    const nextMonth = () => {
+        if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0) }
+        else setViewMonth(m => m + 1)
+    }
+
+    const isDisabled = (day: number) => {
+        const d = new Date(viewYear, viewMonth, day)
+        d.setHours(0, 0, 0, 0)
+        const dow = d.getDay()
+        return dow === 0 || dow === 6 || d < today
+    }
+
+    const isSelected = (day: number) =>
+        selectedDate !== null &&
+        selectedDate.getFullYear() === viewYear &&
+        selectedDate.getMonth() === viewMonth &&
+        selectedDate.getDate() === day
+
+    const cells: (number | null)[] = [
+        ...Array.from({ length: startDow }, () => null),
+        ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+    ]
+
+    return (
+        <div className="rounded-lg bg-white/[0.03] border border-white/10 p-4 flex flex-col gap-4">
+            {/* Header */}
+            <div className="flex items-center gap-2">
+                <CalendarDays className="h-4 w-4 text-[var(--color-primary)]" aria-hidden />
+                <p className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-wider">
+                    Schedule Appointment <span className="normal-case text-gray-500 font-normal">(optional)</span>
+                </p>
+            </div>
+
+            {/* ── Step 1: Agent selection (select) ── */}
+            <div>
+                <div className="flex items-center gap-1.5 mb-2">
+                    <Users className="h-3.5 w-3.5 text-gray-400" aria-hidden />
+                    <p className="text-xs text-gray-400 font-semibold">
+                        Choose an agent{" "}
+                        <span className="font-normal text-gray-600">(or skip to see all available times)</span>
+                    </p>
+                </div>
+                <div>
+                    <label htmlFor="agent-select" className="sr-only">Choose agent</label>
+                    <select
+                        id="agent-select"
+                        value={selectedAgent?.id ?? ""}
+                        onChange={(e) => {
+                            const id = e.target.value
+                            const found = AGENTS.find(a => a.id === id) ?? null
+                            onAgentChange(found)
+                            onTimeChange(null)
+                        }}
+                        className="w-full rounded-lg border border-white/10 bg-black text-white text-xs py-2.5 pl-3 pr-8 focus:outline-none focus:border-[#f59e0b]/60 focus:ring-1 focus:ring-[#f59e0b]/40 transition-colors cursor-pointer"
+                    >
+                        <option value="">No preference — show all times</option>
+                        {AGENTS.map((a) => (
+                            <option key={a.id} value={a.id}>{a.name} — {a.role}</option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            {/* ── Step 2: Calendar ── */}
+            <div>
+                {selectedAgent ? (
+                    <p className="text-xs text-gray-400 mb-2">
+                        Showing availability for{" "}
+                        <span className="text-white font-semibold">{selectedAgent.name}</span>
+                    </p>
+                ) : (
+                    <p className="text-xs text-gray-500 mb-2">Showing all available dates</p>
+                )}
+
+                {/* Month navigation */}
+                <div className="flex items-center justify-between mb-2">
+                    <button
+                        type="button"
+                        onClick={prevMonth}
+                        className="p-1.5 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                        aria-label="Previous month"
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </button>
+                    <span className="text-sm font-semibold text-white">{MONTH_NAMES[viewMonth]} {viewYear}</span>
+                    <button
+                        type="button"
+                        onClick={nextMonth}
+                        className="p-1.5 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                        aria-label="Next month"
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </button>
+                </div>
+
+                {/* Day-of-week headers */}
+                <div className="grid grid-cols-7 gap-1 mb-1">
+                    {DAY_HEADERS.map((d, i) => (
+                        <div
+                            key={d}
+                            className={`text-center text-[10px] font-semibold py-1 ${i === 0 || i === 6 ? "text-gray-700" : "text-gray-400"
+                                }`}
+                        >
+                            {d}
+                        </div>
+                    ))}
+                </div>
+
+                {/* Calendar grid */}
+                <div className="grid grid-cols-7 gap-1">
+                    {cells.map((day, i) => {
+                        if (day === null) return <div key={`blank-${i}`} />
+                        const disabled = isDisabled(day)
+                        const selected = isSelected(day)
+                        return (
+                            <button
+                                key={day}
+                                type="button"
+                                disabled={disabled}
+                                onClick={() => {
+                                    onDateChange(new Date(viewYear, viewMonth, day))
+                                    onTimeChange(null)
+                                }}
+                                className={[
+                                    "rounded text-xs py-1.5 font-medium transition-colors text-center",
+                                    disabled
+                                        ? "text-gray-700 cursor-not-allowed"
+                                        : "text-gray-300 hover:bg-[#f59e0b]/20 hover:text-white cursor-pointer",
+                                    selected ? "!bg-[#f59e0b] !text-[#0f0f23] font-bold" : "",
+                                ].join(" ")}
+                            >
+                                {day}
+                            </button>
+                        )
+                    })}
+                </div>
+            </div>
+
+            {/* ── Step 3: Time slots ── */}
+            {selectedDate && (
+                <div>
+                    <p className="text-xs text-gray-400 mb-2">
+                        Available times for{" "}
+                        <span className="text-white font-semibold">
+                            {selectedDate.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })}
+                        </span>
+                        {selectedAgent && (
+                            <span className="text-gray-500"> · {selectedAgent.name}</span>
+                        )}
+                    </p>
+                    <div className="grid grid-cols-4 gap-1.5">
+                        {timeSlots.map((slot) => (
+                            <button
+                                key={slot}
+                                type="button"
+                                onClick={() => onTimeChange(slot)}
+                                className={[
+                                    "text-xs py-1.5 px-1 rounded border transition-colors",
+                                    selectedTime === slot
+                                        ? "bg-[#f59e0b] text-[#0f0f23] border-[#f59e0b] font-bold"
+                                        : "border-white/10 text-gray-300 hover:border-[#f59e0b]/50 hover:text-white hover:bg-white/5",
+                                ].join(" ")}
+                            >
+                                {slot}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Confirmation badge */}
+            {selectedDate && selectedTime && (
+                <div className="rounded-lg bg-[#f59e0b]/10 border border-[#f59e0b]/30 px-3 py-2 text-xs text-[#f59e0b] font-semibold flex items-center gap-2 flex-wrap">
+                    <CheckCircle2 className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                    <span>
+                        {selectedDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}{" "}
+                        at {selectedTime}
+                        {selectedAgent && (
+                            <span className="font-normal text-[#f59e0b]/80"> · with {selectedAgent.name}</span>
+                        )}
+                    </span>
+                </div>
+            )}
+        </div>
+    )
+}
+
 /* ─── Schema ──────────────────────────────────────────────────────────────── */
 const propertyDetailsSchema = z.object({
     firstName: z.string().min(2, "Please enter your first name"),
@@ -427,6 +678,11 @@ export function PropertyDetailsForm() {
     // store seller's name to personalize the offer heading after submit
     const [sellerName, setSellerName] = useState<string | null>(null)
 
+    // Appointment selection
+    const [appointmentAgent, setAppointmentAgent] = useState<Agent | null>(null)
+    const [appointmentDate, setAppointmentDate] = useState<Date | null>(null)
+    const [appointmentTime, setAppointmentTime] = useState<string | null>(null)
+
     // Local copies of prior-step address values
     const [localAddress, setLocalAddress] = useState(address)
     const [localCity, setLocalCity] = useState(city)
@@ -451,6 +707,7 @@ export function PropertyDetailsForm() {
 
         // persist seller name for the success screen header
         setSellerName(`${data.firstName} ${data.lastName}`)
+        console.log("Appointment selected:", { agent: appointmentAgent, date: appointmentDate, time: appointmentTime })
 
         // Update URL to reflect completion
         const outParams = new URLSearchParams(Array.from(searchParams.entries()))
@@ -726,9 +983,31 @@ export function PropertyDetailsForm() {
                         <FieldError message={errors.email?.message} />
                     </div>
 
-                    {/* ── Submit ── */}
+                    {/* ── Booking Widget ── */}
+                    {/* <div className="-mx-4 sm:-mx-6 md:-mx-8 lg:-mx-10">
+                        <iframe
+                            src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
+                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "1000px" }}
+                            scrolling="no"
+                            id="P1vgAP9PKCyszvGvim17_1775688153226"
+                        />
+                        <script
+                            src="https://api.leadconnectorhq.com/js/form_embed.js"
+                            type="text/javascript"
+                        />
+                    </div> */}
+
+                    {/* ── Appointment ── */}
+                    <AppointmentPicker
+                        selectedAgent={appointmentAgent}
+                        selectedDate={appointmentDate}
+                        selectedTime={appointmentTime}
+                        onAgentChange={setAppointmentAgent}
+                        onDateChange={setAppointmentDate}
+                        onTimeChange={setAppointmentTime}
+                    />
+
                     {/* ───────── CONSENT ───────── */}
-                    {/* <SectionHeading>Consent</SectionHeading> */}
                     <SectionHeading className="mt-1">Consent</SectionHeading>
 
                     {/* SMS Consent */}
@@ -751,8 +1030,6 @@ export function PropertyDetailsForm() {
                             </span>
                         </label>
                     </div>
-
-
 
                     {/* Privacy Consent (required) */}
                     <div>

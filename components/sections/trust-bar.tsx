@@ -99,7 +99,7 @@ export function TrustBar() {
     const translateX = -(current * (100 / itemsPerView))
 
     return (
-        <section className="bg-[var(--color-background-yellow)] border-t-4 border-[var(--color-secondary)] py-12 overflow-hidden">
+        <section className="bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)] py-12 overflow-hidden">
             <div className="mx-auto max-w-7xl px-6 lg:px-10">
                 <div
                     className="relative"
@@ -122,7 +122,7 @@ export function TrustBar() {
                                     className="shrink-0 px-3"
                                     style={{ width: `${100 / itemsPerView}%` }}
                                 >
-                                    <div className="rounded-2xl overflow-hidden shadow-md bg-yellow-50 border border-yellow-200 hover:shadow-lg hover:-translate-y-1 transition-transform transition-shadow flex flex-col h-full">
+                                    <div className="rounded-2xl overflow-hidden shadow-md bg-[var(--color-background-white)] border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-transform transition-shadow flex flex-col h-full">
                                         <div className="relative h-48 w-full">
                                             <Image
                                                 src={image}
