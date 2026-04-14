@@ -9,7 +9,7 @@ export function TypesOfHomesSection() {
 
     const navigate = (href: string) => router.push(href);
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLArticleElement>, href: string) => {
+    const handleKeyDown = (e: KeyboardEvent, href: string) => {
         if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             router.push(href);
