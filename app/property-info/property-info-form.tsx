@@ -1109,6 +1109,20 @@ export function PropertyInfoForm() {
                         </div>
                     </div> */}
 
+                    {/* ── Booking Widget ── */}
+                    <div className="-mx-4 sm:-mx-6 md:-mx-8 lg:-mx-10">
+                        <iframe
+                            src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
+                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "1000px" }}
+                            scrolling="no"
+                            id="P1vgAP9PKCyszvGvim17_1775688153226"
+                        />
+                        <script
+                            src="https://api.leadconnectorhq.com/js/form_embed.js"
+                            type="text/javascript"
+                        />
+                    </div>
+
                     <Button
                         type="submit"
                         disabled={isSubmitting}

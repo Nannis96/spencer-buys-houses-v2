@@ -983,29 +983,15 @@ export function PropertyDetailsForm() {
                         <FieldError message={errors.email?.message} />
                     </div>
 
-                    {/* ── Booking Widget ── */}
-                    {/* <div className="-mx-4 sm:-mx-6 md:-mx-8 lg:-mx-10">
-                        <iframe
-                            src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
-                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "1000px" }}
-                            scrolling="no"
-                            id="P1vgAP9PKCyszvGvim17_1775688153226"
-                        />
-                        <script
-                            src="https://api.leadconnectorhq.com/js/form_embed.js"
-                            type="text/javascript"
-                        />
-                    </div> */}
-
                     {/* ── Appointment ── */}
-                    <AppointmentPicker
+                    {/* <AppointmentPicker
                         selectedAgent={appointmentAgent}
                         selectedDate={appointmentDate}
                         selectedTime={appointmentTime}
                         onAgentChange={setAppointmentAgent}
                         onDateChange={setAppointmentDate}
                         onTimeChange={setAppointmentTime}
-                    />
+                    /> */}
 
                     {/* ───────── CONSENT ───────── */}
                     <SectionHeading className="mt-1">Consent</SectionHeading>
