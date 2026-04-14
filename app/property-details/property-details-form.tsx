@@ -110,22 +110,27 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
     const [geoLatLng, setGeoLatLng] = useState<{ lat: number; lng: number } | null>(null)
     const [geocodeError, setGeocodeError] = useState<string | null>(null)
 
+    // Geocode helper: fetch lat/lng for the provided address string
     const geocodeAddress = async (addr: string) => {
-        setIsGeocoding(true)
-        setGeocodeError(null)
         try {
-            const res = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addr)}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
-            )
-            const data = await res.json()
-            if (data.status === "OK" && data.results?.[0]?.geometry?.location) {
-                const { lat, lng } = data.results[0].geometry.location
-                setGeoLatLng({ lat, lng })
+            setIsGeocoding(true)
+            setGeocodeError(null)
+            const url = `/api/geocode?address=${encodeURIComponent(addr)}`
+            const res = await fetch(url)
+            if (!res.ok) throw new Error(`HTTP ${res.status}`)
+            const json = await res.json()
+            if (json.status === "OK" && Array.isArray(json.results) && json.results.length > 0) {
+                const loc = json.results[0].geometry.location
+                setGeoLatLng({ lat: Number(loc.lat), lng: Number(loc.lng) })
+                setGeocodeError(null)
             } else {
-                setGeocodeError("Could not resolve address.")
+                setGeoLatLng(null)
+                setGeocodeError(json.status || "No results")
             }
-        } catch {
-            setGeocodeError("Geocoding request failed.")
+        } catch (err: any) {
+            console.error("Geocode error:", err)
+            setGeoLatLng(null)
+            setGeocodeError(err?.message ?? String(err))
         } finally {
             setIsGeocoding(false)
         }
@@ -212,9 +217,9 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
             {/* ── Street View + Map ── */}
             {(localAddress || localCity) && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                    {/* Street View */}
+                    {/* Fachada / Street View */}
                     <div className="flex flex-col gap-1.5">
-                        <p className="text-xs font-semibold text-[var(--color-primary)] uppercase tracking-wider">
+                        <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
                             Street View
                         </p>
                         <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full flex items-center justify-center bg-[#0b0f1a]">
