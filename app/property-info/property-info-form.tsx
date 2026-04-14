@@ -535,17 +535,10 @@ export function PropertyInfoForm() {
 
     // Geocode helper: fetch lat/lng for the provided address string
     const geocodeAddress = async (addr: string) => {
-        const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-        if (!key) {
-            setGeocodeError("Missing Google Maps API key")
-            setGeoLatLng(null)
-            return
-        }
-
         try {
             setIsGeocoding(true)
             setGeocodeError(null)
-            const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addr)}&key=${key}`
+            const url = `/api/geocode?address=${encodeURIComponent(addr)}`
             const res = await fetch(url)
             if (!res.ok) throw new Error(`HTTP ${res.status}`)
             const json = await res.json()
