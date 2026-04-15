@@ -755,19 +755,6 @@ export function PropertyInfoForm() {
                     </div>
                 )}
 
-                {/* Rentcast: minimal summary */}
-                {/* {avmResult && (
-                    <div className="mb-4 rounded-lg bg-[#0b1220] p-3 border border-white/10 text-sm text-gray-200">
-                        <div className="font-semibold text-white">{avmResult.formattedAddress ?? avmResult.addressLine1}</div>
-                        {lastSaleDateDisplay && (
-                            <div className="text-xs text-gray-400 mt-1">
-                                Last sold: <span className="text-gray-200">{lastSaleDateDisplay}</span>
-                            </div>
-                        )}
-                        <div className="text-xs text-gray-500 mt-0.5">Data obtained and applied to the form. You can edit any field below.</div>
-                    </div>
-                )} */}
-
                 <div className="flex flex-col gap-5">
 
                     {/* ───────── PROPERTY INFORMATION ───────── */}
@@ -1101,20 +1088,6 @@ export function PropertyInfoForm() {
                             <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
                         </div>
                     </div> */}
-
-                    {/* ── Booking Widget ── */}
-                    <div className="-mx-4 sm:-mx-6 md:-mx-8 lg:-mx-10">
-                        <iframe
-                            src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
-                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "1000px" }}
-                            scrolling="no"
-                            id="P1vgAP9PKCyszvGvim17_1775688153226"
-                        />
-                        <script
-                            src="https://api.leadconnectorhq.com/js/form_embed.js"
-                            type="text/javascript"
-                        />
-                    </div>
 
                     <Button
                         type="submit"

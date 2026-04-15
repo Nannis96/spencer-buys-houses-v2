@@ -710,6 +710,33 @@ export function PropertyDetailsForm() {
         setIsSubmitting(true)
         console.log("Form completed:", { address: localAddress, city: localCity, state: localState, zipCode: localZipCode, ...data })
 
+        // Build and print combined JSON of all form data (for debugging)
+        const combinedFormData = {
+            address: { address: localAddress, city: localCity, state: localState, zipCode: localZipCode },
+            // include all search params forwarded from previous steps
+            searchParams: Object.fromEntries(Array.from(searchParams.entries())),
+            // current step form data
+            formData: data,
+            // any precomputed offer values that may have been passed via URL
+            precomputed: {
+                cashOffer: precomputedCashOffer,
+                repairCosts: precomputedRepairCosts,
+                arv: precomputedArv,
+                estimatedRent: precomputedEstimatedRent,
+                annualTaxes: precomputedAnnualTaxes,
+                insuranceAnnual: precomputedInsuranceAnnual,
+            },
+            // appointment info (serialize date if present)
+            appointment: {
+                agent: appointmentAgent,
+                date: appointmentDate ? appointmentDate.toISOString() : null,
+                time: appointmentTime,
+            },
+        }
+
+        // For now: just print the JSON to console when the user clicks the submit button
+        console.log("Combined form JSON:", JSON.stringify(combinedFormData, null, 2))
+
         // persist seller name for the success screen header
         setSellerName(`${data.firstName} ${data.lastName}`)
         console.log("Appointment selected:", { agent: appointmentAgent, date: appointmentDate, time: appointmentTime })
@@ -997,6 +1024,20 @@ export function PropertyDetailsForm() {
                         onDateChange={setAppointmentDate}
                         onTimeChange={setAppointmentTime}
                     /> */}
+
+                    {/* ── Booking Widget ── */}
+                    <div className="-mx-4 sm:-mx-6 md:-mx-8 lg:-mx-10">
+                        <iframe
+                            src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
+                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
+                            scrolling="no"
+                            id="P1vgAP9PKCyszvGvim17_1775688153226"
+                        />
+                        <script
+                            src="https://api.leadconnectorhq.com/js/form_embed.js"
+                            type="text/javascript"
+                        />
+                    </div>
 
                     {/* ───────── CONSENT ───────── */}
                     <SectionHeading className="mt-1">Consent</SectionHeading>
