@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
-import { validateBearerToken, slugify, jsonError } from '@/lib/api-helpers';
+import { slugify, jsonError } from '@/lib/api-helpers';
+import { verifyToken } from '@/lib/jwt';
 import { uploadImageToS3, ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE } from '@/lib/s3-upload';
 
 // ─────────────────────────────────────────────────────────────
@@ -21,19 +22,80 @@ interface ParsedPostData {
     featuredImage?: File | null;
 }
 
+interface PostCreateData {
+    title: string;
+    slug: string;
+    content: string;
+    seoTitle: string;
+    seoDesc: string;
+    category: string;
+    status: PostStatus;
+    mainImage?: string;
+}
+
+// ─────────────────────────────────────────────────────────────
+// GET /api/blog
+// ─────────────────────────────────────────────────────────────
+
+export async function GET(req: NextRequest): Promise<Response> {
+    const { searchParams } = new URL(req.url);
+    const status = searchParams.get('status');
+    const category = searchParams.get('category');
+    const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10));
+    const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') ?? '10', 10)));
+
+    try {
+        const where = {
+            ...(status && VALID_STATUSES.includes(status as PostStatus) && { status }),
+            ...(category && { category }),
+        };
+
+        const [posts, total] = await Promise.all([
+            prisma.post.findMany({
+                where,
+                select: {
+                    id: true,
+                    title: true,
+                    slug: true,
+                    category: true,
+                    status: true,
+                    mainImage: true,
+                    seoTitle: true,
+                    seoDesc: true,
+                    createdAt: true,
+                },
+                orderBy: { createdAt: 'desc' },
+                skip: (page - 1) * limit,
+                take: limit,
+            }),
+            prisma.post.count({ where }),
+        ]);
+
+        return Response.json({
+            success: true,
+            data: posts,
+            pagination: { total, page, limit, pages: Math.ceil(total / limit) },
+        });
+    } catch (err) {
+        console.error('[GET /api/blog] Database error:', err);
+        return jsonError('Internal server error', 500);
+    }
+}
+
 // ─────────────────────────────────────────────────────────────
 // POST /api/blog
 // ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest): Promise<Response> {
     // ── 1. Auth ───────────────────────────────────────────────
-    /* Temporarily disabled authentication for local testing.
-       Re-enable by uncommenting the lines below and removing this comment.
-
-    if (!await validateBearerToken(req.headers.get('authorization'))) {
+    const authHeader = req.headers.get('authorization');
+    const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+    if (!token) return jsonError('Unauthorized', 401);
+    try {
+        await verifyToken(token);
+    } catch {
         return jsonError('Unauthorized', 401);
     }
-    */
 
     // ── 2. Parse multipart/form-data ─────────────────────────
     let formData: FormData;
@@ -72,7 +134,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     // ── 6. Persist to database ────────────────────────────────
     let post: { id: string; slug: string };
     try {
-        const createData: any = {
+        const createData: PostCreateData = {
             title: data.title,
             slug: uniqueSlug,
             content: data.content,
@@ -80,9 +142,8 @@ export async function POST(req: NextRequest): Promise<Response> {
             seoDesc: data.metaDescription,
             category: data.category,
             status: data.status,
+            ...(imageUrl && { mainImage: imageUrl }),
         };
-
-        if (imageUrl) createData.mainImage = imageUrl;
 
         post = await prisma.post.create({
             data: createData,
@@ -142,13 +203,7 @@ function validateFields(form: FormData): ValidationResult {
     // Featured image (optional)
     const imageEntry = form.get('featuredImage');
     let parsedFile: File | null = null;
-    if (imageEntry) {
-        if (!(imageEntry instanceof File)) {
-            return { ok: false, error: '"featuredImage" must be a file upload' };
-        }
-        if (imageEntry.size === 0) {
-            return { ok: false, error: '"featuredImage" file is empty' };
-        }
+    if (imageEntry instanceof File && imageEntry.size > 0) {
         if (!ALLOWED_IMAGE_TYPES.has(imageEntry.type)) {
             return {
                 ok: false,
@@ -161,8 +216,9 @@ function validateFields(form: FormData): ValidationResult {
                 error: `Image too large (${(imageEntry.size / 1024 / 1024).toFixed(2)} MB). Maximum: 5 MB`,
             };
         }
-
         parsedFile = imageEntry;
+    } else if (imageEntry !== null && !(imageEntry instanceof File)) {
+        return { ok: false, error: '"featuredImage" must be a file upload' };
     }
 
     return {
@@ -191,13 +247,15 @@ function getString(form: FormData, key: string): string {
  * numeric suffix until a free slug is found.
  */
 async function resolveUniqueSlug(baseSlug: string): Promise<string> {
-    let slug = baseSlug;
-    let suffix = 1;
+    const exists = await prisma.post.findUnique({ where: { slug: baseSlug } });
+    if (!exists) return baseSlug;
 
-    while (await prisma.post.findUnique({ where: { slug } })) {
-        suffix += 1;
+    let suffix = 1;
+    let slug: string;
+    do {
         slug = `${baseSlug}-${suffix}`;
-    }
+        suffix += 1;
+    } while (await prisma.post.findUnique({ where: { slug } }));
 
     return slug;
 }

@@ -15,6 +15,7 @@ async function main() {
             slug: "we-buy-houses-in-germantown-tn",
             createdAt: new Date("2025-12-17T10:00:00.000Z"),
             title: "We Buy Houses in Germantown, TN",
+            category: "General",
             content: `
             <p>If you are looking to sell your house fast in Germantown, Spencer Buys Houses is here to help. <strong>We buy houses in Germantown,</strong> TN, for cash, in any condition, and on your timeline. There are no repairs, no agent commissions, and no long waiting periods. Whether your home is outdated, inherited, vacant, or you’re facing a time-sensitive situation, we offer a <strong>simple and stress-free way to sell your house fast for cash</strong>.</p>
 
@@ -175,6 +176,7 @@ async function main() {
             slug: "selling-your-house-fast-in-germantown-december-2025-update",
             createdAt: new Date("2025-12-19T10:00:00.000Z"),
             title: "Selling Your House Fast in Germantown – December 2025 Update",
+            category: "General",
             content: `
             <p>Selling Your House Fast in Germantown is more than just a financial decision—it’s a significant life change. This charming Shelby County suburb still boasts strong schools, picturesque spots like Bobby Lanier Farm Park, and a cozy small-town feel, all within reach of Memphis. But as winter is setting in, the real estate market has cooled a touch.<br><br>You have probably noticed those For Sale signs sticking around longer—seasonal slowdowns are real. Recent data show that homes in Germantown typically spend around 50-65 days on the market, with some sources noting higher averages in December compared to warmer months. Prices aren’t dropping—media sales sit in the area of<strong> $485,000–$490,000, up a hair from last year</strong>—but buyer activity slows when holidays arrive, and the weather turns chilly.</p>
             <p>Smarter, faster routes around the usual hassles are available if you are moving, downsizing, dealing with an inherited property, or just feeling a need for change and can’t wait months.</p>
@@ -234,6 +236,7 @@ async function main() {
             slug: "case-study-sell-my-house-fast-in-hyde-park-memphis",
             createdAt: new Date("2025-12-22T10:00:00.000Z"),
             title: "Case Study: Sell My House Fast in Hyde Park, Memphis",
+            category: "General",
             content: `
             <h2>Project Overview: </h2>
             <p><strong>Property:</strong> 913 Meagher St, Memphis, TN 38108</p>
@@ -290,6 +293,7 @@ async function main() {
             slug: "hoarder-house-cleanouts-should-you-clean-before-sell-a-hoarder-house-in-memphis",
             createdAt: new Date("2025-12-25T10:00:00.000Z"),
             title: "Hoarder House Cleanouts: Should You Clean Before Sell A Hoarder House in Memphis?",
+            category: "General",
             content: `
             <p>Standing in the middle of a room filled with years of accumulated belongings can feel pretty paralyzing. Whether you are tackling your own property or you’ve inherited a family member’s home in Shelby County that has spiraled out of control, the question is always the same: “How am I ever going to clear this out?”</p>
             <p>If you’re thinking of selling, you might think you have to spend months cleaning, sorting, and hauling junk before you can even stick a “For Sale” sign in the yard.</p>
@@ -385,6 +389,7 @@ async function main() {
             slug: "memphis-brrrr-2026-my-newest-acquisition-refined-breakdown",
             createdAt: new Date("2025-12-27T10:00:00.000Z"),
             title: "Memphis BRRRR 2026: My Newest Acquisition & Refined Breakdown",
+            category: "General",
             content: `
             <p><strong>Market Trends, Hard Numbers, and the “Whitehaven Edge”</strong></p>
             <p>Let’s be real for a second. If you’ve been scrolling through Zillow or listening to real estate podcasts lately, you’ve probably heard the doom and gloom. “Rates are stuck,” “inventory is tight,” “cash flow is dead.”</p>
@@ -473,6 +478,7 @@ async function main() {
             slug: "bartlett-tn-38135-under-contract-case-study-spencer-buys-houses",
             createdAt: new Date("2026-01-02T10:00:00.000Z"),
             title: "Bartlett, TN 38135 Under Contract Case Study – Spencer Buys Houses",
+            category: "General",
             content: `
             <h2>Introduction</h2>
             <p>This <strong>Bartlett, TN 38135 under contract case study</strong> shows how <strong>Spencer Buys Houses</strong> helped a local homeowner sell their property quickly without repairs, agent fees, or long waiting periods. The seller wanted a simple and stress-free solution, and our cash home buying process made that possible.</p>
@@ -557,6 +563,7 @@ async function main() {
             slug: "why-more-memphis-homeowners-are-choosing-cash-buyers-over-traditional-listings",
             createdAt: new Date("2026-01-10T10:00:00.000Z"),
             title: "Why More Memphis Homeowners Are Choosing Cash Buyers Over Traditional Listings",
+            category: "General",
             content: `
             <p>Selling a home in Memphis doesn’t look the same as it did a few years ago. While traditional real estate listings were once the default option, more homeowners are now choosing to work directly with cash home buyers instead.</p>
             <p>The reason is simple: <strong>speed, certainty, and simplicity</strong> matter more than ever.</p>
@@ -711,6 +718,7 @@ async function main() {
             slug: "case-study-closed-deal-selling-a-house-as-is-in-horn-lake-1948-classic",
             createdAt: new Date("2026-01-10T10:00:00.000Z"),
             title: "Case Study: Closed Deal|Selling a House As-Is in Horn Lake |1948 Classic in Horn Lake",
+            category: "General",
             content: `
             <p><strong>Property:</strong> 6742 Allen Dr, Horn Lake, MS 38637<br><strong>Asset Class:</strong> Single Family Residence (SFR)<br><strong>Specs:</strong> 4 Bedrooms / 1 Bath | 1,231 Sq. Ft. | Built 1948</p>
 
@@ -754,6 +762,7 @@ async function main() {
             slug: "case-study-closed-deal-a-smooth-deal-in-bartlett-tn",
             createdAt: new Date("2026-01-11T10:00:00.000Z"),
             title: "Case Study: Closed Deal A Smooth Deal in Bartlett TN",
+            category: "General",
             content: `
             <p><strong>Property Address:</strong> 3060 Ruskin Rd, Bartlett, TN 38134</p>
             <p><strong>Project Type:</strong> Single Family Home Purchase</p>
@@ -798,6 +807,7 @@ async function main() {
             slug: "spencer-buys-houses-vs-bartlett-realtors-real-cost-breakdown-2026",
             createdAt: new Date("2026-01-15T10:00:00.000Z"),
             title: "Spencer Buys Houses vs. Bartlett Realtors: The Real Cost Breakdown in 2026",
+            category: "General",
             content: `
             <p>Selling a house in Bartlett isn’t what it was back in 2021 or 2022. You can’t just stick a sign in the yard and expect a bidding war by noon.</p>
             <p>If you’ve been watching the market in Shelby County lately, you’ve probably noticed houses sitting a little longer. Buyers are pickier. Inspections are tougher.</p>
@@ -876,6 +886,7 @@ async function main() {
             slug: "how-to-sell-a-rental-property-with-tenants-in-memphis",
             createdAt: new Date("2026-01-18T10:00:00.000Z"),
             title: "How To Sell A Rental Property with Tenants in Memphis",
+            category: "General",
             content: `
             <p><strong>Sell a Rental Property with Tenants in Memphis</strong> is often one of the most stressful situations a landlord can face. I’ve spoken to numerous property owners in Shelby County who feel stuck—they want to sell, but they are terrified that their tenants will stop paying rent, damage the property, or refuse to leave once the “For Sale” sign goes up. If you are tired of late-night maintenance calls or chasing down rent checks, you might be wondering if there is an exit strategy that doesn’t involve a messy courtroom battle.</p>
 
@@ -944,6 +955,7 @@ async function main() {
             slug: "sell-your-home-fast-why-we-buy-houses-for-cash-memphis",
             createdAt: new Date("2026-01-20T10:00:00.000Z"),
             title: "Sell Your Home Fast: Why “We Buy Houses for Cash Memphis",
+            category: "General",
             content: `
             <p>Selling a home is rarely simple. Between finding a real estate agent, staging the property, and hoping a buyer’s financing doesn’t fall through, the process can drag on for months. But what if you don’t have months? What if you need a guaranteed sale <em>now</em>?</p>
             <p>If you are looking for a stress-free solution, you’ve likely searched for <strong>we buy houses for cash Memphis</strong>. Here is why that simple search might be the answer to your real estate headaches.</p>
@@ -1008,6 +1020,7 @@ async function main() {
             slug: "why-selling-home-for-cash-in-memphis-is-your-best-move-2026",
             createdAt: new Date("2026-03-02T10:00:00.000Z"),
             title: "Why Selling Home for Cash in Memphis is Your Best Move in 2026",
+            category: "General",
             content: `
             <p><strong>Selling Home for Cash in Memphis is Your Best Move in 2026</strong> because the local market has reached a tipping point where the cost of repairs is finally outstripping the potential profit of a traditional sale.<br><br>If you’ve lived in Memphis for any length of time, you know the feeling of walking through your front door and seeing a giant to-do list instead of a home. Maybe it’s a leaky roof in Berclair or a shifting foundation in Whitehaven. Whatever it is, that list can start to feel like a heavy weight. In the past, people would tell you to fix it up before selling, but in 2026, that’s becoming a risky trap.</p>
             <p>If you need to <strong>sell my house fast in </strong>Memphis, here is the truth about why a cash offer is the smartest exit right now.</p>
@@ -1089,6 +1102,7 @@ async function main() {
             slug: "the-ugly-house-myth-what-memphis-cash-home-buyers-are-actually-hunting-for-2026",
             createdAt: new Date("2026-02-04T10:00:00.000Z"),
             title: "The “Ugly House” Myth: What Memphis Cash Home Buyers Are Actually Hunting For in 2026",
+            category: "General",
             content: `
             <p>The “Ugly House” Myth: What Memphis Cash Home Buyers Actually Look For. If you’re walking through your hallway in Midtown, Whitehaven, or Frayser and all you see are cracked plaster, peeling wallpaper, or the faint smell of a kitchen fire that happened years ago, it’s easy to feel stuck. You look at those polished, staged listings on Zillow and think, <em>“Who would ever want this place?”</em>  <br><br><strong>The “Ugly House” is a myth.</strong> In the Memphis real estate world, your property’s “flaws” aren’t deal-breakers—they are opportunities. At <strong>Spencer Buys Houses</strong>, we don’t see a mess; we see a project with potential. <br>Here is the truth about why <strong>we buy ugly houses in Memphis</strong> and why you don’t need to lift a finger before selling.</p>
 
@@ -1124,6 +1138,7 @@ async function main() {
             slug: "the-2026-guide-to-selling-an-inherited-house-in-memphis",
             createdAt: new Date("2026-02-05T10:00:00.000Z"),
             title: "The 2026 Guide to Selling an Inherited House in Memphis",
+            category: "General",
             content: `
             <p>Selling an inherited house can feel like trying to solve a puzzle where half the pieces are missing. If you’re standing in a living room in Midtown or Whitehaven, surrounded by decades of your parents’ memories while staring at a stack of probate paperwork from the Shelby County court, “overwhelmed” doesn’t even begin to cover it. At <strong>Spencer Buys Houses</strong>, we see this every day. You don’t just have a house to sell; you have a lifetime of belongings to sort through, family members to coordinate with, and a legal clock that never seems to stop ticking. Whether you need to <strong>sell an inherited house in Memphis</strong> or you’re looking to<a href="https://www.spencerbuyshouses.com/mississippi/byhalia/"><mark class="has-inline-color has-c-brand-primary-color"> <strong>sell your house for cash in Byhalia</strong></mark></a>, here is the straight talk on how to get through it without losing your mind.</p>
 
@@ -1183,6 +1198,7 @@ async function main() {
             slug: "10-best-cash-home-buyers-in-germantown-tennessee-2026",
             createdAt: new Date("2026-02-09T10:00:00.000Z"),
             title: "10 Best Cash Home Buyers in Germantown, Tennessee (2026)",
+            category: "General",
             content: `
             <p>Selling a home in Germantown can be a smooth ride, but if you’re looking to skip the months of waiting, open houses, and endless repairs, a <strong>cash home buyers in Germantown </strong>is often the best path forward. In 2026, the Germantown market remains competitive, yet many homeowners are choosing speed and certainty over the traditional listing process.</p>
             <p>If you’ve been thinking, “I need to <strong>sell my house fast, Germantown</strong>,” this guide is for you. We’ve rounded up the top options to help you move on your own timeline.</p>
@@ -1318,6 +1334,7 @@ async function main() {
             slug: "big-news-ranked-top-cash-buyer-germantown-2026-list-with-clever",
             createdAt: new Date("2026-02-10T10:00:00.000Z"),
             title: "Big News: We’ve Been Ranked as a Top Cash Buyer in Germantown in 2026 by List With Clever!",
+            category: "General",
             content: `
             <p>I started <strong>Spencer Buys Houses</strong> with a pretty simple goal: I wanted to give my neighbors in West Tennessee a way to <strong><a href="https://www.spencerbuyshouses.com/tennessee/germantown/"><mark class="has-inline-color has-c-brand-primary-color">sell their homes in Germantown</mark></a></strong> without the headaches, the “for sale” signs, and the endless walkthroughs.</p>
             <p>Today, I’m incredibly proud to share that we were just officially recognized for that hard work. The team over at <em>Clever Real Estate</em> just released their 2026 rankings, and <strong>Spencer Buys Houses was named one of the top cash home buyer in Germantown, TN.</strong></p>
@@ -1356,6 +1373,7 @@ async function main() {
             slug: "can-i-sell-my-memphis-house-if-it-has-foundation-issues-2026",
             createdAt: new Date("2026-03-01T10:00:00.000Z"),
             title: "Can I Sell My Memphis House if it Has Foundation Issues in 2026?",
+            category: "General",
             content: `
             <p>If you’ve noticed “stair-step” cracks in your brickwork or a bedroom door that suddenly won’t latch, you aren’t alone. In Memphis, foundation trouble isn’t just a possibility; for many neighborhoods, it’s practically a rite of passage. But does a shifting slab or a sinking pier-and-beam mean your home is unsellable?</p>
             <p>The short answer is: <strong>No, you can definitely sell it.</strong> However, the way you sell it in 2026—and who you sell it to—will depend heavily on how much equity you have and how quickly you need to move.</p>
@@ -1422,6 +1440,7 @@ async function main() {
             slug: "selling-an-inherited-house-in-memphis-steps-options-what-to-expect",
             createdAt: new Date("2026-03-11T10:00:00.000Z"),
             title: "Selling an Inherited House in Memphis: Steps, Options, and What to Expect",
+            category: "General",
             content: `
             <p>Inheriting a home in Memphis often feels like being handed a second job you never applied for. Between the emotional weight of losing a loved one and the sheer logistics of property taxes and lawn maintenance, it’s a lot to shoulder. I’ve seen families get stuck in “analysis paralysis” for years, letting a perfectly good house in Midtown or Cordova crumble just because they couldn’t agree on a paint color or a listing price.</p>
             <p>If you’re ready to move forward, you need to know exactly what you’re up against. Let’s cut to the chase and look at how to handle an inherited house without losing your mind.<br></p>
@@ -1480,6 +1499,7 @@ async function main() {
             slug: "how-mortgage-payoff-works-when-you-sell-to-a-cash-buyer",
             createdAt: new Date("2026-03-12T10:00:00.000Z"),
             title: "How Mortgage Payoff Works When You Sell to a Cash Buyer",
+            category: "General",
             content: `
             <p>If you’re thinking about selling your house to a cash buyer but still owe on your mortgage, you’re probably asking yourself:</p>
 
@@ -1642,6 +1662,7 @@ async function main() {
             slug: "avoid-these-7-costly-mistakes-when-selling-a-distressed-home-memphis-tn",
             createdAt: new Date("2026-03-14T10:00:00.000Z"),
             title: "Avoid These 7 Costly Mistakes When Selling a Distressed Home in Memphis, TN",
+            category: "General",
             content: `
             <p>Selling a distressed home in Memphis can feel like navigating a tricky maze. Many sellers find themselves overwhelmed and unsure about what to do. However, making a few missteps can lead to costly consequences. To help smooth the path, we’ve put together a list of seven mistakes to avoid when selling your distressed property.</p>
             <p>Whether you’re facing repairs you can’t afford, financial difficulties, or simply ready to move on, being aware of these pitfalls can save you time, money, and frustration. And if you’re looking for a quick and easy solution, remember: you can always sell your house fast in Memphis for cash!</p>
@@ -1705,6 +1726,7 @@ async function main() {
             slug: "selling-a-house-during-a-divorce-in-memphis-quick-cash-sale-simplifies",
             createdAt: new Date("2026-03-15T10:00:00.000Z"),
             title: "Selling a House During a Divorce in Memphis: How a Quick Cash Sale Can Simplify the Process",
+            category: "General",
             content: `
             <p>Going through a divorce is easily one of the most draining experiences a person can face. Between the legal paperwork and the emotional weight, the last thing anyone wants to deal with is a long, drawn-out house sale.</p>
             <p>In the <strong>Memphis and Mid-South area</strong>, the family home is often the biggest piece of the puzzle. If you and your ex-partner are trying to figure out how to divide equity and move forward, a traditional listing might actually add more stress than it’s worth.</p>
@@ -1755,6 +1777,7 @@ async function main() {
             slug: "5-reasons-to-sell-your-house-fast-in-mississippi-olive-branch-southaven",
             createdAt: new Date("2026-03-20T10:00:00.000Z"),
             title: "5 Reasons to Sell Your House Fast in Mississippi (Olive Branch & Southaven)",
+            category: "General",
             content: `
             <p>If you own a home in Desoto County, you already know that North Mississippi is currently one of the most sought-after regions in the Mid-South. From the growing suburbs of Olive Branch to the bustling retail hubs of Southaven, the real estate landscape is shifting rapidly.</p>
             <p>However, while the market is hot, selling a home the traditional way in Mississippi comes with its own set of hurdles. Whether you are dealing with an inherited property, a house that needs significant repairs, or a timeline that doesn’t allow for months of waiting, selling for cash is becoming the preferred route for many local homeowners.</p>
@@ -1811,6 +1834,7 @@ async function main() {
             slug: "7-proven-ways-to-sell-house-fast-memphis-2026",
             createdAt: new Date("2026-03-24T10:00:00.000Z"),
             title: "7 Proven Ways to Sell House Fast Memphis in 2026",
+            category: "General",
             content: `
             <p>If you’re trying to <strong><a href="https://www.spencerbuyshouses.com/" target="_blank" rel="noreferrer noopener">sell house fast Memphis</a></strong> and your property isn’t in perfect shape, it can feel stressful and confusing. Maybe the home needs repairs, you’re dealing with missed payments, or you just need a quick move for personal reasons. No matter the situation, you do have options for a <strong>quick house sale Memphis</strong> without losing total control of the process.</p>
             <p>Below are seven practical, proven ways to move your house quickly in the Memphis market in 2026, even if it’s distressed, outdated, or you simply don’t want to list it the traditional way.</p>
@@ -1980,6 +2004,7 @@ async function main() {
             slug: "the-story-of-sally-the-seller-warning-for-memphis-homeowners",
             createdAt: new Date("2026-03-27T10:00:00.000Z"),
             title: "The Story of Sally the Seller: A Warning for Memphis Homeowners",
+            category: "General",
             content: `
             <p>Sally had owned her Memphis home for over a decade. While she wasn’t behind on her mortgage, rising property taxes and deferred maintenance had turned her long-time home into a burden. She wanted a clean, fast exit.</p>
             <p>When the offers started rolling in, she was drawn to a slick out-of-state company that offered a number just a little higher than the local guy, Spencer, who had been buying Memphis homes for over ten years<sup></sup><sup></sup><sup></sup><sup></sup>.</p>
@@ -2062,6 +2087,7 @@ async function main() {
             slug: "2026-memphis-housing-shift-is-it-still-a-good-time-to-sell-your-house-as-is",
             createdAt: new Date("2026-03-29T10:00:00.000Z"),
             title: "The 2026 Memphis Housing Shift: Is It Still a Good Time to Sell Your House As-Is in?",
+            category: "General",
             content: `
             <p>If you’ve driven through Cordova or Berclair lately, you’ve probably noticed more “For Sale” signs than we saw a year or two ago. The Memphis market is definitely shifting in 2026. While the “boom” was great for some, it has left a lot of homeowners feeling stuck as their houses sit on the market month after month. If you are tired of waiting on picky buyers, the best move right now is to <strong>sell your house as-is in Memphis</strong> and skip the traditional stress.</p>
             <p>At <strong>Spencer Buys Houses</strong>, we’re seeing the reality on the ground. The median “days on market” in the Mid-South has climbed past the 60-day mark. For a lot of folks, that’s two extra mortgage payments, two more utility bills, and 60 days of keeping the house “showing ready” while strangers walk through their living room.</p>
@@ -2111,6 +2137,7 @@ async function main() {
             slug: "sell-my-house-fast-memphis-2026-practical-guide",
             createdAt: new Date("2026-03-31T10:00:00.000Z"),
             title: "Sell My House Fast Memphis in 2026: Practical Guide for a Quick Sale",
+            category: "General",
             content: `
             <p>If you’ve been typing <strong>“<a href="https://www.spencerbuyshouses.com/" target="_blank" rel="noreferrer noopener">sell my house fast Memphis</a>”</strong> into Google at 2 a.m., you’re probably dealing with more than just a simple move. Maybe you’re facing a job transfer, a divorce, an inherited property, or a house that needs more repairs than you can afford. Whatever your situation, the goal is the same: you want a <strong>quick house sale Memphis</strong> without endless showings, repair bills, or surprises at closing.</p>
             <p>This guide walks you through how to move your property quickly in today’s Memphis market, what to watch out for, and how <strong>cash house buyers Memphis</strong> can help when speed and simplicity matter most.</p>
@@ -2317,6 +2344,7 @@ async function main() {
             slug: "5-reasons-to-sell-house-fast-memphis-2026-instead-of-waiting",
             createdAt: new Date("2026-04-01T10:00:00.000Z"),
             title: "5 Reasons to Sell House Fast Memphis in 2026 (Instead of Waiting)",
+            category: "General",
             content: `
             <p>Not every homeowner wants (or can afford) to spend months fixing up a house, listing it, and hoping the right buyer comes along. If you’ve been wondering whether it’s smarter to <strong>sell house fast Memphis</strong> rather than “wait for the perfect offer,” you’re not alone.</p>
             <p>In 2026, Memphis homeowners are facing rising repair costs, shifting interest rates, and life events that don’t always line up with a traditional sale timeline. Sometimes, a <strong>quick house sale Memphis</strong> with a solid cash offer is exactly what makes the most sense.</p>
@@ -2473,6 +2501,7 @@ async function main() {
             slug: "10-tips-to-sell-my-house-fast-memphis-2026",
             createdAt: new Date("2026-04-02T10:00:00.000Z"),
             title: "10 Tips to Sell My House Fast Memphis in 2026",
+            category: "General",
             content: `
             <p>When you’re thinking, “I need to <strong><a href="https://www.spencerbuyshouses.com/" target="_blank" rel="noreferrer noopener">sell my house fast Memphis</a></strong>,” you’re usually not looking for a slow, drawn‑out process. Maybe you’re moving for a job, dealing with a divorce, inherited a property, or just tired of constant repairs and bills. Whatever the situation, your goal is the same: a <strong>quick house sale Memphis</strong> with as little hassle as possible.</p>
             <p>Below are 10 practical tips to help you move your property faster in the current Memphis market—whether you choose a traditional listing or work directly with <strong>cash house buyers Memphis</strong>.</p>
@@ -2656,6 +2685,7 @@ async function main() {
             slug: "tired-of-the-rental-headache-sell-your-memphis-property-with-bad-tenants-or-major-repairs",
             createdAt: new Date("2026-04-05T10:00:00.000Z"),
             title: "Tired of the Rental Headache? How to Sell Your Memphis Property With “Bad Tenants” or Major Repairs",
+            category: "General",
             content: `
             <p>Being a landlord in Memphis can be a rewarding investment, but sometimes the “passive income” dream turns into a maintenance and management nightmare. Whether you’re dealing with a property that needs a total overhaul or tenants who have stopped paying rent, you might feel like you’re stuck.</p>
             <p>The good news? You aren’t. You can sell your house exactly as it is today—no hammers, no high-stress negotiations, and no more “late rent” excuses.<sup></sup></p>
