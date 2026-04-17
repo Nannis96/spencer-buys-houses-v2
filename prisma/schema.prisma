@@ -102,6 +102,10 @@ model Post {
     seoDesc      String?
     focusKeyword String? // Keyword principal
 
+    // --- Clasificación y estado ---
+    category String  @default("general")
+    status   String  @default("draft")
+
 }
 
 model PostImage {
