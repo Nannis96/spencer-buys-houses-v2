@@ -15,6 +15,7 @@ async function main() {
             slug: "estate-sale-tips-bartlett",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "5 Estate Sale Tips for Property Owners in Bartlett",
+            category: "General",
             content: `
             <p>Are you an estate representative who needs to liquidate an estate and are wondering how to have an estate sale? While typically held after a loved one has passed and the property has gone through probate, estate sales may be helpful when going through a divorce or other personal transition which requires the disposal of a household full of items. Going through all of the possessions that remain is difficult, especially after a loved one has passed. Be careful to find and set aside important documents, deeds, titles, bank statements, or other financial documents required for the income tax return. </p>
             <p>Valuable things may be casually placed, such as money in a coat pocket. You may want to flip through books for essential papers and systematically check through drawers and any containers or boxes. For a successful outcome, pay close attention to these five estate sale tips for property owners in Bartlett.</p>
@@ -48,6 +49,7 @@ async function main() {
             slug: "cloudy-title-bartlett-guide",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "What Bartlett Buyers and Sellers Need To Know About Cloudy Title",
+            category: "General",
             content: `
             <p>Cloudy title is one of those terms that you don’t hear much about until it happens to you. And when it happens to a buyer or a seller, it can quickly tank a sale right before it’s ready to go through. To protect yourself as either a buyer or a seller, it’s important to understand what a cloudy title is, how to keep yourself from having one, and what to do if you discover the house you want to buy or sell in Bartlett has a cloudy title.</p>
 
@@ -80,6 +82,7 @@ async function main() {
             slug: "probate-process-bartlett-avoid-scams",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "The Probate Process for a House in Bartlett – How to Avoid Getting Scammed",
+            category: "General",
             content: `
             <p><strong>Probate is simply the process of administering a decedent’s estate. Most of us have heard the stories about how long and headache filled the probate process usually is, and we dread it when we actually have to face it.</strong></p>
             
@@ -124,6 +127,7 @@ async function main() {
             slug: "real-estate-trusts-bartlett",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "What You Should Know About Real Estate Trusts in Bartlett",
+            category: "General",
             content: `
             <p>Preparing for when a loved one passes will allow you to endure the loss without adding the stress and pressures of dealing with all of the details of an estate. If you’re wealthy, then the alarming tax rate on gits has likely been of concern. Taking action by preplanning for the distribution of an estate allows peace to those you love who will be grieving and allows you peace of mind about the future and what will happen to your home. </p> 
             <p>A trust transfers the title of ownership of the property out of your name and into the trust instrument or trust, under the care of a trustee and provides protections to your heirs. The alternative, for those unprepared, is being assaulted with the harsh realities of infighting among the heirs, probate court, estate taxes, and creditors at the door. </p> 
@@ -150,6 +154,7 @@ async function main() {
             slug: "sell-house-during-probate-bartlett",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "Can A House Be Sold While In Probate In Bartlett ?",
+            category: "General",
             content: `
             <p>The answer to the often-asked question “Can a house be sold while it is in probate in Bartlett TN?” is “Yes”, but as is true of any home sale, you must adhere carefully to your state’s pertinent rules and regulations. The probate court will monitor every step and all aspects of the sale, and if you’re the executor, you, too, must monitor and approve all the terms of the sale. It can be a complex process, but understanding it will make things a little smoother.</p> 
 
@@ -186,6 +191,7 @@ async function main() {
             slug: "7-ways-sell-unwanted-house-memphis",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "7 Ways Spencer Buys Houses Makes it Simple to Sell An Unwanted House in Memphis",
+            category: "General",
             content: `
             <p>Selling an unwanted house can be a challenging and time-consuming process, especially if you’re trying to sell it through traditional methods. Hiring an agent, making repairs, dealing with showings, and finding the right buyer can take a long time. Fortunately, professional buyers like Spencer Buys Houses can make it easy for you to sell your house quickly and easily. In this blog, we’ll explore 7 ways Spencer Buys Houses makes it simple to sell an unwanted house in Memphis and how a direct sale may prove to be the better choice for you.</p>
 
@@ -223,6 +229,7 @@ async function main() {
             slug: "financial-options-selling-inherited-property-memphis",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "3 Financial Options You Can Pursue When Selling an Inherited Property in Memphis",
+            category: "General",
             content: `
             <p>If you’ve inherited a property and you’re thinking about selling it, you might have more options than you realize. Read this blog post to find out the 3 financial options you can pursue when selling an inherited property in Memphis…</p> 
             <p>When a loved one passes and leaves you with a property, it might be a meaningful gesture but, the truth is, an inherited property isn’t always convenient to own. There are additional bills, expense, maintenance, upkeep, and stress; it can be time-consuming.</p> 
@@ -258,6 +265,7 @@ async function main() {
             slug: "relocating-sell-house-memphis",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "I’m Relocating And Need To Sell My House In Memphis",
+            category: "General",
             content: `
             <p>Relocation is a complicated exercise in coordination. We get local Memphis home sellers calling us or submitting their house info on this website every week saying <strong>“I’m relocating and need to sell my house in Memphis“.</strong>The great thing is that we’re able to help a good many of those sellers sell their house quickly (because we’re actively buying houses in Memphis TN right now!).</p>
             <p>There’s an insane amount of details to keep together, plus the stress of whatever is making you move in the first place – often it’s a new job or a sick relative, but the true need to move always comes with a dramatic change.</p>
@@ -314,6 +322,7 @@ async function main() {
             slug: "options-facing-foreclosure-memphis",
             createdAt: new Date("2025-03-12T10:00:00.000Z"),
             title: "What Are My Options When Facing Foreclosure in Memphis, Tennessee?",
+            category: "General",
             content: `
             <p>Facing foreclosures on your own home in Memphis, Tennessee can be overwhelming and worrying. If you’ve fallen in the back of on mortgage bills, you might experience such as you’re out of options — however the truth is, you’ve got numerous paths you can explore to avoid losing your private home. Whether the monetary stress is due to task loss, clinical payments, divorce, or any other non-public complication, understanding your alternatives lets you make knowledgeable decisions and reduce the stress of the scenario.</p>
             <p>In this text, we’ll explore the various options to be had for homeowners in Memphis, Tennessee who are facing foreclosure, and we’ll offer beneficial insights to guide you through this hard time.</p>
@@ -432,6 +441,7 @@ async function main() {
             slug: "multi-family-properties-memphis-investors",
             createdAt: new Date("2025-03-10T10:00:00.000Z"),
             title: "How Memphis Real Estate Investors Can Incorporate Multi-Family Properties Into Their Portfolios",
+            category: "General",
             content: `
             <p>Real estate investors in Memphis often want to diversify portfolios and increase their rental income. Incorporating multi-family properties into your investments could be a smart move.</p>
             <p>Multi-family properties, which consist of two or more units in a single building, offer several advantages over single-family investments. For example, they allow you to generate more rental income from a single property, and they tend to have lower vacancy rates than single-family homes. However, investing in multi-family properties requires a different approach than investing in single-family homes.</p>
@@ -475,6 +485,7 @@ async function main() {
             slug: "understanding-foreclosure-process-memphis",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "Understanding the Foreclosure Process in Memphis",
+            category: "General",
             content: `
             <p><strong>Understanding the foreclosure process in TN</strong> is an important part of navigating your own home foreclosure.</p>
             <p>Before we dive in…</p>
@@ -535,6 +546,7 @@ async function main() {
             slug: "cash-home-buyers-memphis",
             createdAt: new Date("2025-03-06T10:00:00.000Z"),
             title: "Cash Home Buyers in Memphis: Sell Your Home Fast & Hassle-Free",
+            category: "General",
             content: `
             
             <p></p>
@@ -610,6 +622,7 @@ async function main() {
             slug: "dated-design-elements-memphis",
             createdAt: new Date("2025-03-03T10:00:00.000Z"),
             title: "Dated Design Elements That Can make it Difficult to Sell Your House in Memphis",
+            category: "General",
             content: `
             <p>When it comes to selling your house in Memphis, there are many factors to consider. One of the most significant factors that can make it difficult to sell a house is outdated design elements. These can be anything from old wallpaper to shag carpeting, and they can have a significant impact on the appeal of your house to potential buyers. Even small seeming things such as the color of paint can make feel right at home or eager to run the other way. Outdated elements can make a property feel old and in ned of repair.&nbsp;</p>
             <p>The good news is that if you’re struggling to sell your house due to outdated design elements, Spencer Buys Houses can help. We buy houses outright, regardless of their condition, location, or appearance. This means that you don’t have to worry about updating your house to make it more appealing to potential buyers. We will buy it as-is, typically in a matter of days. If you have tried to list your house in Memphis without any luck, here are some of the most common dated design elements that can make it difficult to sell your house in Memphis:</p>
@@ -637,6 +650,7 @@ async function main() {
             slug: "holding-period-selling-inherited-home-memphis",
             createdAt: new Date("2025-03-03T10:00:00.000Z"),
             title: "Is There A Holding Period Before Selling My Inherited Home? Memphis",
+            category: "General",
             content: `
             <p>If you are thinking about selling your inherited property, you might be wondering, “Is there a holding period before selling my inherited home?” This article will answer that question and you might be surprised at what you learn…</p>
             <p>If you’ve inherited a property, you might now be wondering what to do with that property. And if you’re thinking about selling it then you’re probably wondering, “Is there a holding period before selling my inherited home?”</p>
@@ -667,6 +681,7 @@ async function main() {
             slug: "sell-house-in-foreclosure-memphis",
             createdAt: new Date("2025-03-03T10:00:00.000Z"),
             title: "Can I Sell My House in Foreclosure in Memphis?",
+            category: "General",
             content: `
             <p>Do you have a <em><strong>Memphis TN house that’s in foreclosure</strong></em> right now? Many people going through the <strong>TN foreclosure process</strong> want to get out from under that burdensome house and wonder if they can sell the house in foreclosure. <strong>The short answer: yes.</strong> <strong>The long answer:</strong> it’s a little more complicated, but usually you can sell your&nbsp;property prior to foreclosure. Generally, the sooner you start, the better.</p>
             <h2>Can I Sell My House in Foreclosure in Memphis? – How it works</h2>
@@ -700,6 +715,7 @@ async function main() {
             slug: "reasons-investors-buy-properties-memphis",
             createdAt: new Date("2025-02-24T10:00:00.000Z"),
             title: "7 Reasons Investors Are Swooping Up Properties in Memphis",
+            category: "General",
             content: `
             <p>Investors have been increasingly interested in Memphis properties in recent years. And while this may cause concern among some residents, there are actually several benefits to investors purchasing properties in the area. Here are seven reasons why investors are swooping up properties in Memphis and how they can help revitalize neighborhoods.</p>
             <h2>1. High Demand for Rental Properties</h2>
@@ -735,6 +751,7 @@ async function main() {
             slug: "no-stress-tricks-sell-inherited-property-memphis",
             createdAt: new Date("2025-02-24T10:00:00.000Z"),
             title: "4 No Stress Tricks for Preparing to Sell an Inherited Property in Memphis",
+            category: "General",
             content: `
             <p><em>Thinking about selling your inherited house? In this blog post, you’ll read about the 4 no stress tricks for preparing to sell an inherited property in Memphis so you can sell it easily, with no hassle.</em></p>
             <p>Selling a house can be frustrating, time-consuming, and even expensive.</p>
@@ -774,6 +791,7 @@ async function main() {
             slug: "sell-house-without-agent-memphis",
             createdAt: new Date("2025-02-24T10:00:00.000Z"),
             title: "How Do I Sell My House Without An Agent in Memphis?",
+            category: "General",
             content: `
             <p>If you’re looking to<span style="text-decoration: underline"><strong> sell your house or investment property in Memphis without using a&nbsp;</strong></span><span style="text-decoration: underline"><strong>real estate agent</strong></span>, we can help.</p>
             <p>Although we do cooperate with brokers, sometimes it’s best to avoid paying&nbsp;someone to be in the middle.</p>
@@ -820,6 +838,7 @@ async function main() {
             slug: "lending-a-helping-hand-memphis",
             createdAt: new Date("2025-02-18T10:00:00.000Z"),
             title: "Lending a Helping Hand",
+            category: "General",
             content: `  
             <p><strong>  How Spencer Buys Houses Made a Memphis Landlord’s Dream Come True</strong></p>
             <p>In the heart of Memphis, near the legendary Graceland, I met a landlord who was at their wit’s end. After countless attempts to sell through traditional means, their Whitehaven property was still on their hands. They needed someone to lend a helping hand, and that’s where Spencer Buys Houses stepped in.</p>
@@ -845,6 +864,7 @@ async function main() {
             slug: "unexpected-costs-hoarder-house-olive-branch",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "8 Unexpected Costs You’ll Face When Cleaning Out a Hoarder House in Olive Branch Mississippi",
+            category: "General",
             content: `
             <p>Cleaning out a <a href="/how-to-sell-a-hoarder-house/">hoarder house can be an overwhelming and expensive task.</a> Hoarding often involves excessive accumulation of items, which can lead to hazardous living conditions and hidden damage. If you’re dealing with a hoarder house in Olive Branch Mississippi, it’s essential to be aware of the unexpected costs you might face. In this blog, we’ll outline eight unexpected costs associated with cleaning out a hoarder house and how Spencer Buys Houses can provide a hassle-free solution by buying your house as-is.</p>
 
@@ -906,6 +926,7 @@ async function main() {
             slug: "surprising-things-owning-hoarder-house-olive-branch",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "6 Surprising Things You Need to Know About Owning a Hoarder House in Olive Branch Mississippi ",
+            category: "General",
             content: `
             <p>Owning a <a href="/how-to-sell-a-hoarder-house/" target="_blank" rel="noreferrer noopener">hoarder house in Olive Branch Mississippi</a> can present unique challenges and unexpected costs. These properties often come with significant issues that can be both financially and emotionally draining. This blog will cover six surprising things you need to know about owning a hoarder house, including potential costs, dangerous problems, and conditions under which a property may be condemned. Toward the end, we’ll explain how Spencer Buys Houses can offer a hassle-free solution by purchasing problem properties as-is.</p>
 
@@ -998,6 +1019,7 @@ async function main() {
             slug: "estate-sale-inherited-house-olive-branch",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "7 Steps to Help You Set Up an Estate Sale for an Inherited House in Olive Branch Mississippi ",
+            category: "General",
             content: `
             <p>Inheriting a house can be both a blessing and a challenge. Among the many tasks you’ll need to manage, setting up an estate sale can be one of the most daunting. An estate sale is a great way to liquidate the personal belongings of the previous owner, providing you with both a financial return and a way to clear out the house. This guide will help you navigate the process of <a href="/how-to-sell-a-hoarder-house/">organizing an estate sale for an inherited house in Olive Branch Mississippi. </a>Toward the end, we’ll also discuss how Spencer Buys Houses can assist by buying your house as-is, even if you need to leave items behind.</p>
 
@@ -1091,6 +1113,7 @@ async function main() {
             slug: "hidden-costs-inheriting-property-olive-branch",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "4 Hidden Costs You Can Face When Inheriting a Property in Olive Branch Mississippi",
+            category: "General",
             content: `
             <p>Inheriting a house comes with unexpected costs and hard decisions along with the benefit of having a new property that you own. You might feel a mix of emotions—sadness, stress over money, and even some pressure from family members. Owning an inherited home can be complicated, especially if the house has a lot of <a href="/how-to-sell-a-hoarder-house">clutter from hoarding</a> or hasn’t been kept up. Here’s a look at the costs you might face with an inherited property in Olive Branch Mississippi so you can decide what’s best for you.</p>
 

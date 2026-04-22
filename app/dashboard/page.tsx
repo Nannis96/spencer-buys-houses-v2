@@ -1,8 +1,18 @@
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { SignOutButton } from "@/components/dashboard/SignOutButton"
-import { User, Settings, LayoutDashboard, Home, ChevronRight, FileText } from "lucide-react"
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar"
+import { Home, ChevronRight, LayoutDashboard } from "lucide-react"
 import Link from "next/link"
+
+function formatDate(date: string | Date) {
+    const d = new Date(date)
+    const day = String(d.getDate()).padStart(2, "0")
+    const month = String(d.getMonth() + 1).padStart(2, "0")
+    const year = d.getFullYear()
+
+    return `${day}/${month}/${year}`
+}
 
 export default async function Dashboard() {
     const session = await auth()
@@ -18,7 +28,7 @@ export default async function Dashboard() {
             {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4 border-b border-[var(--color-primary)]/60 pb-8">
                 <div>
-                    <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
+                    <div className="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">
                         <Home className="h-4 w-4" />
                         <ChevronRight className="h-3 w-3" />
                         <span className="text-[var(--color-primary)]">Dashboard</span>
@@ -38,22 +48,7 @@ export default async function Dashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Sidebar/Quick Links */}
                 <div className="lg:col-span-1 space-y-6">
-                    <div className="bg-white/5 border border-[var(--color-primary)]/60 rounded-2xl p-6 backdrop-blur-sm">
-                        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                            <LayoutDashboard className="h-5 w-5 text-[var(--color-primary)]" />
-                            Navigation
-                        </h2>
-                        <nav className="space-y-2">
-                            <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-medium transition-colors">
-                                <LayoutDashboard className="h-5 w-5" />
-                                Overview
-                            </Link>
-                            <Link href="/dashboard/blog" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
-                                <FileText className="h-5 w-5" />
-                                Blog
-                            </Link>
-                        </nav>
-                    </div>
+                    <DashboardSidebar />
                 </div>
 
                 {/* Dashboard Overview */}
@@ -79,7 +74,7 @@ export default async function Dashboard() {
                                             <Link href={`/blog/${post.slug}`} className="text-sm font-semibold hover:underline">
                                                 {post.title}
                                             </Link>
-                                            <div className="text-xs text-gray-400">{new Date(post.createdAt).toLocaleDateString()}</div>
+                                            <div className="text-xs text-gray-400">{formatDate(post.createdAt)}</div>
                                         </div>
                                         {post.mainImage ? (
                                             <img src={post.mainImage} alt={post.title} className="w-16 h-10 object-cover rounded-md ml-4" />

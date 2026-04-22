@@ -78,8 +78,8 @@ const benefits = [
 function FeaturedTestimonial() {
     const t = (() => {
         if (!testimonials || testimonials.length === 0) return { name: "Customer", location: "", text: "", rating: 5 }
-        const idx = Math.floor(Math.random() * testimonials.length)
-        return testimonials[idx]
+        // Use deterministic selection on the server to avoid hydration mismatch.
+        return testimonials[0]
     })()
 
     return (

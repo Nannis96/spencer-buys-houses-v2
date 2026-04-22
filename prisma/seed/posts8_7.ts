@@ -15,6 +15,7 @@ async function main() {
             slug: "how-to-find-a-good-real-estate-agent-in-memphis",
             createdAt: new Date("2025-05-05T10:00:00.000Z"),
             title: "How to Find a Good Real Estate Agent in Memphis",
+            category: "General",
             content: `
             <p>Hiring a real estate agent in Memphis can be frustrating. So what are the steps on <strong>how to find a good real estate agent in Memphis</strong>?</p>
             <p>Many local large real estate brokers will spend thousands of dollars each month to&nbsp;ensure that their agents are the most visible, whether it be online, in the Yellow Pages, or by erecting giant billboards in&nbsp;the most trafficked sections of Memphis.</p>
@@ -72,6 +73,7 @@ async function main() {
             slug: "how-to-spot-a-trustworthy-house-buyer-in-memphis-7-signs",
             createdAt: new Date("2025-05-04T10:00:00.000Z"),
             title: "How to Spot a Trustworthy House Buyer in Memphis : 7 Signs to Look For",
+            category: "General",
             content: `
             <p>Selling a home in Memphis is not just about putting up a “For Sale” sign. It is about finding someone you can trust to handle the process wisely. With so many companies offering fast cash and quick closings, it can be hard to tell which ones deliver on their promises. This guide breaks down exactly what to look for when choosing a <strong><a href="https://www.spencerbuyshouses.com/blog/2025-guide-to-selling-your-memphis-home-7-simple-steps/">house buyer in Memphis</a></strong>. From 5-star reviews and local know-how to honest pricing and zero hidden fees, these seven signs will help you spot the real deal.</p>
 
@@ -164,6 +166,7 @@ async function main() {
             slug: "avoid-these-mistakes-when-selling-your-home-in-memphis-2025",
             createdAt: new Date("2025-05-01T10:00:00.000Z"),
             title: "Avoid These Mistakes When Selling Your Home in Memphis 2025",
+            category: "General",
             content: `
             <p>Selling your home in Memphis can be exciting, but it’s also easy to make costly mistakes, especially in today’s competitive 2025 real estate market. At <strong>Spencer Buys Houses</strong>, we have worked with hundreds of homeowners across Memphis, and we have seen firsthand how small missteps can delay a sale or cut into your profits.</p>
             <p>Here are the top mistakes to avoid when <strong><a href="https://www.spencerbuyshouses.com/blog/2025-guide-to-selling-your-memphis-home-7-simple-steps/">selling your home in Memphis </a></strong>and how to make sure your sale goes smoothly from start to finish.</p>
@@ -237,6 +240,7 @@ async function main() {
             slug: "what-is-a-pre-foreclosure-in-memphis",
             createdAt: new Date("2025-04-28T10:00:00.000Z"),
             title: "What is a Pre-Foreclosure in Memphis?",
+            category: "General",
             content: `
             <p>With millions of homes across the country going into foreclosure, it’s important for both buyers and mortgage holders&nbsp;to understand the process.</p>
 
@@ -287,6 +291,7 @@ async function main() {
             slug: "2025-guide-to-selling-your-memphis-home-7-simple-steps",
             createdAt: new Date("2025-04-24T10:00:00.000Z"),
             title: "2025 Guide to Selling Your Memphis Home: 7 Simple Steps",
+            category: "General",
             content: `
             <p>Selling your home in Memphis in 2025 can be easy with expert guidance and the right steps. At Spencer Buys Houses, we make selling fast, fair, and simple for homeowners in Memphis. Whether you are moving, downsizing, or need quick cash, we are here to help. Memphis home prices rose 1.8% in November 2024 to an average of $170,000, making it now a good time to sell. Follow these eight easy steps to sell your Memphis home with support from Spencer Buys Houses.</p>
 
@@ -368,6 +373,7 @@ async function main() {
             slug: "how-to-avoid-foreclosure-in-memphis",
             createdAt: new Date("2025-04-21T10:00:00.000Z"),
             title: "How to Avoid Foreclosure in Memphis",
+            category: "General",
             content: `
             <p>While the housing market is rebounding, many people in Memphis] are still struggling to make their mortgage payments.</p>
             <p>If you’re underwater on your home,&nbsp;or having trouble keeping up with your monthly mortgage payments, you could be fearful that your mortgage provider&nbsp;is going to foreclose.</p>
@@ -397,6 +403,7 @@ async function main() {
             slug: "we-buy-ugly-houses-for-cash-in-memphis",
             createdAt: new Date("2025-04-19T10:00:00.000Z"),
             title: "We Buy Ugly Houses For Cash In Memphis?",
+            category: "General",
             content: `
             <p>Selling a home in Memphis, Tennessee, can not be an easy task, especially if the property is in poor condition or you need to sell quickly. For homeowners looking to bypass the traditional real estate market, companies that buy houses for cash, such as Spencer Buys Houses, offer a convenient solution. But how does We Buy Ugly Houses pay in Memphis, and how does it compare to other options? This blog post explores the payment structure of We Buy Ugly Houses, highlights the best companies that buy houses for cash, and provides insights into selling houses for cash in Memphis.</p>
 
@@ -486,6 +493,7 @@ async function main() {
             slug: "how-to-sell-your-house-to-an-investor-in-memphis-tn",
             createdAt: new Date("2025-04-14T10:00:00.000Z"),
             title: "How to Sell Your House to an Investor in Memphis TN",
+            category: "General",
             content: `
             <p>Home ownership just isn’t what it was in the 1950’s.</p>
             <p>In the past, people would buy a home and live there for the rest of&nbsp;their lives, often passing it on to their family. Things have changed. Many first-time homebuyers are going into it with&nbsp;the attitude that they’ll sell when it’s time for a change. If you’re looking to sell your house, you could be frustrated.</p>
@@ -522,6 +530,7 @@ async function main() {
             slug: "a-seamless-closing-in-liberty-state-walls-mississippi",
             createdAt: new Date("2025-04-11T10:00:00.000Z"),
             title: "A Seamless Closing in Liberty State Walls, Mississippi, How We Helped a Family Transition Smoothly",
+            category: "General",
             content: `
             <p>At Spencer Buys Houses, we understand that selling a home at <strong>Liberty State Walls </strong>is not just about transactions; it is about people. Every house has a story, and today, we are sharing a recent success that highlights our commitment to flexibility, compassion, and efficiency.</p>
 
@@ -568,6 +577,7 @@ async function main() {
             slug: "5-essential-things-you-must-know-before-selling-an-inherited-house-in-memphis",
             createdAt: new Date("2025-04-09T10:00:00.000Z"),
             title: "5 Essential Things You MUST Know Before Selling an Inherited House in Memphis",
+            category: "General",
             content: `
             <p>Inheriting a house can be both a blessing and a burden. While it may come with cherished memories, the process of selling that property can bring unexpected challenges. If you have found yourself in this position, it’s crucial to have the right knowledge. Here are five essential things you must know before selling an inherited house in Memphis.</p>
 
@@ -643,6 +653,7 @@ async function main() {
             slug: "selling-your-home-during-a-divorce-in-memphis",
             createdAt: new Date("2025-04-07T10:00:00.000Z"),
             title: "Selling Your Home During a Divorce in Memphis",
+            category: "General",
             content: `
             <p>If you’re wondering about the ins and outs of <strong>selling your home during a divorce in Memphis</strong> TN… we’ll dive into the steps and things to look out for in this article.</p>
             <p>With over 50% of American marriages ending in divorce, many Memphis TN residents are looking or advice for s<em>elling a home&nbsp;during a divorce</em>.</p>
@@ -682,6 +693,7 @@ async function main() {
             slug: "what-happens-after-we-buy-your-home-cash-home-buyers-memphis",
             createdAt: new Date("2025-04-05T10:00:00.000Z"),
             title: "What Happens After We Buy Your Home? Cash Home Buyers in Memphis Transforming Properties",
+            category: "General",
             content: `
             <p></p>
             <p>At Spencer Buys Houses, we believe in delivering homes of exceptional quality. One of our recent projects in East Memphis, located on a quaint street in the coveted Henry Heights neighborhood, showcases our commitment to quality and transformation. No detail has been overlooked in ensuring a comfortable, stylish, and enduring living space. From premium materials to contemporary design elements, this home exemplifies quality and modern living for <strong>Memphis house buyers</strong>.</p>
@@ -764,6 +776,7 @@ async function main() {
             slug: "cairn-cove-cordova-story-of-renewal",
             createdAt: new Date("2025-04-03T10:00:00.000Z"),
             title: "Cairn Cove, Cordova: A Story of Renewal and Community Connection",
+            category: "General",
             content: `
             <p><br>We’re thrilled to share the start of a new project right here in Cordova! Our team at Spencer Buys Houses has recently acquired a property on Cairn Cove, and we’re eager to begin the transformation. This isn’t just about renovating a house; it’s about revitalizing a piece of our community.</p>
             <p>This project began with a homeowner who needed a helping hand. He was facing a challenging situation with overdue taxes, and we were able to provide a fast, reliable solution. As local Memphis house buyers, we understand the importance of providing compassionate support during difficult times.</p>
@@ -796,6 +809,7 @@ async function main() {
             slug: "saving-homes-restoring-hope-memphis-38109",
             createdAt: new Date("2025-04-03T10:00:00.000Z"),
             title: "Saving Homes, Restoring Hope: A Story from Memphis’ 38109 ZIP Code",
+            category: "General",
             content: `
             <p>Have you ever walked into a home that’s been pushed to its limits—trashed, crumbling, and in desperate need of costly repairs? This was the reality for a homeowner in <a href="https://www.spencerbuyshouses.com/blog/8-easy-ways-to-sell-your-memphis-house-fast/">Memphis</a>’ 38109 ZIP Code, right here on Shelby Drive. Their property was days away from being lost to a tax sale, threatening not just their home but their financial future. Today, we’re sharing how we stepped in to rewrite their story—and how Spencer Shadrach and the team at SpencerBuysHouses.com can help you, too.</p>
 
@@ -851,6 +865,7 @@ async function main() {
             slug: "how-to-stay-in-my-home-after-foreclosure-in-memphis",
             createdAt: new Date("2025-03-31T10:00:00.000Z"),
             title: "How to Stay in My Home After Foreclosure in Memphis",
+            category: "General",
             content: `
             <h3>A recent study estimates that 47% of foreclosed properties are still occupied.</h3>
             <p>When you first see that stat you may be surprised… but we’re not.</p>
@@ -891,6 +906,7 @@ async function main() {
             slug: "memphis-real-estate-market-2025-selling-for-cash",
             createdAt: new Date("2025-05-06T10:00:00.000Z"),
             title: "Memphis Real Estate Market in 2025: Why Selling for Cash Just Makes Sense",
+            category: "General",
             content: `
             <p>Let’s cut to the chase, <a href="https://www.spencerbuyshouses.com/blog/avoid-these-mistakes-when-selling-your-home-in-memphis-2025/">selling a house in memphis</a> 2025 is not like it used to be. If you have been keeping an eye on the Memphis market, you have probably noticed things feel… off.</p>
             <p>Maybe your home’s been sitting longer than expected. Maybe you are watching neighbors drop their prices. Maybe you’re just overwhelmed by the whole idea of listing, staging, negotiating, and everything that comes with it.</p>
@@ -980,6 +996,7 @@ async function main() {
             slug: "we-buy-houses-in-denver-3429-denver-success-story",
             createdAt: new Date("2025-05-09T10:00:00.000Z"),
             title: "We Buy Houses in Denver – 3429 Denver Success Story With Spencer Buys Houses",
+            category: "General",
             content: `
             <p>How we help an owner in 3429 Denver, Memphis. At Spencer buys houses, we know that life can throw unexpected challenges in your way. Recently, we helped a lady who wanted to sell their house in Denver that she no longer wanted. The house was located at <strong>3429 Denver, Memphis</strong>, and was acquired by her through a divorce agreement. Instead of dealing with the stress of fixing it and trying to sell it through a realtor, she sought us in search of help.</p>
 
@@ -1016,6 +1033,7 @@ async function main() {
             slug: "state-of-the-market-for-buyers-in-memphis-tn",
             createdAt: new Date("2025-05-12T10:00:00.000Z"),
             title: "The State of the Market for Buyers in Memphis TN",
+            category: "General",
             content: `
             <p>Is it still a buyer’s market today in Memphis? As experts in the Memphis real estate market, we get asked this question a lot.</p>
             <p>The answer isn’t as simple as yes or no.</p>
@@ -1049,6 +1067,7 @@ async function main() {
             slug: "sell-your-house-fast-in-memphis-how-is-it-here",
             createdAt: new Date("2025-05-12T10:00:00.000Z"),
             title: "Sell Your House Fast in Memphis – How Is It Here?",
+            category: "General",
             content: `
             <p>Selling a house can feel like a full-time job. Between finding the right buyer, dealing with appearances, and waiting for offers, it is easy to be overwhelmed. But if you want to <strong><a href="https://www.spencerbuyshouses.com/" target="_blank" rel="noreferrer noopener">sell your house fast in Memphis</a></strong>, then you will not have to take a long road. Companies that <strong>we buy houses in Memphis</strong> offer a quicker, stress-free way to sell.<p>Selling a house can feel like a full-time job. Between finding the right buyer, dealing with appearances, and waiting for offers, it is easy to be overwhelmed. But if you want to <strong><a href="https://www.spencerbuyshouses.com/" target="_blank" rel="noreferrer noopener">sell your house fast in Memphis</a></strong>, then you will not have to take a long road. Companies that <strong>we buy houses in Memphis</strong> offer a quicker, stress-free way to sell.</p></p>
 
@@ -1112,6 +1131,7 @@ async function main() {
             slug: "what-steps-are-required-to-sell-moms-old-house",
             createdAt: new Date("2025-05-16T10:00:00.000Z"),
             title: "What Steps Are Required to Sell Mom’s Old House?",
+            category: "General",
             content: `
             <p>Selling your mom’s old house isn’t just about getting a deal done, it’s like packing up a lifetime of memories and trying not to trip over the emotions. When we sold my mom’s place after she moved to a senior community, it felt like part treasure hunt, part paperwork nightmare. But I learned a ton along the way, and I’m here to share the steps that’ll get you from “Where do I start?” to “Sold!” without losing your sanity. Grab a coffee, and let’s walk through this together.</p>
 
@@ -1210,6 +1230,7 @@ async function main() {
             slug: "",
             createdAt: new Date("2025-05-19T10:00:00.000Z"),
             title: "Help, I’m Behind in My Mortgage Payments in Memphis – Spencer Buys Houses",
+            category: "General",
             content: `
             <p>When you fall <em><strong>behind on your mortgage payments</strong></em> on your Memphis home, it can feel like you’re drowning in debt.</p>
             <p>Even if you’re able to make your monthly payment, catching up on a past due&nbsp;balance can be an overwhelming challenge.</p>
@@ -1249,6 +1270,7 @@ async function main() {
             slug: "",
             createdAt: new Date("2025-05-23T10:00:00.000Z"),
             title: "Why More Memphis Homeowners Are Selling to Spencer Buys Houses — Not Real Estate Agents",
+            category: "General",
             content: `
             <p>If you’ve tried<a href="https://www.spencerbuyshouses.com/blog/sell-your-house-fast-in-memphis/"> selling a house in Memphis</a> lately, you already know: it’s not easy.</p>
             <p>With inflation driving up costs, the housing market shifting, and repairs getting expensive, many <strong>Memphis homeowners</strong> feel stuck, especially if the property is inherited, outdated, or in need of major work.</p>
@@ -1311,6 +1333,7 @@ async function main() {
             slug: "",
             createdAt: new Date("2025-05-26T10:00:00.000Z"),
             title: "Foreclosure notice of default in TN– what is it?",
+            category: "General",
             content: `
             <h2>If you’ve gotten a foreclosure notice of default and want to know what the heck is going on, keep reading.</h2>
             <p>Basically, a foreclosure notice of default is a document that has to be filed by a lender to start the process of foreclosure.</p>
@@ -1348,6 +1371,7 @@ async function main() {
             slug: "",
             createdAt: new Date("2025-05-27T10:00:00.000Z"),
             title: "Sell Your Memphis Home As-Is in 2025: What You Need to Know About Memphis Real Estate Market",
+            category: "General",
             content: `
             <p>If your home in <strong>Memphis,</strong> TN,<strong> real estate</strong> needs repairs or upgrades you can’t afford, or just don’t want to deal with, then you’re not alone. Many homeowners in today’s <strong>Memphis real estate market</strong> are skipping costly renovations and choosing to <strong>sell their homes as-is</strong>. In fact, in the <strong><a href="https://www.spencerbuyshouses.com/blog/memphis-real-estate-market-sell-for-cash-2025/">Memphis Real Estate Market in 2025</a></strong>, selling without repairs makes more sense than ever.</p>
             <p>This guide explains what it means to <strong>sell as-is</strong>, the benefits, when it’s the right move, and how you can do it quickly and stress-free.</p>
@@ -1462,6 +1486,7 @@ async function main() {
             slug: "",
             createdAt: new Date("2025-06-02T10:00:00.000Z"),
             title: "I Inherited a House, What To Do? – Should I Rent or Sell in Memphis?",
+            category: "General",
             content: `
             <p>First, we’re so sorry for your loss. This can be a very challenging time for many reasons, and dealing with property ownership is tough at the best of times.</p>
             <p>You’re thinking, “I inherited a house, what to do with this house?” Should I rent it? Should I sell it? &nbsp;How should I sell it?</p>
@@ -1512,6 +1537,7 @@ async function main() {
             slug: "we-closed-a-new-deal-in-memphis-heres-how-it-went-down",
             createdAt: new Date("2025-06-04T10:00:00.000Z"),
             title: "We Closed a New Deal in Memphis — Here’s How It Went Down",
+            category: "General",
             content: `
             <h2>A Smooth Transaction in a Shifting Market</h2>
             <p>So, we just closed on a new deal here in Memphis, and honestly? It felt like a breath of fresh air. The whole process was smooth and straightforward, and exactly why I love what I do.</p>
@@ -1577,6 +1603,7 @@ async function main() {
             slug: "why-wont-my-house-sell-in-memphis",
             createdAt: new Date("2025-06-09T10:00:00.000Z"),
             title: "Why Won’t My House Sell In Memphis?",
+            category: "General",
             content: `
             <h2>You’re trying to sell a Memphis TN house&nbsp;that just won’t sell?</h2>
             <p>And yet – the news says the real estate market is heating up. The media is practically shouting again about multiple offers, high demand, and record-setting prices.</p>
@@ -1614,6 +1641,7 @@ async function main() {
             slug: "ultimate-guide-sell-your-house-by-owner-mississippi",
             createdAt: new Date("2025-06-09T10:00:00.000Z"),
             title: "Ultimate Guide: How to Sell Your House by Owner in Mississippi and Maximize Your Profit!",
+            category: "General",
             content: `
             <p>Sell your house by owner in Mississippi can feel like a big step—it’s exciting, a little scary, and full of possibilities. If you’re thinking about selling your home by yourself in Mississippi, you’re in the right place. Choosing the For Sale By Owner (FSBO) route means you can save money by skipping real estate agent fees and staying in control of the whole process. Yes, it takes some effort, but the payoff can be worth it.<br>I’ll walk you through each step—from getting your home ready to make it to the final closing—so you can sell smart and feel confident doing it.<br>Ready to get started? Let’s go!</p>
 
@@ -1690,6 +1718,7 @@ async function main() {
             slug: "what-cash-buyers-pay-memphis-2025",
             createdAt: new Date("2025-06-17T10:00:00.000Z"),
             title: "What Cash Buyers Home Buyers in Memphis Really Pay: Know the Real Deal in 2025",
+            category: "General",
             content: `
             <p>Selling your house in Memphis? If you’re thinking about selling it for cash, you might be wondering, “What’s a fair price?”</p>
             <p>This article will walk you through <strong>how much cash buyers typically offer</strong>, how they come up with those numbers, and what that means for <strong>homeowners like you in 2025</strong>.</p>
@@ -1779,6 +1808,7 @@ async function main() {
             slug: "we-just-closed-on-a-house-in-fairway-gardens-cordova",
             createdAt: new Date("2025-06-25T10:00:00.000Z"),
             title: "We Just Closed on a House in Fairway Gardens, Cordova!",
+            category: "General",
             content: `
             <p>Good news! We just successfully bought another house, this time in <strong>Fairway Gardens, Cordova, TN</strong>. The sale is officially “Closed,” and everyone is happy!</p>
             <p>This is a great example of what we do at <strong>Spencer Buys Houses.com</strong>. The homeowner reached out to us because they needed to sell their house without all the usual hassle. And guess what? That’s exactly what we delivered!</p>

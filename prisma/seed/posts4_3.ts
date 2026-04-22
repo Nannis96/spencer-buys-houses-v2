@@ -15,6 +15,7 @@ async function main() {
             slug: "closed-hassle-free-as-is-cash-purchase-whitehaven",
             createdAt: new Date("2025-09-25T10:00:00.000Z"),
             title: "7 Factors That Affect Your Home’s Quick Cash Offer in 2025",
+            category: "General",
             content: `
             <p>Selling your home doesn’t have to drag on for months. In today’s fast-paced real estate world, more homeowners are turning to <a href="https://www.spencerbuyshouses.com/get-a-cash-offer-today/"><strong><mark class="has-inline-color has-c-brand-primary-color">quick cash offer</mark></strong></a> for home buyers for a straightforward way to get fast cash for houses. Whether you’re facing a job relocation, divorce, or just want to skip the hassle of showings and repairs, understanding what influences a cash offer can make all the difference. As we head into 2025, with home values still climbing in many markets and interest rates stabilizing around 6-7%, cash deals are booming—offering speed and certainty amid uncertainty. But what exactly sways that offer amount? In this post, we’ll break down the key players, backed by real estate insights, so you can set realistic expectations and boost your bottom line.</p>
 
@@ -110,6 +111,7 @@ async function main() {
             slug: "case-study-sell-your-bartlett-house-ruskin-rd-bartlett-tn-38134",
             createdAt: new Date("2025-09-26T10:00:00.000Z"),
             title: "Case Study: Sell Your Bartlett House for Cash – Ruskin Rd, Bartlett, TN 38134",
+            category: "General",
             content: `
             <p>At Spencer Buys Houses, we know that selling your home doesn’t have to be stressful or slow. If you want to <strong><a href="https://www.spencerbuyshouses.com/tennessee/bartlett/"><mark class="has-inline-color has-c-brand-primary-color">sell your Bartellet house for cash</mark></a></strong>, we can make the process fast, simple, and trouble-free. A recent success story includes Bartlett, a property on Ruskin Road in TN38134. The owner of the house wanted a quick, direct sale without the need for repairs or waiting months for a buyer. We stepped in to provide a fast cash offer and a smooth closing process.</p>
 
@@ -173,6 +175,7 @@ async function main() {
             slug: "reasons-why-local-homeowners-prefer-spencer-buys-houses",
             createdAt: new Date("2025-09-30T10:00:00.000Z"),
             title: "Reasons Why Local Homeowners Have Been Increasingly Preferring – Spencer Buys Houses",
+            category: "General",
             content: `
             <p>A home transaction is often considered unbearably stressful by most homeowners. Whether you are putting the house in the open market, can organize repair, which may require, to show it to affect potential buyers, or coordinate ideas with potential parties, there is no question, there is no question whether there is much more with each stage of the path. Over the years, I have been honored for working with hundreds of household owners within my own community and, through this complex process, as much as possible. But in fact,<a href="https://www.spencerbuyshouses.com/"><mark class="has-inline-color has-c-brand-primary-color"> <strong>Spencer Buys Houses</strong></mark></a> separate from all the countless options that populate the market.</p>
 
@@ -249,6 +252,7 @@ async function main() {
             slug: "selling-inherited-house-memphis-tn-why-homeowners-trust-spencer-buys-houses",
             createdAt: new Date("2025-10-01T10:00:00.000Z"),
             title: "Selling an Inherited House in Memphis, Tennessee: Why Homeowners Trust Spencer Buys Houses",
+            category: "General",
             content: `
             <p>If you have recently inherited a house in Memphis, Tennessee, then you are probably wondering: <strong>“What’s the best way to <a href="https://www.spencerbuyshouses.com/blog/reasons-why-local-homeowners-have-been-increasingly-preferring-spencer-buys-houses/"><mark class="has-inline-color has-c-brand-primary-color">sell an inherited house in Memphis</mark></a> or near me?”</strong> Dealing with an inherited home can be stressful; there is legal and emotional involvement, and frequently emotional memories, and often a house that needs repairs or cleaning. That’s where Spencer Buys Houses comes in.</p>
             <p>Having been a Memphis company purchasing <strong>inherited houses for decades</strong>, Spencer earned a reputation for being the local expert buyer who will make the process hassle-free, fair, and straightforward.</p>
@@ -356,6 +360,7 @@ async function main() {
             slug: "should-i-sell-my-rental-property-memphis-as-is",
             createdAt: new Date("2025-10-01T10:00:00.000Z"),
             title: "Should I Sell My Rental Property in Memphis As-Is?",
+            category: "General",
             content: `
             <p>If you are a Memphis, Tennessee, landlord, you might be asking yourself if the time is right to get out of your rental property. Perhaps you have experienced turnovers with tenants, expensive repairs, or an unoccupied building for too long. Owning a rental can be a great investment, but it can also come with headaches, and sometimes the best financial decision is to cash out. <br><br>At Spencer Buys Houses, we help landlords just like you sell their <a href="http://spencerbuyshouses.com"><strong><mark class="has-inline-color has-c-brand-primary-color">rental property in Memphis</mark></strong>,</a> As-Is, easily, and without the stress of the traditional market.</p>
 
@@ -422,6 +427,7 @@ async function main() {
             slug: "selling-memphis-home-junk-and-all",
             createdAt: new Date("2025-10-06T10:00:00.000Z"),
             title: "Selling Your Memphis Home Just Got Easier — Junk and All",
+            category: "General",
             content: `
             <p><strong><a href="https://www.spencerbuyshouses.com/how-we-buy-houses/">Selling your Memphis home</a></strong> with unnecessary furniture, appliances, or contents, you don’t need to vacate the entire property before you sell it. Spencer Buys Houses now buys homes for any condition — yes, even homes still cluttered with junk. This accommodation makes selling less stressful and less burdensome for homeowners lacking the funds, energy, or time for a full cleaning out.</p>
 
@@ -466,6 +472,7 @@ async function main() {
             slug: "case-study-recent-house-closed-avalon-memphis-tn-38107",
             createdAt: new Date("2025-10-10T10:00:00.000Z"),
             title: "Case Study: Recent House Closed Avalon, Memphis, TN 38107 by Spencer Buys Houses",
+            category: "General",
             content: `
             <h2><strong>Property Details:</strong> Closed Avalon, Memphis, TN </h2>
             <ul>
@@ -510,6 +517,7 @@ async function main() {
             slug: "case-study-inherited-house-brown-bark-memphis-tn",
             createdAt: new Date("2025-10-14T10:00:00.000Z"),
             title: "5 Things You Should Know About Companies Who Buy Houses for Cash",
+            category: "General",
             content: `
             <p>If you are thinking about <strong>selling your house fast</strong> <strong>in Memphis, </strong>chances are you have come across the idea of <strong><a href="https://spencerbuyshouses.com/"><mark class="has-inline-color has-c-brand-primary-color">companies that buy houses for cash</mark></a></strong>. And honestly? It sounds pretty appealing, closing quickly and skipping many of the usual headaches. But before you decide to go that route, it’s a good idea to understand what these companies are really about. So, let me share five key points to consider about them, which make them different from the traditional home-selling process.</p>
 
@@ -559,6 +567,7 @@ async function main() {
             slug: "case-study-we-just-bought-another-memphis-home-evergreen-district",
             createdAt: new Date("2025-10-16T10:00:00.000Z"),
             title: "Case Study: Inherited House on Brown Bark in Memphis, TN – A Perfect Example of What Spencer Buys Houses Does Best",
+            category: "General",
             content: `
             <p>This past week, we received a call from an inheriting property owner who possessed a property at Brown Bark Drive in Memphis, Tennessee, 38115 zip code, right off the interstate in an older, established neighborhood. The owner required a fast, stress-free sale, so we were pleased to intervene. When we visited the <strong>inherited house </strong>on the same day, we saw what so many inherited homes are, overgrown trees, years’ worth of deferred maintenance, and a house in need of total renovation. The building was a substantial brick structure, but it had clearly been sitting vacant for some time. The back door was open, and no one was at the property. We didn’t put things off and took pictures of the property and started the process so we could make an offer right away.</p>
 
@@ -597,6 +606,7 @@ async function main() {
             slug: "breathing-new-life-inherited-home-morningview",
             createdAt: new Date("2025-10-21T10:00:00.000Z"),
             title: "Case Study: We Just Bought Another Memphis Home — Evergreen District!",
+            category: "General",
             content: `
             <h2><strong>We Bought Another Memphis Home in Evergreen District| Spencer Buys Houses | Fast Cash Offer in 10 Days</strong></h2>
             <p>Hey fam, Spencer Shadrach here with <strong>Spencer Buys Houses</strong> 👋<br>We just picked up another beautiful property right here in the <strong>Evergreen District of Memphis, Tennessee</strong> — one of the most charming and historic areas in town.</p>
@@ -617,6 +627,7 @@ async function main() {
             slug: "case-study-selling-inherited-home-memphis-sarahs-story",
             createdAt: new Date("2025-10-22T10:00:00.000Z"),
             title: "Breathing New Life into an Inherited Home on Morningview",
+            category: "General",
             content: `
             <p>When it comes to <a href="https://www.spencerbuyshouses.com/blog/case-study-inherited-home-brown-bark-memphis-tn/"><mark class="has-inline-color has-c-brand-primary-color"><strong>inherited homes</strong> </mark></a>in Memphis, sometimes the best solution is a fast, no-fuss sale. That’s exactly what happened with the property at 2917 Morningview, a charming brick three-bedroom, two-bath home with a big yard that needed a little love.</p>
 
@@ -644,6 +655,7 @@ async function main() {
             slug: "we-buy-houses-tennessee-spencer-buys-houses",
             createdAt: new Date("2025-10-25T10:00:00.000Z"),
             title: "Case Study: Selling an Inherited Home in Memphis: Sarah’s Story",
+            category: "General",
             content: `
             <p>At Spencer Buys Houses, we recently had the pleasure of helping Sarah, a homeowner who wants to <strong><a href="https://www.spencerbuyshouses.com/blog/case-study-inherited-home-brown-bark-memphis-tn/"><mark class="has-inline-color has-c-brand-primary-color">sell an Inherited Home in Memphis</a></strong> who found herself in a situation many of us can relate to. She inherited a three-bedroom, two-bathroom home at 3122 that came with a carport and a cozy den. The home was about 1,500 square feet and had definitely seen better days.</p>
             <p></p>
@@ -662,6 +674,7 @@ async function main() {
             slug: "property-visit-tackling-major-fixer-up-hayne-street",
             createdAt: new Date("2025-10-25T10:00:00.000Z"),
             title: "Berclair Home Buyer Guide: What Can Disqualify You, the 30/30/3 Rule, and Tips for Success",
+            category: "General",
             content: `
             <h2><strong>Introduction</strong></h2>
             <p>Thinking about buying your first home in <strong>Berclair</strong>? You are looking in the right neighborhood. Berclair has a little bit of everything: affordable homes, quiet streets, and a friendly community that makes you feel right at home. It’s no surprise that so many first-time buyers start their homeownership journey here. Before you begin your house hunt, it’s smart to know what might delay your mortgage approval, what the <strong>30/30/3 rule</strong> means, and how to make your buying process as smooth as possible. Here is the <strong><a href="https://www.spencerbuyshouses.com/tennessee/berclair/"><mark class="has-inline-color has-c-brand-primary-color">Berclair Home Buyer</mark></a> </strong>Guide with tips for success.<br></p>
@@ -754,6 +767,7 @@ async function main() {
             slug: "beyond-the-offer-what-happens-after-spencer-buys-houses",
             createdAt: new Date("2025-10-29T10:00:00.000Z"),
             title: "We Buy Houses In Tennessee – Spencer Buys Houses",
+            category: "General",
             content: `
             <h2>Introduction</h2>
             <p>If you need to sell your house quickly, <strong><a href="https://www.spencerbuyshouses.com/tennessee/germantown/"><mark class="has-inline-color has-c-brand-primary-color">we buy houses in Tennessee </mark></a></strong>for cash. No repairs, no showings, no waiting long. If you inherited a property, are dealing with a tough situation, or simply need a quick sale, we’ll make you a fair, no-hassle cash offer and let you close on your terms.<br></p>
@@ -809,6 +823,7 @@ async function main() {
             slug: "home-sellers-guide-understanding-memphis-real-estate-market-2025",
             createdAt: new Date("2025-10-29T10:00:00.000Z"),
             title: "Property Visit: Tackling a Major Fixer-Upper: Our Visit to an Inherited House on Hayne Street",
+            category: "General",
             content: `
             <p>We were contacted about an <strong><a href="https://www.spencerbuyshouses.com/blog/case-study-inherited-home-brown-bark-memphis-tn/"><mark class="has-inline-color has-c-brand-primary-color">inherited house</mark></a> </strong>property on Hayne Street in Memphis — a three-bedroom, two-bath brick house that needed serious work. Inside, rooms were cluttered with debris, sections of the ceiling were gone, and much of the interior required a full gut renovation. This was not a quick flip candidate; it needed a complete rebuild from the inside out.</p>
             <h2>On-site assessment matters</h2>
@@ -857,6 +872,7 @@ async function main() {
             slug: "6-best-companies-that-buy-houses-for-cash-memphis",
             createdAt: new Date("2025-10-30T10:00:00.000Z"),
             title: "Beyond the Offer: What Happens After Spencer Buys Houses Buys Your Memphis Home?",
+            category: "General",
             content: `
             <h2>Introduction </h2>
             <p>Selling your Memphis home to a local cash buyer like Spencer Buys Houses can feel fast — sometimes too fast. Many sellers wonder what actually happens after they accept an offer. This post walks through the entire process, step by step, so you know timelines, responsibilities, and what to expect at closing. Clear expectations reduce stress and build trust — and that’s exactly what Spencer Buys Houses aims to deliver.</p>
@@ -957,6 +973,7 @@ async function main() {
             slug: "how-to-stop-foreclosure-memphis-tn",
             createdAt: new Date("2025-11-02T10:00:00.000Z"),
             title: "Home Seller’s Guide: Understanding the Memphis Real Estate Market in 2025",
+            category: "General",
             content: `
             <h2>Introduction </h2>
             <p>Selling a home in Memphis in 2025 can feel overwhelming when you hear terms like “escrow” or “earnest money.” This glossary breaks down common real estate terms in clear, everyday language, so you can feel confident throughout the selling process. Ultimately, locate a location-focused FAQ and brief notes about local cash-buy companies, such as Spencer Buys Houses, and other options sellers may consider.</p>
@@ -1064,6 +1081,7 @@ async function main() {
             slug: "sell-olive-branch-home-for-cash",
             createdAt: new Date("2025-11-08T10:00:00.000Z"),
             title: "Meet the Spencer Buys Houses Team: Your Local Memphis Property Experts",
+            category: "General",
             content: `
             <p>When it’s time to sell a home, the people you work with matter. At <a href="https://www.spencerbuyshouses.com/"><mark class="has-inline-color has-c-brand-primary-color"><strong>Spencer Buys Houses</strong>,</mark></a> our strength is the team—Memphis neighbors who know the market, care about their community, and move quickly to make selling simple. Below are the people you’ll meet when you choose us, each with a personal connection to Memphis and a shared commitment to helping sellers find the best outcome for their situation.</p>
 
@@ -1115,6 +1133,7 @@ async function main() {
             slug: "case-study-just-closed-morningview-dr-memphis-tn-38118",
             createdAt: new Date("2025-11-10T10:00:00.000Z"),
             title: "How to Stop Foreclosure in Memphis, TN: A Straightforward Guide",
+            category: "General",
             content: `
             <p><br>If you’re reading this, you’re likely feeling anxious, overwhelmed, and pressed for time. That’s normal. Foreclosure is a stressful process, but acting quickly and understanding your options can make a significant difference. Below is a clear, human guide, written plainly, to help you avoid foreclosure in Memphis, TN, understand the costs of selling a house traditionally, and identify high-value opportunities that many homeowners miss.</p>
 
@@ -1183,6 +1202,7 @@ async function main() {
             slug: "case-study-4577-summer-creek-memphis-tn-38141",
             createdAt: new Date("2025-11-11T10:00:00.000Z"),
             title: "6 Best Companies That Buy Houses for Cash in Memphis",
+            category: "General",
             content: `
             <p>From the downtown historic district to the quieter suburbs of the Memphis housing market keeps changing. But one thing stays constant: houses for cash buyers remain a quick route to sell. In 2024, roughly 29–30% of U.S. home sales were all‑cash — Spencer sees similar activity. Some cash buyers will offer near market value, while others make much lower bids.</p>
             <p>Finding a fair cash offer is like landing the right chord in a local jam—some offers sing, others miss the mark. The smartest move? List on cash-buyer marketplaces so your home is visible to both local investors and national iBuyers at once.</p>
@@ -1362,6 +1382,7 @@ async function main() {
             slug: "case-study-3720-earls-court-rd",
             createdAt: new Date("2025-11-12T10:00:00.000Z"),
             title: "Sell Your Olive Branch Home for Cash | Spencer Buys Houses",
+            category: "General",
             content: `
             <p>If you are in Olive Branch and need to<strong> </strong><a href="https://www.spencerbuyshouses.com/mississippi/olive-branch/"><mark class="has-inline-color has-c-brand-primary-color"><strong>sell your Olive Branch home for cash</strong> </mark></a>quickly, Spencer Buy Houses can make it easy. They buy houses in any condition for cash, so you don’t have to worry about repairs, showings, or paying a realtor. </p>
 
@@ -1410,6 +1431,7 @@ async function main() {
             slug: "unlocking-opportunities-how-we-buy-houses-cordova",
             createdAt: new Date("2025-11-17T10:00:00.000Z"),
             title: "Case Study: Just Closed Another Deal |Morningview Dr, Memphis, TN 38118",
+            category: "General",
             content: `
             <h2>Property Overview:</h2>
             <ul>
@@ -1453,6 +1475,7 @@ async function main() {
             slug: "estate-sale-divorce-facing-foreclosure-how-cash-home-buyers-help-memphis",
             createdAt: new Date("2025-11-20T10:00:00.000Z"),
             title: "Case Study: Just Closed |4577 Summer Creek Memphis TN, 38141 (Hickory Hill)",
+            category: "General",
             content: `
             <p>If you have ever stared at a house and thought, “I just need this off my plate,” you’ll relate to this one. 4577 Summer Creek, Memphis, TN, was a 3-bed, 2-bath SFR in Hickory Hill, built in 1989, a snug 1,103 sq ft. The seller had inherited it and lived out of state. Every month it sat vacant felt like a slow leak—insurance, utilities, lawn care, and that nagging feeling that something might go wrong when you’re not there.</p>
             <p>He found us after searching “<strong><a href="https://www.spencerbuyshouses.com/"><mark class="has-inline-color has-c-brand-primary-color">we buy houses in Memphis</mark></a></strong>” and asked the question we hear all the time: “Can you make this easy?” Short answer—yes.</p>
@@ -1494,6 +1517,7 @@ async function main() {
             slug: "what-repairs-to-skip-selling-to-cash-buyer-memphis",
             createdAt: new Date("2025-11-23T10:00:00.000Z"),
             title: "Case Study| Closed Deal 3720 Earls Court Rd | A Real-Life Look Inside the Process",
+            category: "General",
             content: `
             <p>Every house has a story, but some homes carry a little more weight than others. That was the case with the property at <strong>3720 Earls Court Rd</strong> in the Oakhaven neighborhood of Memphis. It’s a simple single-family home built back in 1957 — 3 bedrooms, 1.5 baths, and about 1,369 square feet—nothing fancy, but definitely the kind of place that once held a lot of memories.</p>
             <p>You could hear the mixture of stress and relief in their voice when the owner reached out to us. They did not want to go the route of listing the house, dealing with the repairs, or waiting around for months. The property had basically turned into a burden, the kind that sits on your shoulders day after day until someone finally says, <strong>“Let me help you with that.”</strong></p>
@@ -1524,6 +1548,7 @@ async function main() {
             slug: "where-to-find-memphis-house-buyers-quick-sale",
             createdAt: new Date("2025-12-01T10:00:00.000Z"),
             title: "Unlocking Opportunities: How We Buy Houses in Cordova Can Transform Your Real Estate Journey",
+            category: "General",
             content: `
             <p>That’s why more and more neighbors are turning to <strong>“We Buy Houses”</strong> companies. It’s exactly what it sounds like: a real buyer with real cash who purchases your house directly from you, usually as-is, and closes fast.</p>
 
@@ -1592,6 +1617,7 @@ async function main() {
             slug: "memphis-housing-market-trends-2025-2026-what-sellers-need-to-know",
             createdAt: new Date("2025-12-05T10:00:00.000Z"),
             title: "Estate Sale? Divorce? Facing Foreclosure? Here’s How Cash Home Buyers Can Help in Memphis",
+            category: "General",
             content: `
             <p>Life can change fast — sometimes in ways we don’t expect. If you’re dealing with a difficult situation like an <strong>estate sale</strong>, a <strong>divorce</strong>, or a <strong>foreclosure</strong> in Memphis, selling a property through the traditional real estate process can feel overwhelming, slow, and expensive.<br>That’s why many homeowners today are choosing <strong><a href="https://www.spencerbuyshouses.com/blog/6-best-companies-that-buy-houses-for-cash-in-memphis/"><mark class="has-inline-color has-c-brand-primary-color">cash home buyers</mark></a> in Memphis</strong> as a faster and easier solution.</p>
 
@@ -1660,6 +1686,7 @@ async function main() {
             slug: "what-repairs-to-skip-selling-to-cash-buyer-memphis",
             createdAt: new Date("2025-12-07T10:00:00.000Z"),
             title: "What Repairs Should You Skip If You’re Selling to a Cash Buyer in Memphis?",
+            category: "General",
             content: `
             <p>Hey there, Memphis folks! If you’re staring at your house thinking about all those little (and big) fixes it needs before you can sell, I’ve got some good news for you. Selling to a cash buyer changes the game completely. No more stressing over paint chips or leaky faucets. Companies like Spencer Buys Houses specialize in buying homes just as they are, so you can skip a ton of repairs and still get a fair cash offer. In this post, we’ll break it down simply – what repairs you can ditch when selling your house fast in Memphis to cash home buyers. We’ll weave in some tips on selling my house fast, Memphis style, and why going with we buy houses Memphis pros makes sense in today’s market.</p>
             <p>Let’s face it, the <strong><a href="https://www.spencerbuyshouses.com/blog/home-sellers-guide-understanding-the-memphis-real-estate-market-in-2025/"><mark class="has-inline-color has-c-brand-primary-color">Memphis housing market in 2025</mark></a></strong> is buzzing with quick sales and cash offers. With rising demand for fast home buys, keywords like “sell house fast Memphis” and “cash home buyers Memphis” are trending big time because people want speed without the hassle. If you’re in a pinch – maybe facing foreclosure, relocation, or just tired of upkeep – selling as-is to a cash buyer is a smart move.</p>
@@ -1726,6 +1753,7 @@ async function main() {
             slug: "where-to-find-memphis-house-buyers-quick-sale",
             createdAt: new Date("2025-12-10T10:00:00.000Z"),
             title: "Where to Find Memphis House Buyers for a Quick Sale",
+            category: "General",
             content: `
             <p>You have a house that needs to be sold yesterday. Maybe it’s an inheritance that’s costing you money in taxes, maybe you’re facing a job transfer, or perhaps the repairs have just piled up higher than your bank account can handle. You stare at that “For Sale” sign in the yard, and it just stares back. If you are trying to move fast, the traditional real estate roller coaster—staging, open houses, waiting on bank loans—is agonizing. The good news is that Memphis is one of the country’s busiest markets for investors. You just have to know where to find them. <br>Here is the complete guide to finding a <strong><a href="https://www.spencerbuyshouses.com/"><mark class="has-inline-color has-c-brand-primary-color">Memphis home buyer</mark></a></strong>.</p>
 
@@ -1787,6 +1815,7 @@ async function main() {
             slug: "memphis-housing-market-trends-2025-2026",
             createdAt: new Date("2025-12-13T10:00:00.000Z"),
             title: "Memphis Housing Market Trends 2025–2026: What Sellers Need to Know (Local Data, Price Forecasts & Market Insights)",
+            category: "General",
             content: `
             <h2>Introduction</h2>
             <p>If you’re thinking about <strong>selling your home in 2025</strong> or early 2026, understanding <strong>Memphis Housing Market Trends</strong> can make a real difference. The local real estate market is changing, and sellers who keep an eye on prices, buyer demand, and available inventory are often able to move faster and make more confident decisions. This report breaks down <strong>Memphis housing prices, inventory levels, buyer demand, neighborhood insights, economic factors</strong>, and forecasting so you can clearly see what’s happening in the market—without the confusing jargon.</p>
@@ -1979,6 +2008,7 @@ async function main() {
             slug: "closed-hassle-free-as-is-cash-purchase-whitehaven-deerland-st",
             createdAt: new Date("2025-12-16T10:00:00.000Z"),
             title: "CLOSED NEW PROPERTY: Hassle-Free “As-Is” Cash Purchase in Whitehaven",
+            category: "General",
             content: `
             <h2>Introduction: </h2>
             <p><strong>Project:</strong> The Deerland Street Acquisition <strong>Location:</strong> Memphis, TN (Whitehaven – Zip Code 38109.</p>

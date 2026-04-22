@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import prisma from '@/lib/prisma';
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar"
 import { LayoutDashboard, FileText } from "lucide-react"
 
 export default async function AdminBlogPage() {
@@ -42,22 +43,7 @@ export default async function AdminBlogPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Sidebar/Quick Links */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white/5 border border-[var(--color-primary)]/60 rounded-2xl p-6 backdrop-blur-sm">
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <LayoutDashboard className="h-5 w-5 text-[var(--color-primary)]" />
-              Navigation
-            </h2>
-            <nav className="space-y-2">
-              <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
-                <LayoutDashboard className="h-5 w-5" />
-                Dashboard
-              </Link>
-              <Link href="/dashboard/blog" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-medium transition-colors">
-                <FileText className="h-5 w-5" />
-                Blog
-              </Link>
-            </nav>
-          </div>
+          <DashboardSidebar />
         </div>
 
         {/* ── Post List ── */}
