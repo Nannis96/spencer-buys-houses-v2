@@ -1,0 +1,9 @@
+# Weekly rotation (every Friday 23:59) - uncomment for production
+# 59 23 * * 5 cd /home/nanis/Projects/Job/Spencer/spencer-buys-houses-v2 && /home/nanis/.nvm/versions/node/v24.13.1/bin/node /home/nanis/Projects/Job/Spencer/spencer-buys-houses-v2/scripts/regenerate_tokens.js >> /home/nanis/Projects/Job/Spencer/spencer-buys-houses-v2/logs/regenerate_tokens.log 2>&1
+
+# Testing: run every 5 minutes (active)
+*/5 * * * * cd /home/nanis/Projects/Job/Spencer/spencer-buys-houses-v2 && /home/nanis/.nvm/versions/node/v24.13.1/bin/node /home/nanis/Projects/Job/Spencer/spencer-buys-houses-v2/scripts/regenerate_tokens.js >> /home/nanis/Projects/Job/Spencer/spencer-buys-houses-v2/logs/regenerate_tokens.log 2>&1
+
+# Notes:
+# - The first line is commented and intended for production weekly rotation (Friday 23:59).
+# - The second (active) entry runs the rotation every 5 minutes for testing; remove or comment it for production.

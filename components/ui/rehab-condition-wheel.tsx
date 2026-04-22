@@ -161,8 +161,8 @@ export function RehabConditionWheel({ value, onChange }: RehabConditionWheelProp
         <div className="w-full max-w-4xl mx-auto">
             {/* Header */}
             <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-400">Tell us about the condition of your home</h2>
-                <p className="text-sm text-[var(--color-text-white)]/70 uppercase tracking-wide">Click a slice to explore each level</p>
+                <h2 className="text-lg font-bold text-gray-400">If you were to list/sell your home today, what work would it need to sell it immediately.</h2>
+                <p className="text-xs text-[var(--color-text-white)]/70 uppercase tracking-wide">As a rule of thumb, if something hasn't been updated for 15-20 years please include that in the cost to replace/repair inside the home.</p>
             </div>
 
             {/* Main content - Wheel and List */}

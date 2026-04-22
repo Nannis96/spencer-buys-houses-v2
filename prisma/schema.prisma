@@ -32,6 +32,7 @@ model User {
     role          Role      @default(USER)
     accounts      Account[]
     sessions      Session[]
+    apiTokens     ApiToken[]
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
 }
@@ -115,4 +116,19 @@ model PostImage {
 
     postId String
     post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+// API Tokens for external integrations
+model ApiToken {
+    id        String   @id @default(cuid())
+    userId    String
+    token     String   @unique
+    audience  String   @default("external")
+    revoked   Boolean  @default(false)
+    createdAt DateTime @default(now())
+    expiresAt DateTime
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }

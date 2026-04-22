@@ -599,6 +599,67 @@ export function PropertyInfoForm() {
                     </span>
                 </p>
 
+                {/* ── Street View + Map ── */}
+                {(localAddress || localCity) && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                        {/* Fachada / Street View */}
+                        <div className="flex flex-col gap-1.5">
+                            <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
+                                Street View
+                            </p>
+                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full flex items-center justify-center bg-[#0b0f1a]">
+                                {isGeocoding ? (
+                                    <div className="text-xs text-gray-400">Resolving address for Street View…</div>
+                                ) : geoLatLng ? (
+                                    <iframe
+                                        title="Street view of property"
+                                        width="100%"
+                                        height="100%"
+                                        loading="lazy"
+                                        allowFullScreen
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        src={`https://www.google.com/maps/embed/v1/streetview?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&location=${geoLatLng.lat},${geoLatLng.lng}&fov=80&heading=0&pitch=0`}
+                                    />
+                                ) : (
+                                    <div className="p-3 text-center">
+                                        <div className="text-xs text-gray-400 mb-1">Street View unavailable for this address.</div>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const addr = [localAddress, localCity, localState, localZipCode].filter(Boolean).join(", ")
+                                                if (addr) geocodeAddress(addr)
+                                            }}
+                                            className="text-xs px-3 py-1 rounded bg-[#f59e0b] text-[#0f0f23]"
+                                        >
+                                            Try again
+                                        </button>
+                                        {geocodeError && <div className="text-xs text-red-400 mt-2">{geocodeError}</div>}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Mapa */}
+                        <div className="flex flex-col gap-1.5">
+                            <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
+                                Location
+                            </p>
+                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full">
+                                <iframe
+                                    title="Property location on map"
+                                    width="100%"
+                                    height="100%"
+                                    loading="lazy"
+                                    allowFullScreen
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${geoLatLng ? `${geoLatLng.lat},${geoLatLng.lng}` : encodeURIComponent([localAddress, localCity, localState, localZipCode].filter(Boolean).join(", "))
+                                        }&zoom=15`}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* ── Summary of previous step (inline editable) ── */}
                 <div className="rounded-lg bg-white/[0.03] border border-[var(--color-primary)]/60 p-3 mb-6">
                     <div className="flex items-start justify-between mb-2">
@@ -685,67 +746,6 @@ export function PropertyInfoForm() {
                         </>
                     )}
                 </div>
-
-                {/* ── Street View + Map ── */}
-                {(localAddress || localCity) && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                        {/* Fachada / Street View */}
-                        <div className="flex flex-col gap-1.5">
-                            <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
-                                Street View
-                            </p>
-                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full flex items-center justify-center bg-[#0b0f1a]">
-                                {isGeocoding ? (
-                                    <div className="text-xs text-gray-400">Resolving address for Street View…</div>
-                                ) : geoLatLng ? (
-                                    <iframe
-                                        title="Street view of property"
-                                        width="100%"
-                                        height="100%"
-                                        loading="lazy"
-                                        allowFullScreen
-                                        referrerPolicy="no-referrer-when-downgrade"
-                                        src={`https://www.google.com/maps/embed/v1/streetview?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&location=${geoLatLng.lat},${geoLatLng.lng}&fov=80&heading=0&pitch=0`}
-                                    />
-                                ) : (
-                                    <div className="p-3 text-center">
-                                        <div className="text-xs text-gray-400 mb-1">Street View unavailable for this address.</div>
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                const addr = [localAddress, localCity, localState, localZipCode].filter(Boolean).join(", ")
-                                                if (addr) geocodeAddress(addr)
-                                            }}
-                                            className="text-xs px-3 py-1 rounded bg-[#f59e0b] text-[#0f0f23]"
-                                        >
-                                            Try again
-                                        </button>
-                                        {geocodeError && <div className="text-xs text-red-400 mt-2">{geocodeError}</div>}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Mapa */}
-                        <div className="flex flex-col gap-1.5">
-                            <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
-                                Location
-                            </p>
-                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full">
-                                <iframe
-                                    title="Property location on map"
-                                    width="100%"
-                                    height="100%"
-                                    loading="lazy"
-                                    allowFullScreen
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${geoLatLng ? `${geoLatLng.lat},${geoLatLng.lng}` : encodeURIComponent([localAddress, localCity, localState, localZipCode].filter(Boolean).join(", "))
-                                        }&zoom=15`}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                )}
 
                 {/* Prefill loading indicator */}
                 {isPrefilling && (

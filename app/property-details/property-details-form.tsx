@@ -205,20 +205,103 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
         <div className="text-left">
             {sellerName ? (
                 <div className="mb-3 text-center">
-                    <div className="inline-flex items-baseline justify-center gap-4 flex-wrap">
+                    <div className="flex flex-col items-center gap-2">
                         <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold text-white leading-tight">{sellerName}</p>
-                        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-400 leading-tight">Weigh your options</p>
+                        <p className="text-lg sm:text-lg md:text-xl lg:text-2xl font-semibold text-gray-400 leading-tight">You will receive your offer via email shortly</p>
                     </div>
                 </div>
             ) : (
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 text-center">Your 3 Options — Estimated</p>
             )}
 
+            {/* Video wrapper */}
+            <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/60 ring-1 ring-[var(--color-primary-dark)]/20 mb-8">
+                {/* Subtle glow behind frame */}
+                <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -inset-px rounded-2xl bg-[var(--color-primary-dark)]/5 blur-xl"
+                />
+
+                {/* 16/9 aspect ratio container */}
+                <div className="relative w-full aspect-video">
+                    <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src="https://www.youtube.com/embed/eFa-zwpW6s0?rel=0&modestbranding=1&color=white&autoplay=1&mute=1"
+                        title="How Spencer Buys Houses — Sell Your Memphis Home Fast for Cash"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        loading="lazy"
+                    />
+                </div>
+            </div>
+
+            {/* ── Booking Widgets ── */}
+            <div className="flex flex-col gap-6">
+                {/* Section heading */}
+                <div className="text-center">
+                    <p className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-widest mb-1">Next Step</p>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-white leading-tight mb-2">
+                        Schedule Your Appointment
+                    </h3>
+                    <p className="text-sm text-gray-400 max-w-md mx-auto leading-relaxed">
+                        Choose how you'd like to connect with us — book an{" "}
+                        <span className="text-white font-semibold">in-person visit</span> so Spencer's team can walk your home, or schedule a{" "}
+                        <span className="text-white font-semibold">phone call</span> at a time that works for you.
+                    </p>
+                </div>
+
+                {/* In-Person Appointment */}
+                <div className="rounded-xl border border-white/10 overflow-hidden">
+                    <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.04] border-b border-white/10">
+                        <span className="text-lg" aria-hidden>🏠</span>
+                        <div>
+                            <p className="text-sm font-bold text-white">In-Person Appointment</p>
+                            <p className="text-xs text-gray-400">Schedule a visit — Spencer's team will walk your home</p>
+                        </div>
+                    </div>
+                    <div className="-mx-0">
+                        <iframe
+                            src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
+                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
+                            scrolling="no"
+                            id="P1vgAP9PKCyszvGvim17_1775688153226"
+                        />
+                        <script
+                            src="https://api.leadconnectorhq.com/js/form_embed.js"
+                            type="text/javascript"
+                        />
+                    </div>
+                </div>
+
+                {/* Phone Call */}
+                <div className="rounded-xl border border-white/10 overflow-hidden">
+                    <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.04] border-b border-white/10">
+                        <span className="text-lg" aria-hidden>📞</span>
+                        <div>
+                            <p className="text-sm font-bold text-white">Phone Call</p>
+                            <p className="text-xs text-gray-400">Prefer to talk? Book a call at a time that works for you</p>
+                        </div>
+                    </div>
+                    <div className="-mx-0">
+                        <iframe
+                            src="https://api.leadconnectorhq.com/widget/bookings/spencerbuyhouses9hx574"
+                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
+                            scrolling="no"
+                            id="spencerbuyhouses9hx574_1775688153226"
+                        />
+                        <script
+                            src="https://api.leadconnectorhq.com/js/form_embed.js"
+                            type="text/javascript"
+                        />
+                    </div>
+                </div>
+            </div>
+
             {/* ── Street View + Map ── */}
-            {(localAddress || localCity) && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                    {/* Fachada / Street View */}
-                    <div className="flex flex-col gap-1.5">
+            {/* {(localAddress || localCity) && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6"> */}
+            {/* Fachada / Street View */}
+            {/* <div className="flex flex-col gap-1.5">
                         <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
                             Street View
                         </p>
@@ -252,10 +335,10 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                                 </div>
                             )}
                         </div>
-                    </div>
+                    </div> */}
 
-                    {/* Map */}
-                    <div className="flex flex-col gap-1.5">
+            {/* Map */}
+            {/* <div className="flex flex-col gap-1.5">
                         <p className="text-xs font-semibold text-[var(--color-primary)] uppercase tracking-wider">
                             Location
                         </p>
@@ -274,8 +357,8 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                             />
                         </div>
                     </div>
-                </div>
-            )}
+                </div> */}
+            {/* )} */}
 
             {/* Offers grid: show three equal-width, equal-height cards aligned */}
             {/* <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 items-stretch">
@@ -876,8 +959,8 @@ export function PropertyDetailsForm() {
                     </div>
 
                     {/* Secondary: confirmation copy and security badge */}
-                    <h3 className="text-xl md:text-2xl font-semibold text-white mt-6 mb-2">You're All Set!</h3>
-                    <p className="text-gray-300 mb-4 leading-relaxed max-w-md mx-auto text-sm">
+                    {/* <h3 className="text-xl md:text-2xl font-semibold text-white mt-6 mb-2">You're All Set!</h3> */}
+                    <p className="text-gray-300 mt-6 mb-4 leading-relaxed max-w-md mx-auto text-sm">
                         We've received your information — one of our home buying specialists will reach out soon with details and next steps.
                     </p>
                     <div className="inline-flex items-center gap-2 rounded-full bg-[var(--color-primary)]/10 px-4 py-2 text-sm font-medium text-[var(--color-primary)]">
@@ -1013,30 +1096,6 @@ export function PropertyDetailsForm() {
                             />
                         </div>
                         <FieldError message={errors.email?.message} />
-                    </div>
-
-                    {/* ── Appointment ── */}
-                    {/* <AppointmentPicker
-                        selectedAgent={appointmentAgent}
-                        selectedDate={appointmentDate}
-                        selectedTime={appointmentTime}
-                        onAgentChange={setAppointmentAgent}
-                        onDateChange={setAppointmentDate}
-                        onTimeChange={setAppointmentTime}
-                    /> */}
-
-                    {/* ── Booking Widget ── */}
-                    <div className="-mx-4 sm:-mx-6 md:-mx-8 lg:-mx-10">
-                        <iframe
-                            src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
-                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
-                            scrolling="no"
-                            id="P1vgAP9PKCyszvGvim17_1775688153226"
-                        />
-                        <script
-                            src="https://api.leadconnectorhq.com/js/form_embed.js"
-                            type="text/javascript"
-                        />
                     </div>
 
                     {/* ───────── CONSENT ───────── */}
