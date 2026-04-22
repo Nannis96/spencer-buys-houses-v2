@@ -15,6 +15,7 @@ async function main() {
             slug: "we-just-closed-on-a-house-in-fairway-gardens-cordova",
             createdAt: new Date("2025-06-25T10:00:00.000Z"),
             title: "We Just Closed on a House in Fairway Gardens, Cordova!",
+            category: "General",
             content: `
             <p>Good news! We just successfully bought another house, this time in <strong>Fairway Gardens, Cordova, TN</strong>. The sale is officially “Closed,” and everyone is happy!</p>
             <p>This is a great example of what we do at <strong>Spencer Buys Houses.com</strong>. The homeowner reached out to us because they needed to sell their house without all the usual hassle. And guess what? That’s exactly what we delivered!</p>
@@ -55,6 +56,7 @@ async function main() {
             slug: "the-as-is-advantage-cash-home-buyers-memphis",
             createdAt: new Date("2025-07-03T10:00:00.000Z"),
             title: "The “As-Is” Advantage: Why Cash Home Buyers in Memphis Love Distressed Properties",
+            category: "General",
             content: `
             <p></p>
 
@@ -134,6 +136,7 @@ async function main() {
             slug: "lakeside-gem-water-point-memphis",
             createdAt: new Date("2025-07-05T10:00:00.000Z"),
             title: "A Lakeside Gem in Memphis: Our Latest Home Purchase on Water Point, Memphis",
+            category: "General",
             content: `
             <p>Hey there, Memphis friends! It’s Spencer here, and I’ve got some exciting news from the team at Spencer Buys Houses. We’ve just added a new property to our portfolio — and let me tell you, this one’s got something extra special.</p>
             <p>We’ve just closed on a beautiful home right on the water, located in the 38141 zip code, and I’m excited to share it with you.</p>
@@ -184,6 +187,7 @@ async function main() {
             slug: "why-memphis-real-estate-smart-move-2025",
             createdAt: new Date("2025-07-08T10:00:00.000Z"),
             title: "Why Memphis Real Estate Is a Smart Move in 2025",
+            category: "General",
             content: `
             <p>If you’re thinking about diving into <a href="https://www.spencerbuyshouses.com/blog/memphis-real-estate-market-sell-for-cash-2025/">Memphis real estate</a>, Memphis might be your next best move. With affordable home prices, steady appreciation, and strong rental demand, it’s a market that checks all the right boxes—whether you’re a seasoned investor or just starting.</p>
 
@@ -267,6 +271,7 @@ async function main() {
             slug: "as-is-success-story-closed-2139-curry-eve-memphis",
             createdAt: new Date("2025-07-10T10:00:00.000Z"),
             title: "A Real “As-Is” Success Story! Closed 2139 Curry Eve, Memphis",
+            category: "General",
             content: `
             <p>Hey everyone, we are excited to share a recent closing that just took place right here in <strong>Memphis, at 2139 Curry Eve</strong>. This one was a bit different, and it truly highlights how we love to help folks in our community.</p>
             <p>When we first got the call about this house, we knew it was going to be a project. From the outside in, the place had seen better days – lots of things were broken, damaged, you name it. It was a true “as-is” situation, and the homeowner needed a straightforward solution.</p>
@@ -286,6 +291,7 @@ async function main() {
             slug: "spencer-buys-houses-review-list-with-clever-2025",
             createdAt: new Date("2025-07-16T10:00:00.000Z"),
             title: "Spencer Buys Houses: Our Review on List With Clever 2025",
+            category: "General",
             content: `
             <p>Selling a home in Memphis can be overwhelming, especially if you want to sell quickly without making repairs or incurring additional costs.  <strong>Spencer Buys Houses</strong>, a local cash home buyer, and here is our review on <strong><a href="https://listwithclever.com/cash-home-buyers/reviews/spencer-buys-houses/">ListWithClever</a></strong>, a website people trust for honest company reviews. If you’re a Memphis homeowner looking to sell quickly, here’s why people trust us, and it is worth checking out.</p>
 
@@ -310,6 +316,7 @@ async function main() {
             slug: "another-home-under-contract-whitehaven-memphis",
             createdAt: new Date("2025-07-17T10:00:00.000Z"),
             title: "Another Home Under Contract in Whitehaven, Memphis!",
+            category: "General",
             content: `
             <p>At <em>Spencer Buys Houses</em>, we’re excited to share another success story. <strong>We’ve recently put a home under contract in the Whitehaven neighborhood of Memphis!</strong></p>
             <p>This particular property belonged to an out-of-town landlord who was looking for a fast and fair way to sell. After reaching out to our team, we were able to provide a <strong>no-hassle, all-cash offer</strong> that met their expectations. Because we already own a home on the same street, we knew the area well and were able to <strong>move quickly and confidently</strong>.</p>
@@ -333,6 +340,7 @@ async function main() {
             slug: "top-10-we-buy-houses-memphis-companies-2025",
             createdAt: new Date("2025-07-22T10:00:00.000Z"),
             title: "Top 10 “We Buy Houses In Memphis for Cash” Companies in Memphis",
+            category: "General",
             content: `
             <p>If you want to sell your home fast in Memphis—without repairs, real estate agents, or waiting months—these cash buyers should be on your radar:</p>
 
@@ -405,6 +413,7 @@ async function main() {
             slug: "we-just-bought-a-house-on-flamingo-drive-memphis",
             createdAt: new Date("2025-07-24T10:00:00.000Z"),
             title: "We Just Bought a House on Flamingo Drive in Memphis!",
+            category: "General",
             content: `
             <p>Hey everyone! Spencer Shadrach here from <em>Spencer Buys Houses</em>. I’m excited to share that we just purchased another great property right here in Memphis, Tennessee—this time on <strong>Flamingo Drive</strong>.</p>
 
@@ -457,6 +466,7 @@ async function main() {
             slug: "new-property-under-contract-curtis-st",
             createdAt: new Date("2025-08-04T10:00:00.000Z"),
             title: "New Property Under Contract on Curtis St",
+            category: "General",
             content: `
             <p><strong>Memphis, TN</strong> – We’re excited to announce another success story: a beautiful home on Curtis St is now officially <strong>property under contract</strong>!</p>
             <p>At <strong>Spencer Buys Houses</strong>, we help homeowners in Memphis and surrounding communities move forward swiftly—no fuss, no pressure, and no costly repairs. Here’s what made this deal shine:</p>
@@ -502,6 +512,7 @@ async function main() {
             slug: "our-latest-memphis-project-glimpse-into-our-new-house",
             createdAt: new Date("2025-08-05T10:00:00.000Z"),
             title: "Our Latest Memphis Project: A Glimpse into Our New House",
+            category: "General",
             content: `
             <p>Spencer Shadd here, and I’m at a property we just purchased in Memphis. This house had 12 heirs and took us 60 days to close. We’ve got a locksmith on the way to let us in, but I want to give you a sneak peek at the kind of houses we buy here.<br></p>
 
@@ -526,6 +537,7 @@ async function main() {
             slug: "smooth-closing-water-point-cove-west-memphis-38141",
             createdAt: new Date("2025-08-07T10:00:00.000Z"),
             title: "A smooth closing in Memphis: Water Point Cove West in Memphis, TN 38141!",
+            category: "General",
             content: `
             <p></p>
             <p>We are excited to announce the successful completion of a new fair property on <strong>Water Point Cove West in Memphis, TN </strong>38141! The final stages of sales went smoothly, and we are eager to add this house to our portfolio.</p>
@@ -546,6 +558,7 @@ async function main() {
             slug: "top-memphis-neighborhoods-2025-best-places-to-buy",
             createdAt: new Date("2025-08-13T10:00:00.000Z"),
             title: "Top Memphis Neighborhoods for 2025: Best Places to Buy a Home In Memphis",
+            category: "General",
             content: `
             <p>Memphis, Tennessee, is a hot spot for home buyers in 2025. It’s affordable, has a lively vibe, and is growing rapidly, making it a top pick for&nbsp;<strong>Memphis home buyers</strong>. You can find homes here for about $180,000 to $205,000—way less than the national average of $427,000. That’s great news for first-time buyers or anyone wanting to invest. With home prices expected to rise 3% to 10% this year, selecting the right neighborhood is crucial for securing a good deal and building wealth. Whether you’re thinking about buying or looking to <strong>sell your house in Memphis</strong>, here are the top neighborhoods to check out in 2025.</p>
 
@@ -620,6 +633,7 @@ async function main() {
             slug: "is-memphis-a-good-place-to-buy-real-estate",
             createdAt: new Date("2025-08-17T10:00:00.000Z"),
             title: "Is Memphis a Good Place to Buy Real Estate?",
+            category: "General",
             content: `
             <p>When most people think of Memphis, they picture the sound of blues drifting down Beale Street, the smell of slow-cooked barbecue, or Elvis’s Graceland. But beyond the music and food, there’s something else drawing attention—real estate. If you’re weighing whether to buy a home or an investment property here, Memphis might surprise you in a good way. Let’s examine the benefits, challenges, and what drives the market.</p>
 
@@ -677,6 +691,7 @@ async function main() {
             slug: "closed-deal-1585-davis-st-memphis",
             createdAt: new Date("2025-08-18T10:00:00.000Z"),
             title: "Closed Deal: 1585 Davis St, Memphis, TN",
+            category: "General",
             content: `
             <p>We’re excited to share some good news—another successful home sale in Memphis! This time, we closed on a property at <strong>1585 Davis St, Memphis, TN.</strong></p>
             <p></p>
@@ -697,6 +712,7 @@ async function main() {
             slug: "closed-allen-drive-horn-lake-ms",
             createdAt: new Date("2025-08-21T10:00:00.000Z"),
             title: "Closed on Allen Drive, Horn Lake, MS |Spencer Buys Houses",
+            category: "General",
             content: `
             <p>We recently closed on a lovely home on <strong>Allen Drive in Horn Lake, MS</strong>, a single-family house built back in <strong>1948</strong>. With its long history and unique charm, this home was ready for a fresh start with a new owner.</p>
 
@@ -722,6 +738,7 @@ async function main() {
             slug: "buyers-market-emerges-in-memphis-inventory-up-prices-cooling",
             createdAt: new Date("2025-08-22T10:00:00.000Z"),
             title: "Buyer’s Market Emerges in Memphis: Inventory Up, Prices Cooling",
+            category: "General",
             content: `
             <p>The housing market in Memphis is starting to look very different in 2025. For the past few years, sellers have had all the power. Homes were in short supply, prices were climbing, and buyers often found themselves rushing into bidding wars to secure a house.</p>
             <p>But now it is not so. More homes are coming on the market, prices are starting to rise, and buyers finally have some breathing room. In simple <span style="margin: 0px;padding: 0px">terms, Memphis is moving towards a&nbsp;<strong>buyer’s market&nbsp;</strong>– and this shift is</span> opening new doors for those&nbsp;waiting for the right time to buy.</p>
@@ -779,6 +796,7 @@ async function main() {
             slug: "closed-garnett-rd-memphis-tn-38117",
             createdAt: new Date("2025-08-25T10:00:00.000Z"),
             title: "Closed on Garnett Rd, Memphis, TN 38117",
+            category: "General",
             content: `
             <p>Spencer Buys Houses is happy to announce another successful home closing in East Memphis! This time, we purchased a cozy single-family home on <strong>Garnett Rd, Memphis, TN 38117.</strong> The homeowner was ready to sell, and we were glad to provide a quick and hassle-free solution.</p>
 
@@ -828,6 +846,7 @@ async function main() {
             slug: "closed-yokley-ave-memphis-38109-another-home-sold",
             createdAt: new Date("2025-08-27T10:00:00.000Z"),
             title: "Closed Yokley Ave in Memphis 38109 – Another Home Sold!",
+            category: "General",
             content: `
             <p>At Spencer Buys Houses, we’re excited to share that we just closed on another property on <strong>Yokley Ave in Memphis</strong>. This one was a <strong>solid brick home</strong>, and just like so many other houses we purchase, it was bought <strong>as-is</strong> with no repairs or extra stress for the seller.</p>
             <p>Buying and selling homes should feel easy, and that’s exactly what we aim to do. Every time we close on a property, it’s another reminder that Memphis homeowners deserve a simple, fair, and stress-free way to sell.</p>
@@ -872,6 +891,7 @@ async function main() {
             slug: "capital-gains-tax-memphis-selling-moms-old-house-benefits",
             createdAt: new Date("2025-08-28T10:00:00.000Z"),
             title: "Capital Gains Tax in Memphis: How Selling Your Mom’s Old House Can Benefit You",
+            category: "General",
             content: `
             <p>Selling your mom’s old house in Memphis can feel overwhelming. Along with the memories tied to the home, you also need to understand how the <strong>capital gains tax in Memphis</strong> works. The profit you make from the sale—known as capital gains—can affect how much money you actually keep. In this guide, we’ll explain how selling an inherited or old family home impacts your taxes, and how you can make the most of the sale.</p>
             <p>Let’s go step by step and make this simple.</p>
@@ -964,6 +984,7 @@ async function main() {
             slug: "case-study-colonial-acres-landlord-sold-fast",
             createdAt: new Date("2025-08-28T10:00:00.000Z"),
             title: "Case Study: Colonial Acres Landlord Sold Fast, No Realtor Needed",
+            category: "General",
             content: `
             <p>A landlord in <strong>Colonial Acres, Memphis,</strong> recently needed to <strong>sell their house fast Colonial Acres</strong> without the stress of repairs, listing with a realtor, or waiting months for the right buyer. The property had some wear and tear, and the owner didn’t want to deal with repairs, listing with a realtor, or waiting months for the right buyer.</p>
             <p>After a little back-and-forth on price based on the condition and timeline, we came to an agreement that worked for both sides. From there, my team handled all the paperwork, and we were able to get the deal closed in just a matter of days — not weeks or months.</p>
@@ -991,6 +1012,7 @@ async function main() {
             slug: "case-study-sold-home-299-e-powell-rd-collierville-tn-38017",
             createdAt: new Date("2025-08-28T10:00:00.000Z"),
             title: "Case Study: Sold Home at 299 E Powell Rd, Collierville TN 38017",
+            category: "General",
             content: `
             <p>A few weeks ago, we received a call from a homeowner in <span style="margin: 0px;padding: 0px">Collierville, who wanted to sell their property at<strong> 299 E Powell Rd, Collierville, TN </strong>38017<strong>,</strong></span> regarding their assets. It was a beautiful house with 4 bedrooms, 2.5 baths, and over 2,300 square feet. Built back in 1987, the house had a lot of character, but like many old houses, it needed to be updated.</p>
             <p>The owner had reached a point where they did not want to repair or deal with the problem of listing with a realtor. Their goal was simple: Sell the house quickly, get a proper proposal, and proceed without the months of uncertainty.</p>
@@ -1017,6 +1039,7 @@ async function main() {
             slug: "relocation-guide-memphis-home-prices-2025-real-estate-trends",
             createdAt: new Date("2025-09-02T10:00:00.000Z"),
             title: "Relocation Guide: Memphis Home Prices 2025 & Real Estate Trends",
+            category: "General",
             content: `
             <h3>Introduction</h3>
             <p>Thinking about moving to Memphis? You’re not alone—plenty of people are making the jump. Some are coming here for jobs at FedEx or St. Jude, others want more space for their money, and a few want to be closer to Beale Street and the BBQ scene. <br><br>The good news is that the <strong>Memphis real estate market</strong> is still one of the most affordable among major U.S. cities. Whether you’re buying, investing, or selling a house in Memphis, knowing today’s prices helps you make smart decisions.</p>
@@ -1124,6 +1147,7 @@ async function main() {
             slug: "case-study-sell-my-house-fast-east-memphis-5020-henry-heights-dr",
             createdAt: new Date("2025-09-05T10:00:00.000Z"),
             title: "Case Study: Sell My House Fast Success Story in East Memphis – 5020 Henry Heights Dr",
+            category: "General",
             content: `
             <p>At <strong>Spencer Buys Houses</strong>, we love sharing real results, and this one is special. This is a true <strong>sell my house fast success story</strong> from East Memphis, where we helped the owners of <strong>5020 Henry Heights Dr.</strong> sell quickly and stress-free. We are trusted <strong><a href="https://www.spencerbuyshouses.com/"><mark class="has-inline-color has-c-brand-primary-color">cash home buyers in Memphis</mark></a></strong>, offering straightforward, fast solutions for individuals in various situations.</p>
             <p>Recently, we <span style="margin: 0px;padding: 0px">successfully closed a sale at&nbsp;<strong>5020 Henry Heights Dr.</strong>&nbsp;in East Memphis, which is a</span> perfect example of<a href="https://www.spencerbuyshouses.com/how-we-buy-houses/"><mark class="has-inline-color has-c-brand-primary-color"> <strong>how our process works</strong></mark></a>. The owners wanted a smooth, hassle-free transaction, and we delivered. Let’s take a quick tour of this stunning property and then show you how we can do the same for you.</p>
@@ -1177,6 +1201,7 @@ async function main() {
             slug: "case-study-closing-inherited-home-title-issues-1709-s-parkway",
             createdAt: new Date("2025-09-12T10:00:00.000Z"),
             title: "Case Study: Closing an Inherited Home with Title Issues in Memphis (1709 S Parkway, TN 38106)",
+            category: "General",
             content: `
             <p>At Spencer Buys Houses, we achieved one significant victory: helping a family in need<strong> <a href="https://www.spencerbuyshouses.com/"><mark class="has-inline-color has-c-brand-primary-color">sell their house in Memphis TN</mark></a></strong>, located at 1709S Parkway, 38106. It was buried under the old liens and under a complicated title. But the seller kept his faith in us from day one, and after months of digging through legal tables, difficult negotiations, and cleaning those stubborn obstacles, we finally did so. Such stories remind us why we do what we do – to refresh impossible circumstances, one has to face the headache of property that have <strong>inherited home with title issues</strong>. This case study shows how we help homeowners <strong><a href="https://www.spencerbuyshouses.com/blog/3-financial-options-you-can-pursue-when-selling-an-inherited-property-in-memphis/"><mark class="has-inline-color has-c-brand-primary-color">sell inherited homes in Memphis</mark></a> </strong>with complex title issues.</p>
             <p></p>
@@ -1215,6 +1240,7 @@ async function main() {
             slug: "why-memphis-hidden-gem-homebuyers-2025-affordable-living",
             createdAt: new Date("2025-09-12T10:00:00.000Z"),
             title: "Why Memphis is a Hidden Gem for Homebuyers in 2025: Affordable Living Unlocked",
+            category: "General",
             content: `
             <p>If you’re daydreaming about owning a home in a city with soul, Memphis might just be your spot in 2025. Think vibrant music, smoky barbecue, and homes that won’t drain your life savings. The real estate market here is shifting, giving buyers a bit more power than sellers for the first time in years. I’ve been digging through the latest stats and local chatter to bring you a down-to-earth guide on why Memphis is a steal, what first-time buyers need to watch out for, and how sellers can shine in this market. Whether you’re saving for your first place or trying to sell a fixer-upper, here’s the real deal.</p>
 
@@ -1271,6 +1297,7 @@ async function main() {
             slug: "case-study-successful-home-purchase-3464-buchanan-ave-memphis",
             createdAt: new Date("2025-09-12T10:00:00.000Z"),
             title: "Case Study: Successful Home Purchase at 3464 Buchanan AveAve, Memphis, TN",
+            category: "General",
             content: `
             <p>Every house has a story, and now it’s time for a new one at <strong>3464 Buchanan Ave in Memphis, TN</strong>. Built in 1945, this cozy 816 sq. ft. home with two bedrooms and one bathroom has a lot of history. We’re excited to give it a second life and turn it into a place a family will love.<br></p>
 
@@ -1295,6 +1322,7 @@ async function main() {
             slug: "memphis-fast-sell-guide-cash-offer-in-7-days",
             createdAt: new Date("2025-09-18T10:00:00.000Z"),
             title: "Memphis Fast Sell Guide: How to Get a Cash Offer in 7 Days",
+            category: "General",
             content: `
             <p>Hello, I am Spencer, and I established Spencer Buys Houses because I saw a simple, sharp way to sell houses in Memphis. I grew up here, and I know this market inside and out. My goal is to make the sales process as stress-free as possible, especially when you need to move quickly. We are not just investors; We are your neighbors, committed to fair deals and a smooth experience.</p>
             <p>If you’re thinking about <strong>selling your home fast in Memphis</strong>, you are probably hoping for a fair<a href="https://www.spencerbuyshouses.com/get-a-cash-offer-today/"><mark class="has-inline-color has-c-brand-primary-color"> <strong>cash offer in 7 days</strong></mark></a><strong>.</strong> It’s possible when you know what to expect and how to prepare. This guide walks you through the process, from contact to closing, with clear steps and real-life context.</p>
@@ -1391,6 +1419,7 @@ async function main() {
             slug: "the-ultimate-steps-to-sell-inherited-homes-in-memphis",
             createdAt: new Date("2025-09-21T10:00:00.000Z"),
             title: "The Ultimate Steps to Sell Inherited Homes in Memphis",
+            category: "General",
             content: `
             <p><strong>Selling <a href="https://www.spencerbuyshouses.com/blog/case-studies-inherited-home-with-title-issues-memphis-1709-s-parkway/"><mark class="has-inline-color has-c-brand-primary-color">inherited homes in Memphis</mark></a> </strong>sounds like a blessing, but it usually comes with a long to-do list. There are legal papers to sort, bills to pay, and sometimes managing family disagreements. At the top of it, you still have to find out what to do with the property.</p>
             <p>If you have recently<strong>inherited a house in Memphis</strong> and want to sell it, then here is a simple step-by-step guide to help you move forward without getting stuck.</p>

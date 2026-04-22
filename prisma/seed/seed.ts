@@ -26,7 +26,23 @@ async function main() {
         },
     });
 
-    console.log({ admin });
+    // Segundo usuario de ejemplo
+    const userEmail = "user@example.com";
+    const userPassword = "userpass123"; // Cambia esto en producción
+    const userHashed = await bcrypt.hash(userPassword, 10);
+
+    const user = await prisma.user.upsert({
+        where: { email: userEmail },
+        update: {},
+        create: {
+            email: userEmail,
+            name: "Test User",
+            password: userHashed,
+            role: "USER",
+        },
+    });
+
+    console.log({ admin, user });
 }
 
 main()

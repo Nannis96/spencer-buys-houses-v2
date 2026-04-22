@@ -1,3 +1,6 @@
+"use client"
+
+import { useMemo } from "react"
 import { Star, Quote, ArrowRight, } from "lucide-react"
 
 export const testimonials = [
@@ -116,15 +119,15 @@ interface TestimonialsSectionProps {
 }
 
 export function TestimonialsSection({ count }: TestimonialsSectionProps = {}) {
-    // Make a shuffled copy (Fisher–Yates) so order varies each render
-    const shuffled = (() => {
+    // Make a shuffled copy (Fisher–Yates) on the client only
+    const shuffled = useMemo(() => {
         const arr = [...testimonials]
         for (let i = arr.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
                 ;[arr[i], arr[j]] = [arr[j], arr[i]]
         }
         return arr
-    })()
+    }, [])
 
     const visible = count ? shuffled.slice(0, count) : shuffled
 

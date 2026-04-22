@@ -14,9 +14,22 @@ services:
       # Volúmenes anónimos para evitar que host sobrescriba directorios del contenedor
       - /app/node_modules
       - /app/.next
+    # Cargar variables desde el archivo .env (incluye API_TOKEN, AWS_*, etc.)
+    env_file:
+      - .env
     environment:
       # Sobrescribimos el host del DB para que apunte al servicio 'db'
       - DATABASE_URL=postgresql://spencer_user:spencer_password@db:5432/spencer_db?schema=public
+      # Token para autenticar peticiones externas a /api/blog
+      - API_TOKEN=${API_TOKEN}
+      # AWS credentials para subir imágenes a S3 (si las defines en .env)
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
+      # Next/auth envs (si aplican)
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
     depends_on:
       db:
         condition: service_started
