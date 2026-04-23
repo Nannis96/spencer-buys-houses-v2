@@ -9,7 +9,7 @@ RUN corepack enable pnpm
 COPY package.json pnpm-lock.yaml* ./
 COPY prisma ./prisma/
 
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
 # ── Stage 2: Builder ──────────────────────────────────────────────────
 FROM node:20-alpine AS builder
@@ -24,7 +24,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Generar Prisma client
+# Generar Prisma client en tiempo de build (evita necesitar permisos de escritura en runtime)
 RUN pnpm prisma generate
 
 # Build the Next.js application (standalone output)
@@ -41,24 +41,29 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
+# Crear usuario no-root antes de copiar archivos para poder asignar ownership
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
+# Assets estáticos (solo lectura, root es suficiente)
 COPY --from=builder /app/public ./public
 
-# ... código anterior ...
-
-# IMPORTANTE: Asegúrate de tener output: 'standalone' en tu next.config.ts
+# Servidor Next.js standalone — IMPORTANTE: requiere output: 'standalone' en next.config.ts
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# ... código anterior ...
+# Cliente Prisma pre-generado en build time (no se necesita prisma generate en runtime)
+COPY --from=builder --chown=nextjs:nodejs /app/app/generated ./app/generated
 
-# Copiar Prisma y su configuración para las migraciones en producción
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/prisma.config.ts ./
+# node_modules completos — necesarios para Prisma CLI, migraciones y seed scripts
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 
-COPY --from=builder /app/node_modules ./node_modules
+# Prisma: schema, migraciones, seeds y configuración
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./
+
+# tsconfig.json — necesario para que tsx resuelva el alias @/ en los seed scripts
+COPY --from=builder --chown=nextjs:nodejs /app/tsconfig.json ./
 
 USER nextjs
 
