@@ -817,8 +817,18 @@ export function PropertyDetailsForm() {
             },
         }
 
-        // For now: just print the JSON to console when the user clicks the submit button
         console.log("Combined form JSON:", JSON.stringify(combinedFormData, null, 2))
+
+        // Send lead data to webhook
+        try {
+            await fetch("https://services.leadconnectorhq.com/hooks/sD7ANbPAIA28p65ZSvJl/webhook-trigger/85b6e410-ce4c-49be-b54d-f29a32f2846a", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(combinedFormData),
+            })
+        } catch (err) {
+            console.error("Webhook error:", err)
+        }
 
         // persist seller name for the success screen header
         setSellerName(`${data.firstName} ${data.lastName}`)
