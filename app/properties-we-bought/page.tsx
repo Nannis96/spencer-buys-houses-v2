@@ -1,9 +1,13 @@
 import type { Metadata } from "next"
+import { readFileSync } from "fs"
+import { join } from "path"
 import { MapPin, Home, TrendingUp, Calendar } from "lucide-react"
 import Link from "next/link"
 import rawData from "@/scripts/properties.json"
 import { CallButton } from "@/components/ui/call-button"
 import { CTAButton } from "@/components/ui/cta-button"
+import { PropertiesMapClient } from "@/components/sections/properties-map-client"
+import type { MapMarker } from "@/components/sections/properties-map"
 
 /* ─── Metadata ───────────────────────────────────────────────────────────── */
 
@@ -92,6 +96,28 @@ const totalMemphis = memphisGroups.reduce((s, g) => s + g.entries.length, 0)
 const totalMs = msGroups.reduce((s, g) => s + g.entries.length, 0)
 const totalOther = otherGroups.reduce((s, g) => s + g.entries.length, 0)
 const totalAll = totalMemphis + totalMs + totalOther
+
+/* ─── Map markers (from geocoded data if available, else empty) ───────────── */
+let mapMarkers: MapMarker[] = []
+try {
+    const raw = readFileSync(
+        join(process.cwd(), "scripts", "properties-geocoded.json"),
+        "utf8"
+    )
+    const geocoded = JSON.parse(raw) as Record<
+        string,
+        Array<{ address: string; zip: string; lat: number | null; lng: number | null }>
+    >
+    for (const entries of Object.values(geocoded)) {
+        for (const e of entries) {
+            if (e.lat != null && e.lng != null) {
+                mapMarkers.push({ address: e.address, lat: e.lat, lng: e.lng })
+            }
+        }
+    }
+} catch {
+    // Geocoded file not yet generated — map will not render markers
+}
 
 /* ─── Sub-components ─────────────────────────────────────────────────────── */
 
@@ -196,6 +222,9 @@ export default function PropertiesWeBoughtPage() {
                     </div>
                 </div>
             </section>
+
+            {/* ── Map ──────────────────────────────────────────────────── */}
+            <PropertiesMapClient markers={mapMarkers} />
 
             {/* ── Why we publish this ────────────────────────────────────── */}
             <section className="bg-[var(--color-background)] border-b border-white/10">
