@@ -17,6 +17,7 @@ export function SiteFooter() {
                                 { label: "Blog", href: "/blog/" },
                                 { label: "Contact us", href: "/contact-us/" },
                                 { label: "Get paid for referring", href: "/referral-program/" },
+                                { label: "Properties we've bought", href: "/properties-we-bought/" },
                             ].map((item) => (
                                 <a
                                     key={item.label}

@@ -110,7 +110,7 @@ export function StickyHeader() {
                             { label: "Get your cash offer", href: "/get-a-cash-offer-today/" },
                             { label: "About", href: "/about/" },
                             { label: "How it works", href: "/how-it-works/" },
-                            { label: "Properties We Bought", href: "/properties-we-bought/" },
+                            { label: "Properties we've bought", href: "/properties-we-bought/" },
                             { label: "Blog", href: "/blog/" },
                             { label: "Contact us", href: "/contact-us/" },
                             { label: "Get paid for referring", href: "/get-paid/" },
