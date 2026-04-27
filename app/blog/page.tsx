@@ -3,8 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 
-// Pages are cached and revalidated every hour (ISR)
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Blog & News | Spencer Buys Houses',
