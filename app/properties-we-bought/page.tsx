@@ -45,6 +45,9 @@ function classify(
     key: string,
     entries: PropertyEntry[]
 ): "memphis" | "mississippi" | "other" {
+    if (key === "Other Markets") return "other"
+    if (key === "Mississippi") return "mississippi"
+
     const msCount = entries.filter((e) => e.address.includes(", MS")).length
     if (msCount >= entries.length * 0.5) return "mississippi"
 
@@ -130,25 +133,29 @@ function StatCard({ value, label }: { value: string; label: string }) {
     )
 }
 
-function NeighborhoodCard({ group }: { group: Group }) {
+function AddressCard({ address }: { address: string }) {
     return (
-        <div className="rounded-xl border border-white/10 bg-white overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-[var(--color-bg-950)] border-b border-white/10">
+        <div className="rounded-lg border border-white/10 bg-[var(--color-bg-950)] px-3 py-2.5 flex items-start gap-2">
+            <MapPin className="shrink-0 mt-0.5 h-3.5 w-3.5 text-[var(--color-primary-dark)]" />
+            <span className="text-sm text-white leading-snug">{address}</span>
+        </div>
+    )
+}
+
+function NeighborhoodSection({ group }: { group: Group }) {
+    return (
+        <div className="mb-8">
+            <div className="flex items-center gap-2 mb-3">
                 <h3 className="font-semibold text-white text-sm leading-tight">{group.label}</h3>
-                <span className="ml-3 shrink-0 text-xs font-bold text-[var(--color-text-red)] bg-[var(--color-amber-10)] border border-[var(--color-primary)]/30 rounded-full px-2 py-0.5">
+                <span className="shrink-0 text-xs font-bold text-[var(--color-text-red)] bg-[var(--color-amber-10)] border border-[var(--color-primary)]/30 rounded-full px-2 py-0.5">
                     {group.entries.length} home{group.entries.length !== 1 ? "s" : ""}
                 </span>
             </div>
-            {/* Property list */}
-            <ul className="divide-y divide-white/5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2">
                 {group.entries.map((entry, i) => (
-                    <li key={i} className="flex items-start gap-2 px-4 py-2.5">
-                        <MapPin className="shrink-0 mt-0.5 h-3.5 w-3.5 text-[var(--color-primary-dark)]" />
-                        <span className="text-sm text-[var(--color-text-black)] leading-snug">{entry.address}</span>
-                    </li>
+                    <AddressCard key={i} address={entry.address} />
                 ))}
-            </ul>
+            </div>
         </div>
     )
 }
@@ -249,11 +256,9 @@ export default function PropertiesWeBoughtPage() {
                 {/* Memphis TN */}
                 <section id="memphis">
                     <SectionHeading title="Memphis, TN — by Neighborhood" count={totalMemphis} />
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                        {memphisGroups.map((g) => (
-                            <NeighborhoodCard key={g.key} group={g} />
-                        ))}
-                    </div>
+                    {memphisGroups.map((g) => (
+                        <NeighborhoodSection key={g.key} group={g} />
+                    ))}
                 </section>
 
                 {/* Mississippi */}
@@ -261,11 +266,9 @@ export default function PropertiesWeBoughtPage() {
                     <section id="mississippi">
                         <div className="border-t border-white/10 pt-12">
                             <SectionHeading title="Mississippi" count={totalMs} />
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                                {msGroups.map((g) => (
-                                    <NeighborhoodCard key={g.key} group={g} />
-                                ))}
-                            </div>
+                            {msGroups.map((g) => (
+                                <NeighborhoodSection key={g.key} group={g} />
+                            ))}
                         </div>
                     </section>
                 )}
@@ -275,11 +278,9 @@ export default function PropertiesWeBoughtPage() {
                     <section id="other">
                         <div className="border-t border-white/10 pt-12">
                             <SectionHeading title="Other Markets" count={totalOther} />
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                                {otherGroups.map((g) => (
-                                    <NeighborhoodCard key={g.key} group={g} />
-                                ))}
-                            </div>
+                            {otherGroups.map((g) => (
+                                <NeighborhoodSection key={g.key} group={g} />
+                            ))}
                         </div>
                     </section>
                 )}
