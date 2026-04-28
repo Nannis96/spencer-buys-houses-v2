@@ -109,6 +109,7 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
     const [isGeocoding, setIsGeocoding] = useState(false)
     const [geoLatLng, setGeoLatLng] = useState<{ lat: number; lng: number } | null>(null)
     const [geocodeError, setGeocodeError] = useState<string | null>(null)
+    const [appointmentType, setAppointmentType] = useState<"in-person" | "phone" | null>(null)
 
     // Geocode helper: fetch lat/lng for the provided address string
     const geocodeAddress = async (addr: string) => {
@@ -244,57 +245,93 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                         Schedule Your Appointment
                     </h3>
                     <p className="text-sm text-gray-400 max-w-md mx-auto leading-relaxed">
-                        Choose how you'd like to connect with us — book an{" "}
-                        <span className="text-white font-semibold">in-person visit</span> so Spencer's team can walk your home, or schedule a{" "}
-                        <span className="text-white font-semibold">phone call</span> at a time that works for you.
+                        How would you prefer to connect with us?
                     </p>
                 </div>
 
-                {/* In-Person Appointment */}
-                <div className="rounded-xl border border-white/10 overflow-hidden">
-                    <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.04] border-b border-white/10">
-                        <span className="text-lg" aria-hidden>🏠</span>
-                        <div>
-                            <p className="text-sm font-bold text-white">In-Person Appointment</p>
-                            <p className="text-xs text-gray-400">Schedule a visit — Spencer's team will walk your home</p>
-                        </div>
-                    </div>
-                    <div className="-mx-0">
-                        <iframe
-                            src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
-                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
-                            scrolling="no"
-                            id="P1vgAP9PKCyszvGvim17_1775688153226"
-                        />
-                        <script
-                            src="https://api.leadconnectorhq.com/js/form_embed.js"
-                            type="text/javascript"
-                        />
-                    </div>
+                {/* Appointment type selector */}
+                <div className="grid grid-cols-2 gap-3">
+                    <button
+                        type="button"
+                        onClick={() => setAppointmentType("in-person")}
+                        className={[
+                            "flex flex-col items-center gap-2 rounded-xl border px-4 py-5 text-sm font-semibold transition-all",
+                            appointmentType === "in-person"
+                                ? "border-[#f59e0b] bg-[#f59e0b]/10 text-white ring-2 ring-[#f59e0b]/40"
+                                : "border-white/10 bg-white/[0.03] text-gray-300 hover:border-white/20 hover:bg-white/[0.06]",
+                        ].join(" ")}
+                        aria-pressed={appointmentType === "in-person"}
+                    >
+                        <span className="text-3xl" aria-hidden>🏠</span>
+                        <span>In-Person Visit</span>
+                        <span className="text-xs font-normal text-gray-400 text-center leading-snug">Spencer's team walks your home</span>
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setAppointmentType("phone")}
+                        className={[
+                            "flex flex-col items-center gap-2 rounded-xl border px-4 py-5 text-sm font-semibold transition-all",
+                            appointmentType === "phone"
+                                ? "border-[#f59e0b] bg-[#f59e0b]/10 text-white ring-2 ring-[#f59e0b]/40"
+                                : "border-white/10 bg-white/[0.03] text-gray-300 hover:border-white/20 hover:bg-white/[0.06]",
+                        ].join(" ")}
+                        aria-pressed={appointmentType === "phone"}
+                    >
+                        <span className="text-3xl" aria-hidden>📞</span>
+                        <span>Phone Call</span>
+                        <span className="text-xs font-normal text-gray-400 text-center leading-snug">Book a call at a time that works for you</span>
+                    </button>
                 </div>
 
-                {/* Phone Call */}
-                <div className="rounded-xl border border-white/10 overflow-hidden">
-                    <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.04] border-b border-white/10">
-                        <span className="text-lg" aria-hidden>📞</span>
+                {/* In-Person calendar */}
+                {appointmentType === "in-person" && (
+                    <div className="rounded-xl border border-[#f59e0b]/30 overflow-hidden">
+                        <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.04] border-b border-white/10">
+                            <span className="text-lg" aria-hidden>🏠</span>
+                            <div>
+                                <p className="text-sm font-bold text-white">In-Person Appointment</p>
+                                <p className="text-xs text-gray-400">Schedule a visit — Spencer's team will walk your home</p>
+                            </div>
+                        </div>
                         <div>
-                            <p className="text-sm font-bold text-white">Phone Call</p>
-                            <p className="text-xs text-gray-400">Prefer to talk? Book a call at a time that works for you</p>
+                            <iframe
+                                src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
+                                style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
+                                scrolling="no"
+                                id="P1vgAP9PKCyszvGvim17_1775688153226"
+                            />
+                            <script
+                                src="https://api.leadconnectorhq.com/js/form_embed.js"
+                                type="text/javascript"
+                            />
                         </div>
                     </div>
-                    <div className="-mx-0">
-                        <iframe
-                            src="https://api.leadconnectorhq.com/widget/bookings/spencerbuyhouses9hx574"
-                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
-                            scrolling="no"
-                            id="spencerbuyhouses9hx574_1775688153226"
-                        />
-                        <script
-                            src="https://api.leadconnectorhq.com/js/form_embed.js"
-                            type="text/javascript"
-                        />
+                )}
+
+                {/* Phone Call calendar */}
+                {appointmentType === "phone" && (
+                    <div className="rounded-xl border border-[#f59e0b]/30 overflow-hidden">
+                        <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.04] border-b border-white/10">
+                            <span className="text-lg" aria-hidden>📞</span>
+                            <div>
+                                <p className="text-sm font-bold text-white">Phone Call</p>
+                                <p className="text-xs text-gray-400">Prefer to talk? Book a call at a time that works for you</p>
+                            </div>
+                        </div>
+                        <div>
+                            <iframe
+                                src="https://api.leadconnectorhq.com/widget/bookings/spencerbuyhouses9hx574"
+                                style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
+                                scrolling="no"
+                                id="spencerbuyhouses9hx574_1775688153226"
+                            />
+                            <script
+                                src="https://api.leadconnectorhq.com/js/form_embed.js"
+                                type="text/javascript"
+                            />
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
 
             {/* ── Street View + Map ── */}
@@ -783,10 +820,17 @@ export function PropertyDetailsForm() {
     const {
         register,
         handleSubmit,
+        getValues,
         formState: { errors, isValid },
     } = useForm<PropertyDetailsFormData>({
         resolver: zodResolver(propertyDetailsSchema),
         mode: "onChange",
+        defaultValues: {
+            firstName: searchParams.get("_firstName") ?? "",
+            lastName: searchParams.get("_lastName") ?? "",
+            phone: searchParams.get("_phone") ?? "",
+            email: searchParams.get("_email") ?? "",
+        },
     })
 
     const onSubmit = async (data: PropertyDetailsFormData) => {
@@ -1025,10 +1069,30 @@ export function PropertyDetailsForm() {
                 aria-label="Property details"
                 className="rounded-2xl bg-[var(--color-background)] p-4 sm:p-6 md:p-8 lg:p-10 border border-[var(--color-primary)]/60 w-full max-w-3xl lg:max-w-4xl mx-auto"
             >
-                <h3 className="text-xl font-bold text-white mb-1">
-                    One More Step — {" "}
-                    <span className="text-[var(--color-text-yellow)]">To See Your <span className="font-bold underline">OFFER</span></span>
-                </h3>
+                <div className="flex items-center justify-between mb-1">
+                    <h3 className="text-xl font-bold text-white">
+                        One More Step — {" "}
+                        <span className="text-[var(--color-text-yellow)]">To See Your <span className="font-bold underline">OFFER</span></span>
+                    </h3>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            const p = new URLSearchParams(Array.from(searchParams.entries()))
+                            p.set("propInfoStep", "3")
+                            p.delete("step2Complete")
+                            // Save current Your Info values so they survive the round-trip
+                            const vals = getValues()
+                            if (vals.firstName) p.set("_firstName", vals.firstName)
+                            if (vals.lastName) p.set("_lastName", vals.lastName)
+                            if (vals.phone) p.set("_phone", vals.phone)
+                            if (vals.email) p.set("_email", vals.email)
+                            window.location.href = `/property-info?${p.toString()}`
+                        }}
+                        className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5 shrink-0 ml-4"
+                    >
+                        ← Back
+                    </button>
+                </div>
                 <p className="text-gray-400 text-sm mb-6">
                     100% free. Zero obligation. Results in 24&nbsp;hours.
                 </p>

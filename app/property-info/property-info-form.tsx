@@ -235,6 +235,8 @@ export function PropertyInfoForm() {
     const zipCode = searchParams.get("zipCode") ?? ""
     const smsConsentPrev = searchParams.get("smsConsent") ?? "false"
 
+    const initialPage = searchParams.get("propInfoStep") === "3" ? 3 : searchParams.get("propInfoStep") === "2" ? 2 : 1
+    const [formPage, setFormPage] = useState<1 | 2 | 3>(initialPage)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [avmResult, setAvmResult] = useState<any>(null)
 
@@ -259,10 +261,17 @@ export function PropertyInfoForm() {
         handleSubmit,
         setValue,
         watch,
+        trigger,
         formState: { errors, isValid },
     } = useForm<PropertyInfoFormData>({
         resolver: zodResolver(propertyInfoSchema),
-        defaultValues: {},
+        defaultValues: {
+            closingTimeline: searchParams.get("closingTimeline") ?? "",
+            ultimateGoal: searchParams.get("ultimateGoal") ?? "",
+            condition: searchParams.get("condition") ?? "",
+            occupied: searchParams.get("occupied") ?? "",
+            listedWithRealtor: searchParams.get("listedWithRealtor") ?? "",
+        },
         mode: "onChange",
     })
 
@@ -322,6 +331,52 @@ export function PropertyInfoForm() {
         }
     }
 
+    const handleGoToPage2 = () => {
+        setFormPage(2)
+        const p = new URLSearchParams(Array.from(searchParams.entries()))
+        p.set("propInfoStep", "2")
+        p.delete("step2Complete")
+        if (typeof window !== "undefined") {
+            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
+            window.scrollTo({ top: 0, behavior: "smooth" })
+        }
+    }
+
+    const handleBackToPage1 = () => {
+        setFormPage(1)
+        const p = new URLSearchParams(Array.from(searchParams.entries()))
+        p.delete("propInfoStep")
+        p.delete("step2Complete")
+        if (typeof window !== "undefined") {
+            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
+            window.scrollTo({ top: 0, behavior: "smooth" })
+        }
+    }
+
+    const handleGoToPage3 = async () => {
+        const valid = await trigger(["condition", "occupied", "listedWithRealtor"])
+        if (!valid) return
+        setFormPage(3)
+        const p = new URLSearchParams(Array.from(searchParams.entries()))
+        p.set("propInfoStep", "3")
+        p.delete("step2Complete")
+        if (typeof window !== "undefined") {
+            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
+            window.scrollTo({ top: 0, behavior: "smooth" })
+        }
+    }
+
+    const handleBackToPage2 = () => {
+        setFormPage(2)
+        const p = new URLSearchParams(Array.from(searchParams.entries()))
+        p.set("propInfoStep", "2")
+        p.delete("step2Complete")
+        if (typeof window !== "undefined") {
+            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
+            window.scrollTo({ top: 0, behavior: "smooth" })
+        }
+    }
+
     const onSubmit = async (data: PropertyInfoFormData) => {
         setIsSubmitting(true)
 
@@ -356,6 +411,15 @@ export function PropertyInfoForm() {
         if (data.fairPrice !== undefined && data.fairPrice !== "") params.append("fairPrice", data.fairPrice)
         if (data.yearBuilt !== undefined && data.yearBuilt !== "") params.append("yearBuilt", data.yearBuilt)
         if (data.bestTimeToCall !== undefined && data.bestTimeToCall !== "") params.append("bestTimeToCall", data.bestTimeToCall)
+        // Forward any saved "Your Info" values so they survive the round-trip back
+        const _firstName = searchParams.get("_firstName")
+        const _lastName = searchParams.get("_lastName")
+        const _phone = searchParams.get("_phone")
+        const _email = searchParams.get("_email")
+        if (_firstName) params.append("_firstName", _firstName)
+        if (_lastName) params.append("_lastName", _lastName)
+        if (_phone) params.append("_phone", _phone)
+        if (_email) params.append("_email", _email)
 
         // --- Fire AVM + offer calculation in parallel before moving to next step ---
         try {
@@ -407,6 +471,7 @@ export function PropertyInfoForm() {
 
     // Report step completion in URL so progress indicator can update in real time
     useEffect(() => {
+        if (formPage !== 3) return
         const params = new URLSearchParams(Array.from(searchParams.entries()))
         const alreadySet = params.get("step2Complete") === "true"
         // Skip replaceState if nothing would change — avoids triggering a
@@ -422,7 +487,7 @@ export function PropertyInfoForm() {
         if (typeof window !== "undefined") {
             window.history.replaceState(null, "", `${pathname}${qs ? `?${qs}` : ""}`)
         }
-    }, [isValid, router, pathname, searchParams])
+    }, [isValid, formPage, router, pathname, searchParams])
 
     // Prefill form from Rentcast when address (or city/state/zip) is present
     useEffect(() => {
@@ -588,19 +653,45 @@ export function PropertyInfoForm() {
                 aria-label="Property information"
                 className="rounded-2xl bg-[var(--color-background)] p-4 sm:p-6 md:p-8 lg:p-10 border border-[var(--color-primary)]/60 w-full max-w-3xl lg:max-w-4xl mx-auto"
             >
-                <h3 className="text-xl font-bold text-white mb-1">Property Information</h3>
-                <p className="text-gray-400 text-sm mb-6 leading-relaxed">
-                    Excellent. We need a bit more info about your situation so we can provide you with your
-                    options and an instant cash offer.
-                    <br />
-                    <span className="text-gray-500">
-                        Please complete the form below. If you don&apos;t have the answers handy for some
-                        fields, just leave them blank for now.
-                    </span>
-                </p>
+                {formPage === 1 ? (
+                    <>
+                        <h3 className="text-xl font-bold text-white mb-1">Property Information</h3>
+                        <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+                            Excellent. We need a bit more info about your situation so we can provide you with your
+                            options and an instant cash offer.
+                            <br />
+                            <span className="text-gray-500">
+                                Please complete the form below. If you don&apos;t have the answers handy for some
+                                fields, just leave them blank for now.
+                            </span>
+                        </p>
+                    </>
+                ) : formPage === 2 ? (
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-xl font-bold text-white">Condition &amp; Repairs</h3>
+                        <button
+                            type="button"
+                            onClick={handleBackToPage1}
+                            className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5"
+                        >
+                            ← Back
+                        </button>
+                    </div>
+                ) : (
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-xl font-bold text-white">Your Situation</h3>
+                        <button
+                            type="button"
+                            onClick={handleBackToPage2}
+                            className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5"
+                        >
+                            ← Back
+                        </button>
+                    </div>
+                )}
 
                 {/* ── Street View + Map ── */}
-                {(localAddress || localCity) && (
+                {formPage === 1 && (localAddress || localCity) && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                         {/* Fachada / Street View */}
                         <div className="flex flex-col gap-1.5">
@@ -661,7 +752,7 @@ export function PropertyInfoForm() {
                 )}
 
                 {/* ── Summary of previous step (inline editable) ── */}
-                <div className="rounded-lg bg-white/[0.03] border border-[var(--color-primary)]/60 p-3 mb-6">
+                {formPage === 1 && <div className="rounded-lg bg-white/[0.03] border border-[var(--color-primary)]/60 p-3 mb-6">
                     <div className="flex items-start justify-between mb-2">
                         <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
                             Address
@@ -745,10 +836,10 @@ export function PropertyInfoForm() {
                             <SummaryRow icon={<Hash className="h-4 w-4 text-[var(--color-primary)]" />} label="Zip Code" value={localZipCode} />
                         </>
                     )}
-                </div>
+                </div>}
 
                 {/* Prefill loading indicator */}
-                {isPrefilling && (
+                {formPage === 1 && isPrefilling && (
                     <div className="mb-4 flex items-center gap-2 rounded-md bg-[#0f1724] p-3 text-sm text-gray-200 border border-white/10">
                         <Loader2 className="h-4 w-4 animate-spin text-[#f59e0b]" />
                         <span>Obteniendo datos de la propiedad…</span>
@@ -757,355 +848,366 @@ export function PropertyInfoForm() {
 
                 <div className="flex flex-col gap-5">
 
-                    {/* ───────── PROPERTY INFORMATION ───────── */}
-                    <SectionHeading>Property Information</SectionHeading>
+                    {/* ───────── PROPERTY INFORMATION (page 1 only) ───────── */}
+                    {formPage === 1 && (<>
+                        <SectionHeading>Property Information</SectionHeading>
 
-                    {/* Garage + Basement row */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label htmlFor={id("garage")} className="block text-xs text-gray-400 mb-1.5">
-                                Garage
-                            </label>
-                            <div className="relative">
-                                <select id={id("garage")} {...register("garage")} className={selectClass}>
-                                    <option value="">Select…</option>
-                                    <option>None</option>
-                                    <option>1 Car Attached</option>
-                                    <option>1 Car Detached</option>
-                                    <option>2 Car Attached</option>
-                                    <option>2 Car Detached</option>
-                                    <option>Carport</option>
-                                    <option>Other</option>
-                                </select>
-                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                        {/* Garage + Basement row */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label htmlFor={id("garage")} className="block text-xs text-gray-400 mb-1.5">
+                                    Garage
+                                </label>
+                                <div className="relative">
+                                    <select id={id("garage")} {...register("garage")} className={selectClass}>
+                                        <option value="">Select…</option>
+                                        <option>None</option>
+                                        <option>1 Car Attached</option>
+                                        <option>1 Car Detached</option>
+                                        <option>2 Car Attached</option>
+                                        <option>2 Car Detached</option>
+                                        <option>Carport</option>
+                                        <option>Other</option>
+                                    </select>
+                                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label htmlFor={id("basement")} className="block text-xs text-gray-400 mb-1.5">
+                                    Basement
+                                </label>
+                                <div className="relative">
+                                    <select id={id("basement")} {...register("basement")} className={selectClass}>
+                                        <option value="">Select…</option>
+                                        <option>None</option>
+                                        <option>Finished</option>
+                                        <option>Partially Finished</option>
+                                        <option>Unfinished</option>
+                                        <option>Crawl Space</option>
+                                        <option>Other</option>
+                                    </select>
+                                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <label htmlFor={id("basement")} className="block text-xs text-gray-400 mb-1.5">
-                                Basement
-                            </label>
-                            <div className="relative">
-                                <select id={id("basement")} {...register("basement")} className={selectClass}>
-                                    <option value="">Select…</option>
-                                    <option>None</option>
-                                    <option>Finished</option>
-                                    <option>Partially Finished</option>
-                                    <option>Unfinished</option>
-                                    <option>Crawl Space</option>
-                                    <option>Other</option>
-                                </select>
-                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+
+                        {/* Owner name + Years owned row */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label htmlFor={id("ownerName")} className="block text-xs text-gray-400 mb-1.5">
+                                    Current Owner
+                                </label>
+                                <Input
+                                    id={id("ownerName")}
+                                    placeholder="e.g. John Smith"
+                                    {...register("ownerName")}
+                                    className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor={id("yearsOwned")} className="block text-xs text-gray-400 mb-1.5">
+                                    How long have you owned the property?
+                                </label>
+                                <Input
+                                    id={id("yearsOwned")}
+                                    placeholder="e.g. 5 years, inherited, just bought…"
+                                    {...register("yearsOwned")}
+                                    className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                />
                             </div>
                         </div>
-                    </div>
 
-                    {/* Owner name + Years owned row */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* Property type + Bedrooms row (strings to match schema) */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label htmlFor={id("propertyType")} className="block text-xs text-gray-400 mb-1.5">
+                                    Property Type
+                                </label>
+                                <div className="relative">
+                                    <select
+                                        id={id("propertyType")}
+                                        {...register("propertyType")}
+                                        className={selectClass}
+                                    >
+                                        <option value="">Select…</option>
+                                        <option>Single Family</option>
+                                        <option>Condo</option>
+                                        <option>Townhouse</option>
+                                        <option>Manufactured</option>
+                                        <option>Multi-Family</option>
+                                        <option>Apartment</option>
+                                        <option>Land</option>
+                                    </select>
+                                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label htmlFor={id("bedrooms")} className="block text-xs text-gray-400 mb-1.5">
+                                    Bedrooms (use 0 for studio)
+                                </label>
+                                <Input
+                                    id={id("bedrooms")}
+                                    type="number"
+                                    step="1"
+                                    min={0}
+                                    placeholder="e.g. 3 or 0 for studio"
+                                    {...register("bedrooms", {
+                                        setValueAs: (v) => (v === "" ? "" : String(Math.round(Number(v)))),
+                                    })}
+                                    className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Bathrooms + Square footage row (strings to match schema) */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label htmlFor={id("bathrooms")} className="block text-xs text-gray-400 mb-1.5">
+                                    Bathrooms
+                                </label>
+                                <Input
+                                    id={id("bathrooms")}
+                                    type="number"
+                                    step="0.25"
+                                    min={0}
+                                    placeholder="e.g. 2.5"
+                                    {...register("bathrooms")}
+                                    className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor={id("squareFootage")} className="block text-xs text-gray-400 mb-1.5">
+                                    Square Footage
+                                </label>
+                                <Input
+                                    id={id("squareFootage")}
+                                    type="number"
+                                    step="1"
+                                    min={0}
+                                    placeholder="e.g. 1450"
+                                    {...register("squareFootage")}
+                                    className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Year built */}
                         <div>
-                            <label htmlFor={id("ownerName")} className="block text-xs text-gray-400 mb-1.5">
-                                Current Owner
+                            <label htmlFor={id("yearBuilt")} className="block text-xs text-gray-400 mb-1.5">
+                                Year Built
                             </label>
                             <Input
-                                id={id("ownerName")}
-                                placeholder="e.g. John Smith"
-                                {...register("ownerName")}
+                                id={id("yearBuilt")}
+                                type="number"
+                                step="1"
+                                min={0}
+                                placeholder="e.g. 1973"
+                                {...register("yearBuilt")}
                                 className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
                             />
                         </div>
-                        <div>
-                            <label htmlFor={id("yearsOwned")} className="block text-xs text-gray-400 mb-1.5">
-                                How long have you owned the property?
-                            </label>
-                            <Input
-                                id={id("yearsOwned")}
-                                placeholder="e.g. 5 years, inherited, just bought…"
-                                {...register("yearsOwned")}
-                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                            />
-                        </div>
-                    </div>
+                    </>)}
 
-                    {/* Property type + Bedrooms row (strings to match schema) */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* ── Page 1 NEXT button ── */}
+                    {formPage === 1 && (
+                        <Button
+                            type="button"
+                            onClick={handleGoToPage2}
+                            className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                        >
+                            NEXT
+                            <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+                        </Button>
+                    )}
+
+                    {/* ── Page 2: Condition & Situation ── */}
+                    {formPage === 2 && (<>
+
+                        {/* Condition (required) */}
                         <div>
-                            <label htmlFor={id("propertyType")} className="block text-xs text-gray-400 mb-1.5">
-                                Property Type
+                            <label className="block text-xs text-gray-400 mb-3">
+                                What is the current condition of the property?{" "}
+                                <span className="text-red-400" aria-hidden="true">*</span>
+                            </label>
+                            {/* Wheel IDs map 1-to-1 with condition levels 0-5 */}
+                            <RehabConditionWheel
+                                value={(() => {
+                                    const v = watch("condition")
+                                    const ids = ["turnkey", "cosmetic", "mid-light", "mid-heavy", "major", "full-gut"]
+                                    return v !== "" && v !== undefined ? (ids[Number(v)] ?? undefined) : undefined
+                                })()}
+                                onChange={(wheelId) => {
+                                    const levelMap: Record<string, string> = {
+                                        turnkey: "0",
+                                        cosmetic: "1",
+                                        "mid-light": "2",
+                                        "mid-heavy": "3",
+                                        major: "4",
+                                        "full-gut": "5",
+                                    }
+                                    setValue("condition", levelMap[wheelId] ?? "1", { shouldValidate: true })
+                                }}
+                            />
+                            <FieldError message={errors.condition?.message} />
+                        </div>
+
+                        {/* Repairs: structured checklist + estimate + notes */}
+                        <div>
+                            <label className="block text-xs text-gray-400 mb-1.5">What has been upgraded in the last 10 years? Please select all that apply.</label>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+                                {repairOptions.map((opt) => (
+                                    <label key={opt} className="inline-flex items-center gap-2 text-sm text-gray-200">
+                                        <input
+                                            type="checkbox"
+                                            checked={repairsChecklist.includes(opt)}
+                                            onChange={() => toggleRepair(opt)}
+                                            className="h-4 w-4 rounded border-gray-300 bg-white/5"
+                                        />
+                                        <span>{opt}</span>
+                                    </label>
+                                ))}
+                            </div>
+
+                            <div>
+                                <label htmlFor={id("repairsNotes")} className="block text-xs text-gray-400 mb-1.5">
+                                    Additional details (optional)
+                                </label>
+                                <textarea
+                                    id={id("repairsNotes")}
+                                    placeholder="e.g. Roof missing shingles on north side, HVAC not working…"
+                                    {...register("repairsNotes")}
+                                    className={textareaClass}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Occupied (required) */}
+                        <div>
+                            <label htmlFor={id("occupied")} className="block text-xs text-gray-400 mb-1.5">
+                                Is there anyone living in the house?{" "}
+                                <span className="text-red-400" aria-hidden="true">*</span>
                             </label>
                             <div className="relative">
                                 <select
-                                    id={id("propertyType")}
-                                    {...register("propertyType")}
+                                    id={id("occupied")}
+                                    {...register("occupied")}
                                     className={selectClass}
+                                    aria-invalid={!!errors.occupied}
                                 >
                                     <option value="">Select…</option>
-                                    <option>Single Family</option>
-                                    <option>Condo</option>
-                                    <option>Townhouse</option>
-                                    <option>Manufactured</option>
-                                    <option>Multi-Family</option>
-                                    <option>Apartment</option>
-                                    <option>Land</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                    <option>Rental</option>
+                                </select>
+                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                            </div>
+                            <FieldError message={errors.occupied?.message} />
+                        </div>
+
+                        {/* Listed with realtor (required) */}
+                        <div>
+                            <label htmlFor={id("listedWithRealtor")} className="block text-xs text-gray-400 mb-1.5">
+                                Is the house currently listed with a realtor?{" "}
+                                <span className="text-red-400" aria-hidden="true">*</span>
+                            </label>
+                            <div className="relative">
+                                <select
+                                    id={id("listedWithRealtor")}
+                                    {...register("listedWithRealtor")}
+                                    className={selectClass}
+                                    aria-invalid={!!errors.listedWithRealtor}
+                                >
+                                    <option value="">Select…</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                            </div>
+                            <FieldError message={errors.listedWithRealtor?.message} />
+                        </div>
+
+                        <Button
+                            type="button"
+                            onClick={handleGoToPage3}
+                            className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                        >
+                            NEXT
+                            <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+                        </Button>
+                    </>)}
+
+                    {/* ── Page 3: Your Situation ── */}
+                    {formPage === 3 && (<>
+
+                        {/* Closing timeline */}
+                        <div>
+                            <label htmlFor={id("closingTimeline")} className="block text-xs text-gray-400 mb-1.5">
+                                How soon would you like us to CLOSE?
+                            </label>
+                            <p className="text-xs text-gray-500 mb-2">
+                                We can close on the date YOU CHOOSE. If you need extra time to move after closing,
+                                we can often accommodate.
+                            </p>
+                            <div className="relative">
+                                <select id={id("closingTimeline")} {...register("closingTimeline")} className={selectClass}>
+                                    <option value="">Select…</option>
+                                    <option>7 days</option>
+                                    <option>14 days</option>
+                                    <option>30 days</option>
+                                    <option>Not sure yet</option>
                                 </select>
                                 <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
                             </div>
                         </div>
 
+                        {/* Ultimate goal (required) */}
                         <div>
-                            <label htmlFor={id("bedrooms")} className="block text-xs text-gray-400 mb-1.5">
-                                Bedrooms (use 0 for studio)
+                            <label htmlFor={id("ultimateGoal")} className="block text-xs text-gray-400 mb-1.5">
+                                {"What's your ultimate goal with your house? "}
+                                <span className="text-red-400" aria-hidden="true">*</span>
                             </label>
-                            <Input
-                                id={id("bedrooms")}
-                                type="number"
-                                step="1"
-                                min={0}
-                                placeholder="e.g. 3 or 0 for studio"
-                                {...register("bedrooms", {
-                                    setValueAs: (v) => (v === "" ? "" : String(Math.round(Number(v)))),
-                                })}
-                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Bathrooms + Square footage row (strings to match schema) */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label htmlFor={id("bathrooms")} className="block text-xs text-gray-400 mb-1.5">
-                                Bathrooms
-                            </label>
-                            <Input
-                                id={id("bathrooms")}
-                                type="number"
-                                step="0.25"
-                                min={0}
-                                placeholder="e.g. 2.5"
-                                {...register("bathrooms")}
-                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                            />
+                            <div className="relative">
+                                <select
+                                    id={id("ultimateGoal")}
+                                    {...register("ultimateGoal")}
+                                    className={selectClass}
+                                    aria-invalid={!!errors.ultimateGoal}
+                                >
+                                    <option value="">Select…</option>
+                                    <option>Foreclosure</option>
+                                    <option>Need Cash</option>
+                                    <option>Inherited</option>
+                                    <option>Bad Tenants</option>
+                                    <option>Moving</option>
+                                    <option>Downsizing</option>
+                                    <option>Other</option>
+                                </select>
+                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                            </div>
+                            <FieldError message={errors.ultimateGoal?.message} />
                         </div>
 
-                        <div>
-                            <label htmlFor={id("squareFootage")} className="block text-xs text-gray-400 mb-1.5">
-                                Square Footage
-                            </label>
-                            <Input
-                                id={id("squareFootage")}
-                                type="number"
-                                step="1"
-                                min={0}
-                                placeholder="e.g. 1450"
-                                {...register("squareFootage")}
-                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Year built */}
-                    <div>
-                        <label htmlFor={id("yearBuilt")} className="block text-xs text-gray-400 mb-1.5">
-                            Year Built
-                        </label>
-                        <Input
-                            id={id("yearBuilt")}
-                            type="number"
-                            step="1"
-                            min={0}
-                            placeholder="e.g. 1973"
-                            {...register("yearBuilt")}
-                            className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                        />
-                    </div>
-
-                    {/* Condition (required) */}
-                    <div>
-                        <label className="block text-xs text-gray-400 mb-3">
-                            What is the current condition of the property?{" "}
-                            <span className="text-red-400" aria-hidden="true">*</span>
-                        </label>
-                        {/* Wheel IDs map 1-to-1 with condition levels 0-5 */}
-                        <RehabConditionWheel
-                            value={(() => {
-                                const v = watch("condition")
-                                const ids = ["turnkey", "cosmetic", "mid-light", "mid-heavy", "major", "full-gut"]
-                                return v !== "" && v !== undefined ? (ids[Number(v)] ?? undefined) : undefined
-                            })()}
-                            onChange={(wheelId) => {
-                                const levelMap: Record<string, string> = {
-                                    turnkey: "0",
-                                    cosmetic: "1",
-                                    "mid-light": "2",
-                                    "mid-heavy": "3",
-                                    major: "4",
-                                    "full-gut": "5",
-                                }
-                                setValue("condition", levelMap[wheelId] ?? "1", { shouldValidate: true })
-                            }}
-                        />
-                        <FieldError message={errors.condition?.message} />
-                    </div>
-
-                    {/* Repairs: structured checklist + estimate + notes */}
-                    <div>
-                        <label className="block text-xs text-gray-400 mb-1.5">What has been upgraded in the last 10 years? Please select all that apply.</label>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
-                            {repairOptions.map((opt) => (
-                                <label key={opt} className="inline-flex items-center gap-2 text-sm text-gray-200">
-                                    <input
-                                        type="checkbox"
-                                        checked={repairsChecklist.includes(opt)}
-                                        onChange={() => toggleRepair(opt)}
-                                        className="h-4 w-4 rounded border-gray-300 bg-white/5"
-                                    />
-                                    <span>{opt}</span>
-                                </label>
-                            ))}
-                        </div>
-
-                        <div>
-                            <label htmlFor={id("repairsNotes")} className="block text-xs text-gray-400 mb-1.5">
-                                Additional details (optional)
-                            </label>
-                            <textarea
-                                id={id("repairsNotes")}
-                                placeholder="e.g. Roof missing shingles on north side, HVAC not working…"
-                                {...register("repairsNotes")}
-                                className={textareaClass}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Occupied (required) */}
-                    <div>
-                        <label htmlFor={id("occupied")} className="block text-xs text-gray-400 mb-1.5">
-                            Is there anyone living in the house?{" "}
-                            <span className="text-red-400" aria-hidden="true">*</span>
-                        </label>
-                        <div className="relative">
-                            <select
-                                id={id("occupied")}
-                                {...register("occupied")}
-                                className={selectClass}
-                                aria-invalid={!!errors.occupied}
-                            >
-                                <option value="">Select…</option>
-                                <option>Yes</option>
-                                <option>No</option>
-                                <option>Rental</option>
-                            </select>
-                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                        </div>
-                        <FieldError message={errors.occupied?.message} />
-                    </div>
-
-                    {/* Listed with realtor (required) */}
-                    <div>
-                        <label htmlFor={id("listedWithRealtor")} className="block text-xs text-gray-400 mb-1.5">
-                            Is the house currently listed with a realtor?{" "}
-                            <span className="text-red-400" aria-hidden="true">*</span>
-                        </label>
-                        <div className="relative">
-                            <select
-                                id={id("listedWithRealtor")}
-                                {...register("listedWithRealtor")}
-                                className={selectClass}
-                                aria-invalid={!!errors.listedWithRealtor}
-                            >
-                                <option value="">Select…</option>
-                                <option>Yes</option>
-                                <option>No</option>
-                            </select>
-                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                        </div>
-                        <FieldError message={errors.listedWithRealtor?.message} />
-                    </div>
-
-                    {/* ───────── YOUR SITUATION ───────── */}
-                    <SectionHeading>Your Situation</SectionHeading>
-
-                    {/* Closing timeline */}
-                    <div>
-                        <label htmlFor={id("closingTimeline")} className="block text-xs text-gray-400 mb-1.5">
-                            How soon would you like us to CLOSE?
-                        </label>
-                        <p className="text-xs text-gray-500 mb-2">
-                            We can close on the date YOU CHOOSE. If you need extra time to move after closing,
-                            we can often accommodate.
-                        </p>
-                        <div className="relative">
-                            <select id={id("closingTimeline")} {...register("closingTimeline")} className={selectClass}>
-                                <option value="">Select…</option>
-                                <option>7 days</option>
-                                <option>14 days</option>
-                                <option>30 days</option>
-                                <option>Not sure yet</option>
-                            </select>
-                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                        </div>
-                    </div>
-
-                    {/* Ultimate goal (required) */}
-                    <div>
-                        <label htmlFor={id("ultimateGoal")} className="block text-xs text-gray-400 mb-1.5">
-                            {"What's your ultimate goal with your house? "}
-                            <span className="text-red-400" aria-hidden="true">*</span>
-                        </label>
-                        <div className="relative">
-                            <select
-                                id={id("ultimateGoal")}
-                                {...register("ultimateGoal")}
-                                className={selectClass}
-                                aria-invalid={!!errors.ultimateGoal}
-                            >
-                                <option value="">Select…</option>
-                                <option>Foreclosure</option>
-                                <option>Need Cash</option>
-                                <option>Inherited</option>
-                                <option>Bad Tenants</option>
-                                <option>Moving</option>
-                                <option>Downsizing</option>
-                                <option>Other</option>
-                            </select>
-                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                        </div>
-                        <FieldError message={errors.ultimateGoal?.message} />
-                    </div>
-
-                    {/* Best time to call */}
-                    {/* <div>
-                        <label htmlFor={id("bestTimeToCall")} className="block text-xs text-gray-400 mb-1.5">
-                            When is the best time to call?
-                        </label>
-                        <div className="relative">
-                            <select id={id("bestTimeToCall")} {...register("bestTimeToCall")} className={selectClass}>
-                                <option value="">Select…</option>
-                                <option>Anytime</option>
-                                <option>Morning (8 am – 12 pm)</option>
-                                <option>Afternoon (12 pm – 5 pm)</option>
-                                <option>Evening (5 pm – 8 pm)</option>
-                            </select>
-                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                        </div>
-                    </div> */}
-
-                    <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                    >
-                        {isSubmitting ? (
-                            <>
-                                <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
-                                <span className="sr-only">Submitting…</span>
-                            </>
-                        ) : (
-                            <>
-                                NEXT
-                                <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                            </>
-                        )}
-                    </Button>
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+                                    <span className="sr-only">Submitting…</span>
+                                </>
+                            ) : (
+                                <>
+                                    NEXT
+                                    <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+                                </>
+                            )}
+                        </Button>
+                    </>)}
                 </div>
 
                 <p className="text-xs text-gray-500 mt-4 text-center flex items-center justify-center gap-1.5">
