@@ -118,6 +118,47 @@ model PostImage {
     post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
+model Service {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    slug    String @unique
+
+    // Main Content
+    title   String
+    content String @db.Text
+
+    // Main Media
+    mainImage String?
+
+    // Inline Images
+    serviceImages ServiceImage[]
+
+    // Author / Bio
+    authorName  String?
+    authorImage String?
+    authorBio   String? @db.Text
+
+    // Advanced SEO
+    seoTitle     String?
+    seoDesc      String?
+    focusKeyword String?
+
+    // Classification
+    category String @default("general")
+    status   String @default("draft")
+}
+
+model ServiceImage {
+    id      String  @id @default(cuid())
+    url     String
+    altText String?
+
+    serviceId String
+    service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+}
+
 // API Tokens for external integrations
 model ApiToken {
     id        String   @id @default(cuid())

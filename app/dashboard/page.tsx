@@ -23,6 +23,12 @@ export default async function Dashboard() {
         take: 3,
     })
 
+    // Fetch latest 3 services
+    const latestServices = await prisma.service.findMany({
+        orderBy: { createdAt: "desc" },
+        take: 3,
+    })
+
     return (
         <div className="mx-auto max-w-7xl px-4 lg:px-10">
             {/* Header Section */}
@@ -78,6 +84,38 @@ export default async function Dashboard() {
                                         </div>
                                         {post.mainImage ? (
                                             <img src={post.mainImage} alt={post.title} className="w-16 h-10 object-cover rounded-md ml-4" />
+                                        ) : null}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+                    <div className="bg-white/5 border border-gray-800 rounded-2xl p-8 hover:border-[var(--color-primary)]/60">
+                        <h2 className="text-xl font-bold mb-4">Latest Services</h2>
+
+                        {latestServices.length === 0 ? (
+                            <div className="text-center p-8">
+                                <div className="w-16 h-16 bg-[var(--color-background)] rounded-full flex items-center justify-center mx-auto mb-4 border border-[var(--color-primary)]/60">
+                                    <LayoutDashboard className="h-8 w-8 text-gray-500" />
+                                </div>
+                                <h3 className="text-xl font-bold mb-2">No Services Yet</h3>
+                                <p className="text-gray-400 max-w-md mx-auto">
+                                    Once you add services, the latest ones will appear here.
+                                </p>
+                            </div>
+                        ) : (
+                            <ul className="space-y-4">
+                                {latestServices.map((service) => (
+                                    <li key={service.id} className="flex items-center justify-between p-4 rounded-lg bg-white/3 border border-gray-800 hover:border-[var(--color-primary)]/60 transition-colors shadow-md group">
+                                        <div>
+                                            <Link href={`/services/${service.slug}`} className="text-sm font-semibold hover:underline">
+                                                {service.title}
+                                            </Link>
+                                            <div className="text-xs text-gray-400">{formatDate(service.createdAt)}</div>
+                                        </div>
+                                        {service.mainImage ? (
+                                            <img src={service.mainImage} alt={service.title} className="w-16 h-10 object-cover rounded-md ml-4" />
                                         ) : null}
                                     </li>
                                 ))}

@@ -1,12 +1,13 @@
 "use client"
 
-import { LayoutDashboard, FileText, User } from "lucide-react"
+import { LayoutDashboard, FileText, User, Wrench } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/dashboard/blog", label: "Blog", icon: FileText },
+    { href: "/dashboard/services", label: "Services", icon: Wrench },
     { href: "/dashboard/token", label: "Token", icon: User },
 ]
 

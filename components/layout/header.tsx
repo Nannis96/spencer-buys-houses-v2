@@ -9,19 +9,43 @@ import { usePathname } from "next/navigation"
 import { SocialLinks } from "./social-links"
 import { citiesData } from "@/lib/cities"
 
+type NavService = { slug: string; title: string; category: string }
+
+const SERVICE_CATEGORIES = [
+    'Financial Situations',
+    'Property Condition',
+    'Life Changes',
+    'Landlord Problems',
+    'Listing Issues',
+    'Legal',
+    'Other',
+]
+
 export function StickyHeader() {
     const headerRef = useRef<HTMLElement | null>(null)
     const [scrolled, setScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [mobileCitiesOpen, setMobileCitiesOpen] = useState(false)
+    const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
     const [mobileOpenState, setMobileOpenState] = useState<string | null>(null)
+    const [mobileOpenCategory, setMobileOpenCategory] = useState<string | null>(null)
     const [hoveredState, setHoveredState] = useState<string | null>(null)
+    const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
+    const [navServices, setNavServices] = useState<NavService[]>([])
     const pathname = usePathname()
+
+    useEffect(() => {
+        fetch('/api/services/nav')
+            .then((r) => r.json())
+            .then((data) => setNavServices(data))
+            .catch(() => { })
+    }, [])
 
     const serveStates = citiesData.filter((s) => s.stateSlug === "tennessee" || s.stateSlug === "mississippi")
 
     const normalizedPath = (pathname ?? "").replace(/\/$/, "")
     const isCitiesActive = normalizedPath === "/we-serve" || normalizedPath.startsWith("/we-serve/")
+    const isServicesActive = normalizedPath === "/services" || normalizedPath.startsWith("/services/")
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -183,6 +207,55 @@ export function StickyHeader() {
                                             </div>
                                         </div>
                                     )}
+
+                                    {idx === 0 && (
+                                        <div className="relative group">
+                                            <button className={`relative px-3 py-1 text-sm font-medium rounded-md ${isServicesActive ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
+                                                Services
+                                                <span className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[#f59e0b] transition-all duration-300 ${isServicesActive ? "opacity-100" : "opacity-0 group-hover:opacity-30"}`} />
+                                            </button>
+
+                                            <div onMouseLeave={() => setHoveredCategory(null)} className={`invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute top-full left-0 pt-2 z-50 ${hoveredCategory ? "w-[28rem]" : "w-56"}`}>
+                                                <div className="bg-[var(--color-background)] border border-white/10 rounded-lg shadow-lg p-4 overflow-hidden transition-all duration-200">
+                                                    <div className="flex">
+                                                        <div className={hoveredCategory ? "w-1/2 pr-4 border-r border-white/5" : "w-full pr-0 border-r-0"}>
+                                                            <ul className="space-y-1">
+                                                                {SERVICE_CATEGORIES.map((cat) => (
+                                                                    <li key={cat}>
+                                                                        <button
+                                                                            onMouseEnter={() => setHoveredCategory(cat)}
+                                                                            onFocus={() => setHoveredCategory(cat)}
+                                                                            className={`w-full text-left text-sm py-2 px-2 rounded ${hoveredCategory === cat ? "bg-white/5 text-white font-semibold" : "text-gray-300 hover:text-white"}`}
+                                                                        >
+                                                                            {cat}
+                                                                        </button>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+
+                                                        {hoveredCategory && (
+                                                            <div className="w-1/2 pl-4">
+                                                                <div className="font-semibold text-xs text-[#f59e0b] uppercase tracking-wide mb-2">{hoveredCategory}</div>
+                                                                <ul className="space-y-1">
+                                                                    {navServices.filter((s) => s.category === hoveredCategory).length > 0
+                                                                        ? navServices.filter((s) => s.category === hoveredCategory).map((s) => (
+                                                                            <li key={s.slug}>
+                                                                                <a href={`/services/${s.slug}/`} className="text-gray-300 hover:text-white text-sm block py-1">
+                                                                                    {s.title}
+                                                                                </a>
+                                                                            </li>
+                                                                        ))
+                                                                        : <li className="text-gray-500 text-xs py-1">No services yet</li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )
                         })}
@@ -198,7 +271,7 @@ export function StickyHeader() {
                     {/* fondo oscuro */}
                     <div
                         className="absolute inset-0 bg-black/60"
-                        onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileOpenState(null); }}
+                        onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileServicesOpen(false); setMobileOpenState(null); setMobileOpenCategory(null); }}
                     />
 
                     {/* panel */}
@@ -212,7 +285,7 @@ export function StickyHeader() {
                             </span>
 
                             <button
-                                onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileOpenState(null); }}
+                                onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileServicesOpen(false); setMobileOpenState(null); setMobileOpenCategory(null); }}
                                 aria-label="Close menu"
                             >
                                 <X className="h-6 w-6 text-[var(--color-primary-dark)]" />
@@ -241,7 +314,7 @@ export function StickyHeader() {
                                         href={item.href}
                                         className={`flex items-center justify-between py-4 border-b border-white/10 transition-colors ${isActive ? "text-[#f59e0b] font-medium" : "text-white"
                                             }`}
-                                        onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileOpenState(null); }}
+                                        onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileServicesOpen(false); setMobileOpenState(null); setMobileOpenCategory(null); }}
                                     >
                                         {item.label}
                                         {isActive && (
@@ -250,6 +323,59 @@ export function StickyHeader() {
                                     </a>
                                 )
                             })}
+
+                            {/* Mobile: Services */}
+                            <div className="pt-2">
+                                <button
+                                    onClick={() => setMobileServicesOpen((v) => !v)}
+                                    aria-expanded={mobileServicesOpen}
+                                    className="w-full flex items-center justify-between text-white py-3 border-b border-white/10"
+                                >
+                                    <span className="text-sm font-medium">Services</span>
+                                    <span className="text-gray-300">
+                                        {mobileServicesOpen ? <ChevronUp className="h-5 w-5 text-[var(--color-primary-dark)]" /> : <ChevronDown className="h-5 w-5 text-[var(--color-primary-dark)]" />}
+                                    </span>
+                                </button>
+
+                                {mobileServicesOpen && (
+                                    <div className="pt-2">
+                                        <ul className="space-y-2">
+                                            {SERVICE_CATEGORIES.map((cat) => (
+                                                <li key={cat} className="mb-1">
+                                                    <button
+                                                        onClick={() => setMobileOpenCategory((prev) => prev === cat ? null : cat)}
+                                                        aria-expanded={mobileOpenCategory === cat}
+                                                        className="w-full flex items-center justify-between text-white py-3"
+                                                    >
+                                                        <span className="text-sm font-medium">{cat}</span>
+                                                        <span className="text-gray-300">
+                                                            {mobileOpenCategory === cat ? <ChevronUp className="h-4 w-4 text-[var(--color-primary-dark)]" /> : <ChevronDown className="h-4 w-4 text-[var(--color-primary-dark)]" />}
+                                                        </span>
+                                                    </button>
+
+                                                    {mobileOpenCategory === cat && (
+                                                        <div className="pl-4 pt-1 pb-2">
+                                                            {navServices.filter((s) => s.category === cat).length > 0
+                                                                ? navServices.filter((s) => s.category === cat).map((s) => (
+                                                                    <a
+                                                                        key={s.slug}
+                                                                        href={`/services/${s.slug}/`}
+                                                                        className="block py-2 text-gray-300"
+                                                                        onClick={() => { setMobileMenuOpen(false); setMobileServicesOpen(false); setMobileOpenCategory(null); }}
+                                                                    >
+                                                                        {s.title}
+                                                                    </a>
+                                                                ))
+                                                                : <span className="text-gray-500 text-xs">No services yet</span>
+                                                            }
+                                                        </div>
+                                                    )}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
 
                             {/* Mobile: States & cities */}
                             <div className="pt-2">
@@ -287,7 +413,7 @@ export function StickyHeader() {
                                                                     key={c.slug}
                                                                     href={`/we-serve/${s.stateSlug}/${c.slug}/`}
                                                                     className="block py-2 text-gray-300"
-                                                                    onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileOpenState(null); }}
+                                                                    onClick={() => { setMobileMenuOpen(false); setMobileCitiesOpen(false); setMobileServicesOpen(false); setMobileOpenState(null); setMobileOpenCategory(null); }}
                                                                 >
                                                                     {c.name}
                                                                 </a>
