@@ -16,11 +16,14 @@ export default function PropertyProgress({ activeStep = 3 }: PropertyProgressPro
     const propInfoStep = searchParams.get("propInfoStep")
 
     /* ── Derived state ─────────────────────────────────────────────────── */
-    const step2Done = propInfoStep === "2" || propInfoStep === "3" || activeStep > 2
+    // propInfoStep values: "2" = condition step active, "3" = situation active, "4" = asking price active
+    const step2Done = propInfoStep === "2" || propInfoStep === "3" || propInfoStep === "4" || activeStep > 2
     const conditionActive = activeStep === 2 && propInfoStep === "2"
-    const conditionDone = (activeStep === 2 && propInfoStep === "3") || activeStep > 2
+    const conditionDone = (activeStep === 2 && (propInfoStep === "3" || propInfoStep === "4")) || activeStep > 2
     const situationActive = activeStep === 2 && propInfoStep === "3"
-    const situationDone = (activeStep === 2 && step2Complete) || activeStep > 2
+    const situationDone = (activeStep === 2 && propInfoStep === "4") || activeStep > 2
+    const askingActive = activeStep === 2 && propInfoStep === "4"
+    const askingDone = (activeStep === 2 && step2Complete) || activeStep > 2
 
     const connector2Color = step2Done
         ? conditionDone ? "bg-[#22c55e]" : "bg-[#f59e0b]"
@@ -29,12 +32,12 @@ export default function PropertyProgress({ activeStep = 3 }: PropertyProgressPro
         ? situationDone ? "bg-[#22c55e]" : "bg-[#f59e0b]"
         : "bg-white/20"
     const connector4Color = situationDone
-        ? submitted || step3Complete ? "bg-[#22c55e]" : "bg-[#f59e0b]"
+        ? askingDone ? "bg-[#22c55e]" : "bg-[#f59e0b]"
         : "bg-white/20"
 
     return (
-        <div className="w-full max-w-2xl mb-8">
-            <div className="flex items-center gap-2 sm:gap-3">
+        <div className="w-full max-w-2xl lg:max-w-6xl mb-8">
+            <div className="flex items-center gap-2 sm:gap-3 flex-nowrap">
 
                 {/* Step 1 – always done */}
                 <div className="flex items-center gap-1.5 shrink-0">
@@ -106,10 +109,33 @@ export default function PropertyProgress({ activeStep = 3 }: PropertyProgressPro
                     )}
                 </div>
 
-                {/* Connector 4 → 5 */}
+                {/* Connector 4 → 5 (Situation → Asking Price) */}
                 <div className={`flex-1 h-0.5 ${connector4Color}`} />
 
-                {/* Step 5 – Your Info */}
+                {/* Step 5 – Asking Price */}
+                <div className="flex items-center gap-1.5 shrink-0">
+                    {askingDone ? (
+                        <>
+                            <div className="h-7 w-7 rounded-full bg-[#22c55e] flex items-center justify-center text-xs font-bold text-white">✓</div>
+                            <span className="hidden sm:inline text-sm text-[#22c55e] font-medium">Asking Price</span>
+                        </>
+                    ) : askingActive ? (
+                        <>
+                            <div className="h-7 w-7 rounded-full bg-[#f59e0b] flex items-center justify-center text-xs font-bold text-[#0f0f23]">5</div>
+                            <span className="hidden sm:inline text-sm text-[var(--color-primary)] font-medium">Asking Price</span>
+                        </>
+                    ) : (
+                        <>
+                            <div className="h-7 w-7 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-gray-400">5</div>
+                            <span className="hidden sm:inline text-sm text-gray-400 font-medium">Asking Price</span>
+                        </>
+                    )}
+                </div>
+
+                {/* Connector 5 → 6 */}
+                <div className={`flex-1 h-0.5 ${askingDone ? (submitted || step3Complete ? "bg-[#22c55e]" : "bg-[#f59e0b]") : "bg-white/20"}`} />
+
+                {/* Step 6 – Your Info */}
                 <div className="flex items-center gap-1.5 shrink-0">
                     {activeStep === 2 ? (
                         <>
@@ -119,7 +145,7 @@ export default function PropertyProgress({ activeStep = 3 }: PropertyProgressPro
                     ) : (
                         <>
                             <div className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold ${submitted ? "bg-[#22c55e] text-white" : "bg-[#f59e0b] text-[#0f0f23]"}`}>
-                                {submitted ? "✓" : "5"}
+                                {submitted ? "✓" : "6"}
                             </div>
                             <span className={`hidden sm:inline text-sm font-medium ${submitted ? "text-[#22c55e]" : "text-[#f59e0b]"}`}>
                                 Your Info
@@ -127,8 +153,8 @@ export default function PropertyProgress({ activeStep = 3 }: PropertyProgressPro
                         </>
                     )}
                 </div>
-
             </div>
+
         </div>
     )
 }

@@ -20,6 +20,32 @@ import Image from "next/image"
 import { CallButton } from "@/components/ui/call-button"
 import { CTAButton } from "@/components/ui/cta-button"
 import { PurchasedHousesMap } from "@/components/sections/purchased-houses-map"
+import { PropertiesMapClient } from "@/components/sections/properties-map-client"
+import type { MapMarker } from "@/components/sections/properties-map"
+import { join } from "path"
+import { readFileSync } from "fs"
+
+/* ─── Map markers (from geocoded data if available, else empty) ───────────── */
+let mapMarkers: MapMarker[] = []
+try {
+    const raw = readFileSync(
+        join(process.cwd(), "scripts", "properties-geocoded.json"),
+        "utf8"
+    )
+    const geocoded = JSON.parse(raw) as Record<
+        string,
+        Array<{ address: string; zip: string; lat: number | null; lng: number | null }>
+    >
+    for (const entries of Object.values(geocoded)) {
+        for (const e of entries) {
+            if (e.lat != null && e.lng != null) {
+                mapMarkers.push({ address: e.address, lat: e.lat, lng: e.lng })
+            }
+        }
+    }
+} catch {
+    // Geocoded file not yet generated — map will not render markers
+}
 
 export function CashOfferContent() {
     return (
@@ -81,7 +107,9 @@ export function CashOfferContent() {
             </section>
 
             {/* ───────── NEW: PURCHASED HOUSES MAP ───────── */}
-            <PurchasedHousesMap />
+            {/* <PurchasedHousesMap /> */}
+            {/* ── Map ──────────────────────────────────────────────────── */}
+            <PropertiesMapClient markers={mapMarkers} />
 
             {/* ───────── 2. BENEFITS ───────── */}
             <section

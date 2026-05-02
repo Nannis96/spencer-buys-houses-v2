@@ -49,7 +49,7 @@ const propertyInfoSchema = z.object({
     // Situation
     closingTimeline: z.string().optional(),
     ultimateGoal: z.string().min(1, "Please describe your ultimate goal for this property"),
-    askingPrice: z.string().optional(),
+    askingPrice: z.string().min(1, "Please enter the asking price"),
     fairPrice: z.string().optional(),
     bestTimeToCall: z.string().optional(),
 })
@@ -235,8 +235,8 @@ export function PropertyInfoForm() {
     const zipCode = searchParams.get("zipCode") ?? ""
     const smsConsentPrev = searchParams.get("smsConsent") ?? "false"
 
-    const initialPage = searchParams.get("propInfoStep") === "3" ? 3 : searchParams.get("propInfoStep") === "2" ? 2 : 1
-    const [formPage, setFormPage] = useState<1 | 2 | 3>(initialPage)
+    const initialPage: 1 | 2 | 3 | 4 = searchParams.get("propInfoStep") === "4" ? 4 : searchParams.get("propInfoStep") === "3" ? 3 : searchParams.get("propInfoStep") === "2" ? 2 : 1
+    const [formPage, setFormPage] = useState<1 | 2 | 3 | 4>(initialPage)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [avmResult, setAvmResult] = useState<any>(null)
 
@@ -274,6 +274,63 @@ export function PropertyInfoForm() {
         },
         mode: "onChange",
     })
+
+    // Load any previously-saved values from the query string so that when the
+    // user navigates away (e.g. to "Your Info") and then returns, their inputs
+    // are restored. We intentionally mirror the same fields that are forwarded
+    // to /property-details so round-tripping preserves user input.
+    useEffect(() => {
+        // Only run in browser
+        if (typeof window === "undefined") return
+
+        try {
+            const get = (k: string) => searchParams.get(k) ?? undefined
+
+            const mapping: Array<[string, string | undefined]> = [
+                ["garage", get("garage")],
+                ["basement", get("basement")],
+                ["propertyType", get("propertyType")],
+                ["bedrooms", get("bedrooms")],
+                ["bathrooms", get("bathrooms")],
+                ["squareFootage", get("squareFootage")],
+                ["yearBuilt", get("yearBuilt")],
+                ["yearsOwned", get("yearsOwned")],
+                ["ownerName", get("ownerName")],
+                ["condition", get("condition")],
+                ["repairsEstimate", get("repairsEstimate")],
+                ["repairsNotes", get("repairsNotes")],
+                ["occupied", get("occupied")],
+                ["listedWithRealtor", get("listedWithRealtor")],
+                ["closingTimeline", get("closingTimeline")],
+                ["ultimateGoal", get("ultimateGoal")],
+                ["askingPrice", get("askingPrice")],
+                ["fairPrice", get("fairPrice")],
+                ["bestTimeToCall", get("bestTimeToCall")],
+            ]
+
+            mapping.forEach(([key, val]) => {
+                if (val !== undefined) setValue(key as any, val as any)
+            })
+
+            // repairsChecklist may be provided as a comma-separated string
+            const checklist = get("repairsChecklist")
+            if (checklist) {
+                const list = checklist.split(",").map((s) => s.trim()).filter(Boolean)
+                setRepairsChecklist(list)
+                setValue("repairsChecklist", list)
+            }
+
+            // repairsEstimate is stored as string in the form schema but we keep
+            // a local numeric state for the slider — coerce if present
+            const est = get("repairsEstimate")
+            if (est) {
+                const n = Number(est)
+                if (!Number.isNaN(n)) setRepairsEstimate(n)
+            }
+        } catch (err) {
+            console.error("Failed to hydrate form from URL params:", err)
+        }
+    }, [searchParams, setValue])
 
     const [isPrefilling, setIsPrefilling] = useState(false)
     const [lastSaleDateDisplay, setLastSaleDateDisplay] = useState<string | null>(null)
@@ -354,7 +411,7 @@ export function PropertyInfoForm() {
     }
 
     const handleGoToPage3 = async () => {
-        const valid = await trigger(["condition", "occupied", "listedWithRealtor"])
+        const valid = await trigger(["condition", "listedWithRealtor"])
         if (!valid) return
         setFormPage(3)
         const p = new URLSearchParams(Array.from(searchParams.entries()))
@@ -370,6 +427,30 @@ export function PropertyInfoForm() {
         setFormPage(2)
         const p = new URLSearchParams(Array.from(searchParams.entries()))
         p.set("propInfoStep", "2")
+        p.delete("step2Complete")
+        if (typeof window !== "undefined") {
+            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
+            window.scrollTo({ top: 0, behavior: "smooth" })
+        }
+    }
+
+    const handleGoToPage4 = async () => {
+        const valid = await trigger(["occupied", "ultimateGoal"])
+        if (!valid) return
+        setFormPage(4)
+        const p = new URLSearchParams(Array.from(searchParams.entries()))
+        p.set("propInfoStep", "4")
+        p.delete("step2Complete")
+        if (typeof window !== "undefined") {
+            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
+            window.scrollTo({ top: 0, behavior: "smooth" })
+        }
+    }
+
+    const handleBackToPage3 = () => {
+        setFormPage(3)
+        const p = new URLSearchParams(Array.from(searchParams.entries()))
+        p.set("propInfoStep", "3")
         p.delete("step2Complete")
         if (typeof window !== "undefined") {
             window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
@@ -471,7 +552,7 @@ export function PropertyInfoForm() {
 
     // Report step completion in URL so progress indicator can update in real time
     useEffect(() => {
-        if (formPage !== 3) return
+        if (formPage !== 4) return
         const params = new URLSearchParams(Array.from(searchParams.entries()))
         const alreadySet = params.get("step2Complete") === "true"
         // Skip replaceState if nothing would change — avoids triggering a
@@ -677,12 +758,23 @@ export function PropertyInfoForm() {
                             ← Back
                         </button>
                     </div>
-                ) : (
+                ) : formPage === 3 ? (
                     <div className="flex items-center justify-between mb-6">
                         <h3 className="text-xl font-bold text-white">Your Situation</h3>
                         <button
                             type="button"
                             onClick={handleBackToPage2}
+                            className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5"
+                        >
+                            ← Back
+                        </button>
+                    </div>
+                ) : (
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-xl font-bold text-white">Your Asking Price</h3>
+                        <button
+                            type="button"
+                            onClick={handleBackToPage3}
                             className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5"
                         >
                             ← Back
@@ -1050,6 +1142,7 @@ export function PropertyInfoForm() {
                                     setValue("condition", levelMap[wheelId] ?? "1", { shouldValidate: true })
                                 }}
                             />
+                            <input type="hidden" {...register("condition")} />
                             <FieldError message={errors.condition?.message} />
                         </div>
 
@@ -1082,29 +1175,6 @@ export function PropertyInfoForm() {
                                     className={textareaClass}
                                 />
                             </div>
-                        </div>
-
-                        {/* Occupied (required) */}
-                        <div>
-                            <label htmlFor={id("occupied")} className="block text-xs text-gray-400 mb-1.5">
-                                Is there anyone living in the house?{" "}
-                                <span className="text-red-400" aria-hidden="true">*</span>
-                            </label>
-                            <div className="relative">
-                                <select
-                                    id={id("occupied")}
-                                    {...register("occupied")}
-                                    className={selectClass}
-                                    aria-invalid={!!errors.occupied}
-                                >
-                                    <option value="">Select…</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                    <option>Rental</option>
-                                </select>
-                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                            </div>
-                            <FieldError message={errors.occupied?.message} />
                         </div>
 
                         {/* Listed with realtor (required) */}
@@ -1188,6 +1258,66 @@ export function PropertyInfoForm() {
                                 <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
                             </div>
                             <FieldError message={errors.ultimateGoal?.message} />
+                        </div>
+
+                        {/* Occupied (required) */}
+                        <div>
+                            <label htmlFor={id("occupied")} className="block text-xs text-gray-400 mb-1.5">
+                                Is there anyone living in the house?{" "}
+                                <span className="text-red-400" aria-hidden="true">*</span>
+                            </label>
+                            <div className="relative">
+                                <select
+                                    id={id("occupied")}
+                                    {...register("occupied")}
+                                    className={selectClass}
+                                    aria-invalid={!!errors.occupied}
+                                >
+                                    <option value="">Select…</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                    <option>Rental</option>
+                                </select>
+                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                            </div>
+                            <FieldError message={errors.occupied?.message} />
+                        </div>
+
+                        <Button
+                            type="button"
+                            onClick={handleGoToPage4}
+                            className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                        >
+                            NEXT
+                            <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+                        </Button>
+                    </>)}
+
+                    {/* ── Page 4: Asking Price ── */}
+                    {formPage === 4 && (<>
+
+                        <p className="text-gray-400 text-sm mb-2 leading-relaxed">
+                            This helps us prepare a competitive offer tailored to your needs. No commitment required.
+                        </p>
+
+                        {/* Asking price */}
+                        <div>
+                            <label htmlFor={id("askingPrice")} className="block text-xs text-gray-400 mb-1.5">
+                                How much are you looking to get for your property?{" "}
+                                <span className="text-red-400" aria-hidden="true">*</span>
+                            </label>
+                            <p className="text-xs text-gray-500 mb-2">
+                                Enter the amount you have in mind — even a rough estimate is helpful.
+                            </p>
+                            <Input
+                                id={id("askingPrice")}
+                                type="number"
+                                step="1000"
+                                min={0}
+                                placeholder="e.g. 150000"
+                                {...register("askingPrice")}
+                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                            />
                         </div>
 
                         <Button

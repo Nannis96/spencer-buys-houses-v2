@@ -840,6 +840,8 @@ export function PropertyDetailsForm() {
         // Build and print combined JSON of all form data (for debugging)
         const combinedFormData = {
             address: { address: localAddress, city: localCity, state: localState, zipCode: localZipCode },
+            // explicit top-level fields for GHL mapping
+            askingPrice: searchParams.get("askingPrice") ?? null,
             // include all search params forwarded from previous steps
             searchParams: Object.fromEntries(Array.from(searchParams.entries())),
             // current step form data
@@ -1078,7 +1080,10 @@ export function PropertyDetailsForm() {
                         type="button"
                         onClick={() => {
                             const p = new URLSearchParams(Array.from(searchParams.entries()))
-                            p.set("propInfoStep", "3")
+                            // When navigating back to property-info from "Your Info",
+                            // return the user to the Asking Price sub-step (4) so they
+                            // see the asking price screen instead of the Situation screen.
+                            p.set("propInfoStep", "4")
                             p.delete("step2Complete")
                             // Save current Your Info values so they survive the round-trip
                             const vals = getValues()
