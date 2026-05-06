@@ -6,7 +6,7 @@
  */
 
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
-import { testimonials } from "@/components/sections/testimonials-section"
+import { testimonials } from "@/components/data/testimonials"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { CallButton } from "@/components/ui/call-button"
 import { CTAButton } from "@/components/ui/cta-button"
@@ -78,8 +78,9 @@ const benefits = [
 function FeaturedTestimonial() {
     const t = (() => {
         if (!testimonials || testimonials.length === 0) return { name: "Customer", location: "", text: "", rating: 5 }
-        // Use deterministic selection on the server to avoid hydration mismatch.
-        return testimonials[0]
+        // Pick a random testimonial on each server render (changes on reload).
+        const idx = Math.floor(Math.random() * testimonials.length)
+        return testimonials[idx]
     })()
 
     return (

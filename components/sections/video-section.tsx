@@ -44,7 +44,7 @@ export function VideoSection() {
 
                 {/* Social proof micro-copy */}
                 <p className="text-center text-sm text-gray-500 mt-6">
-                    Over <span className="text-[var(--color-primary-dark)] font-semibold">200+ Memphis homeowners</span>{" "}
+                    Over <span className="text-[var(--color-primary-dark)] font-semibold">550+ Memphis homeowners</span>{" "}
                     have already sold their house to Spencer — close in as little as 7 days.
                 </p>
             </div>

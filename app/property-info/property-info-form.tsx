@@ -1120,7 +1120,7 @@ export function PropertyInfoForm() {
                         {/* Condition (required) */}
                         <div>
                             <label className="block text-xs text-gray-400 mb-3">
-                                What is the current condition of the property?{" "}
+                                Click the color that represents your home{" "}
                                 <span className="text-red-400" aria-hidden="true">*</span>
                             </label>
                             {/* Wheel IDs map 1-to-1 with condition levels 0-5 */}
