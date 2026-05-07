@@ -45,11 +45,11 @@ export function SiteFooter() {
                         <h4 className="font-semibold mb-2">Contact Us</h4>
                         <div className="flex flex-col items-center md:items-end gap-2">
                             <a
-                                href="tel:+19016218799"
+                                href={`tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`}
                                 className="flex items-center gap-2 text-sm text-gray-500 hover:text-[var(--color-primary-dark)]"
                             >
                                 <Phone className="h-4 w-4" />
-                                Call Today: (901) 621-8799
+                                Call Today: {process.env.NEXT_PUBLIC_PHONE_DISPLAY}
                             </a>
                             <SocialLinks />
                         </div>

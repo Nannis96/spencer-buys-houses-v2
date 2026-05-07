@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next"
+import Script from "next/script"
 import { Inter, Open_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { JsonLd } from "@/components/seo/json-ld"
@@ -59,6 +60,7 @@ export const metadata: Metadata = {
     images: [OG_IMAGE],
   },
   other: {
+    // Pinterest domain verification
     "p:domain_verify": "4ffbadc943a8e669c3d5f474dd30c4cf",
   },
   robots: {
@@ -406,8 +408,53 @@ export default function RootLayout({
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />
         <JsonLd data={businessGraphSchema} />
+        {/* Google Tag Manager — Principal */}
+        <Script
+          id="gtm-primary"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WWPZRDH');`,
+          }}
+        />
+        {/* Google Tag Manager — Secundario */}
+        <Script
+          id="gtm-secondary"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WSG7CZKX');`,
+          }}
+        />
+        {/* Google Analytics GA4 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-P11R7D3N7W"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="ga4-config"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-P11R7D3N7W');`,
+          }}
+        />
       </head>
       <body id="top" className="font-sans antialiased min-h-screen">
+        {/* GTM noscript fallbacks */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WWPZRDH"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WSG7CZKX"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
         <StickyHeader />
         <div style={{ paddingTop: 'calc(var(--app-header-height, 4rem) / 2)' }}>{children}</div>
         <SiteFooter />

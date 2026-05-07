@@ -34,6 +34,10 @@ export function StickyHeader() {
     const [navServices, setNavServices] = useState<NavService[]>([])
     const pathname = usePathname()
 
+    const PHONE_NUMBER = process.env.NEXT_PUBLIC_PHONE_NUMBER ?? "+19013999952"
+    const PHONE_DISPLAY = process.env.NEXT_PUBLIC_PHONE_DISPLAY ?? "(901) 399-9952"
+    const PHONE_ARIA = `Call Spencer Buys Houses at ${PHONE_DISPLAY}`
+
     useEffect(() => {
         fetch('/api/services/nav')
             .then((r) => r.json())
@@ -77,7 +81,7 @@ export function StickyHeader() {
             {/* Organization SEO properties */}
             <meta itemProp="name" content="Sell Your Memphis House Fast | Spencer Buys Houses" />
             <meta itemProp="url" content="https://www.spencerbuyshouses.com" />
-            <meta itemProp="telephone" content="+19016218799" />
+            <meta itemProp="telephone" content={PHONE_NUMBER} />
             <meta itemProp="description" content="Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today! (901)-979-9848" />
 
             <div className="mx-auto max-w-7xl px-4 lg:px-8 w-full">
@@ -105,12 +109,12 @@ export function StickyHeader() {
                         {/*Call Today (desktop center)*/}
                         <div className="hidden md:flex justify-center">
                             <a
-                                href="tel:+19016218799"
+                                href={`tel:${PHONE_NUMBER}`}
                                 itemProp="telephone"
-                                aria-label="Call Spencer Buys Houses at 901-621-8799"
+                                aria-label={PHONE_ARIA}
                                 className="text-[var(--color-primary-dark)] font-semibold text-lg"
                             >
-                                Call Today: (901) 621-8799
+                                Call Today: {PHONE_DISPLAY}
                             </a>
                         </div>
 
@@ -429,10 +433,11 @@ export function StickyHeader() {
 
                             {/* CTA */}
                             <a
-                                href="tel:+19016218799"
+                                href={`tel:${PHONE_NUMBER}`}
                                 className="mt-4 py-3 text-center font-bold bg-[#f59e0b] text-black rounded-lg"
+                                aria-label={PHONE_ARIA}
                             >
-                                Call Today: (901) 621-8799
+                                Call Today: {PHONE_DISPLAY}
                             </a>
 
                         </nav>

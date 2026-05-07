@@ -9,9 +9,9 @@ type CallButtonProps = {
 }
 
 export function CallButton({
-    phoneNumber = "+19016218799",
-    display = "(901) 621-8799",
-    ariaLabel = "Call Spencer Buys Houses at 901-621-8799",
+    phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER ?? "+19013999952",
+    display = process.env.NEXT_PUBLIC_PHONE_DISPLAY ?? "(901) 399-9952",
+    ariaLabel = `Call Spencer Buys Houses at ${process.env.NEXT_PUBLIC_PHONE_DISPLAY ?? "(901) 621-8799"}`,
     inline = false,
     className = "",
 }: CallButtonProps) {
