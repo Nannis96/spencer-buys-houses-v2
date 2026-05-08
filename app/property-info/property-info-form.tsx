@@ -801,7 +801,7 @@ export function PropertyInfoForm() {
                                         loading="lazy"
                                         allowFullScreen
                                         referrerPolicy="no-referrer-when-downgrade"
-                                        src={`https://www.google.com/maps/embed/v1/streetview?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&location=${geoLatLng.lat},${geoLatLng.lng}&fov=80&heading=0&pitch=0`}
+                                        src={`https://www.google.com/maps/embed/v1/streetview?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&location=${geoLatLng.lat},${geoLatLng.lng}&fov=80&heading=0&pitch=0}`}
                                     />
                                 ) : (
                                     <div className="p-3 text-center">
