@@ -184,7 +184,7 @@ async function main() {
             focusKeyword: "lakefront home Memphis"
         },
         {
-            slug: "why-memphis-real-estate-smart-move-2025",
+            slug: "why-memphis-real-estate-is-a-smart-move-in-2025",
             createdAt: new Date("2025-07-08T10:00:00.000Z"),
             title: "Why Memphis Real Estate Is a Smart Move in 2025",
             category: "General",
@@ -337,7 +337,7 @@ async function main() {
             focusKeyword: "sell house Whitehaven"
         },
         {
-            slug: "top-10-we-buy-houses-memphis-companies-2025",
+            slug: "we-buy-houses-in-memphis",
             createdAt: new Date("2025-07-22T10:00:00.000Z"),
             title: "Top 10 “We Buy Houses In Memphis for Cash” Companies in Memphis",
             category: "General",
@@ -1198,7 +1198,7 @@ async function main() {
             focusKeyword: "inherited home title issues Memphis"
         },
         {
-            slug: "case-study-closing-inherited-home-title-issues-1709-s-parkway",
+            slug: "case-studies-inherited-home-with-title-issues-memphis-1709-s-parkway",
             createdAt: new Date("2025-09-12T10:00:00.000Z"),
             title: "Case Study: Closing an Inherited Home with Title Issues in Memphis (1709 S Parkway, TN 38106)",
             category: "General",
@@ -1319,7 +1319,7 @@ async function main() {
             focusKeyword: "cash offer in 7 days Memphis"
         },
         {
-            slug: "memphis-fast-sell-guide-cash-offer-in-7-days",
+            slug: "memphis-fast-sell-guide-how-to-get-a-cash-offer-in-7-days",
             createdAt: new Date("2025-09-18T10:00:00.000Z"),
             title: "Memphis Fast Sell Guide: How to Get a Cash Offer in 7 Days",
             category: "General",
@@ -1416,7 +1416,7 @@ async function main() {
             focusKeyword: "sell inherited home Memphis"
         },
         {
-            slug: "the-ultimate-steps-to-sell-inherited-homes-in-memphis",
+            slug: "sell-inherited-homes-in-memphis",
             createdAt: new Date("2025-09-21T10:00:00.000Z"),
             title: "The Ultimate Steps to Sell Inherited Homes in Memphis",
             category: "General",

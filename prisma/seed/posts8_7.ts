@@ -690,7 +690,7 @@ async function main() {
             focusKeyword: "sell home during divorce memphis"
         },
         {
-            slug: "what-happens-after-we-buy-your-home-cash-home-buyers-memphis",
+            slug: "what-happens-after-we-buy-your-home-cash-home-buyers-in-memphis-transforming-properties",
             createdAt: new Date("2025-04-05T10:00:00.000Z"),
             title: "What Happens After We Buy Your Home? Cash Home Buyers in Memphis Transforming Properties",
             category: "General",
@@ -806,7 +806,7 @@ async function main() {
             focusKeyword: "cairn cove cordova renovation"
         },
         {
-            slug: "saving-homes-restoring-hope-memphis-38109",
+            slug: "saving-homes-restoring-hope-a-story-from-memphis-38109-zip-code/",
             createdAt: new Date("2025-04-03T10:00:00.000Z"),
             title: "Saving Homes, Restoring Hope: A Story from Memphis’ 38109 ZIP Code",
             category: "General",
@@ -903,7 +903,7 @@ async function main() {
             focusKeyword: "stay after foreclosure memphis"
         },
         {
-            slug: "memphis-real-estate-market-2025-selling-for-cash",
+            slug: "memphis-real-estate-market-sell-for-cash-2025",
             createdAt: new Date("2025-05-06T10:00:00.000Z"),
             title: "Memphis Real Estate Market in 2025: Why Selling for Cash Just Makes Sense",
             category: "General",
@@ -1128,7 +1128,7 @@ async function main() {
             focusKeyword: "sell house fast memphis"
         },
         {
-            slug: "what-steps-are-required-to-sell-moms-old-house",
+            slug: "sell-old-moms-house",
             createdAt: new Date("2025-05-16T10:00:00.000Z"),
             title: "What Steps Are Required to Sell Mom’s Old House?",
             category: "General",
@@ -1368,7 +1368,7 @@ async function main() {
             focusKeyword: ""
         },
         {
-            slug: "",
+            slug: "sell-your-memphis-home-as-is-in-2025",
             createdAt: new Date("2025-05-27T10:00:00.000Z"),
             title: "Sell Your Memphis Home As-Is in 2025: What You Need to Know About Memphis Real Estate Market",
             category: "General",

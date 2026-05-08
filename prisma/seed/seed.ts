@@ -11,8 +11,8 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
-    const email = "admin@example.com";
-    const password = "password123"; // Cambia esto en producción
+    const email = "kanikakanusharma6@gmail.com";
+    const password = "8R0qJ?6hsNM6";
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const admin = await prisma.user.upsert({
@@ -20,15 +20,15 @@ async function main() {
         update: {},
         create: {
             email,
-            name: "Admin User",
+            name: "Kanika Sharma",
             password: hashedPassword,
             role: "ADMIN",
         },
     });
 
     // Segundo usuario de ejemplo
-    const userEmail = "user@example.com";
-    const userPassword = "userpass123"; // Cambia esto en producción
+    const userEmail = "homebuyers901@gmail.com";
+    const userPassword = "46q1hj0G5DmU";
     const userHashed = await bcrypt.hash(userPassword, 10);
 
     const user = await prisma.user.upsert({
@@ -36,7 +36,7 @@ async function main() {
         update: {},
         create: {
             email: userEmail,
-            name: "Test User",
+            name: "Spencer Shadrach",
             password: userHashed,
             role: "USER",
         },

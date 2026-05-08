@@ -172,7 +172,7 @@ async function main() {
             focusKeyword: "sell bartlett house for cash"
         },
         {
-            slug: "reasons-why-local-homeowners-prefer-spencer-buys-houses",
+            slug: "reasons-why-local-homeowners-have-been-increasingly-preferring-spencer-buys-houses",
             createdAt: new Date("2025-09-30T10:00:00.000Z"),
             title: "Reasons Why Local Homeowners Have Been Increasingly Preferring – Spencer Buys Houses",
             category: "General",
@@ -249,7 +249,7 @@ async function main() {
             focusKeyword: "sell inherited house memphis"
         },
         {
-            slug: "selling-inherited-house-memphis-tn-why-homeowners-trust-spencer-buys-houses",
+            slug: "selling-an-inherited-house-in-memphis",
             createdAt: new Date("2025-10-01T10:00:00.000Z"),
             title: "Selling an Inherited House in Memphis, Tennessee: Why Homeowners Trust Spencer Buys Houses",
             category: "General",
@@ -564,7 +564,7 @@ async function main() {
             focusKeyword: "inherited house case study"
         },
         {
-            slug: "case-study-we-just-bought-another-memphis-home-evergreen-district",
+            slug: "case-study-inherited-home-brown-bark-memphis-tn",
             createdAt: new Date("2025-10-16T10:00:00.000Z"),
             title: "Case Study: Inherited House on Brown Bark in Memphis, TN – A Perfect Example of What Spencer Buys Houses Does Best",
             category: "General",
@@ -869,7 +869,7 @@ async function main() {
             focusKeyword: "memphis real estate 2025"
         },
         {
-            slug: "6-best-companies-that-buy-houses-for-cash-memphis",
+            slug: "beyond-the-offer-what-happens-after-spencer-buys-houses-buys-your-memphis-home",
             createdAt: new Date("2025-10-30T10:00:00.000Z"),
             title: "Beyond the Offer: What Happens After Spencer Buys Houses Buys Your Memphis Home?",
             category: "General",
@@ -970,7 +970,7 @@ async function main() {
             focusKeyword: "spencer buys houses team"
         },
         {
-            slug: "how-to-stop-foreclosure-memphis-tn",
+            slug: "home-sellers-guide-understanding-the-memphis-real-estate-market-in-2025",
             createdAt: new Date("2025-11-02T10:00:00.000Z"),
             title: "Home Seller’s Guide: Understanding the Memphis Real Estate Market in 2025",
             category: "General",
@@ -1078,7 +1078,7 @@ async function main() {
             focusKeyword: "stop foreclosure memphis"
         },
         {
-            slug: "sell-olive-branch-home-for-cash",
+            slug: "meet-the-spencer-buys-houses-team-your-local-memphis-property-experts",
             createdAt: new Date("2025-11-08T10:00:00.000Z"),
             title: "Meet the Spencer Buys Houses Team: Your Local Memphis Property Experts",
             category: "General",
@@ -1130,7 +1130,7 @@ async function main() {
             focusKeyword: "best companies buy houses memphis"
         },
         {
-            slug: "case-study-just-closed-morningview-dr-memphis-tn-38118",
+            slug: "how-to-stop-foreclosure-in-memphis-tn-a-straightforward-guide",
             createdAt: new Date("2025-11-10T10:00:00.000Z"),
             title: "How to Stop Foreclosure in Memphis, TN: A Straightforward Guide",
             category: "General",
@@ -1199,7 +1199,7 @@ async function main() {
             focusKeyword: "stop foreclosure memphis"
         },
         {
-            slug: "case-study-4577-summer-creek-memphis-tn-38141",
+            slug: "6-best-companies-that-buy-houses-for-cash-in-memphis",
             createdAt: new Date("2025-11-11T10:00:00.000Z"),
             title: "6 Best Companies That Buy Houses for Cash in Memphis",
             category: "General",
@@ -1379,7 +1379,7 @@ async function main() {
             focusKeyword: "best companies buy houses memphis"
         },
         {
-            slug: "case-study-3720-earls-court-rd",
+            slug: "sell-your-olive-branch-home-for-cash",
             createdAt: new Date("2025-11-12T10:00:00.000Z"),
             title: "Sell Your Olive Branch Home for Cash | Spencer Buys Houses",
             category: "General",
@@ -1428,7 +1428,7 @@ async function main() {
             focusKeyword: "sell olive branch home cash"
         },
         {
-            slug: "unlocking-opportunities-how-we-buy-houses-cordova",
+            slug: "case-study-closed-another-deal-morningview-dr-memphis",
             createdAt: new Date("2025-11-17T10:00:00.000Z"),
             title: "Case Study: Just Closed Another Deal |Morningview Dr, Memphis, TN 38118",
             category: "General",
@@ -1472,7 +1472,7 @@ async function main() {
             focusKeyword: "summer creek case study"
         },
         {
-            slug: "estate-sale-divorce-facing-foreclosure-how-cash-home-buyers-help-memphis",
+            slug: "case-study-closed-4577-summer-creek-memphis-hickory-hill",
             createdAt: new Date("2025-11-20T10:00:00.000Z"),
             title: "Case Study: Just Closed |4577 Summer Creek Memphis TN, 38141 (Hickory Hill)",
             category: "General",
@@ -1514,7 +1514,7 @@ async function main() {
             focusKeyword: "earls court case study"
         },
         {
-            slug: "what-repairs-to-skip-selling-to-cash-buyer-memphis",
+            slug: "case-study-closed-deal-3720-earls-court-rd",
             createdAt: new Date("2025-11-23T10:00:00.000Z"),
             title: "Case Study| Closed Deal 3720 Earls Court Rd | A Real-Life Look Inside the Process",
             category: "General",
@@ -1545,7 +1545,7 @@ async function main() {
             focusKeyword: "we buy houses cordova"
         },
         {
-            slug: "where-to-find-memphis-house-buyers-quick-sale",
+            slug: "we-buy-houses-in-cordova",
             createdAt: new Date("2025-12-01T10:00:00.000Z"),
             title: "Unlocking Opportunities: How We Buy Houses in Cordova Can Transform Your Real Estate Journey",
             category: "General",
@@ -1614,7 +1614,7 @@ async function main() {
             focusKeyword: "we buy houses cordova"
         },
         {
-            slug: "memphis-housing-market-trends-2025-2026-what-sellers-need-to-know",
+            slug: "estate-sale-divorce-facing-foreclosure-heres-how-cash-home-buyers-can-help-in-memphis",
             createdAt: new Date("2025-12-05T10:00:00.000Z"),
             title: "Estate Sale? Divorce? Facing Foreclosure? Here’s How Cash Home Buyers Can Help in Memphis",
             category: "General",
@@ -1683,7 +1683,7 @@ async function main() {
             focusKeyword: "repairs to skip cash buyer"
         },
         {
-            slug: "what-repairs-to-skip-selling-to-cash-buyer-memphis",
+            slug: "what-repairs-should-you-skip-if-youre-selling-to-a-cash-buyer-in-memphis",
             createdAt: new Date("2025-12-07T10:00:00.000Z"),
             title: "What Repairs Should You Skip If You’re Selling to a Cash Buyer in Memphis?",
             category: "General",
@@ -1750,7 +1750,7 @@ async function main() {
             focusKeyword: "memphis house buyers"
         },
         {
-            slug: "where-to-find-memphis-house-buyers-quick-sale",
+            slug: "where-to-find-memphis-house-buyers-for-a-quick-sale",
             createdAt: new Date("2025-12-10T10:00:00.000Z"),
             title: "Where to Find Memphis House Buyers for a Quick Sale",
             category: "General",
@@ -2005,7 +2005,7 @@ async function main() {
             focusKeyword: "whitehaven cash purchase"
         },
         {
-            slug: "closed-hassle-free-as-is-cash-purchase-whitehaven-deerland-st",
+            slug: "closed-new-property-hassle-free-as-is-cash-purchase-in-whitehaven",
             createdAt: new Date("2025-12-16T10:00:00.000Z"),
             title: "CLOSED NEW PROPERTY: Hassle-Free “As-Is” Cash Purchase in Whitehaven",
             category: "General",

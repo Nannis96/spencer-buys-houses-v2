@@ -226,7 +226,7 @@ async function main() {
             focusKeyword: "sell unwanted house Memphis"
         },
         {
-            slug: "financial-options-selling-inherited-property-memphis",
+            slug: "3-financial-options-you-can-pursue-when-selling-an-inherited-property-in-memphis",
             createdAt: new Date("2025-02-17T10:00:00.000Z"),
             title: "3 Financial Options You Can Pursue When Selling an Inherited Property in Memphis",
             category: "General",
@@ -319,7 +319,7 @@ async function main() {
             focusKeyword: "sell house Memphis relocating"
         },
         {
-            slug: "options-facing-foreclosure-memphis",
+            slug: "what-are-my-options-when-facing-foreclosure-in-memphis-tennessee",
             createdAt: new Date("2025-03-12T10:00:00.000Z"),
             title: "What Are My Options When Facing Foreclosure in Memphis, Tennessee?",
             category: "General",
@@ -543,7 +543,7 @@ async function main() {
             focusKeyword: "foreclosure process Memphis"
         },
         {
-            slug: "cash-home-buyers-memphis",
+            slug: "cash-home-buyers-in-memphis-sell-your-home-fast-hassle-free",
             createdAt: new Date("2025-03-06T10:00:00.000Z"),
             title: "Cash Home Buyers in Memphis: Sell Your Home Fast & Hassle-Free",
             category: "General",
@@ -619,7 +619,7 @@ async function main() {
             focusKeyword: "cash home buyers Memphis"
         },
         {
-            slug: "dated-design-elements-memphis",
+            slug: "design-elements-that-can-make-it-difficult-to-sell-your-house-memphis",
             createdAt: new Date("2025-03-03T10:00:00.000Z"),
             title: "Dated Design Elements That Can make it Difficult to Sell Your House in Memphis",
             category: "General",
