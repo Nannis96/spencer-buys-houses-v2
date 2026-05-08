@@ -1,11 +1,21 @@
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 import { CallButton } from "@/components/ui/call-button"
+import Image from "next/image"
 
 export function HeroBold() {
     return (
-        <section className="relative bg-[url('/background-home.png')] bg-no-repeat bg-left bg-cover bg-[position:10%_50%] md:bg-[position:35%_30%] lg:bg-[position:50%_25%] min-h-[28rem] md:min-h-[40rem] lg:min-h-[56rem] flex flex-col justify-end lg:items-center lg:justify-center py-12 md:py-16 mt-6 md:mt-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30 z-0" aria-hidden="true" />
-            <div className="relative z-10 mx-auto max-w-8xl px-4 lg:px-40">
+        <section className="relative min-h-[28rem] md:min-h-[40rem] lg:min-h-[56rem] flex flex-col justify-end lg:items-center lg:justify-center py-12 md:py-16 mt-6 md:mt-0 overflow-hidden">
+            <Image
+                src="/background-home.png"
+                alt=""
+                fill
+                priority
+                quality={85}
+                sizes="100vw"
+                className="object-cover object-[10%_50%] md:object-[35%_30%] lg:object-[50%_25%]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30 z-[1]" aria-hidden="true" />
+            <div className="relative z-[2] mx-auto max-w-8xl px-4 lg:px-40">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
                     <div className="text-center lg:text-left">
                         {/* H1 SEO */}

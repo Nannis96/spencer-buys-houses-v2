@@ -1,6 +1,7 @@
 "use client"
 
 import { useId, useState, useEffect } from "react"
+import Script from "next/script"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -300,9 +301,15 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                                 scrolling="no"
                                 id="P1vgAP9PKCyszvGvim17_1775688153226"
                             />
-                            <script
+                            {/*
+                             * GHL form_embed.js — afterInteractive: required immediately after
+                             * hydration so the booking iframe renders correctly. Next.js
+                             * deduplicates scripts with the same src automatically.
+                             */}
+                            <Script
+                                id="ghl-embed-inperson"
                                 src="https://api.leadconnectorhq.com/js/form_embed.js"
-                                type="text/javascript"
+                                strategy="afterInteractive"
                             />
                         </div>
                     </div>
@@ -325,9 +332,11 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                                 scrolling="no"
                                 id="spencerbuyhouses9hx574_1775688153226"
                             />
-                            <script
+                            {/* Same script as above; Next.js deduplicates by src — only one request is made */}
+                            <Script
+                                id="ghl-embed-phone"
                                 src="https://api.leadconnectorhq.com/js/form_embed.js"
-                                type="text/javascript"
+                                strategy="afterInteractive"
                             />
                         </div>
                     </div>

@@ -80,6 +80,7 @@ export default async function ServicePage(props: {
                                     src={service.authorImage}
                                     alt={service.authorName || 'Author'}
                                     fill
+                                    sizes="40px"
                                     className="object-cover"
                                 />
                             </div>
@@ -108,6 +109,7 @@ export default async function ServicePage(props: {
                             src={service.mainImage}
                             alt={service.title}
                             fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 85vw, 768px"
                             className="object-cover"
                             priority
                         />
@@ -144,6 +146,7 @@ export default async function ServicePage(props: {
                                     src={service.authorImage}
                                     alt={service.authorName || 'Author'}
                                     fill
+                                    sizes="64px"
                                     className="object-cover"
                                 />
                             </div>

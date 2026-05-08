@@ -461,7 +461,7 @@ export default function HowWeBuyHousesPage() {
                     id="process-investor"
                     className="bg-[var(--background-white)] border-t-4 border-[var(--color-secondary)] py-16 lg:py-20"
                     style={{
-                        backgroundImage: "url('/buildings.png')",
+                        backgroundImage: "url('/buildings.webp')",
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'center',
                         backgroundSize: '90%',

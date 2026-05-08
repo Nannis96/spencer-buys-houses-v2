@@ -76,7 +76,7 @@ export default async function BlogPostPage(props: {
         <div className="flex items-center gap-4 mb-10 pb-8 border-b border-[var(--color-primary)]/60">
           {post.authorImage && (
             <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#529e14] flex-shrink-0">
-              <Image src={post.authorImage} alt={post.authorName || 'Author'} fill className="object-cover" />
+              <Image src={post.authorImage} alt={post.authorName || 'Author'} fill sizes="40px" className="object-cover" />
             </div>
           )}
           <div>
@@ -102,6 +102,7 @@ export default async function BlogPostPage(props: {
               src={post.mainImage}
               alt={post.title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 85vw, 768px"
               className="object-cover"
               priority
             />
@@ -134,7 +135,7 @@ export default async function BlogPostPage(props: {
           <div className="mt-16 p-6 rounded-2xl bg-[#242424] border border-gray-800 flex items-start gap-5">
             {post.authorImage && (
               <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#529e14] flex-shrink-0">
-                <Image src={post.authorImage} alt={post.authorName || 'Author'} fill className="object-cover" />
+                <Image src={post.authorImage} alt={post.authorName || 'Author'} fill sizes="64px" className="object-cover" />
               </div>
             )}
             <div>

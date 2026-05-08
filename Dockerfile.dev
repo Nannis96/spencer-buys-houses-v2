@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:22-alpine
 
 # Alpine necesita esta librería para evitar problemas con SWC de Next.js y el motor de Prisma
 RUN apk add --no-cache libc6-compat

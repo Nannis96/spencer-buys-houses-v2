@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
+import { JsonLd } from "@/components/seo/json-ld"
 import { CallButton } from "@/components/ui/call-button"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
@@ -52,7 +53,7 @@ export default async function CityPage({ params }: Props) {
     const found = findCity(stateSlug, citySlug)
     if (!found) {
         return (
-            <main className="min-h-screen bg-[url('/background-we-serve.png')] bg-no-repeat bg-center bg-cover flex items-center justify-center">
+            <main className="min-h-screen bg-[url('/background-we-serve.webp')] bg-no-repeat bg-center bg-cover flex items-center justify-center">
                 <div className="text-center text-white">
                     <h1 className="text-4xl font-bold mb-4">City not found</h1>
                     <Link href="/" className="text-[#f59e0b] underline">Go home</Link>
@@ -78,9 +79,19 @@ export default async function CityPage({ params }: Props) {
 
     return (
         <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+            {/* JSON-LD structured data — server-rendered, no JS cost */}
+            <JsonLd data={jsonLd} />
             <main id="top">
-                <section className="relative bg-[url('/background-we-serve.png')] bg-no-repeat bg-right-top bg-cover bg-[position:75%_30%] md:bg-[position:60%_30%] lg:bg-[position:50%_25%] pt-28 md:pt-44 pb-12 lg:pb-20 overflow-hidden">
+                <section className="relative pt-28 md:pt-44 pb-12 lg:pb-20 overflow-hidden">
+                    <Image
+                        src="/background-we-serve.png"
+                        alt=""
+                        fill
+                        priority
+                        quality={85}
+                        sizes="100vw"
+                        className="object-cover object-[75%_30%] md:object-[60%_30%] lg:object-[50%_25%]"
+                    />
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[520px] bg-[#f59e0b]/5 rounded-full blur-3xl" />
                     <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -173,7 +184,7 @@ export default async function CityPage({ params }: Props) {
                             {/* Right column — city image with fallback */}
                             <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
                                 <Image
-                                    src={city.benefitsImage ?? "/houses/Houses_Spenecer_22.png"}
+                                    src={city.benefitsImage ?? "/houses/Houses_22.png"}
                                     alt={`We buy houses in ${city.name}`}
                                     fill
                                     className="object-cover"

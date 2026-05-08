@@ -47,8 +47,9 @@ export function TypesOfHomesSection() {
                                 <Image
                                     src="/grandmothers.png"
                                     alt="Agente conversando con una mujer mayor y su familiar, sonriendo"
-                                    width={1200}
-                                    height={1200}
+                                    width={448}
+                                    height={280}
+                                    sizes="(max-width: 768px) 100vw, 448px"
                                     className="w-full h-70 object-cover"
                                     loading="lazy"
                                 />

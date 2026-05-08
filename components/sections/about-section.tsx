@@ -46,9 +46,9 @@ export function AboutSection() {
                                     src="/houses/Houses_22.png"
                                     alt="Exterior view of a house"
                                     fill
-                                    sizes="(max-width: 1024px) 100vw, 1792px"
+                                    sizes="(max-width: 1024px) 100vw, 50vw"
                                     className="object-cover"
-                                    priority
+                                    loading="lazy"
                                 />
                             </div>
                         </div>

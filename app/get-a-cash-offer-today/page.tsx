@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { JsonLd } from "@/components/seo/json-ld"
 import { CashOfferContent } from "./cash-offer-content"
 
 /* ─── SEO Metadata ──────────────────────────────────────────────────────── */
@@ -87,12 +88,8 @@ const jsonLd = {
 export default function GetCashOfferPage() {
     return (
         <>
-            {/* Inject JSON-LD */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
-
+            {/* JSON-LD structured data — server-rendered, no JS cost */}
+            <JsonLd data={jsonLd} />
             <main>
                 <CashOfferContent />
             </main>

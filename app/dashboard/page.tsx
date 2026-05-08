@@ -4,6 +4,7 @@ import { SignOutButton } from "@/components/dashboard/SignOutButton"
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar"
 import { Home, ChevronRight, LayoutDashboard } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 function formatDate(date: string | Date) {
     const d = new Date(date)
@@ -83,7 +84,7 @@ export default async function Dashboard() {
                                             <div className="text-xs text-gray-400">{formatDate(post.createdAt)}</div>
                                         </div>
                                         {post.mainImage ? (
-                                            <img src={post.mainImage} alt={post.title} className="w-16 h-10 object-cover rounded-md ml-4" />
+                                            <Image src={post.mainImage} alt={post.title} width={64} height={40} className="object-cover rounded-md ml-4" />
                                         ) : null}
                                     </li>
                                 ))}
@@ -115,7 +116,7 @@ export default async function Dashboard() {
                                             <div className="text-xs text-gray-400">{formatDate(service.createdAt)}</div>
                                         </div>
                                         {service.mainImage ? (
-                                            <img src={service.mainImage} alt={service.title} className="w-16 h-10 object-cover rounded-md ml-4" />
+                                            <Image src={service.mainImage} alt={service.title} width={64} height={40} className="object-cover rounded-md ml-4" />
                                         ) : null}
                                     </li>
                                 ))}

@@ -268,6 +268,7 @@ export default function AboutPage() {
                                 alt="Spencer Buys Houses — Memphis local home buyer"
                                 width={520}
                                 height={600}
+                                sizes="(max-width: 1024px) 100vw, 520px"
                                 className="rounded-2xl w-full object-cover shadow-2xl"
                                 priority
                             />

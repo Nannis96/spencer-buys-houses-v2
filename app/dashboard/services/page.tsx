@@ -61,6 +61,7 @@ export default async function AdminServicesPage() {
                                             src={service.mainImage}
                                             alt={service.title}
                                             fill
+                                            sizes="80px"
                                             className="object-cover"
                                         />
                                     ) : (

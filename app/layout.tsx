@@ -408,37 +408,9 @@ export default function RootLayout({
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />
         <JsonLd data={businessGraphSchema} />
-        {/* Google Tag Manager — Principal */}
-        <Script
-          id="gtm-primary"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WWPZRDH');`,
-          }}
-        />
-        {/* Google Tag Manager — Secundario */}
-        <Script
-          id="gtm-secondary"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WSG7CZKX');`,
-          }}
-        />
-        {/* Google Analytics GA4 */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-P11R7D3N7W"
-          strategy="afterInteractive"
-        />
-        <Script
-          id="ga4-config"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-P11R7D3N7W');`,
-          }}
-        />
       </head>
       <body id="top" className="font-sans antialiased min-h-screen">
-        {/* GTM noscript fallbacks */}
+        {/* GTM noscript fallbacks — must be immediately after <body> per GTM spec */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-WWPZRDH"
@@ -459,6 +431,64 @@ export default function RootLayout({
         <div style={{ paddingTop: 'calc(var(--app-header-height, 4rem) / 2)' }}>{children}</div>
         <SiteFooter />
         <Analytics />
+        {/*
+         * ── Third-party scripts ───────────────────────────────────────────────
+         * Placed at the end of <body> so Next.js can inject them after hydration
+         * without blocking the render pipeline or affecting LCP.
+         * ─────────────────────────────────────────────────────────────────────
+         */}
+
+        {/*
+         * GTM — Primary container (GTM-WWPZRDH)
+         * strategy="afterInteractive": GTM must initialise as soon as the page
+         * is interactive so pageview events and early user interactions are not
+         * missed. Delaying it further (lazyOnload) would lose those signals.
+         */}
+        <Script
+          id="gtm-primary"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WWPZRDH');`,
+          }}
+        />
+
+        {/*
+         * GTM — Secondary container (GTM-WSG7CZKX)
+         * strategy="lazyOnload": secondary container carries supplementary pixels
+         * and re-targeting tags that are not time-sensitive. Loading it only after
+         * the browser is fully idle prevents it from competing with the primary
+         * GTM container and with LCP resources.
+         */}
+        <Script
+          id="gtm-secondary"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WSG7CZKX');`,
+          }}
+        />
+
+        {/*
+         * Google Analytics GA4 — gtag.js loader (G-P11R7D3N7W)
+         * strategy="afterInteractive": GA4 must be ready immediately after
+         * hydration to capture first pageview and user-timing metrics accurately.
+         */}
+        <Script
+          id="ga4-loader"
+          src="https://www.googletagmanager.com/gtag/js?id=G-P11R7D3N7W"
+          strategy="afterInteractive"
+        />
+
+        {/*
+         * Google Analytics GA4 — inline config
+         * Depends on the ga4-loader above; "afterInteractive" keeps both in sync.
+         */}
+        <Script
+          id="ga4-config"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-P11R7D3N7W');`,
+          }}
+        />
       </body>
     </html>
   )
