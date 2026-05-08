@@ -835,8 +835,7 @@ export function PropertyInfoForm() {
                                     loading="lazy"
                                     allowFullScreen
                                     referrerPolicy="no-referrer-when-downgrade"
-                                    src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${geoLatLng ? `${geoLatLng.lat},${geoLatLng.lng}` : encodeURIComponent([localAddress, localCity, localState, localZipCode].filter(Boolean).join(", "))
-                                        }&zoom=15`}
+                                    src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${geoLatLng ? `${geoLatLng.lat},${geoLatLng.lng}` : encodeURIComponent([localAddress, localCity, localState, localZipCode].filter(Boolean).join(", "))}&zoom=15`}
                                 />
                             </div>
                         </div>
