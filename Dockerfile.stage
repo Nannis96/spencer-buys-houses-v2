@@ -6,10 +6,8 @@ WORKDIR /app
 
 RUN corepack enable pnpm
 
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml* .npmrc ./
 COPY prisma ./prisma/
-
-RUN pnpm config set ignore-scripts false
 
 RUN pnpm install --frozen-lockfile
 
