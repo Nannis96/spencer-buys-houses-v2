@@ -13,7 +13,7 @@ export default async function TokenPage() {
     }
 
     // Use the fixed user email instead of the logged-in user
-    const targetEmail = "user@example.com"
+    const targetEmail = "botia@example.com"
     const targetUser = await prisma.user.findUnique({ where: { email: targetEmail } })
 
     if (!targetUser) {
@@ -81,6 +81,7 @@ export default async function TokenPage() {
                             initialExpiresAt={tokenRecord?.expiresAt?.toISOString() ?? null}
                             apiAuthToken={apiAuthToken}
                             userEmail={targetEmail}
+                            userName={targetUser.name ?? undefined}
                         />
                     </div>
                 </div>

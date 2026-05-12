@@ -7,9 +7,10 @@ type Props = {
     initialExpiresAt: string | null
     apiAuthToken: string
     userEmail: string
+    userName?: string
 }
 
-export default function TokenManager({ initialToken, initialExpiresAt, apiAuthToken, userEmail }: Props) {
+export default function TokenManager({ initialToken, initialExpiresAt, apiAuthToken, userEmail, userName }: Props) {
     const [token, setToken] = useState<string | null>(initialToken)
     const [expiresAt, setExpiresAt] = useState<string | null>(initialExpiresAt)
     const [loading, setLoading] = useState(false)
@@ -61,7 +62,7 @@ export default function TokenManager({ initialToken, initialExpiresAt, apiAuthTo
     return (
         <div className="bg-white/5 border border-gray-800 rounded-2xl p-6">
             <label className="text-sm text-gray-400">User</label>
-            <div className="font-medium mb-4">{userEmail}</div>
+            <div className="font-medium mb-4">{userName ?? userEmail}</div>
 
             <label className="text-sm text-gray-400">Token</label>
             <div className="mt-2 mb-4">
