@@ -1,23 +1,10 @@
 import type { Metadata, Viewport } from "next"
 import Script from "next/script"
-import { Inter, Open_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { JsonLd } from "@/components/seo/json-ld"
 import { StickyHeader } from "@/components/layout/header"
 import { SiteFooter } from "@/components/layout/site-footer"
 import "./globals.css"
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-})
-
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  variable: "--font-open-sans",
-  display: "swap",
-})
 
 const SITE_URL = "https://www.spencerbuyshouses.com"
 const SITE_NAME = "SpencerBuysHouses.com"
@@ -403,7 +390,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${openSans.variable}`}>
+    <html lang="en">
       <head>
         <JsonLd data={websiteSchema} />
         <JsonLd data={organizationSchema} />

@@ -777,28 +777,31 @@ function SectionHeading({ children, className }: { children: React.ReactNode; cl
 }
 
 /* ─── Component ───────────────────────────────────────────────────────────── */
-export function PropertyDetailsForm() {
+export function PropertyDetailsForm({ initialParams }: { initialParams?: URLSearchParams | null } = {}) {
     const uid = useId()
     const id = (field: string) => `${uid}-${field}`
     const searchParams = useSearchParams()
 
+    // Helper: prefer initialParams (from multi-step wrapper) over URL search params
+    const p = (k: string) => initialParams?.get(k) ?? searchParams.get(k)
+
     // stable string representation of search params to avoid effect re-running
-    const spString = searchParams.toString()
-    const address = searchParams.get("address") ?? ""
-    const city = searchParams.get("city") ?? ""
-    const state = searchParams.get("state") ?? ""
-    const zipCode = searchParams.get("zipCode") ?? ""
+    const spString = (initialParams ?? searchParams).toString()
+    const address = p("address") ?? ""
+    const city = p("city") ?? ""
+    const state = p("state") ?? ""
+    const zipCode = p("zipCode") ?? ""
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitted, setSubmitted] = useState(false)
 
     // Offer may have been precomputed in property-info-form and passed via URL params
-    const precomputedCashOffer = searchParams.get("cashOffer") !== null ? Number(searchParams.get("cashOffer")) : null
-    const precomputedRepairCosts = searchParams.get("repairCosts") !== null ? Number(searchParams.get("repairCosts")) : null
-    const precomputedArv = searchParams.get("arv") !== null ? Number(searchParams.get("arv")) : null
-    const precomputedEstimatedRent = searchParams.get("estimatedRent") !== null ? Number(searchParams.get("estimatedRent")) : null
-    const precomputedAnnualTaxes = searchParams.get("annualTaxes") !== null ? Number(searchParams.get("annualTaxes")) : null
-    const precomputedInsuranceAnnual = searchParams.get("insuranceAnnual") !== null ? Number(searchParams.get("insuranceAnnual")) : null
+    const precomputedCashOffer = p("cashOffer") !== null ? Number(p("cashOffer")) : null
+    const precomputedRepairCosts = p("repairCosts") !== null ? Number(p("repairCosts")) : null
+    const precomputedArv = p("arv") !== null ? Number(p("arv")) : null
+    const precomputedEstimatedRent = p("estimatedRent") !== null ? Number(p("estimatedRent")) : null
+    const precomputedAnnualTaxes = p("annualTaxes") !== null ? Number(p("annualTaxes")) : null
+    const precomputedInsuranceAnnual = p("insuranceAnnual") !== null ? Number(p("insuranceAnnual")) : null
     console.log('Precomputed offer (from URL):', { precomputedCashOffer, precomputedRepairCosts })
 
     const [offerLoading, setOfferLoading] = useState(false)
@@ -835,10 +838,10 @@ export function PropertyDetailsForm() {
         resolver: zodResolver(propertyDetailsSchema),
         mode: "onChange",
         defaultValues: {
-            firstName: searchParams.get("_firstName") ?? "",
-            lastName: searchParams.get("_lastName") ?? "",
-            phone: searchParams.get("_phone") ?? "",
-            email: searchParams.get("_email") ?? "",
+            firstName: p("_firstName") ?? "",
+            lastName: p("_lastName") ?? "",
+            phone: p("_phone") ?? "",
+            email: p("_email") ?? "",
         },
     })
 
@@ -850,9 +853,9 @@ export function PropertyDetailsForm() {
         const combinedFormData = {
             address: { address: localAddress, city: localCity, state: localState, zipCode: localZipCode },
             // explicit top-level fields for GHL mapping
-            askingPrice: searchParams.get("askingPrice") ?? null,
+            askingPrice: p("askingPrice") ?? null,
             // include all search params forwarded from previous steps
-            searchParams: Object.fromEntries(Array.from(searchParams.entries())),
+            searchParams: Object.fromEntries(Array.from((initialParams ?? searchParams).entries())),
             // current step form data
             formData: data,
             // any precomputed offer values that may have been passed via URL
@@ -890,7 +893,7 @@ export function PropertyDetailsForm() {
         console.log("Appointment selected:", { agent: appointmentAgent, date: appointmentDate, time: appointmentTime })
 
         // Update URL to reflect completion
-        const outParams = new URLSearchParams(Array.from(searchParams.entries()))
+        const outParams = new URLSearchParams(Array.from((initialParams ?? searchParams).entries()))
         outParams.set("submitted", "true")
         outParams.set("step3Complete", "true")
         const qs = outParams.toString()
@@ -915,7 +918,7 @@ export function PropertyDetailsForm() {
                 .filter(Boolean)
                 .join(", ")
 
-            const condRaw = searchParams.get("condition")
+            const condRaw = p("condition")
             const conditionScale = condRaw !== null ? Math.max(0, Math.min(5, Number(condRaw))) : 3
 
             const res = await fetch("/api/offers", {

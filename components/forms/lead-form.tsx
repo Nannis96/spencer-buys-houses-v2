@@ -5,8 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { MapPin, Phone, Mail, User, ArrowRight, Loader2, CheckCircle2, ShieldCheck } from "lucide-react"
+import { ArrowRight, Loader2, CheckCircle2, ShieldCheck } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const leadSchema = z.object({

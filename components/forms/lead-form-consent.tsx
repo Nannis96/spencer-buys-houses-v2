@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { MapPin, Phone, Mail, User, ArrowRight, Loader2, ShieldCheck, Building2, Hash } from "lucide-react"
+import { MapPin, ArrowRight, Loader2, ShieldCheck } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""
@@ -42,7 +42,7 @@ function FieldError({ message }: { message?: string }) {
 
 /* ─── Component ───────────────────────────────────────────────────────────── */
 
-export function LeadFormConsent() {
+export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams) => void } = {}) {
     const uid = useId()          // stable unique prefix per instance (safe for SSR)
     const id = (field: string) => `${uid}-${field}`
     const router = useRouter()
@@ -78,8 +78,8 @@ export function LeadFormConsent() {
         }
     }, [watchedAddress])
 
-    // ── Load Google Maps script ──────────────────────────────────────────────
-    useEffect(() => {
+    // ── Load Google Maps script (deferred until user interacts) ────────────────
+    const loadGoogleMaps = useCallback(() => {
         if (!GOOGLE_MAPS_API_KEY || typeof window === "undefined") return
         if (window.google?.maps) { setMapsLoaded(true); return }
 
@@ -163,7 +163,12 @@ export function LeadFormConsent() {
         params.append("smsConsent", String(data.smsConsent ?? false))
 
         setTimeout(() => {
-            router.push(`/property-info?${params.toString()}`)
+            if (onNext) {
+                setIsSubmitting(false)
+                onNext(params)
+            } else {
+                router.push(`/property-info?${params.toString()}`)
+            }
         }, 1500)
     }
 
@@ -202,6 +207,7 @@ export function LeadFormConsent() {
                                     registerAddressRef(el)
                                     addressInputRef.current = el
                                 }}
+                                onFocus={loadGoogleMaps}
                                 {...registerAddressRest}
                                 className="pl-11 h-12 bg-[var(--color-amber-05)] border-[rgba(255,255,255,0.08)] text-[var(--color-text-white)] placeholder:text-[rgba(255,255,255,0.7)] font-semibold text-lg focus-visible:ring-yellow-400/60 focus-visible:border-yellow-400/60 address-glow"
                                 aria-invalid={!!errors.address}

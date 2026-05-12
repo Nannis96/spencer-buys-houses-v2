@@ -221,21 +221,24 @@ function SuccessScreen() {
 
 /* ─── Main Form Component ─────────────────────────────────────────────────── */
 
-export function PropertyInfoForm() {
+export function PropertyInfoForm({ initialParams, onNext }: { initialParams?: URLSearchParams | null; onNext?: (params: URLSearchParams) => void } = {}) {
     const uid = useId()
     const id = (field: string) => `${uid}-${field}`
     const searchParams = useSearchParams()
     const router = useRouter()
     const pathname = usePathname()
 
-    // All data forwarded from step 1 (address entry)
-    const address = searchParams.get("address") ?? ""
-    const city = searchParams.get("city") ?? ""
-    const state = searchParams.get("state") ?? ""
-    const zipCode = searchParams.get("zipCode") ?? ""
-    const smsConsentPrev = searchParams.get("smsConsent") ?? "false"
+    // Helper: prefer initialParams (from multi-step wrapper) over URL search params
+    const p = (k: string) => initialParams?.get(k) ?? searchParams.get(k)
 
-    const initialPage: 1 | 2 | 3 | 4 = searchParams.get("propInfoStep") === "4" ? 4 : searchParams.get("propInfoStep") === "3" ? 3 : searchParams.get("propInfoStep") === "2" ? 2 : 1
+    // All data forwarded from step 1 (address entry)
+    const address = p("address") ?? ""
+    const city = p("city") ?? ""
+    const state = p("state") ?? ""
+    const zipCode = p("zipCode") ?? ""
+    const smsConsentPrev = p("smsConsent") ?? "false"
+
+    const initialPage: 1 | 2 | 3 | 4 = p("propInfoStep") === "4" ? 4 : p("propInfoStep") === "3" ? 3 : p("propInfoStep") === "2" ? 2 : 1
     const [formPage, setFormPage] = useState<1 | 2 | 3 | 4>(initialPage)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [avmResult, setAvmResult] = useState<any>(null)
@@ -266,11 +269,11 @@ export function PropertyInfoForm() {
     } = useForm<PropertyInfoFormData>({
         resolver: zodResolver(propertyInfoSchema),
         defaultValues: {
-            closingTimeline: searchParams.get("closingTimeline") ?? "",
-            ultimateGoal: searchParams.get("ultimateGoal") ?? "",
-            condition: searchParams.get("condition") ?? "",
-            occupied: searchParams.get("occupied") ?? "",
-            listedWithRealtor: searchParams.get("listedWithRealtor") ?? "",
+            closingTimeline: p("closingTimeline") ?? "",
+            ultimateGoal: p("ultimateGoal") ?? "",
+            condition: p("condition") ?? "",
+            occupied: p("occupied") ?? "",
+            listedWithRealtor: p("listedWithRealtor") ?? "",
         },
         mode: "onChange",
     })
@@ -284,7 +287,7 @@ export function PropertyInfoForm() {
         if (typeof window === "undefined") return
 
         try {
-            const get = (k: string) => searchParams.get(k) ?? undefined
+            const get = (k: string) => initialParams?.get(k) ?? searchParams.get(k) ?? undefined
 
             const mapping: Array<[string, string | undefined]> = [
                 ["garage", get("garage")],
@@ -493,10 +496,10 @@ export function PropertyInfoForm() {
         if (data.yearBuilt !== undefined && data.yearBuilt !== "") params.append("yearBuilt", data.yearBuilt)
         if (data.bestTimeToCall !== undefined && data.bestTimeToCall !== "") params.append("bestTimeToCall", data.bestTimeToCall)
         // Forward any saved "Your Info" values so they survive the round-trip back
-        const _firstName = searchParams.get("_firstName")
-        const _lastName = searchParams.get("_lastName")
-        const _phone = searchParams.get("_phone")
-        const _email = searchParams.get("_email")
+        const _firstName = p("_firstName")
+        const _lastName = p("_lastName")
+        const _phone = p("_phone")
+        const _email = p("_email")
         if (_firstName) params.append("_firstName", _firstName)
         if (_lastName) params.append("_lastName", _lastName)
         if (_phone) params.append("_phone", _phone)
@@ -547,7 +550,12 @@ export function PropertyInfoForm() {
             console.error("Failed to fetch AVM / offer:", err)
         }
 
-        router.push(`/property-details?${params.toString()}`)
+        if (onNext) {
+            setIsSubmitting(false)
+            onNext(params)
+        } else {
+            router.push(`/property-details?${params.toString()}`)
+        }
     }
 
     // Report step completion in URL so progress indicator can update in real time
