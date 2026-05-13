@@ -1,0 +1,106 @@
+.blog-content {
+  max-width: none;
+  color: #d1d5db;
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+/* PARAGRAPHS */
+.blog-content p {
+  color: #d1d5db;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+/* H2 */
+.blog-content h2 {
+  color: #f8ed1a;
+  font-size: 1.875rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+/* H3 */
+.blog-content h3 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+/* LINKS */
+.blog-content a {
+  color: #529e14;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.blog-content a:hover {
+  text-decoration: underline;
+  opacity: 0.9;
+}
+
+/* LISTS */
+.blog-content ul,
+.blog-content ol {
+  color: #d1d5db;
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-content li {
+  margin-bottom: 0.5rem;
+}
+
+.blog-content li::marker {
+  color: #529e14;
+}
+
+/* BLOCKQUOTE */
+.blog-content blockquote {
+  border-left: 4px solid #529e14;
+  background: #242424;
+  padding: 1rem 1.5rem;
+  border-radius: 0 1rem 1rem 0;
+  font-style: normal;
+  margin: 2rem 0;
+}
+
+/* CODE */
+.blog-content code {
+  background: #242424;
+  color: #f8ed1a;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.375rem;
+  font-size: 0.9rem;
+}
+
+/* CODE BLOCKS */
+.blog-content pre {
+  background: #242424;
+  border: 1px solid #374151;
+  border-radius: 1rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 2rem 0;
+}
+
+/* IMAGES */
+.blog-content img {
+  border-radius: 1rem;
+  border: 1px solid #374151;
+  margin: 2rem 0;
+  width: 100%;
+  height: auto;
+}
+
+/* HR */
+.blog-content hr {
+  border: none;
+  border-top: 1px solid #374151;
+  margin: 3rem 0;
+}
