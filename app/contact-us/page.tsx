@@ -4,6 +4,7 @@ import { JsonLd } from "@/components/seo/json-ld"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 import SpencerVideo from "@/components/sections/spencer-video"
+import { MapEmbed } from "@/components/sections/map-embed"
 
 /* ─── Metadata ───────────────────────────────────────────────────────────── */
 
@@ -339,14 +340,10 @@ export default function ContactUsPage() {
                             <div className="mx-auto max-w-7xl px-4 lg:px-8 mt-8">
                                 <h3 className="text-lg font-bold text-white mb-4">Visit Our Office</h3>
                                 <div className="w-full h-64 sm:h-80 lg:h-96 rounded-2xl overflow-hidden border border-[var(--color-primary)]/40">
-                                    <iframe
+                                    <MapEmbed
                                         title="Spencer Buys Houses - Memphis location"
                                         src="https://maps.google.com/maps?q=35.1176518,-89.9116545&z=15&output=embed"
-                                        width="100%"
-                                        height="100%"
-                                        style={{ border: 0 }}
-                                        loading="lazy"
-                                        referrerPolicy="no-referrer-when-downgrade"
+                                        address="111 S Highland St, Suite 179, Memphis, TN 38111"
                                     />
                                 </div>
                             </div>

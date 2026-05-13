@@ -299,6 +299,7 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                                 src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
                                 style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
                                 scrolling="no"
+                                loading="lazy"
                                 id="P1vgAP9PKCyszvGvim17_1775688153226"
                             />
                             {/*
@@ -330,6 +331,7 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                                 src="https://api.leadconnectorhq.com/widget/bookings/spencerbuyhouses9hx574"
                                 style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
                                 scrolling="no"
+                                loading="lazy"
                                 id="spencerbuyhouses9hx574_1775688153226"
                             />
                             {/* Same script as above; Next.js deduplicates by src — only one request is made */}
@@ -342,143 +344,6 @@ function OfferStrategiesGrid({ cashOffer, repairCosts, arv, estimatedRent, annua
                     </div>
                 )}
             </div>
-
-            {/* ── Street View + Map ── */}
-            {/* {(localAddress || localCity) && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6"> */}
-            {/* Fachada / Street View */}
-            {/* <div className="flex flex-col gap-1.5">
-                        <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
-                            Street View
-                        </p>
-                        <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full flex items-center justify-center bg-[#0b0f1a]">
-                            {isGeocoding ? (
-                                <div className="text-xs text-gray-400">Resolving address for Street View…</div>
-                            ) : geoLatLng ? (
-                                <iframe
-                                    title="Street view of property"
-                                    width="100%"
-                                    height="100%"
-                                    loading="lazy"
-                                    allowFullScreen
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    src={`https://www.google.com/maps/embed/v1/streetview?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&location=${geoLatLng.lat},${geoLatLng.lng}&fov=80&heading=0&pitch=0`}
-                                />
-                            ) : (
-                                <div className="p-3 text-center">
-                                    <div className="text-xs text-gray-400 mb-1">Street View unavailable for this address.</div>
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            const addr = [localAddress, localCity, localState, localZipCode].filter(Boolean).join(", ")
-                                            if (addr) geocodeAddress(addr)
-                                        }}
-                                        className="text-xs px-3 py-1 rounded bg-[#f59e0b] text-[#0f0f23]"
-                                    >
-                                        Try again
-                                    </button>
-                                    {geocodeError && <div className="text-xs text-red-400 mt-2">{geocodeError}</div>}
-                                </div>
-                            )}
-                        </div>
-                    </div> */}
-
-            {/* Map */}
-            {/* <div className="flex flex-col gap-1.5">
-                        <p className="text-xs font-semibold text-[var(--color-primary)] uppercase tracking-wider">
-                            Location
-                        </p>
-                        <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full">
-                            <iframe
-                                title="Property location on map"
-                                width="100%"
-                                height="100%"
-                                loading="lazy"
-                                allowFullScreen
-                                referrerPolicy="no-referrer-when-downgrade"
-                                src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${geoLatLng
-                                    ? `${geoLatLng.lat},${geoLatLng.lng}`
-                                    : encodeURIComponent([localAddress, localCity, localState, localZipCode].filter(Boolean).join(", "))
-                                    }&zoom=15`}
-                            />
-                        </div>
-                    </div>
-                </div> */}
-            {/* )} */}
-
-            {/* Offers grid: show three equal-width, equal-height cards aligned */}
-            {/* <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 items-stretch">
-                <motion.div
-                    aria-hidden
-                    initial={{ opacity: 1 }}
-                    animate={{ opacity: [1, 0.7, 1] }}
-                    transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-                    className="h-full"
-                >
-                    <StrategyCard
-                        accent="border-[#f59e0b]/40"
-                        icon="⚡"
-                        tag="Fast Cash Sale"
-                        title="Sell As-Is to Cash Spencer Buys Houses"
-                        subtitle="Close in days, zero repairs needed"
-                        centered
-                        mainLabel="Offer Range From Spencer"
-                        mainValue={
-                            fastCashRange
-                                ? `${fmt(fastCashRange.min)} - ${fmt(fastCashRange.max)}`
-                                : fastCash !== null
-                                    ? fmt(fastCash)
-                                    : null
-                        }
-                        mainSize="text-2xl"
-                        prominent
-                        highlighted
-                        rows={[
-                            { label: "Estimated value based upon comps (ARV)", value: arvVal > 0 ? fmt(arvVal) : "—" },
-                            { label: "Estimated Repair Costs (materials, labor, permits, disposal)", value: arvVal > 0 ? fmt(repairs) : "—" },
-                            { label: "Investor Discount (30%)", value: arvVal > 0 ? fmt((arvVal - repairs) * 0.3) : "—" },
-                        ]}
-                        note="Book an hour for Spencer’s team to walk your home and deliver your cash within 7–10 days."
-                    />
-                </motion.div>
-
-                <div className="h-full transform-gpu transition-transform lg:scale-95">
-                    <StrategyCard
-                        accent="border-blue-500/40"
-                        icon="🔨"
-                        tag="Fix & List"
-                        title="Rehab &amp; Sell on Market"
-                        subtitle="Invest in repairs to get top dollar"
-                        mainLabel="Estimated Net Profit"
-                        mainValue={fixListNet !== null && fixListNet > 0 ? fmt(fixListNet) : null}
-                        rows={[
-                            { label: "Estimated value based upon comps (ARV)", value: arvVal > 0 ? fmt(arvVal) : "—" },
-                            { label: "Rehab Investment", value: repairs > 0 ? fmt(repairs) : "—" },
-                            { label: "Realtor Fees (6%)", value: arvVal > 0 ? fmt(realtorFee) : "—" },
-                            { label: "Buyer Prepay (5%)", value: arvVal > 0 ? fmt(buyerPrepay) : "—" },
-                            { label: "Closing Costs (1%)", value: arvVal > 0 ? fmt(closingCosts) : "—" },
-                            { label: `Holding Costs (${domDays} days)`, value: arvVal > 0 ? fmt(Math.round(holdingCosts)) : "—" },
-                        ]}
-                    />
-                </div>
-
-                <div className="h-full transform-gpu transition-transform lg:scale-95">
-                    <StrategyCard
-                        accent="border-purple-500/40"
-                        icon="🏠"
-                        tag="Rent It Out"
-                        title="Traditional Rental"
-                        subtitle="Hold the property and earn monthly rent"
-                        mainLabel="Est. Net Monthly Cashflow"
-                        mainValue={netMonthlyRent !== null ? fmt(netMonthlyRent) + "/mo" : null}
-                        rows={[
-                            { label: "Gross Monthly Rent", value: rent > 0 ? fmt(rent) : "—" },
-                            { label: "Est. Monthly Expenses", value: rent > 0 ? fmt(monthlyExpenses) : "—" },
-                            { label: "Net Annual Cashflow", value: netAnnualRent !== null ? fmt(netAnnualRent) : "—" },
-                        ]}
-                    />
-                </div>
-            </div> */}
         </div>
     )
 }

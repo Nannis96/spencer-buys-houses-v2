@@ -403,6 +403,7 @@ export default function RootLayout({
             src="https://www.googletagmanager.com/ns.html?id=GTM-WWPZRDH"
             height="0"
             width="0"
+            loading="lazy"
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
@@ -411,6 +412,7 @@ export default function RootLayout({
             src="https://www.googletagmanager.com/ns.html?id=GTM-WSG7CZKX"
             height="0"
             width="0"
+            loading="lazy"
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
