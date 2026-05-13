@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
+import '@/app/styles/blog.css';
 
 // Pages are cached and revalidated every hour (ISR)
 export const revalidate = 3600;
@@ -111,22 +112,7 @@ export default async function BlogPostPage(props: {
 
         {/* ── Body Content ── */}
         <div
-          className="
-            prose prose-invert prose-lg max-w-none
-            prose-p:text-gray-300 prose-p:leading-relaxed
-            prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tight
-            prose-h2:text-[#f8ed1a] prose-h2:mt-12 prose-h2:mb-4
-            prose-h3:text-white prose-h3:mt-8 prose-h3:mb-3
-            prose-a:text-[#529e14] prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-white
-            prose-ul:text-gray-300 prose-ol:text-gray-300
-            prose-li:marker:text-[#529e14]
-            prose-blockquote:border-l-[#529e14] prose-blockquote:bg-[#242424] prose-blockquote:py-3 prose-blockquote:px-6 prose-blockquote:rounded-r-xl prose-blockquote:not-italic
-            prose-code:bg-[#242424] prose-code:text-[#f8ed1a] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-            prose-pre:bg-[#242424] prose-pre:border prose-pre:border-gray-800
-            prose-hr:border-gray-800
-            prose-img:rounded-xl prose-img:border prose-img:border-gray-800
-          "
+          className="blog-content"
           dangerouslySetInnerHTML={{ __html: sanitizedContent }}
         />
 
