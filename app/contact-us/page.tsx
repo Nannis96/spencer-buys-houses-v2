@@ -1,18 +1,5 @@
 import type { Metadata } from "next"
-import {
-    Phone,
-    Mail,
-    MapPin,
-    Check,
-    ArrowRight,
-    ShieldCheck,
-    Clock,
-    Download,
-    DollarSign,
-    Calendar,
-    Percent,
-    Home,
-} from "lucide-react"
+import { Phone, Mail, MapPin, Check, ShieldCheck, Clock, DollarSign, Calendar, Percent, Home, } from "lucide-react"
 import { JsonLd } from "@/components/seo/json-ld"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"

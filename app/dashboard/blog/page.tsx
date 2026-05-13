@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import prisma from '@/lib/prisma';
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar"
-import { LayoutDashboard, FileText } from "lucide-react"
 
 export default async function AdminBlogPage() {
   const posts = await prisma.post.findMany({

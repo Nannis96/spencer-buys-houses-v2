@@ -1,19 +1,5 @@
 import type { Metadata } from "next"
-import {
-    Home,
-    Users,
-    Clock,
-    ShieldCheck,
-    DollarSign,
-    Handshake,
-    Star,
-    MapPin,
-    Check,
-    X,
-    Minus,
-    TrendingUp,
-    Award,
-} from "lucide-react"
+import { Home, Users, Clock, ShieldCheck, DollarSign, Handshake, Star, MapPin, Check, X, Minus, TrendingUp, Award, } from "lucide-react"
 import Image from "next/image"
 import { JsonLd } from "@/components/seo/json-ld"
 import { CallNowBanner } from "@/components/sections/call-now-banner"

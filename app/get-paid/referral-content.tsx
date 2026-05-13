@@ -8,20 +8,8 @@
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 import { testimonials } from "@/components/data/testimonials"
 import { CallNowBanner } from "@/components/sections/call-now-banner"
-import { CallButton } from "@/components/ui/call-button"
 import { CTAButton } from "@/components/ui/cta-button"
-import {
-    Share2,
-    Handshake,
-    DollarSign,
-    CheckCircle2,
-    Zap,
-    BadgeDollarSign,
-    ShieldCheck,
-    Star,
-    Quote,
-    ArrowRight,
-} from "lucide-react"
+import { Share2, Handshake, DollarSign, CheckCircle2, Zap, BadgeDollarSign, ShieldCheck, Star, Quote, ArrowRight, } from "lucide-react"
 import Image from "next/image"
 
 /* ─── Referral process steps ────────────────────────────────────────────── */

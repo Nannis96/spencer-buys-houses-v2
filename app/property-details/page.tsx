@@ -1,7 +1,6 @@
 import { Suspense } from "react"
 import type { Metadata } from "next"
 import { PropertyDetailsForm } from "./property-details-form"
-import { PropertyInfoForm } from "@/app/property-info/property-info-form"
 import PropertyProgress from "@/components/progress/PropertyProgress"
 import { JsonLd } from "@/components/seo/json-ld"
 import { Loader2 } from "lucide-react"

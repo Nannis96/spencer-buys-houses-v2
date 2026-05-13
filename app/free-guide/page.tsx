@@ -4,19 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import {
-    Check,
-    ArrowRight,
-    Loader2,
-    CheckCircle2,
-    ShieldCheck,
-    BookOpen,
-    AlertTriangle,
-    TrendingDown,
-    Home,
-    Users,
-    DollarSign,
-} from "lucide-react"
+import { Check, ArrowRight, Loader2, CheckCircle2, ShieldCheck, BookOpen, AlertTriangle, TrendingDown, Home, Users, DollarSign, } from "lucide-react"
 import Link from "next/link"
 
 /* ─── Form schema ──────────────────────────────────────────────────────────── */

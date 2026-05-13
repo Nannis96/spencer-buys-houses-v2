@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Phone, Menu, X, Home, ChevronDown, ChevronUp } from "lucide-react"
+import { Menu, X, ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"

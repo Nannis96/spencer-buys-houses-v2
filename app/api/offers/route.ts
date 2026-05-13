@@ -1,10 +1,5 @@
 import { NextResponse } from 'next/server';
-import {
-    calculateRepairs,
-    calculateTopTierARV,
-    calculateAverageRent,
-    calculateFinalOffer,
-} from '@/lib/offer-calculations';
+import { calculateRepairs, calculateTopTierARV, calculateAverageRent, calculateFinalOffer, } from '@/lib/offer-calculations';
 
 export async function POST(req: Request) {
     try {

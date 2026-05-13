@@ -1,4 +1,10 @@
+"use client"
+
+import { useState } from "react"
+import Image from "next/image"
+
 export function VideoSection() {
+    const [play, setPlay] = useState(false)
     return (
         <section
             id="watch-how-it-works"
@@ -31,14 +37,43 @@ export function VideoSection() {
 
                     {/* 16/9 aspect ratio container */}
                     <div className="relative w-full aspect-video">
-                        <iframe
-                            className="absolute inset-0 w-full h-full"
-                            src="https://www.youtube.com/embed/eFa-zwpW6s0?rel=0&modestbranding=1&color=white"
-                            title="How Spencer Buys Houses — Sell Your Memphis Home Fast for Cash"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            loading="lazy"
-                        />
+                        {play ? (
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/eFa-zwpW6s0?autoplay=1&rel=0&modestbranding=1&color=white"
+                                title="How Spencer Buys Houses — Sell Your Memphis Home Fast for Cash"
+                                allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            />
+                        ) : (
+                            <button
+                                onClick={() => setPlay(true)}
+                                aria-label="Play video: How Spencer Buys Houses — Sell Your Memphis Home Fast for Cash"
+                                className="absolute inset-0 w-full h-full group"
+                            >
+                                <Image
+                                    src="https://img.youtube.com/vi/eFa-zwpW6s0/maxresdefault.jpg"
+                                    alt="How Spencer Buys Houses — Sell Your Memphis Home Fast for Cash"
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, 896px"
+                                    priority
+                                />
+                                {/* Play button overlay */}
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                                    <div className="bg-red-600 group-hover:bg-red-700 transition-colors rounded-full w-16 h-16 flex items-center justify-center shadow-lg">
+                                        <svg
+                                            className="w-7 h-7 text-white translate-x-0.5"
+                                            viewBox="0 0 24 24"
+                                            fill="currentColor"
+                                            aria-hidden="true"
+                                        >
+                                            <path d="M8 5v14l11-7z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </button>
+                        )}
                     </div>
                 </div>
 
