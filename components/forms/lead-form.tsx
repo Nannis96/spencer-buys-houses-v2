@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Loader2, CheckCircle2, ShieldCheck } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
 
 const leadSchema = z.object({
     name: z.string().min(2, "Please enter your name"),
@@ -43,23 +42,16 @@ export function LeadForm() {
     }
 
     return (
-        <AnimatePresence mode="wait">
+        <>
             {submitted ? (
-                <motion.div
-                    key="success"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="rounded-2xl bg-[var(--color-background)] p-8 md:p-10 text-center border border-[var(--color-primary)]/60"
+                <div
+                    className="animate-fade-in-scale rounded-2xl bg-[var(--color-background)] p-8 md:p-10 text-center border border-[var(--color-primary)]/60"
                 >
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                        className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#22c55e]/10"
+                    <div
+                        className="animate-scale-spring mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#22c55e]/10"
                     >
                         <CheckCircle2 className="h-10 w-10 text-[#22c55e]" />
-                    </motion.div>
+                    </div>
                     <h3 className="text-2xl font-bold text-white mb-2">
                         {"You're All Set!"}
                     </h3>
@@ -70,16 +62,11 @@ export function LeadForm() {
                         <ShieldCheck className="h-4 w-4" />
                         Your information is 100% secure
                     </div>
-                </motion.div>
+                </div>
             ) : (
-                <motion.form
-                    key="form"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
+                <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className="rounded-2xl bg-[#1a1a2e] p-6 md:p-8 border border-white/10"
+                    className="animate-fade-up rounded-2xl bg-[#1a1a2e] p-6 md:p-8 border border-white/10"
                 >
                     <h3 className="text-xl font-bold text-white mb-1">
                         Get An Offer Today, Sell In A Matter Of Days
@@ -109,8 +96,8 @@ export function LeadForm() {
                     {/* <p className="text-xs text-gray-500 mt-4 text-center">
                         {"Your information is secure and never shared with third parties."}
                     </p> */}
-                </motion.form>
+                </form>
             )}
-        </AnimatePresence>
+        </>
     )
 }

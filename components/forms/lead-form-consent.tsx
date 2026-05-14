@@ -8,7 +8,6 @@ import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { MapPin, ArrowRight, Loader2, ShieldCheck } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""
 
@@ -173,18 +172,13 @@ export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams)
     }
 
     return (
-        <AnimatePresence mode="wait">
+        <>
             {/* ── Form ── */}
-            <motion.form
-                key="form"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+            <form
                 onSubmit={handleSubmit(onSubmit)}
                 noValidate
                 aria-label="Get a free cash offer"
-                className="rounded-2xl bg-[var(--background)] p-6 md:p-8 border border-[var(--color-primary-dark)] shadow-sm"
+                className="animate-fade-up rounded-2xl bg-[var(--background)] p-6 md:p-8 border border-[var(--color-primary-dark)] shadow-sm"
             >
                 <h3 className="text-xl font-bold text-[var(--color-primary)] mb-1">
                     Get An Offer Today, Sell In A Matter Of Days
@@ -250,7 +244,7 @@ export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams)
                     <ShieldCheck className="h-3.5 w-3.5 text-[var(--color-primary)]" aria-hidden="true" />
                     Your information is secure and never shared with third parties.
                 </p>
-            </motion.form>
-        </AnimatePresence>
+            </form>
+        </>
     )
 }

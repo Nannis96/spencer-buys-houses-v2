@@ -1,7 +1,7 @@
 "use client"
 
 import { Ban, Wrench, DollarSign, Clock, ShieldCheck, Handshake, Check, X, Minus } from "lucide-react"
-import { motion } from "framer-motion"
+import { useRef, useEffect, useState } from "react"
 
 const benefits = [
     {
@@ -36,19 +36,6 @@ const benefits = [
     },
 ]
 
-const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (i: number) => ({
-        opacity: 1,
-        y: 0,
-        transition: {
-            delay: i * 0.1,
-            duration: 0.5,
-            ease: "easeOut" as const,
-        },
-    }),
-}
-
 type CompareValue = "yes" | "no" | "maybe"
 
 const compareRows: { label: string; spencer: CompareValue; agent: CompareValue; fsbo: CompareValue }[] = [
@@ -71,6 +58,18 @@ function CompareCell({ value }: { value: CompareValue }) {
 }
 
 export function BenefitsSection() {
+    const gridRef = useRef<HTMLDivElement>(null)
+    const [visible, setVisible] = useState(false)
+    useEffect(() => {
+        const el = gridRef.current
+        if (!el) return
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect() } },
+            { rootMargin: "-50px" }
+        )
+        observer.observe(el)
+        return () => observer.disconnect()
+    }, [])
     return (
         <section id="benefits" className="bg-[var(--color-background)] py-10 lg:py-14">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -88,23 +87,19 @@ export function BenefitsSection() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
+                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
                     {benefits.map(({ icon: Icon, title, description }, i) => (
-                        <motion.div
+                        <div
                             key={title}
-                            custom={i}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: "-50px" }}
-                            variants={cardVariants}
-                            className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary)]/30 transition-colors group"
+                            className={`p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-primary)]/30 transition-colors group ${visible ? "animate-fade-up" : "opacity-0"}`}
+                            style={visible ? { animationDelay: `${i * 0.1}s` } : undefined}
                         >
                             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary)]/10 group-hover:bg-[var(--color-primary)]/20 transition-colors">
                                 <Icon className="h-6 w-6 text-[var(--color-primary)]" />
                             </div>
                             <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
                             <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
 
