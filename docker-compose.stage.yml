@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile.stage
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=postgresql://spencer_user:spencer_password@db:5432/spencer_db?schema=public
       - NODE_ENV=production
@@ -23,6 +25,8 @@ services:
       POSTGRES_USER: spencer_user
       POSTGRES_PASSWORD: spencer_password
       POSTGRES_DB: spencer_db
+    ports:
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_stage_data:/var/lib/postgresql/data
     healthcheck:
