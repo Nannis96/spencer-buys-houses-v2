@@ -44,6 +44,11 @@ export default async function BlogPostPage(props: {
   if (!post) notFound();
 
   // Sanitize HTML content for safe rendering
+  const SPENCER_DEFAULT_IMAGE = '/perfil_spencer.webp';
+  const resolvedAuthorImage =
+    post.authorImage ||
+    (post.authorName === 'Spencer Shadrach' ? SPENCER_DEFAULT_IMAGE : null);
+
   const sanitizedContent = DOMPurify.sanitize(post.content, {
     ALLOWED_TAGS: [
       'b', 'i', 'em', 'strong', 'a', 'p',
@@ -75,9 +80,9 @@ export default async function BlogPostPage(props: {
 
         {/* ── Meta Row ── */}
         <div className="flex items-center gap-4 mb-10 pb-8 border-b border-[var(--color-primary)]/60">
-          {post.authorImage && (
+          {resolvedAuthorImage && (
             <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#529e14] flex-shrink-0">
-              <Image src={post.authorImage} alt={post.authorName || 'Author'} fill sizes="40px" className="object-cover" />
+              <Image src={resolvedAuthorImage} alt={post.authorName || 'Author'} fill sizes="40px" className="object-cover" />
             </div>
           )}
           <div>
@@ -119,9 +124,9 @@ export default async function BlogPostPage(props: {
         {/* ── Author Bio Section ── */}
         {(post.authorName || post.authorBio) && (
           <div className="mt-16 p-6 rounded-2xl bg-[#242424] border border-gray-800 flex items-start gap-5">
-            {post.authorImage && (
+            {resolvedAuthorImage && (
               <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#529e14] flex-shrink-0">
-                <Image src={post.authorImage} alt={post.authorName || 'Author'} fill sizes="64px" className="object-cover" />
+                <Image src={resolvedAuthorImage} alt={post.authorName || 'Author'} fill sizes="64px" className="object-cover" />
               </div>
             )}
             <div>
