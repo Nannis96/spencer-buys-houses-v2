@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next"
 import Script from "next/script"
-import { Analytics } from "@vercel/analytics/next"
 import { JsonLd } from "@/components/seo/json-ld"
 import { StickyHeader } from "@/components/layout/header"
 import { SiteFooter } from "@/components/layout/site-footer"
@@ -419,7 +418,6 @@ export default function RootLayout({
         <StickyHeader />
         <div style={{ paddingTop: 'calc(var(--app-header-height, 4rem) / 2)' }}>{children}</div>
         <SiteFooter />
-        <Analytics />
         {/*
          * ── Third-party scripts ───────────────────────────────────────────────
          * Placed at the end of <body> so Next.js can inject them after hydration
