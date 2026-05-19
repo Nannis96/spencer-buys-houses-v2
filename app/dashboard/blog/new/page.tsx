@@ -56,6 +56,29 @@ export default function NewPostPage() {
   const [mainImageFiles, setMainImageFiles] = useState<ImageFile[]>([]);
   const [authorImageFiles, setAuthorImageFiles] = useState<ImageFile[]>([]);
   const [bodyImages, setBodyImages] = useState<ImageFile[]>([]);
+  const [jsonLdError, setJsonLdError] = useState<string | null>(null);
+
+  function validateJsonLd(raw: string): string | null {
+    const scriptMatch = raw.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i);
+    if (scriptMatch) {
+      try { JSON.parse(scriptMatch[1].trim()); }
+      catch { return 'Invalid JSON inside the <script> tag — please fix the syntax.'; }
+    } else if (raw.trimStart().startsWith('{') || raw.trimStart().startsWith('[')) {
+      try { JSON.parse(raw); }
+      catch { return 'Invalid JSON — please fix the syntax before saving.'; }
+    }
+    return null;
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    const form = e.currentTarget;
+    const raw = (form.elements.namedItem('jsonLd') as HTMLTextAreaElement)?.value?.trim();
+    if (raw) {
+      const err = validateJsonLd(raw);
+      if (err) { e.preventDefault(); setJsonLdError(err); return; }
+    }
+    setJsonLdError(null);
+  }
 
   const lastUploadedUrl = bodyImages.length > 0 ? bodyImages[bodyImages.length - 1].url : null;
 
@@ -90,7 +113,7 @@ export default function NewPostPage() {
         </div>
       </div>
 
-      <form action={createPost} className="space-y-6">
+      <form action={createPost} onSubmit={handleSubmit} className="space-y-6">
         {/* Hidden inputs for images */}
         <input type="hidden" name="mainImage" value={mainImageFiles[0]?.url || ''} />
         <input type="hidden" name="authorImage" value={authorImageFiles[0]?.url || ''} />
@@ -150,6 +173,38 @@ export default function NewPostPage() {
                 name="focusKeyword"
                 className={fieldCls}
               />
+            </div>
+          </div>
+        </AccordionSection>
+
+        {/* ── 2b. Structured Data (JSON-LD) ── */}
+        <AccordionSection title="Structured Data (Script JSON-LD)" icon="🧩">
+          <div className="space-y-3">
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Paste the full block as-is. Accepted formats:
+            </p>
+            <ul className="text-xs text-gray-400 list-disc list-inside space-y-0.5">
+              <li>Full <code className="text-[#f8ed1a] bg-gray-800 px-1 rounded text-[11px]">&lt;script type=&quot;application/ld+json&quot;&gt;...&lt;/script&gt;</code> tag</li>
+              <li>Raw JSON array or object (without wrapper)</li>
+              <li>Additional HTML blocks (e.g. <code className="text-[#f8ed1a] bg-gray-800 px-1 rounded text-[11px]">&lt;div&gt;</code>, <code className="text-[#f8ed1a] bg-gray-800 px-1 rounded text-[11px]">&lt;audio&gt;</code>, etc.) — can be combined with the script</li>
+            </ul>
+            <div>
+              <label className={accentLabelCls}>JSON-LD / Structured Content</label>
+              <textarea
+                name="jsonLd"
+                rows={14}
+                placeholder={'<script type="application/ld+json">\n[\n  {\n    "@context": "https://schema.org",\n    "@type": "Article",\n    "headline": "..."\n  }\n]\n</script>'}
+                className={`${fieldCls} font-mono text-xs`}
+                onChange={() => jsonLdError && setJsonLdError(null)}
+              />
+              {jsonLdError && (
+                <p className="mt-1 text-xs text-red-400 font-bold">{jsonLdError}</p>
+              )}
+            </div>
+            <div className="bg-amber-950/30 border border-amber-700/40 rounded p-3 text-xs text-amber-300">
+              <strong>Note:</strong> If both SEO fields and JSON-LD are filled, both will be active. Make sure the JSON-LD
+              metadata (e.g. <code className="bg-amber-900/40 px-1 rounded">headline</code>,{' '}
+              <code className="bg-amber-900/40 px-1 rounded">description</code>) is consistent with the meta title and description above.
             </div>
           </div>
         </AccordionSection>

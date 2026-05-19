@@ -62,6 +62,14 @@ export default async function BlogPostPage(props: {
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-gray-200 font-sans"
       style={{ paddingTop: 'calc(var(--app-header-height) / 3)' }}>
+
+      {/* ── Structured Data (JSON-LD) ── */}
+      {post.json_ld && (
+        post.json_ld.trimStart().startsWith('<')
+          ? <div dangerouslySetInnerHTML={{ __html: post.json_ld }} />
+          : <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: post.json_ld }} />
+      )}
+
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
 
         {/* ── Breadcrumb ── */}

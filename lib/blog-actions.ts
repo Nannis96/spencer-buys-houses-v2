@@ -26,22 +26,39 @@ export async function createPost(formData: FormData) {
     slug = `${baseSlug}-${suffix}`;
   }
 
+  // Validate JSON-LD if provided
+  const rawJsonLd = (formData.get('jsonLd') as string)?.trim() || null;
+  if (rawJsonLd) {
+    const scriptMatch = rawJsonLd.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i);
+    if (scriptMatch) {
+      try { JSON.parse(scriptMatch[1].trim()); }
+      catch { throw new Error('Invalid JSON-LD: the JSON inside the <script> tag is not valid.'); }
+    } else if (rawJsonLd.trimStart().startsWith('{') || rawJsonLd.trimStart().startsWith('[')) {
+      try { JSON.parse(rawJsonLd); }
+      catch { throw new Error('Invalid JSON-LD: the content is not valid JSON.'); }
+    }
+    // Pure HTML blocks (e.g. <div>) are allowed through without JSON validation
+  }
+
   await prisma.post.create({
     data: {
-      title:        rawTitle,
+      title: rawTitle,
       slug,
-      content:      formData.get('content') as string,
-      mainImage:    (formData.get('mainImage') as string) || null,
+      content: formData.get('content') as string,
+      mainImage: (formData.get('mainImage') as string) || null,
 
       // Author
-      authorName:  (formData.get('authorName') as string) || null,
+      authorName: (formData.get('authorName') as string) || null,
       authorImage: (formData.get('authorImage') as string) || null,
-      authorBio:   (formData.get('authorBio') as string) || null,
+      authorBio: (formData.get('authorBio') as string) || null,
 
       // SEO
-      seoTitle:     (formData.get('seoTitle') as string) || null,
-      seoDesc:      (formData.get('seoDesc') as string) || null,
+      seoTitle: (formData.get('seoTitle') as string) || null,
+      seoDesc: (formData.get('seoDesc') as string) || null,
       focusKeyword: (formData.get('focusKeyword') as string) || null,
+
+      // Structured Data
+      json_ld: rawJsonLd,
     },
   });
 
@@ -55,23 +72,40 @@ export async function createPost(formData: FormData) {
 export async function updatePost(formData: FormData) {
   const id = formData.get('id') as string;
 
+  // Validate JSON-LD if provided
+  const rawJsonLd = (formData.get('jsonLd') as string)?.trim() || null;
+  if (rawJsonLd) {
+    const scriptMatch = rawJsonLd.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i);
+    if (scriptMatch) {
+      try { JSON.parse(scriptMatch[1].trim()); }
+      catch { throw new Error('Invalid JSON-LD: the JSON inside the <script> tag is not valid.'); }
+    } else if (rawJsonLd.trimStart().startsWith('{') || rawJsonLd.trimStart().startsWith('[')) {
+      try { JSON.parse(rawJsonLd); }
+      catch { throw new Error('Invalid JSON-LD: the content is not valid JSON.'); }
+    }
+    // Pure HTML blocks (e.g. <div>) are allowed through without JSON validation
+  }
+
   await prisma.post.update({
     where: { id },
     data: {
-      title:        formData.get('title') as string,
-      slug:         (formData.get('slug') as string).trim(),
-      content:      formData.get('content') as string,
-      mainImage:    (formData.get('mainImage') as string) || null,
+      title: formData.get('title') as string,
+      slug: (formData.get('slug') as string).trim(),
+      content: formData.get('content') as string,
+      mainImage: (formData.get('mainImage') as string) || null,
 
       // Author
-      authorName:  (formData.get('authorName') as string) || null,
+      authorName: (formData.get('authorName') as string) || null,
       authorImage: (formData.get('authorImage') as string) || null,
-      authorBio:   (formData.get('authorBio') as string) || null,
+      authorBio: (formData.get('authorBio') as string) || null,
 
       // SEO
-      seoTitle:     (formData.get('seoTitle') as string) || null,
-      seoDesc:      (formData.get('seoDesc') as string) || null,
+      seoTitle: (formData.get('seoTitle') as string) || null,
+      seoDesc: (formData.get('seoDesc') as string) || null,
       focusKeyword: (formData.get('focusKeyword') as string) || null,
+
+      // Structured Data
+      json_ld: rawJsonLd,
     },
   });
 
