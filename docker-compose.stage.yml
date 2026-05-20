@@ -1,6 +1,21 @@
 name: spencer-buys-houses-staging
 
 services:
+  # ── Migrations (corre prisma migrate deploy antes de iniciar web) ────
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.stage
+      target: migrator
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://spencer_user:spencer_password@db:5432/spencer_db?schema=public
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
   # ── Web (Next.js production server) ────────────────────────────────
   web:
     build:
@@ -16,6 +31,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     restart: unless-stopped
 
   # ── PostgreSQL ─────────────────────────────────────────────────────
@@ -30,7 +47,7 @@ services:
     volumes:
       - postgres_stage_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U spencer_user -d spencer_db"]
+      test: [ "CMD-SHELL", "pg_isready -U spencer_user -d spencer_db" ]
       interval: 5s
       timeout: 5s
       retries: 10

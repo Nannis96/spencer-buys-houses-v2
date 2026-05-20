@@ -102,6 +102,7 @@ model Post {
     seoTitle     String?
     seoDesc      String?
     focusKeyword String? // Keyword principal
+    json_ld      String? @db.Text // Structured Data (JSON-LD o script HTML)
 
     // --- Clasificación y estado ---
     category String  @default("general")

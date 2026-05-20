@@ -11,6 +11,11 @@ COPY prisma ./prisma/
 
 RUN pnpm install --frozen-lockfile
 
+# ── Stage 1.5: Migrator ──────────────────────────────────────────────
+FROM deps AS migrator
+COPY prisma.config.ts ./
+CMD ["node_modules/.bin/prisma", "migrate", "deploy"]
+
 # ── Stage 2: Builder ──────────────────────────────────────────────────
 FROM node:22-alpine AS builder
 

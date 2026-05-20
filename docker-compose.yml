@@ -32,9 +32,9 @@ services:
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
     # Utilizando --host 0.0.0.0 para Next.js si fuera necesario en tu package.json
-    command: pnpm dev
+    command: sh -c "node_modules/.bin/prisma migrate deploy && pnpm dev"
 
   db:
     image: postgres:15-alpine
@@ -46,6 +46,11 @@ services:
       POSTGRES_DB: spencer_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U spencer_user -d spencer_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 volumes:
   postgres_data:
