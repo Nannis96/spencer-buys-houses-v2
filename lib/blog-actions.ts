@@ -59,6 +59,17 @@ export async function createPost(formData: FormData) {
 
       // Structured Data
       json_ld: rawJsonLd,
+
+      // Video
+      videoUrl: (formData.get('videoUrl') as string) || null,
+      videoTitle: (formData.get('videoTitle') as string) || null,
+
+      // Classification
+      category: (formData.get('category') as string)?.trim() || 'general',
+      tags: ((formData.get('tags') as string) || '')
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean),
     },
   });
 
@@ -106,6 +117,17 @@ export async function updatePost(formData: FormData) {
 
       // Structured Data
       json_ld: rawJsonLd,
+
+      // Video
+      videoUrl: (formData.get('videoUrl') as string) || null,
+      videoTitle: (formData.get('videoTitle') as string) || null,
+
+      // Classification
+      category: (formData.get('category') as string)?.trim() || 'general',
+      tags: ((formData.get('tags') as string) || '')
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean),
     },
   });
 

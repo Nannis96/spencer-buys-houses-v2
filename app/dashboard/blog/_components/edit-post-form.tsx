@@ -6,6 +6,7 @@ import { updatePost } from '@/lib/blog-actions';
 import DeletePostButton from './delete-post-button';
 import ImageUpload, { ImageFile } from './image-upload';
 import HtmlEditor from './html-editor';
+import { isValidVideoUrl } from '@/lib/video-utils';
 
 interface PostData {
   id: string;
@@ -20,6 +21,10 @@ interface PostData {
   seoDesc: string | null;
   focusKeyword: string | null;
   json_ld: string | null;
+  videoUrl: string | null;
+  videoTitle: string | null;
+  category: string;
+  tags: string[];
 }
 
 // ── Accordion helper ──────────────────────────────────────────────────────────
@@ -77,6 +82,7 @@ export default function EditPostForm({ post }: { post: PostData }) {
   );
   const [bodyImages, setBodyImages] = useState<ImageFile[]>([]);
   const [jsonLdError, setJsonLdError] = useState<string | null>(null);
+  const [videoUrlError, setVideoUrlError] = useState<string | null>(null);
 
   const lastUploadedUrl = bodyImages.length > 0 ? bodyImages[bodyImages.length - 1].url : null;
 
@@ -94,12 +100,31 @@ export default function EditPostForm({ post }: { post: PostData }) {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     const form = e.currentTarget;
+
+    // Validate JSON-LD
     const raw = (form.elements.namedItem('jsonLd') as HTMLTextAreaElement)?.value?.trim();
     if (raw) {
       const err = validateJsonLd(raw);
       if (err) { e.preventDefault(); setJsonLdError(err); return; }
     }
     setJsonLdError(null);
+
+    // Validate video URL
+    const videoUrl = (form.elements.namedItem('videoUrl') as HTMLInputElement)?.value?.trim();
+    const videoTitle = (form.elements.namedItem('videoTitle') as HTMLInputElement)?.value?.trim();
+    if (videoUrl) {
+      if (!isValidVideoUrl(videoUrl)) {
+        e.preventDefault();
+        setVideoUrlError('Must be a valid YouTube or Dailymotion URL.');
+        return;
+      }
+      if (!videoTitle) {
+        e.preventDefault();
+        setVideoUrlError('Video Title is required when a Video URL is provided.');
+        return;
+      }
+    }
+    setVideoUrlError(null);
   }
 
   return (
@@ -133,6 +158,16 @@ export default function EditPostForm({ post }: { post: PostData }) {
                 defaultValue={post.slug}
                 className={fieldCls}
                 required
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Category</label>
+              <input
+                type="text"
+                name="category"
+                defaultValue={post.category}
+                placeholder="e.g. real estate"
+                className={fieldCls}
               />
             </div>
           </div>
@@ -311,8 +346,56 @@ export default function EditPostForm({ post }: { post: PostData }) {
             required
             latestUploadedImageUrl={lastUploadedUrl}
           />
+          <div>
+            <label className={labelCls}>Tags</label>
+            <input
+              type="text"
+              name="tags"
+              defaultValue={post.tags.join(', ')}
+              placeholder="e.g. real estate, sell fast, Memphis"
+              className={fieldCls}
+            />
+            <p className="mt-1 text-[11px] text-gray-500">Separate tags with commas.</p>
+          </div>
         </div>
       </div>
+
+      {/* ── 6. Video ── */}
+      <AccordionSection title="Video (Optional)" icon="🎬">
+        <div className="space-y-4">
+          <p className="text-xs text-gray-400 leading-relaxed">
+            Paste a YouTube or Dailymotion URL. The video will appear after the post content.
+          </p>
+          <div>
+            <label className={accentLabelCls}>Video URL</label>
+            <input
+              type="url"
+              name="videoUrl"
+              defaultValue={post.videoUrl || ''}
+              placeholder="https://www.youtube.com/watch?v=..."
+              className={fieldCls}
+              onChange={() => videoUrlError && setVideoUrlError(null)}
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Video Title</label>
+            <input
+              type="text"
+              name="videoTitle"
+              defaultValue={post.videoTitle || ''}
+              placeholder="e.g. How Spencer Buys Houses — Sell Your Memphis Home Fast"
+              className={fieldCls}
+              onChange={() => videoUrlError && setVideoUrlError(null)}
+            />
+          </div>
+          {videoUrlError && (
+            <p className="text-xs text-red-400 font-bold">{videoUrlError}</p>
+          )}
+          <div className="bg-blue-950/30 border border-blue-700/40 rounded p-3 text-xs text-blue-300">
+            <strong>Supported:</strong> youtube.com/watch?v=, youtu.be/, youtube.com/shorts/, dailymotion.com/video/, dai.ly/
+          </div>
+        </div>
+      </AccordionSection>
 
       {/* ── Footer Actions ── */}
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#1a1a1a]/95 backdrop-blur py-4 border-t border-gray-800 flex items-center justify-end gap-4 px-8 lg:pr-12">

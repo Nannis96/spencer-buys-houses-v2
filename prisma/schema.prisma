@@ -104,9 +104,14 @@ model Post {
     focusKeyword String? // Keyword principal
     json_ld      String? @db.Text // Structured Data (JSON-LD o script HTML)
 
+    // --- Video ---
+    videoUrl   String? // Original URL (YouTube or Dailymotion)
+    videoTitle String? // Accessible title for the iframe
+
     // --- Clasificación y estado ---
-    category String  @default("general")
-    status   String  @default("draft")
+    category String   @default("general")
+    tags     String[]
+    status   String   @default("draft")
 
 }
 

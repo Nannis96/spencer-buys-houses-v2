@@ -36,9 +36,9 @@ const ALLOWED_TYPES = new Set([
 ]);
 
 /**
- * Max file size (5MB)
+ * Max file size (10MB)
  */
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 /**
  * Map MIME → extension

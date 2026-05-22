@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { createPost } from '@/lib/blog-actions';
 import ImageUpload, { ImageFile } from '../_components/image-upload';
 import HtmlEditor from '../_components/html-editor';
+import { isValidVideoUrl } from '@/lib/video-utils';
 
 // ── Accordion helper ──────────────────────────────────────────────────────────
 function AccordionSection({
@@ -57,6 +58,7 @@ export default function NewPostPage() {
   const [authorImageFiles, setAuthorImageFiles] = useState<ImageFile[]>([]);
   const [bodyImages, setBodyImages] = useState<ImageFile[]>([]);
   const [jsonLdError, setJsonLdError] = useState<string | null>(null);
+  const [videoUrlError, setVideoUrlError] = useState<string | null>(null);
 
   function validateJsonLd(raw: string): string | null {
     const scriptMatch = raw.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i);
@@ -72,12 +74,31 @@ export default function NewPostPage() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     const form = e.currentTarget;
+
+    // Validate JSON-LD
     const raw = (form.elements.namedItem('jsonLd') as HTMLTextAreaElement)?.value?.trim();
     if (raw) {
       const err = validateJsonLd(raw);
       if (err) { e.preventDefault(); setJsonLdError(err); return; }
     }
     setJsonLdError(null);
+
+    // Validate video URL
+    const videoUrl = (form.elements.namedItem('videoUrl') as HTMLInputElement)?.value?.trim();
+    const videoTitle = (form.elements.namedItem('videoTitle') as HTMLInputElement)?.value?.trim();
+    if (videoUrl) {
+      if (!isValidVideoUrl(videoUrl)) {
+        e.preventDefault();
+        setVideoUrlError('Must be a valid YouTube or Dailymotion URL.');
+        return;
+      }
+      if (!videoTitle) {
+        e.preventDefault();
+        setVideoUrlError('Video Title is required when a Video URL is provided.');
+        return;
+      }
+    }
+    setVideoUrlError(null);
   }
 
   const lastUploadedUrl = bodyImages.length > 0 ? bodyImages[bodyImages.length - 1].url : null;
@@ -128,6 +149,15 @@ export default function NewPostPage() {
                   type="text"
                   name="slug"
                   placeholder="auto-generated-from-title"
+                  className={fieldCls}
+                />
+              </div>
+              <div>
+                <label className={labelCls}>Category</label>
+                <input
+                  type="text"
+                  name="category"
+                  placeholder="e.g. real estate"
                   className={fieldCls}
                 />
               </div>
@@ -244,6 +274,41 @@ export default function NewPostPage() {
           </div>
         </AccordionSection>
 
+        {/* ── 6. Video ── */}
+        <AccordionSection title="Video (Optional)" icon="🎬">
+          <div className="space-y-4">
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Paste a YouTube or Dailymotion URL. The video will appear after the post content.
+            </p>
+            <div>
+              <label className={accentLabelCls}>Video URL</label>
+              <input
+                type="url"
+                name="videoUrl"
+                placeholder="https://www.youtube.com/watch?v=..."
+                className={fieldCls}
+                onChange={() => videoUrlError && setVideoUrlError(null)}
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Video Title</label>
+              <input
+                type="text"
+                name="videoTitle"
+                placeholder="e.g. How Spencer Buys Houses — Sell Your Memphis Home Fast"
+                className={fieldCls}
+                onChange={() => videoUrlError && setVideoUrlError(null)}
+              />
+            </div>
+            {videoUrlError && (
+              <p className="text-xs text-red-400 font-bold">{videoUrlError}</p>
+            )}
+            <div className="bg-blue-950/30 border border-blue-700/40 rounded p-3 text-xs text-blue-300">
+              <strong>Supported:</strong> youtube.com/watch?v=, youtu.be/, youtube.com/shorts/, dailymotion.com/video/, dai.ly/
+            </div>
+          </div>
+        </AccordionSection>
+
         {/* ── 4. Body Image Loader ── */}
         <div className="bg-gray-800/50 border border-gray-700 p-4 rounded-lg">
           <div className="flex items-center justify-between mb-4 border-b border-gray-700 pb-2">
@@ -299,6 +364,16 @@ export default function NewPostPage() {
               required
               latestUploadedImageUrl={lastUploadedUrl}
             />
+            <div>
+              <label className={labelCls}>Tags</label>
+              <input
+                type="text"
+                name="tags"
+                placeholder="e.g. real estate, sell fast, Memphis"
+                className={fieldCls}
+              />
+              <p className="mt-1 text-[11px] text-gray-500">Separate tags with commas.</p>
+            </div>
           </div>
         </div>
 

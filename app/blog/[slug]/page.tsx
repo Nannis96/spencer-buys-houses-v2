@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
 import '@/app/styles/blog.css';
+import VideoEmbed from '@/components/ui/VideoEmbed';
 
 // Pages are cached and revalidated every hour (ISR)
 export const revalidate = 3600;
@@ -128,6 +129,13 @@ export default async function BlogPostPage(props: {
           className="blog-content"
           dangerouslySetInnerHTML={{ __html: sanitizedContent }}
         />
+
+        {/* ── Video (shown after content if present) ── */}
+        {post.videoUrl && post.videoTitle && (
+          <div className="mt-12">
+            <VideoEmbed videoUrl={post.videoUrl} videoTitle={post.videoTitle} />
+          </div>
+        )}
 
         {/* ── Author Bio Section ── */}
         {(post.authorName || post.authorBio) && (
