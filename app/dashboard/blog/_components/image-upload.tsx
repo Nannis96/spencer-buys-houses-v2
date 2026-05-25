@@ -109,7 +109,7 @@ export default function ImageUpload({
 
       {/* GRID DE IMÁGENES */}
       <div className="flex flex-wrap gap-4">
-        {value.map((img, i) => (
+            {value.map((img, i) => (
           <div
             key={i}
             className="relative w-28 h-28 rounded-lg overflow-hidden border border-gray-700 group bg-gray-900 shadow-md"
@@ -117,7 +117,7 @@ export default function ImageUpload({
             {img.url ? (
               <Image
                 src={img.url}
-                alt={img.altText || 'Image'}
+                alt={img.altText || ''}
                 fill
                 className="object-cover transition-transform group-hover:scale-110"
               />
@@ -233,10 +233,10 @@ export default function ImageUpload({
             <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
               {/* Preview */}
               <div className="flex justify-center">
-                <div className="relative w-40 h-40 rounded-xl bg-gray-900 border border-gray-800 shadow-inner overflow-hidden">
+                  <div className="relative w-40 h-40 rounded-xl bg-gray-900 border border-gray-800 shadow-inner overflow-hidden">
                   <Image
                     src={editingImage.url}
-                    alt="Preview"
+                    alt={editingImage.altText || ''}
                     fill
                     className="object-contain"
                   />

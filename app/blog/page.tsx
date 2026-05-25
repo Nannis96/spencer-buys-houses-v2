@@ -53,7 +53,7 @@ export default async function BlogIndexPage() {
               >
                 {/* Thumbnail */}
                 <div className="relative h-52 w-full overflow-hidden bg-gray-900">
-                  {post.mainImage ? (
+                    {post.mainImage ? (
                     <Image
                       src={post.mainImage}
                       alt={post.title}

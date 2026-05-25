@@ -416,7 +416,7 @@ export default function HowWeBuyHousesPage() {
                                 <div className="w-full max-w-[500px] rounded-2xl overflow-hidden border border-white/10">
                                     <Image
                                         src="/houses/Houses_19.png"
-                                        alt="Houses"
+                                        alt="Residential property in Memphis available for a fast cash sale"
                                         width={560}
                                         height={360}
                                         className="w-full h-auto"
