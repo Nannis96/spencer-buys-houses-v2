@@ -16,7 +16,7 @@ export function SiteFooter() {
                                 { label: "How it works", href: "/how-it-works/" },
                                 { label: "Blog", href: "/blog/" },
                                 { label: "Contact us", href: "/contact-us/" },
-                                { label: "Get paid for referring", href: "/referral-program/" },
+                                { label: "Get paid for referring", href: "/get-paid/" },
                                 { label: "Properties we've bought", href: "/properties-we-bought/" },
                             ].map((item) => (
                                 <a

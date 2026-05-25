@@ -2,6 +2,7 @@
 
 import { signIn } from "next-auth/react"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
@@ -9,19 +10,31 @@ import Link from "next/link"
 
 export default function LoginPage() {
 
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
+    const router = useRouter()
 
-    async function handleSubmit(e:React.FormEvent){
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setIsLoading(true)
+        setError(null)
         try {
-            await signIn("credentials",{
+            const res: any = await signIn('credentials', {
+                redirect: false,
                 email,
                 password,
-                redirectTo:"/dashboard"
             })
+
+            // If there's an error, show message and stay on page
+            if (res?.error) {
+                setError('Invalid username or password.')
+                return
+            }
+
+            // Successful sign in: navigate to dashboard
+            router.push('/dashboard')
         } finally {
             setIsLoading(false)
         }
@@ -52,6 +65,11 @@ export default function LoginPage() {
 
                 {/* Login Form Card */}
                 <div className="bg-[#1a1a2e]/50 backdrop-blur-sm border border-white/10 p-8 rounded-2xl shadow-xl">
+                    {error && (
+                        <div role="alert" className="mb-4 text-sm text-red-300 bg-red-900/20 border border-red-600 p-3 rounded">
+                            {error}
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
                             <label htmlFor="email" className="text-sm font-medium text-gray-300">
@@ -73,8 +91,8 @@ export default function LoginPage() {
                                 <label htmlFor="password" className="text-sm font-medium text-gray-300">
                                     Password
                                 </label>
-                                <Link 
-                                    href="/forgot-password" 
+                                <Link
+                                    href="/forgot-password"
                                     className="text-xs text-[var(--color-primary)] hover:underline"
                                 >
                                     Forgot password?
@@ -91,8 +109,8 @@ export default function LoginPage() {
                             />
                         </div>
 
-                        <Button 
-                            type="submit" 
+                        <Button
+                            type="submit"
                             disabled={isLoading}
                             className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-black font-bold py-6 text-lg transition-transform active:scale-[0.98]"
                         >
