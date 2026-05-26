@@ -91,11 +91,10 @@ export async function POST(req: NextRequest): Promise<Response> {
     const authHeader = req.headers.get('authorization');
     const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
     if (!token) return jsonError('Unauthorized', 401);
-    try {
-        await verifyToken(token);
-    } catch {
-        return jsonError('Unauthorized', 401);
-    }
+    const tokenRecord = await prisma.apiToken.findFirst({
+        where: { token, revoked: false, expiresAt: { gt: new Date() } },
+    });
+    if (!tokenRecord) return jsonError('Unauthorized', 401);
 
     // ── 2. Parse multipart/form-data ─────────────────────────
     let formData: FormData;
