@@ -10,7 +10,7 @@ import { MapEmbed } from "@/components/sections/map-embed"
 
 const SITE_URL = "https://www.spencerbuyshouses.com"
 const OG_IMAGE =
-    "https://image-cdn.carrot.com/uploads/sites/81361/2025/03/Home-Page-Design1-2.png"
+    "https://www.spencerbuyshouses.com/Home-Page-Design1-2.webp"
 
 export const metadata: Metadata = {
     title: "Contact Us | Spencer Buys Houses — Memphis Cash Home Buyers",
@@ -66,7 +66,7 @@ const jsonLd = {
         },
         {
             "@type": "LocalBusiness",
-            "@id": `${SITE_URL}/#organization`,
+            "@id": `${SITE_URL}/#business`,
             name: "Spencer Buys Houses",
             url: SITE_URL,
             telephone: "+19016218799",

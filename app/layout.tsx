@@ -8,7 +8,7 @@ import "./globals.css"
 const SITE_URL = "https://www.spencerbuyshouses.com"
 const SITE_NAME = "SpencerBuysHouses.com"
 const OG_IMAGE =
-  "https://image-cdn.carrot.com/uploads/sites/81361/2025/03/Home-Page-Design1-2.png"
+  "https://www.spencerbuyshouses.com/Home-Page-Design1-2.webp"
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | Spencer Buys Houses",
   },
   description:
-    "Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today! (901)-979-9848",
+    "Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today! (901) 621-8799",
   alternates: {
     canonical: "/",
   },
@@ -77,23 +77,9 @@ const websiteSchema = {
   },
 }
 
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  url: SITE_URL + "/",
-  name: SITE_NAME,
-  logo: "https://image-cdn.carrot.com/uploads/sites/81361/2025/08/cropped-Say-Less-Facebook-Cover-Facebook-Cover-07-23-2025_11_40_AM.png",
-  telephone: "+19016218799",
-  description:
-    "Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today! (901)-979-9848",
-  sameAs: [
-    "https://www.facebook.com/spencerbuyshouses",
-    "https://www.instagram.com/spen.cershadrach",
-    "https://www.linkedin.com/in/spencer-shadrach-0a379b4a",
-    "https://mx.pinterest.com/spencerbuyshouses",
-    "https://www.youtube.com/@spencerbuyshouses",
-  ],
-}
+// organizationSchema removed — LocalBusiness + RealEstateAgent in businessGraphSchema
+// already extends Organization in the Schema.org type hierarchy.
+// logo and sameAs from this schema have been merged into businessGraphSchema below.
 
 const businessGraphSchema = {
   "@context": "https://schema.org",
@@ -106,9 +92,9 @@ const businessGraphSchema = {
       "description":
         "We buy houses for cash in Memphis, TN and surrounding areas. Fast closings, no repairs needed, no agent fees. We've purchased 400+ homes across Shelby County and the Mid-South.",
       "url": "https://www.spencerbuyshouses.com",
-      "logo": "https://www.spencerbuyshouses.com/logo.png",
-      "image": "https://image-cdn.carrot.com/uploads/sites/81361/2025/02/image-1.png",
-      "telephone": "+19014872991",
+      "logo": "https://www.spencerbuyshouses.com/logo.webp",
+      "image": "https://www.spencerbuyshouses.com/perfil_spencer.webp",
+      "telephone": "+19016218799",
       "email": "homebuyers901@gmail.com",
       "address": {
         "@type": "PostalAddress",
@@ -143,7 +129,7 @@ const businessGraphSchema = {
         "name": "Spencer",
         "jobTitle": "Founder & Cash Home Buyer",
         "url": "https://www.spencerbuyshouses.com",
-        "image": "https://image-cdn.carrot.com/uploads/sites/81361/2025/02/image-1.png",
+        "image": "https://www.spencerbuyshouses.com/perfil_spencer.webp",
       },
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
@@ -189,10 +175,11 @@ const businessGraphSchema = {
       },
       "sameAs": [
         "https://www.facebook.com/spencerbuyshouses",
+        "https://www.instagram.com/spencerbuyshouses",
         "https://www.youtube.com/@spencerbuyshouses",
         "https://www.tiktok.com/@spencerbuyshouses",
-        "https://www.instagram.com/spencerbuyshouses",
-        "https://www.spencerbuyshouses.com",
+        "https://www.linkedin.com/in/spencer-shadrach-0a379b4a",
+        "https://mx.pinterest.com/spencerbuyshouses",
       ],
       "knowsAbout": [
         "Cash home buying Memphis TN",
@@ -392,7 +379,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <JsonLd data={websiteSchema} />
-        <JsonLd data={organizationSchema} />
         <JsonLd data={businessGraphSchema} />
       </head>
       <body id="top" className="font-sans antialiased min-h-screen">

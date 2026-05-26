@@ -23,7 +23,7 @@ export const metadata: Metadata = {
         title: "Properties We've Bought in Memphis | Spencer Buys Houses",
         description:
             "Browse 546+ homes Spencer Buys Houses has purchased across Memphis, TN and surrounding areas — every neighborhood, every condition, cash.",
-        images: [{ url: "https://image-cdn.carrot.com/uploads/sites/81361/2025/03/Home-Page-Design1-2.png", width: 1200, height: 630 }],
+        images: [{ url: "https://www.spencerbuyshouses.com/Home-Page-Design1-2.webp", width: 1200, height: 630 }],
     },
 }
 

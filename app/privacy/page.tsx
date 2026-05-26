@@ -6,7 +6,7 @@ import { CTAButton } from "@/components/ui/cta-button"
 
 const SITE_URL = "https://www.spencerbuyshouses.com"
 const OG_IMAGE =
-    "https://image-cdn.carrot.com/uploads/sites/81361/2025/03/Home-Page-Design1-2.png"
+    "https://www.spencerbuyshouses.com/Home-Page-Design1-2.webp"
 
 export const metadata: Metadata = {
     title: "Privacy Policy",

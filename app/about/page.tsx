@@ -10,7 +10,7 @@ import { CTAButton } from "@/components/ui/cta-button"
 
 const SITE_URL = "https://www.spencerbuyshouses.com"
 const OG_IMAGE =
-    "https://image-cdn.carrot.com/uploads/sites/81361/2025/03/Home-Page-Design1-2.png"
+    "https://www.spencerbuyshouses.com/Home-Page-Design1-2.webp"
 
 export const metadata: Metadata = {
     title: "About Spencer Buys Houses | Memphis Cash Home Buyers",
@@ -61,7 +61,7 @@ const jsonLd = {
         },
         {
             "@type": "LocalBusiness",
-            "@id": `${SITE_URL}/#organization`,
+            "@id": `${SITE_URL}/#business`,
             name: "Spencer Buys Houses",
             alternateName: "Volunteer Buyers GP",
             url: SITE_URL,
