@@ -69,8 +69,9 @@ export default async function CityPage({ params }: Props) {
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
+        "@id": "https://www.spencerbuyshouses.com/#business",
         name: "Spencer Buys Houses",
-        url: `https://www.spencerbuyshouses.com/we-serve/${stateSlug}/${citySlug}/`,
+        url: "https://www.spencerbuyshouses.com",
         telephone: "+19016218799",
         address: { "@type": "PostalAddress", addressLocality: city.name, addressRegion: state.state, addressCountry: "US" },
         description: city.seoDescription,
