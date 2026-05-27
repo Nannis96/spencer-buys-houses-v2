@@ -81,7 +81,20 @@ export function StickyHeader() {
             <meta itemProp="name" content="Sell Your Memphis House Fast | Spencer Buys Houses" />
             <meta itemProp="url" content="https://www.spencerbuyshouses.com" />
             <meta itemProp="telephone" content={PHONE_NUMBER} />
+            <meta itemProp="image" content="https://www.spencerbuyshouses.com/perfil_spencer.webp" />
             <meta itemProp="description" content="Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today! (901)-979-9848" />
+            <div
+                itemProp="address"
+                itemScope
+                itemType="https://schema.org/PostalAddress"
+                hidden
+            >
+                <meta itemProp="streetAddress" content="111 S Highland Street Ste 179" />
+                <meta itemProp="addressLocality" content="Memphis" />
+                <meta itemProp="addressRegion" content="TN" />
+                <meta itemProp="postalCode" content="38111" />
+                <meta itemProp="addressCountry" content="US" />
+            </div>
 
             <div className="mx-auto max-w-7xl px-4 lg:px-8 w-full">
                 <div className="flex flex-col py-2">
