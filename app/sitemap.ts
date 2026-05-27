@@ -25,32 +25,40 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ];
 
     // ── Blog posts from DB (published only) ──────────────────────────────────
-    const posts = await prisma.post.findMany({
-        where: { status: 'published' },
-        select: { slug: true, updatedAt: true },
-        orderBy: { updatedAt: 'desc' },
-    });
+    // DB may be unavailable at build time; fall back to empty arrays gracefully.
+    let blogRoutes: MetadataRoute.Sitemap = [];
+    let serviceRoutes: MetadataRoute.Sitemap = [];
 
-    const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-        url: `${BASE_URL}/blog/${post.slug}`,
-        lastModified: post.updatedAt,
-        changeFrequency: 'monthly',
-        priority: 0.7,
-    }));
+    try {
+        const posts = await prisma.post.findMany({
+            where: { status: 'published' },
+            select: { slug: true, updatedAt: true },
+            orderBy: { updatedAt: 'desc' },
+        });
 
-    // ── Service pages from DB (published only) ────────────────────────────────
-    const services = await prisma.service.findMany({
-        where: { status: 'published' },
-        select: { slug: true, updatedAt: true },
-        orderBy: { updatedAt: 'desc' },
-    });
+        blogRoutes = posts.map((post) => ({
+            url: `${BASE_URL}/blog/${post.slug}`,
+            lastModified: post.updatedAt,
+            changeFrequency: 'monthly' as const,
+            priority: 0.7,
+        }));
 
-    const serviceRoutes: MetadataRoute.Sitemap = services.map((service) => ({
-        url: `${BASE_URL}/services/${service.slug}`,
-        lastModified: service.updatedAt,
-        changeFrequency: 'monthly',
-        priority: 0.8,
-    }));
+        // ── Service pages from DB (published only) ────────────────────────────────
+        const services = await prisma.service.findMany({
+            where: { status: 'published' },
+            select: { slug: true, updatedAt: true },
+            orderBy: { updatedAt: 'desc' },
+        });
+
+        serviceRoutes = services.map((service) => ({
+            url: `${BASE_URL}/services/${service.slug}`,
+            lastModified: service.updatedAt,
+            changeFrequency: 'monthly' as const,
+            priority: 0.8,
+        }));
+    } catch {
+        // Database not reachable at build time — sitemap will only include static routes.
+    }
 
     // ── City landing pages (generated from static data in lib/cities.ts) ──────
     const cityRoutes: MetadataRoute.Sitemap = getAllCitySlugs().map(({ state, city }) => ({
