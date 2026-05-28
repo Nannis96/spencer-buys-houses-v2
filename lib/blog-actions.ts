@@ -1,6 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import { Prisma } from '@/app/generated/prisma/client';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { deleteS3Object } from './s3-actions';
@@ -12,18 +13,25 @@ export async function createPost(formData: FormData) {
   const rawTitle = formData.get('title') as string;
   const rawSlug = formData.get('slug') as string;
 
-  // Auto-generate slug from title if not provided
-  const baseSlug = rawSlug?.trim()
-    ? rawSlug.trim().toLowerCase().replace(/\s+/g, '-')
-    : rawTitle.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const isExplicitSlug = Boolean(rawSlug?.trim());
+  let slug: string;
 
-  // Ensure slug uniqueness by appending a numeric suffix when needed
-  let slug = baseSlug;
-  let suffix = 1;
-  // Loop until we find a slug that doesn't exist yet
-  while (await prisma.post.findUnique({ where: { slug } })) {
-    suffix += 1;
-    slug = `${baseSlug}-${suffix}`;
+  if (isExplicitSlug) {
+    // User explicitly typed a slug — normalize it and reject if already taken
+    slug = rawSlug.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const existing = await prisma.post.findUnique({ where: { slug } });
+    if (existing) {
+      throw new Error(`The slug "${slug}" is already in use. Please choose a different one.`);
+    }
+  } else {
+    // Auto-generate from title, appending a numeric suffix until unique
+    const baseSlug = rawTitle.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    slug = baseSlug;
+    let suffix = 1;
+    while (await prisma.post.findUnique({ where: { slug } })) {
+      suffix += 1;
+      slug = `${baseSlug}-${suffix}`;
+    }
   }
 
   // Validate JSON-LD if provided
@@ -40,41 +48,62 @@ export async function createPost(formData: FormData) {
     // Pure HTML blocks (e.g. <div>) are allowed through without JSON validation
   }
 
-  await prisma.post.create({
-    data: {
-      title: rawTitle,
-      slug,
-      content: formData.get('content') as string,
-      mainImage: (formData.get('mainImage') as string) || null,
+  try {
+    await prisma.post.create({
+      data: {
+        title: rawTitle,
+        slug,
+        content: formData.get('content') as string,
+        mainImage: (formData.get('mainImage') as string) || null,
 
-      // Author
-      authorName: (formData.get('authorName') as string) || null,
-      authorImage: (formData.get('authorImage') as string) || null,
-      authorBio: (formData.get('authorBio') as string) || null,
+        // Author
+        authorName: (formData.get('authorName') as string) || null,
+        authorImage: (formData.get('authorImage') as string) || null,
+        authorBio: (formData.get('authorBio') as string) || null,
 
-      // SEO
-      seoTitle: (formData.get('seoTitle') as string) || null,
-      seoDesc: (formData.get('seoDesc') as string) || null,
-      focusKeyword: (formData.get('focusKeyword') as string) || null,
+        // SEO
+        seoTitle: (formData.get('seoTitle') as string) || null,
+        seoDesc: (formData.get('seoDesc') as string) || null,
+        focusKeyword: (formData.get('focusKeyword') as string) || null,
 
-      // Structured Data
-      json_ld: rawJsonLd,
+        // Structured Data
+        json_ld: rawJsonLd,
 
-      // Video
-      videoUrl: (formData.get('videoUrl') as string) || null,
-      videoTitle: (formData.get('videoTitle') as string) || null,
+        // Video
+        videoUrl: (formData.get('videoUrl') as string) || null,
+        videoTitle: (formData.get('videoTitle') as string) || null,
 
-      // Classification
-      category: (formData.get('category') as string)?.trim() || 'general',
-      tags: ((formData.get('tags') as string) || '')
-        .split(',')
-        .map((t) => t.trim())
-        .filter(Boolean),
-    },
-  });
+        // Classification
+        category: (formData.get('category') as string)?.trim() || 'general',
+        tags: ((formData.get('tags') as string) || '')
+          .split(',')
+          .map((t) => t.trim())
+          .filter(Boolean),
+      },
+    });
+  } catch (err) {
+    // P2002 = unique constraint violation — a concurrent request already created
+    // a post with this slug (race condition between the loop check and the INSERT).
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+      throw new Error(
+        'A post with this slug already exists. Please change the slug or title and try again.',
+      );
+    }
+    throw err;
+  }
 
   revalidatePath('/dashboard/blog');
   redirect('/dashboard/blog');
+}
+
+// ─────────────────────────────────────────────
+// CHECK SLUG AVAILABILITY
+// ─────────────────────────────────────────────
+export async function checkSlugAvailable(raw: string): Promise<boolean> {
+  const slug = raw.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  if (!slug) return true;
+  const existing = await prisma.post.findUnique({ where: { slug }, select: { id: true } });
+  return existing === null;
 }
 
 // ─────────────────────────────────────────────

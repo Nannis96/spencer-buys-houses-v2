@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { createPost } from '@/lib/blog-actions';
+import { useState, useTransition } from 'react';
+import { createPost, checkSlugAvailable } from '@/lib/blog-actions';
 import ImageUpload, { ImageFile } from '../_components/image-upload';
 import HtmlEditor from '../_components/html-editor';
 import { isValidVideoUrl } from '@/lib/video-utils';
@@ -54,11 +54,14 @@ const accentLabelCls = 'block text-xs font-bold text-[#f8ed1a] uppercase mb-1';
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function NewPostPage() {
+  const [isPending, startTransition] = useTransition();
   const [mainImageFiles, setMainImageFiles] = useState<ImageFile[]>([]);
   const [authorImageFiles, setAuthorImageFiles] = useState<ImageFile[]>([]);
   const [bodyImages, setBodyImages] = useState<ImageFile[]>([]);
   const [jsonLdError, setJsonLdError] = useState<string | null>(null);
   const [videoUrlError, setVideoUrlError] = useState<string | null>(null);
+  const [slugStatus, setSlugStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function validateJsonLd(raw: string): string | null {
     const scriptMatch = raw.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i);
@@ -72,14 +75,31 @@ export default function NewPostPage() {
     return null;
   }
 
+  async function handleSlugBlur(e: React.FocusEvent<HTMLInputElement>) {
+    const val = e.target.value.trim();
+    if (!val) { setSlugStatus('idle'); return; }
+    setSlugStatus('checking');
+    const available = await checkSlugAvailable(val);
+    setSlugStatus(available ? 'available' : 'taken');
+  }
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    // Prevent double-submit if a request is already in flight
+    if (isPending) return;
+
+    // Block if the user typed a slug that is already taken or still being checked
+    if (slugStatus === 'taken') return;
+    if (slugStatus === 'checking') return;
+
     const form = e.currentTarget;
 
     // Validate JSON-LD
     const raw = (form.elements.namedItem('jsonLd') as HTMLTextAreaElement)?.value?.trim();
     if (raw) {
       const err = validateJsonLd(raw);
-      if (err) { e.preventDefault(); setJsonLdError(err); return; }
+      if (err) { setJsonLdError(err); return; }
     }
     setJsonLdError(null);
 
@@ -88,17 +108,26 @@ export default function NewPostPage() {
     const videoTitle = (form.elements.namedItem('videoTitle') as HTMLInputElement)?.value?.trim();
     if (videoUrl) {
       if (!isValidVideoUrl(videoUrl)) {
-        e.preventDefault();
         setVideoUrlError('Must be a valid YouTube or Dailymotion URL.');
         return;
       }
       if (!videoTitle) {
-        e.preventDefault();
         setVideoUrlError('Video Title is required when a Video URL is provided.');
         return;
       }
     }
     setVideoUrlError(null);
+
+    // Hand off to the Server Action inside a transition so React tracks pending state
+    const formData = new FormData(form);
+    setSubmitError(null);
+    startTransition(async () => {
+      try {
+        await createPost(formData);
+      } catch (err) {
+        setSubmitError(err instanceof Error ? err.message : 'Failed to publish post. Please try again.');
+      }
+    });
   }
 
   const lastUploadedUrl = bodyImages.length > 0 ? bodyImages[bodyImages.length - 1].url : null;
@@ -134,7 +163,7 @@ export default function NewPostPage() {
         </div>
       </div>
 
-      <form action={createPost} onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Hidden inputs for images */}
         <input type="hidden" name="mainImage" value={mainImageFiles[0]?.url || ''} />
         <input type="hidden" name="authorImage" value={authorImageFiles[0]?.url || ''} />
@@ -144,13 +173,31 @@ export default function NewPostPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
-                <label className={accentLabelCls}>Slug (URL)</label>
+                <label className={accentLabelCls}>
+                  Slug (URL)
+                  {slugStatus === 'checking' && (
+                    <span className="ml-2 normal-case font-normal text-gray-400">checking…</span>
+                  )}
+                  {slugStatus === 'available' && (
+                    <span className="ml-2 normal-case font-normal text-green-400">✓ available</span>
+                  )}
+                  {slugStatus === 'taken' && (
+                    <span className="ml-2 normal-case font-normal text-red-400">✗ already taken</span>
+                  )}
+                </label>
                 <input
                   type="text"
                   name="slug"
                   placeholder="auto-generated-from-title"
-                  className={fieldCls}
+                  className={`${fieldCls} ${slugStatus === 'taken' ? 'border-red-500' : slugStatus === 'available' ? 'border-green-500' : ''}`}
+                  onBlur={handleSlugBlur}
+                  onChange={() => { if (slugStatus !== 'idle') setSlugStatus('idle'); }}
                 />
+                {slugStatus === 'taken' && (
+                  <p className="mt-1 text-xs text-red-400 font-bold">
+                    This slug is already in use. Choose a different one.
+                  </p>
+                )}
               </div>
               <div>
                 <label className={labelCls}>Category</label>
@@ -379,6 +426,9 @@ export default function NewPostPage() {
 
         {/* ── Footer Actions ── */}
         <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#1a1a1a]/95 backdrop-blur py-4 border-t border-gray-800 flex items-center justify-end gap-4 px-8 lg:pr-12">
+          {submitError && (
+            <p className="text-xs text-red-400 font-bold mr-auto">{submitError}</p>
+          )}
           <Link
             href="/dashboard/blog"
             className="text-sm font-bold text-gray-400 hover:text-white"
@@ -387,9 +437,12 @@ export default function NewPostPage() {
           </Link>
           <button
             type="submit"
-            className="bg-[#529e14] px-8 py-3 rounded-lg font-black text-white hover:bg-[#458510] uppercase shadow-lg transition-all hover:scale-105"
+            disabled={isPending || slugStatus === 'taken' || slugStatus === 'checking'}
+            className="bg-[#529e14] px-8 py-3 rounded-lg font-black text-white uppercase shadow-lg transition-all
+              enabled:hover:bg-[#458510] enabled:hover:scale-105
+              disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
           >
-            Publish Post
+            {isPending ? 'Publishing…' : 'Publish Post'}
           </button>
         </div>
       </form>
