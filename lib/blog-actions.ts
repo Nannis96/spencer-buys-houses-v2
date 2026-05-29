@@ -92,8 +92,24 @@ export async function createPost(formData: FormData) {
     throw err;
   }
 
+  // ── Notify GHL ──────────────────────────────────────────────────────────────
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.spencerbuyshouses.com';
+  fetch(
+    'https://services.leadconnectorhq.com/hooks/sD7ANbPAIA28p65ZSvJl/webhook-trigger/ce62bead-80bf-4f00-bd99-0e1ba6269589',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: rawTitle,
+        url: `${siteUrl}/blog/${slug}`,
+      }),
+    },
+  ).catch(() => {
+    // Non-critical — do not block publish on webhook failure
+  });
+
   revalidatePath('/dashboard/blog');
-  redirect('/dashboard/blog');
+  return { redirectTo: '/dashboard/blog' } as const;
 }
 
 // ─────────────────────────────────────────────

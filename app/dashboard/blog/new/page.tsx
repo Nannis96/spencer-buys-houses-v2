@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useTransition } from 'react';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createPost, checkSlugAvailable } from '@/lib/blog-actions';
 import ImageUpload, { ImageFile } from '../_components/image-upload';
 import HtmlEditor from '../_components/html-editor';
@@ -54,7 +55,9 @@ const accentLabelCls = 'block text-xs font-bold text-[#f8ed1a] uppercase mb-1';
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function NewPostPage() {
-  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submittingRef = useRef(false); // synchronous guard against double-clicks
   const [mainImageFiles, setMainImageFiles] = useState<ImageFile[]>([]);
   const [authorImageFiles, setAuthorImageFiles] = useState<ImageFile[]>([]);
   const [bodyImages, setBodyImages] = useState<ImageFile[]>([]);
@@ -86,12 +89,15 @@ export default function NewPostPage() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    // Prevent double-submit if a request is already in flight
-    if (isPending) return;
+    // Synchronous guard — lock immediately so no second call can slip through
+    if (submittingRef.current) return;
+    submittingRef.current = true;
 
     // Block if the user typed a slug that is already taken or still being checked
-    if (slugStatus === 'taken') return;
-    if (slugStatus === 'checking') return;
+    if (slugStatus === 'taken' || slugStatus === 'checking') {
+      submittingRef.current = false;
+      return;
+    }
 
     const form = e.currentTarget;
 
@@ -99,7 +105,7 @@ export default function NewPostPage() {
     const raw = (form.elements.namedItem('jsonLd') as HTMLTextAreaElement)?.value?.trim();
     if (raw) {
       const err = validateJsonLd(raw);
-      if (err) { setJsonLdError(err); return; }
+      if (err) { setJsonLdError(err); submittingRef.current = false; return; }
     }
     setJsonLdError(null);
 
@@ -109,25 +115,30 @@ export default function NewPostPage() {
     if (videoUrl) {
       if (!isValidVideoUrl(videoUrl)) {
         setVideoUrlError('Must be a valid YouTube or Dailymotion URL.');
+        submittingRef.current = false;
         return;
       }
       if (!videoTitle) {
         setVideoUrlError('Video Title is required when a Video URL is provided.');
+        submittingRef.current = false;
         return;
       }
     }
     setVideoUrlError(null);
 
-    // Hand off to the Server Action inside a transition so React tracks pending state
-    const formData = new FormData(form);
+    setIsSubmitting(true);
     setSubmitError(null);
-    startTransition(async () => {
-      try {
-        await createPost(formData);
-      } catch (err) {
+
+    const formData = new FormData(form);
+    createPost(formData)
+      .then(({ redirectTo }) => {
+        router.push(redirectTo);
+      })
+      .catch((err) => {
+        submittingRef.current = false;
+        setIsSubmitting(false);
         setSubmitError(err instanceof Error ? err.message : 'Failed to publish post. Please try again.');
-      }
-    });
+      });
   }
 
   const lastUploadedUrl = bodyImages.length > 0 ? bodyImages[bodyImages.length - 1].url : null;
@@ -437,12 +448,12 @@ export default function NewPostPage() {
           </Link>
           <button
             type="submit"
-            disabled={isPending || slugStatus === 'taken' || slugStatus === 'checking'}
+            disabled={isSubmitting || slugStatus === 'taken' || slugStatus === 'checking'}
             className="bg-[#529e14] px-8 py-3 rounded-lg font-black text-white uppercase shadow-lg transition-all
               enabled:hover:bg-[#458510] enabled:hover:scale-105
               disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
           >
-            {isPending ? 'Publishing…' : 'Publish Post'}
+            {isSubmitting ? 'Publishing…' : 'Publish Post'}
           </button>
         </div>
       </form>
