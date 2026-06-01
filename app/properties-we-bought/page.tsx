@@ -7,6 +7,8 @@ import { CallButton } from "@/components/ui/call-button"
 import { CTAButton } from "@/components/ui/cta-button"
 import { PropertiesMapClient } from "@/components/sections/properties-map-client"
 import type { MapMarker } from "@/components/sections/properties-map"
+import { JsonLd } from "@/components/seo/json-ld"
+import { buildBreadcrumbList, SITE_URL } from "@/lib/schema"
 
 /* ─── Metadata ───────────────────────────────────────────────────────────── */
 
@@ -178,134 +180,142 @@ function SectionHeading({
 
 /* ─── Page ───────────────────────────────────────────────────────────────── */
 
+const breadcrumbSchema = buildBreadcrumbList([
+    { name: "Home", item: `${SITE_URL}/` },
+    { name: "Properties We've Bought", item: `${SITE_URL}/properties-we-bought/` },
+])
+
 export default function PropertiesWeBoughtPage() {
     return (
-        <main className="bg-[var(--color-background)] min-h-screen pt-[var(--app-header-height,80px)]">
+        <>
+            <JsonLd data={breadcrumbSchema} />
+            <main className="bg-[var(--color-background)] min-h-screen pt-[var(--app-header-height,80px)]">
 
-            {/* ── Hero ──────────────────────────────────────────────────── */}
-            <section className="bg-[var(--color-background)] border-b border-white/10">
-                <div className="mx-auto max-w-7xl px-4 lg:px-8 py-8 md:py-10">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-primary)]/30 bg-[var(--color-amber-10)] px-3 py-1 text-xs font-semibold text-[var(--color-primary)] mb-4">
-                            <Home className="h-3.5 w-3.5" />
-                            Verified Purchase History
+                {/* ── Hero ──────────────────────────────────────────────────── */}
+                <section className="bg-[var(--color-background)] border-b border-white/10">
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8 py-8 md:py-10">
+                        <div className="max-w-3xl mx-auto text-center">
+                            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-primary)]/30 bg-[var(--color-amber-10)] px-3 py-1 text-xs font-semibold text-[var(--color-primary)] mb-4">
+                                <Home className="h-3.5 w-3.5" />
+                                Verified Purchase History
+                            </div>
+                            <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+                                Properties We&apos;ve Bought{" "}
+                                <span className="text-[var(--color-primary)]">in Memphis, TN</span>
+                            </h1>
+                            <p className="text-gray-400 text-lg leading-relaxed mb-8">
+                                Over a decade of cash purchases across every Memphis neighborhood.
+                                This is our documented track record — {totalAll.toLocaleString()}+ homes purchased and counting.
+                            </p>
+
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                <CTAButton href="/get-a-cash-offer-today/">Get Your Free Cash Offer</CTAButton>
+                                <CallButton inline />
+                            </div>
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
-                            Properties We&apos;ve Bought{" "}
-                            <span className="text-[var(--color-primary)]">in Memphis, TN</span>
-                        </h1>
-                        <p className="text-gray-400 text-lg leading-relaxed mb-8">
-                            Over a decade of cash purchases across every Memphis neighborhood.
-                            This is our documented track record — {totalAll.toLocaleString()}+ homes purchased and counting.
-                        </p>
+                    </div>
+                </section>
 
+                {/* ── Stats Bar ────────────────────────────────────────────────── */}
+                <section className="bg-[var(--color-background-yellow)] py-12" aria-label="Company statistics">
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                            {[
+                                { value: "546+", label: "Homes Purchased", icon: Home },
+                                { value: "34", label: "Memphis Zip Codes", icon: MapPin },
+                                { value: "6–7", label: "Homes / Month", icon: TrendingUp },
+                                { value: "10+", label: "Years in Memphis", icon: Calendar },
+                            ].map(({ value, label, icon: Icon }) => (
+                                <div key={label} className="flex flex-col items-center text-center gap-3">
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary-dark)]/10">
+                                        <Icon className="h-6 w-6 text-[var(--color-secondary)]" aria-hidden="true" />
+                                    </div>
+                                    <span className="text-3xl md:text-4xl font-black text-[var(--color-text-black)]">{value}</span>
+                                    <span className="text-sm text-[var(--color-text-black)] font-medium leading-tight">{label}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* ── Map ──────────────────────────────────────────────────── */}
+                <PropertiesMapClient markers={mapMarkers} />
+
+                {/* ── Why we publish this ────────────────────────────────────── */}
+                <section className="bg-[var(--color-background)] border-b border-white/10">
+                    <div className="mx-auto max-w-7xl px-4 lg:px-8 py-8 flex flex-col md:flex-row gap-4 items-start md:items-center">
+                        <div className="shrink-0 rounded-xl bg-[var(--color-amber-10)] border border-[var(--color-primary)]/20 p-3">
+                            <TrendingUp className="h-6 w-6 text-[var(--color-primary)]" />
+                        </div>
+                        <div>
+                            <p className="text-white font-semibold mb-1">Why we publish this list</p>
+                            <p className="text-gray-400 text-sm leading-relaxed">
+                                When you call Spencer Buys Houses, you&apos;re not talking to a national company that&apos;s
+                                never seen your street. We&apos;ve bought homes throughout this city — and we know exactly
+                                what they&apos;re worth. This list is our proof.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ── Property List ─────────────────────────────────────────── */}
+                <div className="mx-auto max-w-7xl px-4 lg:px-8 py-12 space-y-16">
+
+                    {/* Memphis TN */}
+                    <section id="memphis">
+                        <SectionHeading title="Memphis, TN — by Neighborhood" count={totalMemphis} />
+                        {memphisGroups.map((g) => (
+                            <NeighborhoodSection key={g.key} group={g} />
+                        ))}
+                    </section>
+
+                    {/* Mississippi */}
+                    {msGroups.length > 0 && (
+                        <section id="mississippi">
+                            <div className="border-t border-white/10 pt-12">
+                                <SectionHeading title="Mississippi" count={totalMs} />
+                                {msGroups.map((g) => (
+                                    <NeighborhoodSection key={g.key} group={g} />
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Other Markets */}
+                    {otherGroups.length > 0 && (
+                        <section id="other">
+                            <div className="border-t border-white/10 pt-12">
+                                <SectionHeading title="Other Markets" count={totalOther} />
+                                {otherGroups.map((g) => (
+                                    <NeighborhoodSection key={g.key} group={g} />
+                                ))}
+                            </div>
+                        </section>
+                    )}
+                </div>
+
+                {/* ── CTA ───────────────────────────────────────────────────── */}
+                <section className="bg-[var(--color-background)] border-t border-white/10">
+                    <div className="mx-auto max-w-4xl px-4 lg:px-8 py-16 text-center">
+                        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-primary)]/30 bg-[var(--color-amber-10)] px-3 py-1 text-xs font-semibold text-[var(--color-primary)] mb-4">
+                            <Calendar className="h-3.5 w-3.5" />
+                            We Buy Houses in Your Neighborhood
+                        </div>
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+                            Have a House in Memphis to Sell?
+                        </h2>
+                        <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
+                            We&apos;ve bought homes in your neighborhood before.{" "}
+                            <span className="text-white font-semibold">Cash offer, no repairs,</span> close in as little
+                            as 7 days.
+                        </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <CTAButton href="/get-a-cash-offer-today/">Get Your Free Cash Offer</CTAButton>
                             <CallButton inline />
                         </div>
                     </div>
-                </div>
-            </section>
-
-            {/* ── Stats Bar ────────────────────────────────────────────────── */}
-            <section className="bg-[var(--color-background-yellow)] py-12" aria-label="Company statistics">
-                <div className="mx-auto max-w-7xl px-4 lg:px-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        {[
-                            { value: "546+", label: "Homes Purchased", icon: Home },
-                            { value: "34", label: "Memphis Zip Codes", icon: MapPin },
-                            { value: "6–7", label: "Homes / Month", icon: TrendingUp },
-                            { value: "10+", label: "Years in Memphis", icon: Calendar },
-                        ].map(({ value, label, icon: Icon }) => (
-                            <div key={label} className="flex flex-col items-center text-center gap-3">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary-dark)]/10">
-                                    <Icon className="h-6 w-6 text-[var(--color-secondary)]" aria-hidden="true" />
-                                </div>
-                                <span className="text-3xl md:text-4xl font-black text-[var(--color-text-black)]">{value}</span>
-                                <span className="text-sm text-[var(--color-text-black)] font-medium leading-tight">{label}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ── Map ──────────────────────────────────────────────────── */}
-            <PropertiesMapClient markers={mapMarkers} />
-
-            {/* ── Why we publish this ────────────────────────────────────── */}
-            <section className="bg-[var(--color-background)] border-b border-white/10">
-                <div className="mx-auto max-w-7xl px-4 lg:px-8 py-8 flex flex-col md:flex-row gap-4 items-start md:items-center">
-                    <div className="shrink-0 rounded-xl bg-[var(--color-amber-10)] border border-[var(--color-primary)]/20 p-3">
-                        <TrendingUp className="h-6 w-6 text-[var(--color-primary)]" />
-                    </div>
-                    <div>
-                        <p className="text-white font-semibold mb-1">Why we publish this list</p>
-                        <p className="text-gray-400 text-sm leading-relaxed">
-                            When you call Spencer Buys Houses, you&apos;re not talking to a national company that&apos;s
-                            never seen your street. We&apos;ve bought homes throughout this city — and we know exactly
-                            what they&apos;re worth. This list is our proof.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            {/* ── Property List ─────────────────────────────────────────── */}
-            <div className="mx-auto max-w-7xl px-4 lg:px-8 py-12 space-y-16">
-
-                {/* Memphis TN */}
-                <section id="memphis">
-                    <SectionHeading title="Memphis, TN — by Neighborhood" count={totalMemphis} />
-                    {memphisGroups.map((g) => (
-                        <NeighborhoodSection key={g.key} group={g} />
-                    ))}
                 </section>
-
-                {/* Mississippi */}
-                {msGroups.length > 0 && (
-                    <section id="mississippi">
-                        <div className="border-t border-white/10 pt-12">
-                            <SectionHeading title="Mississippi" count={totalMs} />
-                            {msGroups.map((g) => (
-                                <NeighborhoodSection key={g.key} group={g} />
-                            ))}
-                        </div>
-                    </section>
-                )}
-
-                {/* Other Markets */}
-                {otherGroups.length > 0 && (
-                    <section id="other">
-                        <div className="border-t border-white/10 pt-12">
-                            <SectionHeading title="Other Markets" count={totalOther} />
-                            {otherGroups.map((g) => (
-                                <NeighborhoodSection key={g.key} group={g} />
-                            ))}
-                        </div>
-                    </section>
-                )}
-            </div>
-
-            {/* ── CTA ───────────────────────────────────────────────────── */}
-            <section className="bg-[var(--color-background)] border-t border-white/10">
-                <div className="mx-auto max-w-4xl px-4 lg:px-8 py-16 text-center">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-primary)]/30 bg-[var(--color-amber-10)] px-3 py-1 text-xs font-semibold text-[var(--color-primary)] mb-4">
-                        <Calendar className="h-3.5 w-3.5" />
-                        We Buy Houses in Your Neighborhood
-                    </div>
-                    <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-                        Have a House in Memphis to Sell?
-                    </h2>
-                    <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-                        We&apos;ve bought homes in your neighborhood before.{" "}
-                        <span className="text-white font-semibold">Cash offer, no repairs,</span> close in as little
-                        as 7 days.
-                    </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <CTAButton href="/get-a-cash-offer-today/">Get Your Free Cash Offer</CTAButton>
-                        <CallButton inline />
-                    </div>
-                </div>
-            </section>
-        </main>
+            </main>
+        </>
     )
 }

@@ -138,12 +138,6 @@ const jsonLd = {
                 "Whitehaven, TN",
             ],
             foundingDate: "2014",
-            aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "5",
-                reviewCount: "2",
-                bestRating: "5",
-            },
         },
     ],
 }

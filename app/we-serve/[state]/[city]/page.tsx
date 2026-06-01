@@ -8,6 +8,7 @@ import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 import { findCity } from "@/lib/cities"
 import { getAllCitySlugs, CityFaq, CitySituation } from "@/lib/cities"
 import { AnimatedBenefitCards } from "@/app/get-a-cash-offer-today/animated-cards"
+import { buildBreadcrumbList, SITE_URL } from "@/lib/schema"
 
 const DEFAULT_BENEFITS: string[] = [
     "Same-day cash offers — no waiting weeks for a response.",
@@ -82,6 +83,11 @@ export default async function CityPage({ params }: Props) {
         <>
             {/* JSON-LD structured data — server-rendered, no JS cost */}
             <JsonLd data={jsonLd} />
+            {/* BreadcrumbList — separate script, never in the global layout */}
+            <JsonLd data={buildBreadcrumbList([
+                { name: "Home", item: `${SITE_URL}/` },
+                { name: `${city.name}, ${state.state}`, item: `${SITE_URL}/we-serve/${stateSlug}/${citySlug}/` },
+            ])} />
             <main id="top">
                 <section className="relative pt-28 md:pt-44 pb-12 lg:pb-20 overflow-hidden">
                     <Image

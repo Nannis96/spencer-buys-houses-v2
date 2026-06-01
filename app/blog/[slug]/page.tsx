@@ -6,6 +6,8 @@ import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
 import '@/app/styles/blog.css';
 import VideoEmbed from '@/components/ui/VideoEmbed';
+import { JsonLd } from '@/components/seo/json-ld';
+import { buildBreadcrumbList, SITE_URL } from '@/lib/schema';
 
 // Pages are cached and revalidated every hour (ISR)
 export const revalidate = 3600;
@@ -70,6 +72,12 @@ export default async function BlogPostPage(props: {
           ? <div dangerouslySetInnerHTML={{ __html: post.json_ld }} />
           : <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: post.json_ld }} />
       )}
+      {/* ── BreadcrumbList (separate script — never merged with post.json_ld) ── */}
+      <JsonLd data={buildBreadcrumbList([
+        { name: 'Home', item: `${SITE_URL}/` },
+        { name: 'Blog', item: `${SITE_URL}/blog/` },
+        { name: post.title, item: `${SITE_URL}/blog/${post.slug}/` },
+      ])} />
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-16">
 
