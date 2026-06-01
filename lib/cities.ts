@@ -65,6 +65,12 @@ export interface CityData {
      * If omitted, no image is rendered.
      */
     benefitsImage?: string
+    /**
+     * Image used in the hero/background for this city page.
+     * Path is relative to `/public`, e.g. "/background-we-serve.webp".
+     * If omitted a per-page fallback can be used.
+     */
+    heroImage?: string
 }
 
 export interface StateData {
@@ -116,6 +122,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_1.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "How can I sell my house fast in Germantown?",
@@ -167,6 +174,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_2.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "Do I need to make any repairs before selling my house in Hickory Hill?",
@@ -215,6 +223,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_3.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "Is Spencer Buys Houses a local Cordova company?",
@@ -268,6 +277,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_4.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "Are there any fees or commissions?",
@@ -320,6 +330,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_5.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "Do you buy houses in Berclair?",
@@ -370,6 +381,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_6.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "Will I have to move out immediately after the sale?",
@@ -423,6 +435,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_7.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "Can you help if I’m facing foreclosure in Collierville or Whitehaven?",
@@ -486,6 +499,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_8.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "Can you help if I’m facing foreclosure in Millington?",
@@ -556,6 +570,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_10.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "How quickly can I sell my house in Somerville?",
@@ -601,6 +616,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_11.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "How does Spencer Buys Houses work to sell my home fast in Raleigh?",
@@ -665,6 +681,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_14.webp",
+                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
                 faqs: [
                     {
                         q: "How do I sell my Arlington, TN, house to Spencer Buys Houses?",
@@ -717,6 +734,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_16.webp",
+                heroImage: "/background-we-serve.webp",
                 faqs: [
                     {
                         q: "Are there any hidden fees?",
@@ -764,6 +782,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_19.webp",
+                heroImage: "/background-we-serve.webp",
                 faqs: [
                     {
                         q: "What if I need to sell my house quickly in Hernando due to life changes??",
@@ -806,6 +825,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_21.webp",
+                heroImage: "/background-we-serve.webp",
                 faqs: [
                     {
                         q: "What if my house needs major repairs?",
@@ -852,6 +872,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_13.webp",
+                heroImage: "/background-we-serve.webp",
                 faqs: [
                     {
                         q: "Why Should I Choose Olive Branch Investments for My Real Estate Needs?",
@@ -894,6 +915,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_17.webp",
+                heroImage: "/background-we-serve.webp",
                 faqs: [
                     {
                         q: "What areas do you serve?",

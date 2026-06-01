@@ -91,8 +91,8 @@ export default async function CityPage({ params }: Props) {
             <main id="top">
                 <section className="relative pt-28 md:pt-44 pb-12 lg:pb-20 overflow-hidden">
                     <Image
-                        src="/background-we-serve.webp"
-                        alt=""
+                        src={city.heroImage ?? "/background-we-serve.webp"}
+                        alt={city.heroTitle}
                         fill
                         priority
                         quality={85}
