@@ -30,9 +30,9 @@ const OG_IMAGE =
     "https://www.spencerbuyshouses.com/Home-Page-Design1-2.webp"
 
 export const metadata: Metadata = {
-    title: "How We Buy Houses in Memphis | Spencer Buys Houses",
+    title: "How It Works | Spencer Buys Houses",
     description:
-        "Learn how Spencer Buys Houses buys Memphis homes fast for cash. Our simple 4-step process means no fees, no repairs, and a fair all-cash offer in as little as 24 hours.",
+        "See how Spencer Buys Houses makes selling your Memphis home simple. Get a cash offer in 24 hours, close in as little as 7 days. No repairs, no agents, no fees.",
     alternates: {
         canonical: "/how-it-works/",
     },
@@ -41,16 +41,16 @@ export const metadata: Metadata = {
         locale: "en_US",
         url: `${SITE_URL}/how-it-works/`,
         siteName: "SpencerBuysHouses.com",
-        title: "How We Buy Houses in Memphis | Spencer Buys Houses",
+        title: "How It Works | Spencer Buys Houses",
         description:
-            "Our process is fair, works on your timeline, and is easy to follow. Get a cash offer in 24 hours and close in as little as 7 days.",
+            "See how Spencer Buys Houses makes selling your Memphis home simple. Get a cash offer in 24 hours, close in as little as 7 days. No repairs, no agents, no fees.",
         images: [{ url: OG_IMAGE, width: 1200, height: 630 }],
     },
     twitter: {
         card: "summary_large_image",
-        title: "How We Buy Houses in Memphis | Spencer Buys Houses",
+        title: "How It Works | Spencer Buys Houses",
         description:
-            "Our process is fair, works on your timeline, and is easy to follow. Get a cash offer in 24 hours and close in as little as 7 days.",
+            "See how Spencer Buys Houses makes selling your Memphis home simple. Get a cash offer in 24 hours, close in as little as 7 days. No repairs, no agents, no fees.",
         images: [OG_IMAGE],
     },
 }
@@ -64,9 +64,9 @@ const jsonLd = {
             "@type": "WebPage",
             "@id": `${SITE_URL}/how-it-works/`,
             url: `${SITE_URL}/how-it-works/`,
-            name: "How We Buy Houses in Memphis | Spencer Buys Houses",
+            name: "How It Works | Spencer Buys Houses",
             description:
-                "Discover our simple, transparent 4-step process to sell your Memphis house fast for cash with Spencer Buys Houses.",
+                "See how Spencer Buys Houses makes selling your Memphis home simple. Get a cash offer in 24 hours, close in as little as 7 days. No repairs, no agents, no fees.",
             isPartOf: { "@id": SITE_URL },
             breadcrumb: {
                 "@type": "BreadcrumbList",
@@ -85,7 +85,7 @@ const jsonLd = {
             "@type": "HowTo",
             name: "How to Sell Your Memphis House Fast for Cash",
             description:
-                "Our simple 4-step process to sell your Memphis home for cash — no fees, no repairs, close in as little as 7 days.",
+                "See how Spencer Buys Houses makes selling your Memphis home simple. Get a cash offer in 24 hours, close in as little as 7 days. No repairs, no agents, no fees.",
             step: [
                 {
                     "@type": "HowToStep",

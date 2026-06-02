@@ -13,9 +13,9 @@ const OG_IMAGE =
     "https://www.spencerbuyshouses.com/Home-Page-Design1-2.webp"
 
 export const metadata: Metadata = {
-    title: "About Spencer Buys Houses | Memphis Cash Home Buyers",
+    title: "About Spencer Shadrach | Memphis Cash Home Buyer | Spencer Buys Houses",
     description:
-        "Learn about Spencer Buys Houses — Memphis's trusted local cash home buyer with over 10 years of experience. We buy houses in any condition, fast, with no fees or commissions.",
+        "Spencer Shadrach has bought 400+ homes in Memphis, TN for cash. Learn how Spencer Buys Houses helps homeowners sell fast, as-is, with no repairs or fees.",
     alternates: {
         canonical: "/about/",
     },
@@ -24,16 +24,16 @@ export const metadata: Metadata = {
         locale: "en_US",
         url: `${SITE_URL}/about/`,
         siteName: "SpencerBuysHouses.com",
-        title: "About Spencer Buys Houses | Memphis Cash Home Buyers",
+        title: "About Spencer Shadrach | Memphis Cash Home Buyer | Spencer Buys Houses",
         description:
-            "Meet the team behind Spencer Buys Houses — your local Memphis cash buyer. Over 10 years helping homeowners sell fast, without fees, repairs, or drama.",
+            "Spencer Shadrach has bought 400+ homes in Memphis, TN for cash. Learn how Spencer Buys Houses helps homeowners sell fast, as-is, with no repairs or fees.",
         images: [{ url: OG_IMAGE, width: 1200, height: 630 }],
     },
     twitter: {
         card: "summary_large_image",
-        title: "About Spencer Buys Houses | Memphis Cash Home Buyers",
+        title: "About Spencer Shadrach | Memphis Cash Home Buyer | Spencer Buys Houses",
         description:
-            "Meet the team behind Spencer Buys Houses — your local Memphis cash buyer. Over 10 years helping homeowners sell fast, without fees, repairs, or drama.",
+            "Spencer Shadrach has bought 400+ homes in Memphis, TN for cash. Learn how Spencer Buys Houses helps homeowners sell fast, as-is, with no repairs or fees.",
         images: [OG_IMAGE],
     },
 }
@@ -47,9 +47,9 @@ const jsonLd = {
             "@type": "WebPage",
             "@id": `${SITE_URL}/about/`,
             url: `${SITE_URL}/about/`,
-            name: "About Spencer Buys Houses | Memphis Cash Home Buyers",
+            name: "About Spencer Shadrach | Memphis Cash Home Buyer | Spencer Buys Houses",
             description:
-                "Learn about Spencer Buys Houses, a family-owned real estate solutions company based in Memphis, TN. We buy houses in any condition with cash, fast closings, and no fees.",
+                "Spencer Shadrach has bought 400+ homes in Memphis, TN for cash. Learn how Spencer Buys Houses helps homeowners sell fast, as-is, with no repairs or fees.",
             isPartOf: { "@id": SITE_URL },
             breadcrumb: {
                 "@type": "BreadcrumbList",

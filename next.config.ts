@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     return [
       // Other
       { source: "/how-we-buy-houses", destination: "/how-it-works", permanent: true },
+      { source: "/contact", destination: "/contact-us", permanent: true },
       { source: "/bookatime", destination: "https://api.leadconnectorhq.com/widget/bookings/spencerbuyhouses", permanent: true },
       // Tennessee
       { source: "/tennessee/germantown", destination: "/we-serve/tennessee/germantown", permanent: true },

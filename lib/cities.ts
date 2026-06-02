@@ -122,7 +122,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_1.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "How can I sell my house fast in Germantown?",
@@ -174,7 +174,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_2.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "Do I need to make any repairs before selling my house in Hickory Hill?",
@@ -223,7 +223,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_3.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "Is Spencer Buys Houses a local Cordova company?",
@@ -277,7 +277,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_4.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "Are there any fees or commissions?",
@@ -330,7 +330,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_5.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "Do you buy houses in Berclair?",
@@ -381,7 +381,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_6.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "Will I have to move out immediately after the sale?",
@@ -435,7 +435,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_7.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "Can you help if I’m facing foreclosure in Collierville or Whitehaven?",
@@ -499,7 +499,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_8.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "Can you help if I’m facing foreclosure in Millington?",
@@ -570,7 +570,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_10.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "How quickly can I sell my house in Somerville?",
@@ -616,7 +616,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_11.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "How does Spencer Buys Houses work to sell my home fast in Raleigh?",
@@ -681,7 +681,7 @@ export const citiesData: StateData[] = [
                     }
                 ],
                 benefitsImage: "/houses/Houses_Spencer_14.webp",
-                heroImage: "/hickory-hill-memphis-tn-2-neighborhoodphoto.webp",
+                heroImage: "/background-tennessee.webp",
                 faqs: [
                     {
                         q: "How do I sell my Arlington, TN, house to Spencer Buys Houses?",

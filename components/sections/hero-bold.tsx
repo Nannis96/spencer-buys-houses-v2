@@ -7,7 +7,7 @@ export function HeroBold() {
         <section className="relative min-h-[28rem] md:min-h-[40rem] lg:min-h-[56rem] flex flex-col justify-end lg:items-center lg:justify-center py-12 md:py-16 mt-6 md:mt-0 overflow-hidden">
             <Image
                 src="/background-home.webp"
-                alt=""
+                alt="Memphis cash home buyer Spencer Shadrach"
                 fill
                 priority
                 quality={85}
