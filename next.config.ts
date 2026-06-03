@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
       // Other
       { source: "/how-we-buy-houses", destination: "/how-it-works", permanent: true },
       { source: "/contact", destination: "/contact-us", permanent: true },
+      { source: "/sell-my-house-fast-memphis ", destination: "/get-a-cash-offer-today", permanent: true },
+      { source: "/cash-home-buyers-memphis", destination: "/", permanent: true },
+      { source: "/reviews", destination: "/testimonials", permanent: true },
       { source: "/bookatime", destination: "https://api.leadconnectorhq.com/widget/bookings/spencerbuyhouses", permanent: true },
       // Tennessee
       { source: "/tennessee/germantown", destination: "/we-serve/tennessee/germantown", permanent: true },
