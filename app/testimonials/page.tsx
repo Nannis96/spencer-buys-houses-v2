@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 import { testimonials } from "../../components/data/testimonials";
 import { TestimonialsSection } from "@/components/sections/testimonials-section"
 import { CallButton } from "@/components/ui/call-button"
-import { CTAButton } from "@/components/ui/cta-button"
 import { Award, Home, Clock, DollarSign, } from "lucide-react"
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 import { JsonLd } from "@/components/seo/json-ld"
