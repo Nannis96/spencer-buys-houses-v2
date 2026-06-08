@@ -10,6 +10,23 @@ const nextConfig: NextConfig = {
       { source: "/cash-home-buyers-memphis", destination: "/", permanent: true },
       { source: "/reviews", destination: "/testimonials", permanent: true },
       { source: "/bookatime", destination: "https://api.leadconnectorhq.com/widget/bookings/spencerbuyhouses", permanent: true },
+      // Other
+      { source: "/blog/spencer-buys-houses-our-review-on-list-with-clever-2025", destination: "/blog/spencer-buys-houses-review-list-with-clever-2025", permanent: true },
+      { source: "/tennessee-2/hickory-hill", destination: "/we-serve/tennessee/hickory-hill", permanent: true },
+      { source: "/property/another-successful-closed-deal-2139-curry-eve-memphis-tn", destination: "/properties-we-bought", permanent: true },
+      { source: "/tennessee", destination: "/", permanent: true },
+      { source: "/blog/the-story-of-sally-the-seller-a-warning-for-memphis-homeowners", destination: "/blog/the-story-of-sally-the-seller-warning-for-memphis-homeowners", permanent: true },
+      { source: "/blog/how-we-helped-a-memphis-homeowner-sell-fast-without-repairs", destination: "/blog/case-study-closed-another-deal-morningview-dr-memphis", permanent: true },
+      { source: "/blog/sell-your-house-as-is-in-memphis", destination: "/blog/sell-your-memphis-home-as-is-in-2025", permanent: true },
+      { source: "/blog/spencer-buys-houses-vs-bartlett-realtors-the-real-cost-breakdown-in-2026", destination: "/blog/spencer-buys-houses-vs-bartlett-realtors-real-cost-breakdown-2026", permanent: true },
+      { source: "/property/414-cairn-cove-cordova-tn", destination: "/properties-we-bought", permanent: true },
+      { source: "/blog/a-real-as-is-success-story-closed-2139-curry-eve-memphis", destination: "/blog/as-is-success-story-closed-2139-curry-eve-memphis", permanent: true },
+      { source: "/property/under-contract-whitehaven-memphis-property/", destination: "/properties-we-bought", permanent: true },
+      { source: "/mississippi", destination: "/", permanent: true },
+      { source: "/blog/sell-inherited-house-memphis-2026-guide-for-families-handling-an-estate", destination: "/blog/sell-inherited-house-memphis-2026-guide-handling-estate", permanent: true },
+      { source: "/blog/10-tips-to-sell-my-house-fast-memphis-in-2026", destination: "/blog/10-tips-to-sell-my-house-fast-memphis-2026", permanent: true },
+      // { source: "/", destination: "/", permanent: true },
+
       // Tennessee
       { source: "/tennessee/germantown", destination: "/we-serve/tennessee/germantown", permanent: true },
       { source: "/tennessee/tennessee-hickory-hill", destination: "/we-serve/tennessee/hickory-hill", permanent: true },

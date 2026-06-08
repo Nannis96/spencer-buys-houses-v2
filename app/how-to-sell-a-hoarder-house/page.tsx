@@ -1,8 +1,5 @@
 import type { Metadata } from "next"
-import {
-    AlertTriangle, Flame, Bug, ShieldAlert, Wrench, DollarSign, Home, CheckCircle2, Users, Banknote,
-} from "lucide-react"
-import Link from "next/link"
+import { AlertTriangle, Flame, Bug, ShieldAlert, Wrench, DollarSign, Home, CheckCircle2, Users, Banknote, } from "lucide-react"
 import { JsonLd } from "@/components/seo/json-ld"
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 import { CTAButton } from "@/components/ui/cta-button"
@@ -232,14 +229,14 @@ export default function HoaderHousePage() {
                 </section>
 
                 {/* ── 2. Intro article ── */}
-                <section className="bg-[var(--color-background)] py-6 lg:py-8">
+                <section className="bg-[var(--color-background-white)] py-6 lg:py-8">
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
 
-                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
+                        <h2 className="text-3xl md:text-4xl font-bold text-black mb-8 text-center">
                             How to Sell a Hoarder House
                         </h2>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-gray-400 leading-relaxed text-lg">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-[var(--color-text-black)] leading-relaxed text-lg">
                             <div className="space-y-5">
                                 <p>
                                     Selling a hoarder house can be an overwhelming task for homeowners in Olive Branch Mississippi. Hoarding disorder is a mental illness that affects millions of people worldwide, often resulting in an accumulation of clutter and items that can make it challenging for the individual to live comfortably in their home. When it comes time to sell the property, the situation can become even more complicated.
@@ -259,11 +256,11 @@ export default function HoaderHousePage() {
                             </div>
                         </div>
 
-                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 text-center">
+                        <h3 className="text-2xl md:text-3xl font-bold text-black mb-6 text-center">
                             How to Sell a Hoarder House — Overview
                         </h3>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-gray-400 leading-relaxed text-lg">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-text-[var(--color-text-black)] leading-relaxed text-lg">
                             <div className="space-y-5">
                                 <p>
                                     A hoarder house is a property that has been significantly impacted by individuals who suffer from hoarding disorder. This psychological condition can lead to an overwhelming accumulation of clutter and items that may only seem useful or valuable to the person collecting them. Hoarders often gather a wide variety of items, many of which others might consider junk or worthless, making it difficult for them to part with their possessions.
@@ -278,11 +275,11 @@ export default function HoaderHousePage() {
                         </div>
 
                         {/* What to do */}
-                        <div className="mt-12 rounded-2xl border border-white/10 bg-white/5 p-8">
-                            <h3 className="text-2xl font-bold text-white mb-4 text-center">
+                        <div className="mt-12 rounded-2xl border border-red-500/20 bg-red-500/5 p-8">
+                            <h3 className="text-2xl font-bold text-black mb-4 text-center">
                                 What to Do?
                             </h3>
-                            <div className="space-y-4 text-gray-400 leading-relaxed">
+                            <div className="space-y-4 text-[var(--color-text-black)] leading-relaxed">
                                 <p>
                                     Hoarder houses can be challenging to sell here in Olive Branch Mississippi, as they often require significant decluttering and cleaning before they can be presented to potential buyers. This can be a time-consuming and emotional process, as hoarders may have strong emotional attachments to their belongings and may struggle to part with them. Be mindful of this when you or a loved one needs to sell a home in Olive Branch Mississippi.
                                 </p>
@@ -374,7 +371,7 @@ export default function HoaderHousePage() {
                             {dangers.map(({ icon: Icon, title, description }) => (
                                 <div
                                     key={title}
-                                    className="flex flex-col p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-red-500/30 transition-colors"
+                                    className="flex flex-col p-8 rounded-2xl bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30 transition-colors"
                                 >
                                     <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/10">
                                         <Icon className="h-7 w-7 text-red-400" aria-hidden="true" />
@@ -461,7 +458,7 @@ export default function HoaderHousePage() {
                             {fixOrSell.map(({ icon: Icon, title, description }) => (
                                 <div
                                     key={title}
-                                    className="flex flex-col p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-red-500/30 transition-colors"
+                                    className="flex flex-col p-8 rounded-2xl bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30 hover:border-red-500/30 transition-colors"
                                 >
                                     <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/10">
                                         <Icon className="h-7 w-7 text-red-400" aria-hidden="true" />
@@ -572,7 +569,7 @@ export default function HoaderHousePage() {
                             {sellingOptions.map(({ icon: Icon, title, description }, idx) => (
                                 <div
                                     key={title}
-                                    className="flex flex-col p-10 md:p-12 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--color-secondary)]/30 transition-colors group"
+                                    className="flex flex-col p-10 md:p-12 rounded-2xl bg-white border border-gray-100 hover:border-[var(--color-secondary)]/30 transition-colors"
                                 >
                                     <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-500/10">
                                         <Icon className="h-8 w-8 text-red-400" aria-hidden="true" />
@@ -585,7 +582,7 @@ export default function HoaderHousePage() {
                                             </p>
                                         ))
                                     ) : (
-                                        <p className="text-[var(--color-text-black)] leading-relaxed text-lg">{description}</p>
+                                        <p className="text-[var(--color-text-black)] leading-relaxed text-lg ">{description}</p>
                                     )}
                                 </div>
                             ))}
