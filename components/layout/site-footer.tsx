@@ -3,13 +3,16 @@ import { SocialLinks } from "./social-links"
 
 export function SiteFooter() {
     return (
-        <footer className="bg-[var(--color-background)] text-white">
-            <div className="mx-auto max-w-7xl px-4 lg:px-4 py-3">
+        <footer className="bg-[var(--color-background)] text-white w-full">
+            <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
                     {/* Quick Links */}
-                    <div>
-                        <h4 className="font-semibold mb-2 text-left text-[var(--color-primary-dark)]">Quick Links</h4>
-                        <nav className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 sm:gap-x-4 items-start sm:w-70">
+                    <div className="text-center md:text-left">
+                        <h4 className="font-semibold mb-2 text-[var(--color-primary-dark)]">
+                            Quick Links
+                        </h4>
+
+                        <nav className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 sm:gap-x-4 items-start sm:w-70 mx-auto md:mx-0">
                             {[
                                 { label: "Get your cash offer", href: "/get-a-cash-offer-today/" },
                                 { label: "About", href: "/about/" },
