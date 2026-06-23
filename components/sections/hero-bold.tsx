@@ -6,7 +6,7 @@ export function HeroBold() {
     return (
         <section className="relative -mt-[var(--app-header-height)] pt-[calc(var(--app-header-height)+5rem)] lg:pt-[calc(var(--app-header-height)+7rem)] min-h-[56rem] pb-20 lg:pb-32 overflow-hidden">
             <Image
-                src="/background-home2.webp"
+                src="/background-home.webp"
                 alt="Memphis cash home buyer Spencer Shadrach"
                 fill
                 priority
