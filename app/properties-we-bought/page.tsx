@@ -137,7 +137,6 @@ export default function PropertiesWeBoughtPage() {
     return (
         <>
             <JsonLd data={breadcrumbSchema} />
-            {/* <main className="bg-[var(--color-background)] min-h-screen pt-[var(--app-header-height,80px)]"> */}
             <main className="bg-[var(--color-background)] min-h-screen pt-30">
 
                 {/* ── Hero ──────────────────────────────────────────────────── */}
@@ -214,7 +213,7 @@ export default function PropertiesWeBoughtPage() {
                 {/* ── CTA ───────────────────────────────────────────────────── */}
                 <section className="bg-[var(--color-background-yellow)] border-t border-white/10 relative">
                     {/* Desktop: text flush left, buttons flush right */}
-                    <div className="hidden md:flex items-center justify-between px-4 lg:px-8 py-8 min-h-[200px]">
+                    <div className="hidden md:flex items-center justify-between px-4 lg:px-16 py-8 min-h-[200px]">
                         <div className="max-w-[720px]">
                             <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4">
                                 Have a house to sell in Memphis?

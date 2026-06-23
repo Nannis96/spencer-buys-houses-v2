@@ -50,6 +50,11 @@ export function StickyHeader() {
     const isCitiesActive = normalizedPath === "/we-serve" || normalizedPath.startsWith("/we-serve/")
     const isServicesActive = normalizedPath === "/services" || normalizedPath.startsWith("/services/")
 
+    const pathSegments = (pathname ?? "").split("/").filter(Boolean)
+    const isCityPage = pathSegments[0] === "we-serve" && pathSegments.length >= 3
+    const isHome = (normalizedPath === "" || normalizedPath === "/")
+    const showTransparentHeader = (isCityPage || isHome) && !scrolled
+
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20)
         window.addEventListener("scroll", handleScroll)
@@ -70,9 +75,11 @@ export function StickyHeader() {
     return (
         <header
             ref={headerRef}
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                ? "bg-[var(--color-background)] shadow-lg"
-                : "bg-[var(--color-background)] shadow"
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${showTransparentHeader
+                ? "bg-transparent shadow-none"
+                : scrolled
+                    ? "bg-[var(--color-background)] shadow-lg"
+                    : "bg-[var(--color-background)] shadow"
                 }`}
             itemScope
             itemType="https://schema.org/Organization"
@@ -96,7 +103,7 @@ export function StickyHeader() {
                 <meta itemProp="addressCountry" content="US" />
             </div>
 
-            <div className="mx-auto max-w-7xl px-4 lg:px-8 w-full">
+            <div className="mx-auto max-w-[1800px] px-4 lg:px-16 w-full">
                 <div className="flex flex-col py-2">
                     <div className="grid grid-cols-3 items-center">
 
@@ -124,7 +131,7 @@ export function StickyHeader() {
                                 href={`tel:${PHONE_NUMBER}`}
                                 itemProp="telephone"
                                 aria-label={PHONE_ARIA}
-                                className="text-[var(--color-primary-dark)] font-semibold text-lg"
+                                className={`${showTransparentHeader ? "text-white" : "text-[var(--color-primary-dark)]"} font-semibold text-lg`}
                             >
                                 Call Today: {PHONE_DISPLAY}
                             </a>
@@ -140,7 +147,7 @@ export function StickyHeader() {
                                 aria-expanded={mobileMenuOpen}
                                 aria-controls="mobile-navigation"
                             >
-                                <Menu className="h-6 w-6 text-[var(--color-primary-dark)]" />
+                                <Menu className={`h-6 w-6 ${showTransparentHeader ? "text-white" : "text-[var(--color-primary-dark)]"}`} />
                             </button>
                         </div>
                     </div>
@@ -163,8 +170,8 @@ export function StickyHeader() {
                                     <a
                                         href={item.href}
                                         className={`relative px-3 py-1 text-sm font-medium transition-all duration-200 rounded-md ${isActive
-                                            ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10"
-                                            : "text-gray-400 hover:text-white hover:bg-white/5"
+                                            ? (showTransparentHeader ? "text-white bg-white/10" : "text-[var(--color-primary)] bg-[var(--color-primary)]/10")
+                                            : (showTransparentHeader ? "text-white hover:opacity-90" : "text-white hover:text-white hover:bg-white/5")
                                             }`}
                                     >
                                         {item.label}
@@ -176,7 +183,7 @@ export function StickyHeader() {
 
                                     {idx === 0 && (
                                         <div className="relative group">
-                                            <button className={`relative px-3 py-1 text-sm font-medium rounded-md ${isCitiesActive ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
+                                            <button className={`relative px-3 py-1 text-sm font-medium rounded-md ${isCitiesActive ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10" : "text-white hover:text-white hover:bg-white/5"}`}>
                                                 Cities we serve
                                                 <span className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[var] transition-all duration-300 ${isCitiesActive ? "opacity-100" : "opacity-0 group-hover:opacity-30"}`} />
                                             </button>
@@ -226,7 +233,7 @@ export function StickyHeader() {
 
                                     {idx === 0 && (
                                         <div className="relative group">
-                                            <button className={`relative px-3 py-1 text-sm font-medium rounded-md ${isServicesActive ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
+                                            <button className={`relative px-3 py-1 text-sm font-medium rounded-md ${isServicesActive ? "text-[var(--color-primary)] bg-[var(--color-primary)]/10" : "text-white hover:text-white hover:bg-white/5"}`}>
                                                 Services
                                                 <span className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[#f59e0b] transition-all duration-300 ${isServicesActive ? "opacity-100" : "opacity-0 group-hover:opacity-30"}`} />
                                             </button>

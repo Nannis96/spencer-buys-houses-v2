@@ -4,7 +4,7 @@ import Image from "next/image"
 
 export function HeroBold() {
     return (
-        <section className="relative min-h-[56rem] overflow-hidden">
+        <section className="relative -mt-[var(--app-header-height)] pt-[calc(var(--app-header-height)+5rem)] lg:pt-[calc(var(--app-header-height)+7rem)] min-h-[56rem] pb-20 lg:pb-32 overflow-hidden">
             <Image
                 src="/background-home2.webp"
                 alt="Memphis cash home buyer Spencer Shadrach"
@@ -20,31 +20,31 @@ export function HeroBold() {
                 aria-hidden="true"
             />
 
-            <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-10">
+            <div className="relative z-10 mx-auto max-w-[1800px] px-30 lg:px-30">
 
-                {/* FILA SUPERIOR (full-bleed heading with gutters) */}
-                <div className="pt-20 lg:pt-28 relative left-1/2 -translate-x-1/2 w-screen px-6 md:px-8 lg:px-12 max-w-none">
-                    <h1 className="w-full text-center text-[9vw] sm:text-[8vw] md:text-[6vw] lg:text-[4.5vw] font-bold text-white leading-tight break-words">
-                        Sell Your Memphis House{" "}
-                        <span className="text-[var(--color-text-red)]">
-                            Fast for Cash
-                        </span>
-                    </h1>
+                <div className="flex flex-col items-start">
 
-                    <p className="mt-6 max-w-3xl text-lg lg:text-xl text-white text-center mx-auto">
-                        Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today!
-                    </p>
+                    {/* FILA SUPERIOR */}
+                    <div className="pt-5 lg:pt-5 w-full max-w-4xl text-left">
+                        <h1 className="text-[8vw] sm:text-[8vw] md:text-[6vw] lg:text-[4.5vw] font-bold text-white leading-tight break-words">
+                            Sell Your Memphis House{" "}
+                            <span className="text-[var(--color-text-red)]">
+                                Fast for Cash
+                            </span>
+                        </h1>
 
-                    <div className="mt-8 flex justify-center">
-                        <CallButton />
+                        <p className="mt-6 text-lg lg:text-xl text-white">
+                            Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today!
+                        </p>
                     </div>
-                </div>
 
-                {/* FILA INFERIOR */}
-                <div className="mt-20 lg:mt-24 flex justify-end">
-                    <div className="w-full max-w-xl">
-                        <LeadFormConsent />
+                    {/* FILA INFERIOR */}
+                    <div className="mt-20 lg:mt-20 w-full max-w-4xl">
+                        <div className="mx-auto w-full max-w-xl">
+                            <LeadFormConsent />
+                        </div>
                     </div>
+
                 </div>
 
             </div>

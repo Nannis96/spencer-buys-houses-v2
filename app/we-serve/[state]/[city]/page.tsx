@@ -3,12 +3,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { JsonLd } from "@/components/seo/json-ld"
 import { CallButton } from "@/components/ui/call-button"
-import { CallNowBanner } from "@/components/sections/call-now-banner"
 import { LeadFormConsent } from "@/components/forms/lead-form-consent"
 import { findCity } from "@/lib/cities"
 import { getAllCitySlugs, CityFaq, CitySituation } from "@/lib/cities"
-import { AnimatedBenefitCards } from "@/app/get-a-cash-offer-today/animated-cards"
 import { buildBreadcrumbList, SITE_URL } from "@/lib/schema"
+import { Banknote, Wrench, CircleOff, Calendar, HeartHandshake, ShieldCheck } from "lucide-react";
+
 
 const DEFAULT_BENEFITS: string[] = [
     "Same-day cash offers — no waiting weeks for a response.",
@@ -89,7 +89,7 @@ export default async function CityPage({ params }: Props) {
                 { name: `${city.name}, ${state.state}`, item: `${SITE_URL}/we-serve/${stateSlug}/${citySlug}/` },
             ])} />
             <main id="top">
-                <section className="relative pt-28 md:pt-44 pb-12 lg:pb-20 overflow-hidden">
+                <section className="relative -mt-[var(--app-header-height)] pt-[calc(var(--app-header-height)+7rem)] md:pt-[calc(var(--app-header-height)+11rem)] pb-12 lg:pb-20 overflow-hidden">
                     <Image
                         src={city.heroImage ?? "/background-we-serve.webp"}
                         alt={city.heroTitle}
@@ -99,20 +99,21 @@ export default async function CityPage({ params }: Props) {
                         sizes="100vw"
                         className="object-cover object-[75%_30%] md:object-[60%_30%] lg:object-[50%_25%]"
                     />
+                    <div className="absolute inset-0 bg-black/80" aria-hidden="true" />
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[520px] bg-[#f59e0b]/5 rounded-full blur-3xl" />
-                    <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
+                    <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                            <div className="relative bg-[var(--color-background)] z-10">
-                                <div className="bg-gradient-to-r from-white/60 via-white/50 to-white/30 dark:from-black/50 dark:via-black/30 dark:to-black/12 p-6 md:p-8 rounded-xl backdrop-blur-sm text-[var(--color-text-black)] dark:text-white">
+                            <div className="relative z-10">
+                                <div className="p-0 md:p-0 text-[var(--color-text-black)] dark:text-white">
                                     <h1 className="block text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
                                         {city.heroTitle}
                                     </h1>
                                 </div>
 
                                 {(city.heroSubtitle || city.intro) && (
-                                    <div className="mt-6 bg-gradient-to-r from-white/50 via-white/40 to-white/20 dark:from-black/40 dark:via-black/20 dark:to-black/8 p-4 md:p-6 rounded-xl backdrop-blur-sm text-[var(--color-text-black)] dark:text-white">
+                                    <div className="mt-6 p-0 md:p-0 text-[var(--color-text-black)] dark:text-white">
                                         {city.heroSubtitle && (
-                                            <p className="mx-auto max-w-2xl text-lg text">{city.heroSubtitle}</p>
+                                            <p className="mx-auto max-w-2xl text-lg">{city.heroSubtitle}</p>
                                         )}
 
                                         {city.intro && (
@@ -133,55 +134,219 @@ export default async function CityPage({ params }: Props) {
                     </div>
                 </section>
 
-                {/* ───────── 2. BENEFITS ───────── */}
-                <section
-                    id="benefits"
-                    className="bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)] py-10 lg:py-14"
-                    aria-labelledby="benefits-heading"
-                >
-                    <div className="mx-auto max-w-7xl px-4 lg:px-8">
-                        <div className="text-center mb-16">
-                            <p className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-sm font-semibold mb-4 uppercase tracking-wide">
+                {/* ── WHY US ──────────────────────────────────────────────── */}
+                <section className="bg-[var(--color-background-white)] py-20 lg:py-22 w-full">
+                    <div className="mx-auto max-w-[1800px] px-4 lg:px-16 w-full">
+
+                        {/* Header */}
+                        <div className="max-w-2xl mb-14 text-left">
+                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-secondary)] font-semibold mb-4">
                                 Why Choose Us
                             </p>
-                            <h2 id="benefits-heading" className="text-3xl md:text-4xl font-bold text-[var(--color-text-black)] mb-4">
-                                {"Here's What "}
-                                <span className="text-[var(--color-text-red)]">Spencer Buys Houses</span>
-                                {" Can Do For You…"}
+
+                            <h2 className="text-4xl lg:text-5xl font-bold text-[var(--color-text-black)] leading-tight">
+                                Here's what Spencer Buys Houses can do for you
                             </h2>
-                            <p className="text-[var(--color-text-black)] max-w-2xl mx-auto">
-                                Skip the traditional hassle of listing with an agent. Get a fair cash offer and sell your house fast.
-                            </p>
                         </div>
 
-                        {/* Animated cards — client leaf (data lives inside the client boundary) */}
-                        <AnimatedBenefitCards />
+                        {/* Benefits */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4">
+
+                            {[
+                                {
+                                    icon: <Banknote className="h-8 w-8 text-[var(--color-secondary)]" />,
+                                    title: "Cash in Days",
+                                    desc: "Get cash in your hands within a few days of contacting us. We close fast on your timeline.",
+                                },
+                                {
+                                    icon: <Wrench className="h-8 w-8 text-[var(--color-secondary)]" />,
+                                    title: "Any Condition",
+                                    desc: "Fire damage, water damage, inherited home, or major repairs needed — we buy as-is, no questions.",
+                                },
+                                {
+                                    icon: <CircleOff className="h-8 w-8 text-[var(--color-secondary)]" />,
+                                    title: "Zero Fees",
+                                    desc: "No commissions, no closing costs, no hidden fees. The offer we give is the amount you walk away with.",
+                                },
+                                {
+                                    icon: <Calendar className="h-8 w-8 text-[var(--color-secondary)]" />,
+                                    title: "Your Timeline",
+                                    desc: "Need to close in 7 days or 60 days? You pick the date. We work around your schedule, not ours.",
+                                },
+                                {
+                                    icon: <HeartHandshake className="h-8 w-8 text-[var(--color-secondary)]" />,
+                                    title: "Local & Family-Owned",
+                                    desc: `We know the ${city.name} and Memphis market deeply. Genuine, personalized support every step of the way.`,
+                                },
+                                {
+                                    icon: <ShieldCheck className="h-8 w-8 text-[var(--color-secondary)]" />,
+                                    title: "Transparent Process",
+                                    desc: "Clear contracts, honest pricing based on real market value. No surprises, no pressure, no games.",
+                                },
+                            ].map(({ icon, title, desc }) => (
+                                <div key={title} className="bg-white border border-gray-200 p-6 flex flex-col gap-4 overflow-hidden transition-all duration-300 hover:border-[var(--color-secondary)]">
+                                    <div className="w-12 h-12 flex items-center justify-center bg-[var(--color-secondary)]/10 text-[var(--color-secondary)]">
+                                        {icon}
+                                    </div>
+
+                                    <h3 className="text-lg font-bold text-[var(--color-text-black)]">
+                                        {title}
+                                    </h3>
+
+                                    <p className="text-sm leading-7 text-gray-600">
+                                        {desc}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </section>
 
-                <section className="bg-[var(--color-background)] py-10 lg:py-14" aria-labelledby="benefits-heading">
+                {/* ── HOW IT WORKS ────────────────────────────────────────── */}
+                <section className="bg-[var(--color-background)] py-20 lg:py-28 w-full">
+                    <div className="mx-auto max-w-[1800px] px-4 lg:px-16 w-full">
+
+                        {/* Header */}
+                        <div className="max-w-2xl mb-20">
+                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-primary)] font-semibold mb-4">
+                                Simple Process
+                            </p>
+
+                            <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
+                                Three steps to cash in your hands
+                            </h2>
+                        </div>
+
+                        <div className="hidden md:block relative">
+                            {/* Line */}
+                            {/* <div className="absolute top-6 left-0 right-0 h-px bg-white/20" /> */}
+                            <div className="absolute top-6 left-[10%] right-[10%] h-px bg-white/20" />
+
+                            <div className="grid grid-cols-3 relative z-10">
+                                {[
+                                    {
+                                        num: "01",
+                                        title: "Contact us",
+                                        desc: `Fill out the form or call (901) 621-8799. Tell us about your ${city.name} property.`,
+                                    },
+                                    {
+                                        num: "02",
+                                        title: "Get your offer",
+                                        desc: "We review your home and send a fair, no-obligation cash offer within 24 hours.",
+                                    },
+                                    {
+                                        num: "03",
+                                        title: "Close & get paid",
+                                        desc: "Pick your closing date. We handle all the paperwork. Cash in your account.",
+                                    },
+                                ].map(({ num, title, desc }, index) => (
+                                    <div
+                                        key={num}
+                                        className={`flex flex-col text-center
+                    ${index === 0 ? "items-start pl-[25%]" : ""}
+                    ${index === 1 ? "items-center" : ""}
+                    ${index === 2 ? "items-end pr-[25%]" : ""}
+                `}
+                                    >
+                                        <div
+                                            className="w-12 h-12 rounded-full border border-[var(--color-primary)] bg-[var(--color-background)] flex items-center justify-center text-[var(--color-primary)] font-bold text-lg"
+                                        >
+                                            {num}
+                                        </div>
+
+                                        <h3 className="mt-8 text-xl font-semibold text-white">
+                                            {title}
+                                        </h3>
+
+                                        <p className="mt-4 text-sm leading-7 text-gray-400 max-w-sm">
+                                            {desc}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Mobile Version */}
+                        <div className="md:hidden space-y-8">
+
+                            {[
+                                {
+                                    num: "01",
+                                    title: "Contact us",
+                                    desc: `Fill out the form or call (901) 621-8799. Tell us about your ${city.name} property.`,
+                                },
+                                {
+                                    num: "02",
+                                    title: "Get your offer",
+                                    desc: "We review your home and send a fair, no-obligation cash offer within 24 hours.",
+                                },
+                                {
+                                    num: "03",
+                                    title: "Close & get paid",
+                                    desc: "Pick your closing date. We handle all the paperwork. Cash in your account.",
+                                },
+                            ].map(({ num, title, desc }) => (
+                                <div
+                                    key={num}
+                                    className="flex gap-4 border border-white/10 p-5 rounded-lg"
+                                >
+                                    <div
+                                        className="
+                            w-12
+                            h-12
+                            rounded-full
+                            border
+                            border-[var(--color-primary)]
+                            text-[var(--color-primary)]
+                            flex
+                            items-center
+                            justify-center
+                            font-bold
+                            shrink-0
+                        "
+                                    >
+                                        {num}
+                                    </div>
+
+                                    <div>
+                                        <h3 className="text-lg font-semibold text-white mb-2">
+                                            {title}
+                                        </h3>
+
+                                        <p className="text-sm text-gray-400 leading-6">
+                                            {desc}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                    </div>
+                </section>
+
+                <section className="bg-[var(--color-background-white)] py-10 lg:py-14" aria-labelledby="benefits-heading">
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                             {/* Left column — benefits & FAQs */}
                             <div>
-                                <h2 id="benefits-heading" className="text-white text-2xl font-bold mb-4">Why work with Spencer Buys Houses in {" "}
-                                    <span className="text-[var(--color-text-yellow)]">{city.name}?</span>
+                                <h2 id="benefits-heading" className="text-black text-2xl font-bold mb-4">Why work with Spencer Buys Houses in {" "}
+                                    <span className="text-[var(--color-text-red)]">{city.name}?</span>
                                 </h2>
-                                <ul className="list-disc list-inside text-gray-300 space-y-2">
+                                <ul className="list-disc list-inside text-[var(--color-text-black)] space-y-2">
                                     {benefits.map((b: string) => (
                                         <li key={b}>{b}</li>
                                     ))}
                                 </ul>
 
                                 <div className="mt-8">
-                                    <h3 className="text-white text-xl font-semibold mb-3">Frequently {" "}
-                                        <span className="text-[var(--color-text-yellow)]"> Asked Questions</span>
+                                    <h3 className="text-black text-xl font-semibold mb-3">Frequently {" "}
+                                        <span className="text-[var(--color-text-red)]"> Asked Questions</span>
                                     </h3>
                                     <div className="space-y-4">
                                         {faqs.map((f) => (
-                                            <details key={f.q} className="bg-white/5 p-4 border border-[var(--color-primary)]/60 rounded-md">
-                                                <summary className="font-medium text-white cursor-pointer">{f.q}</summary>
-                                                <div className="mt-2 text-gray-300">{f.a}</div>
+                                            <details key={f.q} className="bg-white p-4 border border-[var(--color-secondary)]/60 rounded-md">
+                                                <summary className="font-medium text-black cursor-pointer">{f.q}</summary>
+                                                <div className="mt-2 text-[var(--color-text-black)]">{f.a}</div>
                                             </details>
                                         ))}
                                     </div>
@@ -202,16 +367,37 @@ export default async function CityPage({ params }: Props) {
                     </div>
                 </section>
 
-                {/* ── CTA Banner ───────────────────────────────────────────────── */}
-                <CallNowBanner
-                    badge="GET YOUR CASH OFFER TODAY"
-                    heading={`Ready to Sell Your ${city.name} House Fast?`}
-                    description={`No agents. No repairs. No commissions. Close in as little as 7–10 days. Call Spencer Buys Houses at (901) 621-8799 — we're here to help.`}
-                    primaryLabel="(901) 621-8799"
-                    secondaryLabel="Get My Free Cash Offer"
-                    secondaryHref="#top"
-                    headingId="about-cta-heading"
-                />
+                {/* ── CTA ───────────────────────────────────────────────────── */}
+                <section className="bg-[var(--color-background-yellow)] border-t border-white/10 relative">
+                    {/* Desktop: text flush left, buttons flush right */}
+                    <div className="hidden md:flex items-center justify-between px-4 lg:px-16 py-8 min-h-[200px]">
+                        <div className="max-w-[720px]">
+                            <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4">
+                                {`Ready to sell your ${city.name} house?`}
+                            </h2>
+                            <p className="text-black text-base">
+                                No agents. No repairs. No commissions. Call today or get your offer online.
+                            </p>
+                        </div>
+
+                        <div className="flex items-center gap-4 shrink-0 ml-8">
+                            <CallButton inline />
+                        </div>
+                    </div>
+
+                    {/* Mobile: stacked, centered */}
+                    <div className="md:hidden mx-auto max-w-4xl px-4 lg:px-8 py-20 text-center">
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-4">
+                            {`Ready to sell your ${city.name} house?`}
+                        </h2>
+                        <p className="text-black text-sm mb-6 max-w-xl mx-auto">
+                            No agents. No repairs. No commissions. Call today or get your offer online.
+                        </p>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <CallButton inline />
+                        </div>
+                    </div>
+                </section>
             </main>
         </>
     )
