@@ -218,9 +218,8 @@ export default async function CityPage({ params }: Props) {
                         </div>
 
                         <div className="hidden md:block relative">
-                            {/* Line */}
-                            {/* <div className="absolute top-6 left-0 right-0 h-px bg-white/20" /> */}
-                            <div className="absolute top-6 left-[10%] right-[10%] h-px bg-white/20" />
+                            {/* Connecting line — left/right = center of first/last column in a 3-col grid (100% / 6) */}
+                            <div className="absolute top-6 left-[calc(100%/6)] right-[calc(100%/6)] h-px bg-white/20" />
 
                             <div className="grid grid-cols-3 relative z-10">
                                 {[
@@ -239,28 +238,21 @@ export default async function CityPage({ params }: Props) {
                                         title: "Close & get paid",
                                         desc: "Pick your closing date. We handle all the paperwork. Cash in your account.",
                                     },
-                                ].map(({ num, title, desc }, index) => (
-                                    <div
-                                        key={num}
-                                        className={`flex flex-col text-center
-                    ${index === 0 ? "items-start pl-[25%]" : ""}
-                    ${index === 1 ? "items-center" : ""}
-                    ${index === 2 ? "items-end pr-[25%]" : ""}
-                `}
-                                    >
-                                        <div
-                                            className="w-12 h-12 rounded-full border border-[var(--color-primary)] bg-[var(--color-background)] flex items-center justify-center text-[var(--color-primary)] font-bold text-lg"
-                                        >
+                                ].map(({ num, title, desc }) => (
+                                    <div key={num} className="flex flex-col items-center">
+                                        <div className="w-12 h-12 rounded-full border border-[var(--color-primary)] bg-[var(--color-background)] flex items-center justify-center text-[var(--color-primary)] font-bold text-lg">
                                             {num}
                                         </div>
 
-                                        <h3 className="mt-8 text-xl font-semibold text-white">
-                                            {title}
-                                        </h3>
+                                        <div className="mt-8 max-w-xs text-center">
+                                            <h3 className="text-xl font-semibold text-white">
+                                                {title}
+                                            </h3>
 
-                                        <p className="mt-4 text-sm leading-7 text-gray-400 max-w-sm">
-                                            {desc}
-                                        </p>
+                                            <p className="mt-4 text-sm leading-7 text-gray-400">
+                                                {desc}
+                                            </p>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -326,8 +318,9 @@ export default async function CityPage({ params }: Props) {
 
                 <section className="bg-[var(--color-background-white)] py-10 lg:py-14" aria-labelledby="benefits-heading">
                     <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                        {/* Benefits + image: two-column on lg, single column on mobile */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            {/* Left column — benefits & FAQs */}
+                            {/* Left column — benefits only */}
                             <div>
                                 <h2 id="benefits-heading" className="text-black text-2xl font-bold mb-4">Why work with Spencer Buys Houses in {" "}
                                     <span className="text-[var(--color-text-red)]">{city.name}?</span>
@@ -337,20 +330,6 @@ export default async function CityPage({ params }: Props) {
                                         <li key={b}>{b}</li>
                                     ))}
                                 </ul>
-
-                                <div className="mt-8">
-                                    <h3 className="text-black text-xl font-semibold mb-3">Frequently {" "}
-                                        <span className="text-[var(--color-text-red)]"> Asked Questions</span>
-                                    </h3>
-                                    <div className="space-y-4">
-                                        {faqs.map((f) => (
-                                            <details key={f.q} className="bg-white p-4 border border-[var(--color-secondary)]/60 rounded-md">
-                                                <summary className="font-medium text-black cursor-pointer">{f.q}</summary>
-                                                <div className="mt-2 text-[var(--color-text-black)]">{f.a}</div>
-                                            </details>
-                                        ))}
-                                    </div>
-                                </div>
                             </div>
 
                             {/* Right column — city image with fallback */}
@@ -362,6 +341,21 @@ export default async function CityPage({ params }: Props) {
                                     className="object-cover"
                                     sizes="(max-width: 1024px) 100vw, 50vw"
                                 />
+                            </div>
+                        </div>
+
+                        {/* FAQ — full container width, outside the two-column grid */}
+                        <div className="mt-8">
+                            <h3 className="text-black text-xl font-semibold mb-3">Frequently {" "}
+                                <span className="text-[var(--color-text-red)]"> Asked Questions</span>
+                            </h3>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                {faqs.map((f) => (
+                                    <details key={f.q} className="bg-white p-4 border border-[var(--color-secondary)]/60 rounded-md">
+                                        <summary className="font-medium text-black cursor-pointer">{f.q}</summary>
+                                        <div className="mt-2 text-[var(--color-text-black)]">{f.a}</div>
+                                    </details>
+                                ))}
                             </div>
                         </div>
                     </div>
