@@ -96,11 +96,13 @@ DATABASE_URL=postgresql://spencer_user:spencer_password@127.0.0.1:5432/spencer_d
 
 ### 5.1 Backup de WordPress (obligatorio)
 
-Desde el VPS, respaldar la base de datos de WordPress antes de tocar nada:
+Desde el VPS, respaldar la base de datos de WordPress antes de tocar nada. La
+imagen es **MariaDB 11.4**, así que la herramienta es `mariadb-dump` (el nombre
+`mysqldump` ya no existe en MariaDB 11.x):
 
 ```bash
 docker exec wordpress-db sh -c \
-  'exec mysqldump -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' \
+  'exec mariadb-dump -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' \
   > wp-backup-$(date +%F).sql
 ```
 
@@ -218,11 +220,16 @@ destacada, excerpt) y muestrea la meta `rank_math_title`. El detalle queda en
 
 ---
 
-## 6. Publicar los posts (opcional)
+## 6. Post-procesamiento (opcional)
+
+Todas estas operaciones actúan **solo sobre los posts migrados**, identificados por
+la meta `_prisma_id` que el script deja en cada uno. Así nunca tocan otro contenido
+que pudiera existir en WordPress.
+
+### 6.1 Publicar los posts
 
 Los posts se importan como **draft** (respetando el estado del origen). Cuando ya
-los revisaste y quieres publicarlos, puedes hacerlo en bloque **solo sobre los
-posts migrados** (identificados por la meta `_prisma_id`):
+los revisaste y quieres publicarlos, puedes hacerlo en bloque:
 
 ```bash
 docker exec -u www-data wordpress-cms wp post list \
@@ -232,6 +239,50 @@ docker exec -u www-data wordpress-cms wp post list \
 
 > Si en el origen algunos posts ya estaban en `published`, el script los crea
 > directamente como `publish` y no hace falta este paso para ellos.
+
+### 6.2 Cambiar el autor de todos los posts
+
+El script asigna como autor al usuario autenticado que corrió la migración (o al
+`WP_AUTHOR_ID` que hayas definido). Para reasignar todos los posts migrados a otro
+autor necesitas el **ID numérico** del usuario destino.
+
+**1. Ubicar (o crear) el usuario autor.** Lista los usuarios existentes:
+
+```bash
+docker exec -u www-data wordpress-cms wp user list --fields=ID,user_login,display_name,roles
+```
+
+Si el autor no existe todavía, créalo (`--porcelain` imprime solo el ID nuevo):
+
+```bash
+docker exec -u www-data wordpress-cms wp user create spencer spencer@spencerbuyshouses.com \
+  --role=author --display_name="Spencer Shadrach" --porcelain
+```
+
+**2. Reasignar el autor en todos los posts migrados** (sustituye `<USER_ID>` por el ID):
+
+```bash
+docker exec -u www-data wordpress-cms wp post list \
+  --post_status=any --meta_key=_prisma_id --field=ID \
+  | xargs -n1 -I{} docker exec -u www-data wordpress-cms wp post update {} --post_author=<USER_ID>
+```
+
+> `--post_status=any` asegura que abarque los posts estén en `draft` o `publish`.
+> `--post_author` espera el **ID**, no el login.
+
+**3. (Opcional) Nombre y bio que muestra el tema.** El tema `spencer-blog` muestra
+en la caja "About the Author" el **nombre y la bio del perfil del usuario**
+(`get_the_author_meta('description')`), no la bio por-post. Si quieres que se vea
+correcto, ajústalos en el usuario:
+
+```bash
+docker exec -u www-data wordpress-cms wp user update <USER_ID> \
+  --display_name="Spencer Shadrach" \
+  --description="Spencer ayuda a propietarios de Memphis a vender su casa rápido y sin complicaciones."
+```
+
+> Recuerda que la bio específica de cada post quedó guardada en la meta
+> `sbh_author_bio` como respaldo, pero el tema actual no la usa.
 
 ---
 
@@ -262,7 +313,7 @@ Si algo sale mal, restaurar el backup tomado en §5.1:
 
 ```bash
 docker exec -i wordpress-db sh -c \
-  'exec mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' \
+  'exec mariadb -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' \
   < wp-backup-YYYY-MM-DD.sql
 ```
 
@@ -299,6 +350,6 @@ la carpeta/fecha de la migración.
 [ ] --limit 3 y revisión visual en el admin
 [ ] Migración completa
 [ ] --validate sin discrepancias
-[ ] (Opcional) publicar posts migrados
+[ ] (Opcional) publicar posts migrados y/o reasignar autor (§6)
 [ ] Verificación de URLs, imágenes en S3, Rank Math y sitemap
 ```

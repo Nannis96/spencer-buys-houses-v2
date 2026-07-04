@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       { source: "/reviews", destination: "/testimonials", permanent: true },
       { source: "/bookatime", destination: "https://api.leadconnectorhq.com/widget/bookings/spencerbuyhouses", permanent: true },
       // Other
+      { source: "/blog", destination: "https://blog.spencerbuyshouses.com/", permanent: true },
       { source: "/blog/spencer-buys-houses-our-review-on-list-with-clever-2025", destination: "/blog/spencer-buys-houses-review-list-with-clever-2025", permanent: true },
       { source: "/tennessee-2/hickory-hill", destination: "/we-serve/tennessee/hickory-hill", permanent: true },
       { source: "/property/another-successful-closed-deal-2139-curry-eve-memphis-tn", destination: "/properties-we-bought", permanent: true },
