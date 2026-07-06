@@ -371,7 +371,7 @@ async function validate(posts: ExportedPost[]) {
             continue
         }
         const issues: string[] = []
-        if (wpPost.title.rendered.replace(/&#\d+;|&[a-z]+;/g, s => decodeEntity(s)) !== post.title
+        if (wpPost.title.rendered.replace(/&#\d+;|&[a-z]+;/g, (s: string) => decodeEntity(s)) !== post.title
             && wpPost.title.raw !== post.title) issues.push('título distinto')
         const expectedStatus = STATUS_MAP[post.status] || 'draft'
         if (wpPost.status !== expectedStatus) issues.push(`status ${wpPost.status} ≠ ${expectedStatus}`)
