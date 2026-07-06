@@ -59,6 +59,10 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: "#0f0f23",
+  // Esquema de color fijo para toda la app. Emite <meta name="color-scheme" content="dark">
+  // antes del CSS: evita el parpadeo y desactiva el "Auto Dark Mode" del navegador
+  // (que solo invierte páginas que NO declaran color-scheme).
+  colorScheme: "dark",
 }
 
 /** JSON-LD structured data per SEO guide */
