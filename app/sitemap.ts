@@ -13,7 +13,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: BASE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1.0 },
         { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
         { url: `${BASE_URL}/how-it-works`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-        { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
         { url: `${BASE_URL}/contact-us`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
         { url: `${BASE_URL}/get-a-cash-offer-today`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
         { url: `${BASE_URL}/get-paid`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
@@ -24,25 +23,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: `${BASE_URL}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
     ];
 
-    // ── Blog posts from DB (published only) ──────────────────────────────────
+    // ── Service pages from DB (published only) ────────────────────────────────
+    // NOTE: blog posts are intentionally NOT listed here. They now live on the
+    // separate WordPress site (blog.spencerbuyshouses.com) and are covered by its
+    // own sitemap; the old /blog/{slug} URLs 301-redirect there (see next.config.ts).
     // DB may be unavailable at build time; fall back to empty arrays gracefully.
-    let blogRoutes: MetadataRoute.Sitemap = [];
     let serviceRoutes: MetadataRoute.Sitemap = [];
 
     try {
-        const posts = await prisma.post.findMany({
-            select: { slug: true, updatedAt: true },
-            orderBy: { updatedAt: 'desc' },
-        });
-
-        blogRoutes = posts.map((post) => ({
-            url: `${BASE_URL}/blog/${post.slug}`,
-            lastModified: post.updatedAt,
-            changeFrequency: 'monthly' as const,
-            priority: 0.7,
-        }));
-
-        // ── Service pages from DB (published only) ────────────────────────────────
         const services = await prisma.service.findMany({
             where: { status: 'published' },
             select: { slug: true, updatedAt: true },
@@ -67,5 +55,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
     }));
 
-    return [...staticRoutes, ...blogRoutes, ...serviceRoutes, ...cityRoutes];
+    return [...staticRoutes, ...serviceRoutes, ...cityRoutes];
 }
