@@ -20,13 +20,13 @@ export function HeroBold() {
                 aria-hidden="true"
             />
 
-            <div className="relative z-10 mx-auto max-w-[1800px] px-30 lg:px-30">
+            <div className="relative z-10 mx-auto max-w-[1800px] px-4 sm:px-30">
 
                 <div className="flex flex-col items-start">
 
                     {/* FILA SUPERIOR */}
-                    <div className="pt-5 lg:pt-5 w-full max-w-4xl text-left">
-                        <h1 className="text-[8vw] sm:text-[8vw] md:text-[6vw] lg:text-[4.5vw] font-bold text-white leading-tight break-words">
+                    <div className="pt-5 lg:pt-5 w-full sm:max-w-[50%] text-left">
+                        <h1 className="text-4xl sm:text-[5vw] md:text-[5vw] lg:text-[4.5vw] font-bold text-white leading-tight">
                             Sell Your Memphis House{" "}
                             <span className="text-[var(--color-text-red)]">
                                 Fast for Cash
@@ -39,7 +39,7 @@ export function HeroBold() {
                     </div>
 
                     {/* FILA INFERIOR */}
-                    <div className="mt-20 lg:mt-20 w-full max-w-4xl">
+                    <div className="mt-8 sm:mt-20 w-full sm:max-w-[50%]">
                         <div className="mx-auto w-full max-w-xl">
                             <LeadFormConsent />
                         </div>
