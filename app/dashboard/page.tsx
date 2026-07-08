@@ -60,7 +60,7 @@ export default async function Dashboard() {
 
                 {/* Dashboard Overview */}
                 <div className="lg:col-span-2 space-y-8">
-                    <div className="bg-white/5 border border-gray-800 rounded-2xl p-8 hover:border-[var(--color-primary)]/60">
+                    {/* <div className="bg-white/5 border border-gray-800 rounded-2xl p-8 hover:border-[var(--color-primary)]/60">
                         <h2 className="text-xl font-bold mb-4">Latest Posts</h2>
 
                         {latestPosts.length === 0 ? (
@@ -90,7 +90,7 @@ export default async function Dashboard() {
                                 ))}
                             </ul>
                         )}
-                    </div>
+                    </div> */}
 
                     <div className="bg-white/5 border border-gray-800 rounded-2xl p-8 hover:border-[var(--color-primary)]/60">
                         <h2 className="text-xl font-bold mb-4">Latest Services</h2>
