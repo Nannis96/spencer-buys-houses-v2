@@ -140,12 +140,12 @@ export default async function CityPage({ params }: Props) {
 
                         {/* Header */}
                         <div className="max-w-2xl mb-14 text-left">
-                            <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-secondary)] font-semibold mb-4">
+                            <p className="inline-block px-6 py-2 rounded-full bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-base font-semibold mb-4">
                                 Why Choose Us
                             </p>
 
                             <h2 className="text-4xl lg:text-5xl font-bold text-[var(--color-text-black)] leading-tight">
-                                Here's what Spencer Buys Houses can do for you
+                                Why Choose Spencer Buys Houses
                             </h2>
                         </div>
 
@@ -185,7 +185,7 @@ export default async function CityPage({ params }: Props) {
                                 },
                             ].map(({ icon, title, desc }) => (
                                 <div key={title} className="bg-white border border-gray-200 p-6 flex flex-col gap-4 overflow-hidden transition-all duration-300 hover:border-[var(--color-secondary)]">
-                                    <div className="w-12 h-12 flex items-center justify-center bg-[var(--color-secondary)]/10 text-[var(--color-secondary)]">
+                                    <div className="w-12 h-12 flex items-center justify-center bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] rounded-xl">
                                         {icon}
                                     </div>
 
