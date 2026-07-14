@@ -293,9 +293,9 @@ export default function AboutPage() {
             </section>
 
             <section className="bg-[var(--color-background)] py-20 lg:py-28" aria-labelledby="story-heading">
-                <div className="mx-auto max-w-5xl px-4 lg:px-8">
-                    {/* How We Work: single column centered */}
-                    <div className="text-center mb-6">
+                <div className="mx-auto max-w-6xl px-4 lg:px-8">
+                    {/* How We Work: centered heading */}
+                    <div className="mb-6 text-center">
                         <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--color-primary-dark)]/20 text-[var(--color-primary-dark)] text-sm font-semibold mb-4 uppercase tracking-wide">
                             How We Work
                         </span>
@@ -305,7 +305,7 @@ export default function AboutPage() {
                         </h2>
                     </div>
 
-                    <div className="space-y-4 text-gray-400 leading-relaxed text-sm md:text-base max-w-3xl mx-auto text-center">
+                    <div className="space-y-4 text-gray-400 leading-relaxed text-sm md:text-base">
                         <p>
                             We are a real estate solutions company based out of Memphis. We&apos;re a
                             family-owned business dedicated to helping homeowners like you find solutions
@@ -333,7 +333,7 @@ export default function AboutPage() {
                     </div>
 
                     {/* Trust badges */}
-                    <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto">
+                    <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3">
                         {[
                             "No agent commissions",
                             "We pay closing costs",
@@ -344,9 +344,9 @@ export default function AboutPage() {
                         ].map((item) => (
                             <div
                                 key={item}
-                                className="flex items-center gap-2 text-sm text-gray-300 justify-center"
+                                className="flex items-center gap-3 text-sm text-white font-semibold bg-[var(--color-primary-dark)]/10 border border-white/10 border-l-4 border-l-[var(--color-text-yellow)] rounded-lg px-4 py-4 transition-colors hover:bg-[var(--color-primary-dark)]/20"
                             >
-                                <Check className="h-4 w-4 text-[var(--color-text-yellow)] flex-shrink-0" aria-hidden="true" />
+                                <Check className="h-5 w-5 text-[var(--color-text-yellow)] flex-shrink-0" aria-hidden="true" />
                                 {item}
                             </div>
                         ))}
