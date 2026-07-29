@@ -512,6 +512,19 @@ export default function RootLayout({
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-P11R7D3N7W');`,
           }}
         />
+
+        {/*
+         * Google Ads conversion tag (AW-16699021352)
+         * Registers the destination so /bookings can fire the "appointment
+         * booked" conversion event via gtag('event', 'conversion', ...).
+         */}
+        <Script
+          id="aw-conversion-config"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('config','AW-16699021352');`,
+          }}
+        />
       </body>
     </html>
   )
