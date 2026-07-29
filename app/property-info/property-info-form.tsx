@@ -792,9 +792,9 @@ export function PropertyInfoForm({ initialParams, onNext }: { initialParams?: UR
 
                 {/* ── Street View + Map ── */}
                 {formPage === 1 && (localAddress || localCity) && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                    <div className="grid grid-cols-1 gap-3 mb-6">
                         {/* Fachada / Street View */}
-                        <div className="flex flex-col gap-1.5">
+                        {/* <div className="flex flex-col gap-1.5">
                             <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
                                 Street View
                             </p>
@@ -828,14 +828,14 @@ export function PropertyInfoForm({ initialParams, onNext }: { initialParams?: UR
                                     </div>
                                 )}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Mapa */}
                         <div className="flex flex-col gap-1.5">
                             <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
                                 Location
                             </p>
-                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full">
+                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-72 sm:h-96 w-full">
                                 <iframe
                                     title="Property location on map"
                                     width="100%"
