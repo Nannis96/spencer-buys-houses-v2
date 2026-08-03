@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { User, Phone, Mail, ArrowRight, Loader2, ShieldCheck } from "lucide-react"
+import { User, Phone, Mail, ArrowRight, ArrowLeft, Loader2, ShieldCheck } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 /* ─── Schema ──────────────────────────────────────────────────────────────── */
@@ -165,31 +165,10 @@ export function PropertyDetailsForm({ initialParams }: { initialParams?: URLSear
                 aria-label="Property details"
                 className="rounded-2xl bg-[var(--color-background)] p-4 sm:p-6 md:p-8 lg:p-10 border border-[var(--color-primary)]/60 w-full max-w-3xl lg:max-w-4xl mx-auto"
             >
-                <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-xl font-bold text-white">
-                        One More Step — {" "}
-                        <span className="text-[var(--color-text-yellow)]">To See Your <span className="font-bold underline">OFFER</span></span>
-                    </h3>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            const p = new URLSearchParams(Array.from(searchParams.entries()))
-                            // Return the seller to the last /property-info step (6 — confirm
-                            // property details) rather than to the start of that page.
-                            p.set("propInfoStep", "6")
-                            // Save current Your Info values so they survive the round-trip
-                            const vals = getValues()
-                            if (vals.firstName) p.set("_firstName", vals.firstName)
-                            if (vals.lastName) p.set("_lastName", vals.lastName)
-                            if (vals.phone) p.set("_phone", vals.phone)
-                            if (vals.email) p.set("_email", vals.email)
-                            window.location.href = `/property-info?${p.toString()}`
-                        }}
-                        className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5 shrink-0 ml-4"
-                    >
-                        ← Back
-                    </button>
-                </div>
+                <h3 className="text-xl font-bold text-white mb-1">
+                    One More Step — {" "}
+                    <span className="text-[var(--color-text-yellow)]">To See Your <span className="font-bold underline">OFFER</span></span>
+                </h3>
                 <p className="text-gray-400 text-sm mb-6">
                     100% free. Zero obligation. Results in 24&nbsp;hours.
                 </p>
@@ -320,24 +299,48 @@ export function PropertyDetailsForm({ initialParams }: { initialParams?: URLSear
                         <FieldError message={errors.privacyConsent?.message} />
                     </div>
 
-                    {/* ── Submit ── */}
-                    <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="h-14 text-lg font-bold bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                    >
-                        {isSubmitting ? (
-                            <>
-                                <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
-                                <span className="sr-only">Submitting…</span>
-                            </>
-                        ) : (
-                            <>
-                                GET MY FREE CASH OFFER
-                                <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                            </>
-                        )}
-                    </Button>
+                    {/* ── Back / submit ── */}
+                    <div className="flex items-stretch gap-3">
+                        <Button
+                            type="button"
+                            disabled={isSubmitting}
+                            onClick={() => {
+                                const p = new URLSearchParams(Array.from(searchParams.entries()))
+                                // Return the seller to the last /property-info step (6 — confirm
+                                // property details) rather than to the start of that page.
+                                p.set("propInfoStep", "6")
+                                // Save current Your Info values so they survive the round-trip
+                                const vals = getValues()
+                                if (vals.firstName) p.set("_firstName", vals.firstName)
+                                if (vals.lastName) p.set("_lastName", vals.lastName)
+                                if (vals.phone) p.set("_phone", vals.phone)
+                                if (vals.email) p.set("_email", vals.email)
+                                window.location.href = `/property-info?${p.toString()}`
+                            }}
+                            className="h-14 px-5 sm:px-6 text-base font-semibold bg-white/5 border border-white/20 text-gray-300 hover:bg-white/10 hover:text-white rounded-lg transition-all active:scale-[0.98] cursor-pointer shrink-0"
+                        >
+                            <ArrowLeft className="h-5 w-5 sm:mr-2" aria-hidden="true" />
+                            <span className="hidden sm:inline">BACK</span>
+                            <span className="sr-only sm:hidden">Go back</span>
+                        </Button>
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="h-14 flex-1 text-base sm:text-lg font-bold bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+                                    <span className="sr-only">Submitting…</span>
+                                </>
+                            ) : (
+                                <>
+                                    GET MY FREE CASH OFFER
+                                    <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+                                </>
+                            )}
+                        </Button>
+                    </div>
                 </div>
 
                 <p className="text-xs text-gray-500 mt-4 text-center flex items-center justify-center gap-1.5">

@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, Loader2, ShieldCheck, MapPin, Building2, Hash, Sparkles } from "lucide-react"
+import { ArrowRight, ArrowLeft, Loader2, ShieldCheck, MapPin, Building2, Hash, Sparkles } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""
@@ -90,6 +90,11 @@ const inputClass =
 const nextButtonClass =
     "h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 " +
     "text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+
+/** Sits beside NEXT — same height so the pair reads as one control, quieter so it doesn't compete. */
+const backButtonClass =
+    "h-14 px-5 sm:px-6 text-base font-semibold bg-white/5 border border-white/20 text-gray-300 " +
+    "hover:bg-white/10 hover:text-white rounded-lg transition-all active:scale-[0.98] cursor-pointer shrink-0"
 
 /* ─── Helpers ─────────────────────────────────────────────────────────────── */
 
@@ -618,18 +623,7 @@ export function PropertyInfoForm({
                 aria-label="Property information"
                 className="rounded-2xl bg-[var(--color-background)] p-4 sm:p-6 md:p-8 lg:p-10 border border-[var(--color-primary)]/60 w-full max-w-3xl lg:max-w-4xl mx-auto"
             >
-                <div className="flex items-center justify-between gap-4 mb-6">
-                    <h3 className="text-xl font-bold text-white">{STEP_TITLES[formStep]}</h3>
-                    {formStep > 1 && (
-                        <button
-                            type="button"
-                            onClick={() => goToStep(formStep - 1)}
-                            className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5 shrink-0"
-                        >
-                            ← Back
-                        </button>
-                    )}
-                </div>
+                <h3 className="text-xl font-bold text-white mb-6">{STEP_TITLES[formStep]}</h3>
 
                 <div className="flex flex-col gap-5">
                     {/* ───────── Step 1 — Property condition ───────── */}
@@ -991,35 +985,49 @@ export function PropertyInfoForm({
                         </div>
                     )}
 
-                    {/* ───────── Advance / submit ─────────
-                        Always type="button". Swapping a single button between "button" and
-                        "submit" makes React patch the `type` on the very same DOM node before
-                        the browser runs the click's default action — so the click that leaves
-                        step 5 would also submit the form and skip step 6 entirely. */}
-                    <Button
-                        type="button"
-                        disabled={isSubmitting}
-                        onClick={() => {
-                            if (formStep < LAST_STEP) {
-                                void handleNext()
-                            } else {
-                                void handleSubmit(onSubmit, onInvalid)()
-                            }
-                        }}
-                        className={nextButtonClass}
-                    >
-                        {isSubmitting ? (
-                            <>
-                                <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
-                                <span className="sr-only">Submitting…</span>
-                            </>
-                        ) : (
-                            <>
-                                NEXT
-                                <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                            </>
+                    {/* ───────── Back / advance / submit ─────────
+                        Both buttons are always type="button". Swapping a single button between
+                        "button" and "submit" makes React patch the `type` on the very same DOM
+                        node before the browser runs the click's default action — so the click
+                        that leaves step 5 would also submit the form and skip step 6 entirely. */}
+                    <div className="flex items-stretch gap-3">
+                        {formStep > 1 && (
+                            <Button
+                                type="button"
+                                disabled={isSubmitting}
+                                onClick={() => goToStep(formStep - 1)}
+                                className={backButtonClass}
+                            >
+                                <ArrowLeft className="h-5 w-5 sm:mr-2" aria-hidden="true" />
+                                <span className="hidden sm:inline">BACK</span>
+                                <span className="sr-only sm:hidden">Go back</span>
+                            </Button>
                         )}
-                    </Button>
+                        <Button
+                            type="button"
+                            disabled={isSubmitting}
+                            onClick={() => {
+                                if (formStep < LAST_STEP) {
+                                    void handleNext()
+                                } else {
+                                    void handleSubmit(onSubmit, onInvalid)()
+                                }
+                            }}
+                            className={`${nextButtonClass} flex-1`}
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+                                    <span className="sr-only">Submitting…</span>
+                                </>
+                            ) : (
+                                <>
+                                    NEXT
+                                    <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+                                </>
+                            )}
+                        </Button>
+                    </div>
 
                     {/* A form with several inputs and no submit button ignores the Enter key.
                         This one exists only to keep that shortcut working; its type never
