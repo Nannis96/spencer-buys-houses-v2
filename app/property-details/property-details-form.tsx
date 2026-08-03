@@ -1,7 +1,7 @@
 "use client"
 
-import { useId, useState, useEffect } from "react"
-import { useSearchParams, useRouter, usePathname } from "next/navigation"
+import { useId, useState } from "react"
+import { useSearchParams, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -61,8 +61,7 @@ export function PropertyDetailsForm({ initialParams }: { initialParams?: URLSear
     // Helper: prefer initialParams (from multi-step wrapper) over URL search params
     const p = (k: string) => initialParams?.get(k) ?? searchParams.get(k)
 
-    // stable string representation of search params to avoid effect re-running
-    const spString = (initialParams ?? searchParams).toString()
+    // Address as confirmed by the seller on the previous step
     const address = p("address") ?? ""
     const city = p("city") ?? ""
     const state = p("state") ?? ""
@@ -80,20 +79,13 @@ export function PropertyDetailsForm({ initialParams }: { initialParams?: URLSear
     const precomputedInsuranceAnnual = p("insuranceAnnual") !== null ? Number(p("insuranceAnnual")) : null
     console.log('Precomputed offer (from URL):', { precomputedCashOffer, precomputedRepairCosts })
 
-    // Local copies of prior-step address values
-    const [localAddress, setLocalAddress] = useState(address)
-    const [localCity, setLocalCity] = useState(city)
-    const [localState, setLocalState] = useState(state)
-    const [localZipCode, setLocalZipCode] = useState(zipCode)
-
     const router = useRouter()
-    const pathname = usePathname()
 
     const {
         register,
         handleSubmit,
         getValues,
-        formState: { errors, isValid },
+        formState: { errors },
     } = useForm<PropertyDetailsFormData>({
         resolver: zodResolver(propertyDetailsSchema),
         mode: "onChange",
@@ -107,11 +99,11 @@ export function PropertyDetailsForm({ initialParams }: { initialParams?: URLSear
 
     const onSubmit = async (data: PropertyDetailsFormData) => {
         setIsSubmitting(true)
-        console.log("Form completed:", { address: localAddress, city: localCity, state: localState, zipCode: localZipCode, ...data })
+        console.log("Form completed:", { address, city, state, zipCode, ...data })
 
         // Build and print combined JSON of all form data (for debugging)
         const combinedFormData = {
-            address: { address: localAddress, city: localCity, state: localState, zipCode: localZipCode },
+            address: { address, city, state, zipCode },
             // explicit top-level fields for GHL mapping
             askingPrice: p("askingPrice") ?? null,
             // include all search params forwarded from previous steps
@@ -131,13 +123,17 @@ export function PropertyDetailsForm({ initialParams }: { initialParams?: URLSear
 
         console.log("Combined form JSON:", JSON.stringify(combinedFormData, null, 2))
 
-        // Send lead data to webhook
+        // Send lead data to webhook. The seller always continues to /bookings, so a
+        // failure here is logged rather than surfaced — but it must not pass silently.
         try {
-            await fetch("https://services.leadconnectorhq.com/hooks/sD7ANbPAIA28p65ZSvJl/webhook-trigger/85b6e410-ce4c-49be-b54d-f29a32f2846a", {
+            const res = await fetch("https://services.leadconnectorhq.com/hooks/sD7ANbPAIA28p65ZSvJl/webhook-trigger/85b6e410-ce4c-49be-b54d-f29a32f2846a", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(combinedFormData),
             })
+            if (!res.ok) {
+                console.error("Webhook rejected the lead:", res.status, await res.text().catch(() => ""))
+            }
         } catch (err) {
             console.error("Webhook error:", err)
         }
@@ -156,30 +152,6 @@ export function PropertyDetailsForm({ initialParams }: { initialParams?: URLSear
         setIsSubmitting(false)
         router.push("/bookings")
     }
-
-    // Report step 3 partial-completion in URL so progress indicator updates in real time
-    useEffect(() => {
-        const params = new URLSearchParams(spString)
-        if (isValid) {
-            params.set("step3Complete", "true")
-        } else {
-            params.delete("step3Complete")
-        }
-        const qs = params.toString()
-        const newUrl = `${pathname}${qs ? `?${qs}` : ""}`
-
-        // only replace if the URL actually changes (prevents repeated router.replace calls)
-        // Use history.replaceState here to update the query string without triggering
-        // a navigation/scroll to top when the user simply checks the consent checkbox.
-        if (typeof window !== "undefined" && newUrl !== window.location.pathname + window.location.search) {
-            try {
-                window.history.replaceState({}, "", newUrl)
-            } catch (e) {
-                // fallback to router.replace if replaceState is unavailable
-                router.replace(newUrl)
-            }
-        }
-    }, [isValid, pathname, router, spString])
 
     return (
         <AnimatePresence mode="wait">
@@ -202,11 +174,9 @@ export function PropertyDetailsForm({ initialParams }: { initialParams?: URLSear
                         type="button"
                         onClick={() => {
                             const p = new URLSearchParams(Array.from(searchParams.entries()))
-                            // When navigating back to property-info from "Your Info",
-                            // return the user to the Asking Price sub-step (4) so they
-                            // see the asking price screen instead of the Situation screen.
-                            p.set("propInfoStep", "4")
-                            p.delete("step2Complete")
+                            // Return the seller to the last /property-info step (6 — confirm
+                            // property details) rather than to the start of that page.
+                            p.set("propInfoStep", "6")
                             // Save current Your Info values so they survive the round-trip
                             const vals = getValues()
                             if (vals.firstName) p.set("_firstName", vals.firstName)

@@ -161,14 +161,12 @@ export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams)
         if (data.zipCode) params.append("zipCode", String(data.zipCode))
         params.append("smsConsent", String(data.smsConsent ?? false))
 
-        setTimeout(() => {
-            if (onNext) {
-                setIsSubmitting(false)
-                onNext(params)
-            } else {
-                router.push(`/property-info?${params.toString()}`)
-            }
-        }, 1500)
+        if (onNext) {
+            setIsSubmitting(false)
+            onNext(params)
+        } else {
+            router.push(`/property-info?${params.toString()}`)
+        }
     }
 
     return (

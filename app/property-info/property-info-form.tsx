@@ -1,553 +1,583 @@
 "use client"
 
-import { useId, useState, useEffect } from "react"
+import { useId, useState, useEffect, useRef, useCallback } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
-import { useForm } from "react-hook-form"
+import { useForm, type FieldErrors } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { RehabConditionWheel } from "@/components/ui/rehab-condition-wheel"
-import {
-    ArrowRight,
-    Loader2,
-    ShieldCheck,
-    CheckCircle2,
-    Clock,
-    DollarSign,
-    Home,
-    Wrench,
-    BadgeCheck,
-    HeartHandshake,
-    MapPin,
-    Building2,
-    Hash,
-} from "lucide-react"
+import { ArrowRight, Loader2, ShieldCheck, MapPin, Building2, Hash, Sparkles } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+
+const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""
 
 /* ─── Schema ──────────────────────────────────────────────────────────────── */
 
 const propertyInfoSchema = z.object({
-    // Property Information
-    garage: z.string().optional(),
-    basement: z.string().optional(),
-    // Added property fields (kept as strings to match existing schema style)
-    propertyType: z.string().optional(),
+    /** Stored as the 0-5 rehab scale that /api/offers turns into a repair estimate. */
+    condition: z.string().min(1, "Please choose the option that best describes your property"),
+    /** Reuses the existing CRM field name so GoHighLevel mappings keep working. */
+    closingTimeline: z.string().min(1, "Please tell us when you'd like to sell"),
+    /** Multi-select; forwarded to the CRM as a comma-separated `ultimateGoal`. */
+    ultimateGoal: z.array(z.string()).min(1, "Please select at least one reason"),
+    /** Always typed by the seller — never pre-filled from public records. */
+    askingPrice: z.string().min(1, "Please enter the amount you have in mind"),
+    /* Looked up from public records, confirmed by the seller on the last step. */
     bedrooms: z.string().optional(),
     bathrooms: z.string().optional(),
     squareFootage: z.string().optional(),
     yearBuilt: z.string().optional(),
-    yearsOwned: z.string().optional(),
-    ownerName: z.string().optional(),
-    condition: z.string().min(1, "Please select the property condition"),
-    // Structured repairs input: checklist of common items, an estimated repair cost, and optional notes
-    repairsChecklist: z.array(z.string()).optional(),
-    repairsEstimate: z.string().optional(),
-    repairsNotes: z.string().optional(),
-    occupied: z.string().min(1, "Please select who is living in the house"),
-    listedWithRealtor: z.string().min(1, "Please indicate if the property is listed"),
-    // Situation
-    closingTimeline: z.string().optional(),
-    ultimateGoal: z.string().min(1, "Please describe your ultimate goal for this property"),
-    askingPrice: z.string().min(1, "Please enter the asking price"),
-    fairPrice: z.string().optional(),
-    bestTimeToCall: z.string().optional(),
+    lastSoldYear: z.string().optional(),
 })
 
 type PropertyInfoFormData = z.infer<typeof propertyInfoSchema>
+
+/** Fields RentCast can fill in for the seller. */
+type LookupField = "bedrooms" | "bathrooms" | "squareFootage" | "yearBuilt" | "lastSoldYear"
+
+/* ─── Step options ────────────────────────────────────────────────────────── */
+
+/** `scale` feeds the repair-cost multiplier in /api/offers (0 = turnkey, 5 = full gut). */
+const CONDITION_OPTIONS = [
+    { label: "Excellent", scale: "0", hint: "Move-in ready — nothing needs fixing" },
+    { label: "Good", scale: "1", hint: "Only light cosmetic work" },
+    { label: "Fair", scale: "3", hint: "Normal wear and tear for its age" },
+    { label: "Needs repairs", scale: "4", hint: "Kitchen, bath, roof or major systems" },
+    { label: "Needs major repairs", scale: "5", hint: "Structural work or a full renovation" },
+] as const
+
+const TIMELINE_OPTIONS = ["Within a week", "Within a month", "More than a month"] as const
+
+const REASON_OPTIONS = [
+    "Moving",
+    "Financial difficulties",
+    "Inherited property",
+    "Divorce",
+    "Tired of being a landlord",
+    "Foreclosure",
+    "Downsizing",
+    "Other",
+] as const
+
+const LAST_STEP = 6
+
+const STEP_TITLES: Record<number, string> = {
+    1: "How would you describe your property?",
+    2: "When would you like to sell?",
+    3: "Why are you selling?",
+    4: "Your asking price",
+    5: "Confirm your address",
+    6: "Confirm your property details",
+}
+
+/** Which fields must validate before the seller can leave each step. */
+const STEP_FIELDS: Record<number, Array<keyof PropertyInfoFormData>> = {
+    1: ["condition"],
+    2: ["closingTimeline"],
+    3: ["ultimateGoal"],
+    4: ["askingPrice"],
+    5: [],
+    6: [],
+}
+
+/* ─── Shared styles ───────────────────────────────────────────────────────── */
+
+const inputClass =
+    "h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 " +
+    "focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+
+const nextButtonClass =
+    "h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 " +
+    "text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
 
 /* ─── Helpers ─────────────────────────────────────────────────────────────── */
 
 function FieldError({ message }: { message?: string }) {
     if (!message) return null
     return (
-        <p role="alert" className="mt-1.5 text-xs text-red-400">
+        <p role="alert" className="mt-2 text-xs text-red-400">
             {message}
         </p>
     )
 }
 
-const selectClass =
-    "w-full h-12 rounded-md bg-white/10 border border-white/20 text-white px-3 text-base sm:text-sm " +
-    "focus:outline-none focus:ring-2 focus:ring-[#f59e0b] focus:border-[#f59e0b] " +
-    "appearance-none cursor-pointer [&>option]:bg-[#1a1a2e] [&>option]:text-white"
+/** Selectable card used by steps 1-3 — same look for single- and multi-select. */
+function OptionCard({
+    label,
+    hint,
+    selected,
+    multi,
+    onSelect,
+}: {
+    label: string
+    hint?: string
+    selected: boolean
+    multi?: boolean
+    onSelect: () => void
+}) {
+    return (
+        <button
+            type="button"
+            role={multi ? "checkbox" : "radio"}
+            aria-checked={selected}
+            onClick={onSelect}
+            className={[
+                "flex flex-col items-start gap-1 rounded-xl border px-4 py-3.5 text-left text-sm font-semibold transition-all",
+                selected
+                    ? "border-[#f59e0b] bg-[#f59e0b]/10 text-white ring-2 ring-[#f59e0b]/40"
+                    : "border-white/10 bg-white/[0.03] text-gray-300 hover:border-white/20 hover:bg-white/[0.06]",
+            ].join(" ")}
+        >
+            <span>{label}</span>
+            {hint && <span className="text-xs font-normal text-gray-400 leading-snug">{hint}</span>}
+        </button>
+    )
+}
 
-const textareaClass =
-    "w-full rounded-md bg-white/10 border border-white/20 text-white px-3 py-2.5 text-base sm:text-sm " +
-    "placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f59e0b] focus:border-[#f59e0b] resize-none min-h-[90px]"
+/** Marks a value the app looked up, so the seller confirms it instead of retyping it. */
+function AutoFilledBadge() {
+    return (
+        <span className="inline-flex items-center gap-1 rounded-full bg-[#f59e0b]/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#f59e0b]">
+            <Sparkles className="h-3 w-3" aria-hidden="true" />
+            From public records
+        </span>
+    )
+}
 
-/* ─── Read-only summary row ───────────────────────────────────────────────── */
+function ConfirmField({
+    id,
+    label,
+    autoFilled,
+    children,
+}: {
+    id: string
+    label: string
+    autoFilled?: boolean
+    children: React.ReactNode
+}) {
+    return (
+        <div>
+            <div className="flex items-center justify-between gap-2 mb-1.5 min-h-[18px]">
+                <label htmlFor={id} className="block text-xs text-gray-400">
+                    {label}
+                </label>
+                {autoFilled && <AutoFilledBadge />}
+            </div>
+            {children}
+        </div>
+    )
+}
+
+/** Read-only summary row used by the address confirmation step. */
 function SummaryRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
     return (
         <div className="flex items-center gap-3 py-2 border-b border-white/10 last:border-0">
             <span className="text-[#f59e0b] shrink-0">{icon}</span>
             <span className="text-xs text-gray-400 w-20 shrink-0">{label}</span>
-            <span className="text-sm text-white truncate">{value}</span>
+            <span className="text-sm text-white truncate">{value || "—"}</span>
         </div>
-    )
-}
-
-function SectionHeading({ children, className }: { children: React.ReactNode; className?: string }) {
-    return (
-        <h4
-            className={
-                "text-base font-bold text-[var(--color-primary)] uppercase tracking-wider mb-4 pt-2 border-t border-white/10 first:border-0 first:pt-0 " +
-                (className ?? "")
-            }
-        >
-            {children}
-        </h4>
-    )
-}
-
-/* ─── Why Spencer benefits ─────────────────────────────────────────────────── */
-
-const benefits = [
-    {
-        icon: <DollarSign className="h-6 w-6" />,
-        title: "No Fees or Commissions",
-        desc: "We pay all closing costs. Zero agent commissions. The offer we make is the cash you receive.",
-    },
-    {
-        icon: <Clock className="h-6 w-6" />,
-        title: "Close On Your Timeline",
-        desc: "Need to close in 7 days? Or need 90? We work around your schedule — not ours.",
-    },
-    {
-        icon: <Wrench className="h-6 w-6" />,
-        title: "We Buy As-Is",
-        desc: "Don't lift a finger. No repairs, cleaning, or renovations required before closing.",
-    },
-    {
-        icon: <Home className="h-6 w-6" />,
-        title: "Any Condition, Any Situation",
-        desc: "Foreclosure, probate, divorce, inherited property — we've seen it all and we can help.",
-    },
-    {
-        icon: <BadgeCheck className="h-6 w-6" />,
-        title: "Local & Trusted",
-        desc: "Spencer is a Memphis-based buyer. You work directly with us — no middlemen, no runaround.",
-    },
-    {
-        icon: <HeartHandshake className="h-6 w-6" />,
-        title: "Stress-Free Process",
-        desc: "Three simple steps: get an offer, accept it, and get paid. That's it.",
-    },
-]
-
-/* ─── Success Screen ──────────────────────────────────────────────────────── */
-
-function SuccessScreen() {
-    return (
-        <motion.div
-            key="success"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="w-full max-w-2xl mx-auto"
-        >
-            {/* Confirmation card */}
-            <div
-                className="rounded-2xl bg-[#1a1a2e] p-8 md:p-10 text-center border border-white/10 mb-10"
-                role="status"
-                aria-live="polite"
-            >
-                <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                    className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#22c55e]/10"
-                >
-                    <CheckCircle2 className="h-10 w-10 text-[#22c55e]" aria-hidden="true" />
-                </motion.div>
-                <h3 className="text-2xl font-bold text-white mb-2">{"You're All Set!"}</h3>
-                <p className="text-gray-300 mb-4 leading-relaxed max-w-md mx-auto">
-                    {"We've received your information and one of our home buying specialists will reach out very soon with your personalized cash offer."}
-                </p>
-                <div className="inline-flex items-center gap-2 rounded-full bg-[#f59e0b]/10 px-4 py-2 text-sm font-medium text-[#f59e0b]">
-                    <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-                    Your information is 100% secure &amp; never shared
-                </div>
-            </div>
-
-            {/* Why Spencer section */}
-            <div className="text-center mb-8">
-                <p className="text-xs font-semibold text-[#f59e0b] uppercase tracking-widest mb-2">
-                    While you wait…
-                </p>
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                    Why Homeowners Choose Spencer
-                </h3>
-                <p className="text-gray-400 max-w-lg mx-auto text-sm leading-relaxed">
-                    Selling your home the traditional way can take months and cost thousands. With Spencer
-                    Buys Houses, the process is simple, fast, and completely on your terms.
-                </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {benefits.map((b) => (
-                    <motion.div
-                        key={b.title}
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="rounded-xl bg-[#1a1a2e] border border-white/10 p-5 flex gap-4 items-start"
-                    >
-                        <div className="shrink-0 h-11 w-11 rounded-lg bg-[#f59e0b]/10 flex items-center justify-center text-[#f59e0b]">
-                            {b.icon}
-                        </div>
-                        <div>
-                            <p className="font-semibold text-white text-sm mb-1">{b.title}</p>
-                            <p className="text-gray-400 text-xs leading-relaxed">{b.desc}</p>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
-
-            <div className="mt-10 text-center">
-                <a
-                    href="tel:+19016218799"
-                    className="inline-flex items-center gap-2 rounded-lg bg-[#f59e0b] hover:bg-[#d97706] text-[#0f0f23] font-bold px-8 py-4 text-lg transition-all hover:scale-[1.02]"
-                >
-                    Call Us Now — (901) 621-8799
-                </a>
-                <p className="text-gray-500 text-xs mt-3">
-                    Questions? Call or text anytime — we answer 7 days a week.
-                </p>
-            </div>
-        </motion.div>
     )
 }
 
 /* ─── Main Form Component ─────────────────────────────────────────────────── */
 
-export function PropertyInfoForm({ initialParams, onNext }: { initialParams?: URLSearchParams | null; onNext?: (params: URLSearchParams) => void } = {}) {
+export function PropertyInfoForm({
+    initialParams,
+    onNext,
+}: { initialParams?: URLSearchParams | null; onNext?: (params: URLSearchParams) => void } = {}) {
     const uid = useId()
     const id = (field: string) => `${uid}-${field}`
     const searchParams = useSearchParams()
     const router = useRouter()
     const pathname = usePathname()
 
-    // Helper: prefer initialParams (from multi-step wrapper) over URL search params
+    // Helper: prefer initialParams (from the multi-step wrapper) over URL search params
     const p = (k: string) => initialParams?.get(k) ?? searchParams.get(k)
 
-    // All data forwarded from step 1 (address entry)
+    // Address captured on the landing form (step 0)
     const address = p("address") ?? ""
     const city = p("city") ?? ""
     const state = p("state") ?? ""
     const zipCode = p("zipCode") ?? ""
     const smsConsentPrev = p("smsConsent") ?? "false"
 
-    const initialPage: 1 | 2 | 3 | 4 = p("propInfoStep") === "4" ? 4 : p("propInfoStep") === "3" ? 3 : p("propInfoStep") === "2" ? 2 : 1
-    const [formPage, setFormPage] = useState<1 | 2 | 3 | 4>(initialPage)
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [avmResult, setAvmResult] = useState<any>(null)
+    const parsedStep = Number(p("propInfoStep"))
+    const initialStep =
+        Number.isFinite(parsedStep) && parsedStep >= 1 && parsedStep <= LAST_STEP ? parsedStep : 1
 
-    // Local editable copies of address from step 1
+    const [formStep, setFormStep] = useState(initialStep)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+
+    // Editable copies of the address, confirmed on step 5
     const [editMode, setEditMode] = useState(false)
     const [localAddress, setLocalAddress] = useState(address)
     const [localCity, setLocalCity] = useState(city)
     const [localState, setLocalState] = useState(state)
     const [localZipCode, setLocalZipCode] = useState(zipCode)
-    // Confirmed/saved address — changes here re-trigger the Rentcast prefill
+    // Confirmed address — changing it re-triggers the public-records lookup
     const [savedAddress, setSavedAddress] = useState(address)
     const [savedCity, setSavedCity] = useState(city)
     const [savedState, setSavedState] = useState(state)
     const [savedZipCode, setSavedZipCode] = useState(zipCode)
-    // Geocoding state (for Street View lat/lng)
-    const [geoLatLng, setGeoLatLng] = useState<{ lat: number; lng: number } | null>(null)
-    const [isGeocoding, setIsGeocoding] = useState(false)
-    const [geocodeError, setGeocodeError] = useState<string | null>(null)
+
+    // Public-records lookup state
+    const [isLookingUp, setIsLookingUp] = useState(false)
+    const [recordsFound, setRecordsFound] = useState(false)
+    const [autoFilled, setAutoFilled] = useState<Partial<Record<LookupField, boolean>>>({})
+    /** Whether a last-sale year is known at all — keeps the field from vanishing mid-edit. */
+    const [hasLastSold, setHasLastSold] = useState(false)
+    const [addressError, setAddressError] = useState<string | null>(null)
+
+    // Google Places autocomplete for the address edit field
+    const [mapsLoaded, setMapsLoaded] = useState(false)
+    const addressInputRef = useRef<HTMLInputElement | null>(null)
+    const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
 
     const {
         register,
         handleSubmit,
         setValue,
+        getValues,
         watch,
         trigger,
-        formState: { errors, isValid },
+        formState: { errors },
     } = useForm<PropertyInfoFormData>({
         resolver: zodResolver(propertyInfoSchema),
         defaultValues: {
-            closingTimeline: p("closingTimeline") ?? "",
-            ultimateGoal: p("ultimateGoal") ?? "",
             condition: p("condition") ?? "",
-            occupied: p("occupied") ?? "",
-            listedWithRealtor: p("listedWithRealtor") ?? "",
+            closingTimeline: p("closingTimeline") ?? "",
+            ultimateGoal: [],
+            askingPrice: "",
         },
         mode: "onChange",
     })
 
-    // Load any previously-saved values from the query string so that when the
-    // user navigates away (e.g. to "Your Info") and then returns, their inputs
-    // are restored. We intentionally mirror the same fields that are forwarded
-    // to /property-details so round-tripping preserves user input.
+    const condition = watch("condition")
+    const closingTimeline = watch("closingTimeline")
+    const reasons = watch("ultimateGoal") ?? []
+
+    /* ── Restore previous answers when the seller steps back from "Your Info" ── */
+    const hydratedRef = useRef(false)
     useEffect(() => {
-        // Only run in browser
+        if (hydratedRef.current || typeof window === "undefined") return
+        hydratedRef.current = true
+
+        const get = (k: string) => initialParams?.get(k) ?? searchParams.get(k) ?? undefined
+
+        const simpleFields = [
+            "condition",
+            "closingTimeline",
+            "askingPrice",
+            "bedrooms",
+            "bathrooms",
+            "squareFootage",
+            "yearBuilt",
+            "lastSoldYear",
+        ] as const
+
+        simpleFields.forEach((field) => {
+            const value = get(field)
+            if (value) setValue(field, value)
+        })
+
+        if (get("lastSoldYear")) setHasLastSold(true)
+
+        const savedReasons = get("ultimateGoal")
+        if (savedReasons) {
+            setValue(
+                "ultimateGoal",
+                savedReasons.split(",").map((r) => r.trim()).filter(Boolean)
+            )
+        }
+    }, [initialParams, searchParams, setValue])
+
+    /* ── Public records lookup (RentCast) ─────────────────────────────────────
+       Runs in the background as soon as the address is known, so the data is
+       already waiting by the time the seller reaches the confirmation step.   */
+    useEffect(() => {
         if (typeof window === "undefined") return
+        if (!savedAddress && !(savedCity && savedState)) return
 
-        try {
-            const get = (k: string) => initialParams?.get(k) ?? searchParams.get(k) ?? undefined
+        let mounted = true
 
-            const mapping: Array<[string, string | undefined]> = [
-                ["garage", get("garage")],
-                ["basement", get("basement")],
-                ["propertyType", get("propertyType")],
-                ["bedrooms", get("bedrooms")],
-                ["bathrooms", get("bathrooms")],
-                ["squareFootage", get("squareFootage")],
-                ["yearBuilt", get("yearBuilt")],
-                ["yearsOwned", get("yearsOwned")],
-                ["ownerName", get("ownerName")],
-                ["condition", get("condition")],
-                ["repairsEstimate", get("repairsEstimate")],
-                ["repairsNotes", get("repairsNotes")],
-                ["occupied", get("occupied")],
-                ["listedWithRealtor", get("listedWithRealtor")],
-                ["closingTimeline", get("closingTimeline")],
-                ["ultimateGoal", get("ultimateGoal")],
-                ["askingPrice", get("askingPrice")],
-                ["fairPrice", get("fairPrice")],
-                ["bestTimeToCall", get("bestTimeToCall")],
-            ]
+        const lookup = async () => {
+            try {
+                setIsLookingUp(true)
 
-            mapping.forEach(([key, val]) => {
-                if (val !== undefined) setValue(key as any, val as any)
+                const params = new URLSearchParams()
+                if (savedAddress) params.append("address", savedAddress)
+                if (savedCity) params.append("city", savedCity)
+                if (savedState) params.append("state", savedState)
+                if (savedZipCode) params.append("zipCode", savedZipCode)
+                params.append("single", "1")
+
+                const res = await fetch(`/api/rentcast?${params.toString()}`)
+                if (!res.ok) {
+                    console.error("Public records lookup failed:", res.status)
+                    return
+                }
+
+                const property = await res.json()
+                if (!mounted || !property) return
+
+                // The seller's own answer always wins — only fill what is still empty.
+                const filled: LookupField[] = []
+                let anyRecord = false
+
+                const fillIfEmpty = (field: LookupField, value: unknown) => {
+                    if (value === undefined || value === null || value === "") return
+                    anyRecord = true
+                    if (getValues(field)) return
+                    setValue(field, String(value))
+                    filled.push(field)
+                }
+
+                fillIfEmpty("bedrooms", property.bedrooms)
+                fillIfEmpty("bathrooms", property.bathrooms)
+                fillIfEmpty("squareFootage", property.squareFootage)
+                fillIfEmpty("yearBuilt", property.yearBuilt)
+
+                if (property.lastSaleDate) {
+                    const soldYear = new Date(String(property.lastSaleDate)).getFullYear()
+                    if (!Number.isNaN(soldYear)) {
+                        setHasLastSold(true)
+                        fillIfEmpty("lastSoldYear", soldYear)
+                    }
+                }
+
+                // Based on what the records actually contained, not on what we wrote —
+                // a seller stepping back has their own answers in place already.
+                if (anyRecord) setRecordsFound(true)
+
+                if (filled.length > 0) {
+                    setAutoFilled((prev) => {
+                        const next = { ...prev }
+                        filled.forEach((field) => {
+                            next[field] = true
+                        })
+                        return next
+                    })
+                }
+            } catch (err) {
+                console.error("Public records lookup failed:", err)
+            } finally {
+                if (mounted) setIsLookingUp(false)
+            }
+        }
+
+        lookup()
+
+        return () => {
+            mounted = false
+        }
+    }, [savedAddress, savedCity, savedState, savedZipCode, getValues, setValue])
+
+    /** Once the seller edits a looked-up value it is theirs, not ours. */
+    const clearAutoFilled = (field: LookupField) =>
+        setAutoFilled((prev) => (prev[field] ? { ...prev, [field]: false } : prev))
+
+    /* ── Google Places on the address edit field ──────────────────────────── */
+    const loadGoogleMaps = useCallback(() => {
+        if (!GOOGLE_MAPS_API_KEY || typeof window === "undefined") return
+        if (window.google?.maps) {
+            setMapsLoaded(true)
+            return
+        }
+
+        const existing = document.getElementById("google-maps-script")
+        if (existing) {
+            existing.addEventListener("load", () => setMapsLoaded(true))
+            return
+        }
+
+        const script = document.createElement("script")
+        script.id = "google-maps-script"
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`
+        script.async = true
+        script.defer = true
+        script.onload = () => setMapsLoaded(true)
+        document.head.appendChild(script)
+    }, [])
+
+    useEffect(() => {
+        if (!mapsLoaded || !editMode) return
+        if (!addressInputRef.current || !window.google?.maps?.places) return
+
+        autocompleteRef.current = new window.google.maps.places.Autocomplete(addressInputRef.current, {
+            fields: ["address_components", "formatted_address"],
+            types: ["address"],
+            componentRestrictions: { country: "us" },
+        })
+
+        const listener = autocompleteRef.current.addListener("place_changed", () => {
+            const place = autocompleteRef.current?.getPlace()
+            if (!place?.address_components) return
+
+            const get = (type: string, short = false) => {
+                const comp = place.address_components?.find((c) => c.types.includes(type))
+                return short ? (comp?.short_name ?? "") : (comp?.long_name ?? "")
+            }
+
+            setLocalAddress(place.formatted_address ?? "")
+            setLocalCity(get("locality") || get("sublocality") || get("administrative_area_level_2"))
+            setLocalState(get("administrative_area_level_1", true))
+            setLocalZipCode(get("postal_code"))
+        })
+
+        return () => listener?.remove()
+    }, [mapsLoaded, editMode])
+
+    /* ── Step navigation ──────────────────────────────────────────────────── */
+
+    const goToStep = useCallback(
+        (next: number) => {
+            setFormStep(next)
+            const params = new URLSearchParams(Array.from(searchParams.entries()))
+            params.set("propInfoStep", String(next))
+            if (typeof window !== "undefined") {
+                window.history.replaceState(null, "", `${pathname}?${params.toString()}`)
+                window.scrollTo({ top: 0, behavior: "smooth" })
+            }
+        },
+        [pathname, searchParams]
+    )
+
+    const confirmAddressEdit = () => {
+        const changed = localAddress !== savedAddress || localZipCode !== savedZipCode
+
+        setSavedAddress(localAddress)
+        setSavedCity(localCity)
+        setSavedState(localState)
+        setSavedZipCode(localZipCode)
+        setEditMode(false)
+        setAddressError(null)
+
+        // A different property means the previous lookup's values no longer apply.
+        // Only values we filled are cleared — anything the seller typed survives.
+        if (changed) {
+            ;(Object.keys(autoFilled) as LookupField[]).forEach((field) => {
+                if (autoFilled[field]) setValue(field, "")
             })
+            setAutoFilled({})
+            setHasLastSold(false)
+            setRecordsFound(false)
+        }
+    }
 
-            // repairsChecklist may be provided as a comma-separated string
-            const checklist = get("repairsChecklist")
-            if (checklist) {
-                const list = checklist.split(",").map((s) => s.trim()).filter(Boolean)
-                setRepairsChecklist(list)
-                setValue("repairsChecklist", list)
+    const handleNext = async () => {
+        const fields = STEP_FIELDS[formStep]
+        if (fields.length > 0) {
+            const valid = await trigger(fields)
+            if (!valid) return
+        }
+
+        if (formStep === 5) {
+            if (!localAddress.trim()) {
+                setAddressError("Please enter the address of the property")
+                return
             }
-
-            // repairsEstimate is stored as string in the form schema but we keep
-            // a local numeric state for the slider — coerce if present
-            const est = get("repairsEstimate")
-            if (est) {
-                const n = Number(est)
-                if (!Number.isNaN(n)) setRepairsEstimate(n)
-            }
-        } catch (err) {
-            console.error("Failed to hydrate form from URL params:", err)
+            setAddressError(null)
+            // Don't make the seller press Save before Next — commit what they typed.
+            if (editMode) confirmAddressEdit()
         }
-    }, [searchParams, setValue])
 
-    const [isPrefilling, setIsPrefilling] = useState(false)
-    const [lastSaleDateDisplay, setLastSaleDateDisplay] = useState<string | null>(null)
-
-    /** Returns a human-readable string like "~2 years (last sold Jan 2023)" */
-    function formatYearsOwned(isoDate: string): string {
-        try {
-            const sold = new Date(isoDate)
-            const now = new Date()
-            const diffMs = now.getTime() - sold.getTime()
-            const years = diffMs / (1000 * 60 * 60 * 24 * 365.25)
-            const monthStr = sold.toLocaleDateString("en-US", { month: "short", year: "numeric" })
-            if (years < 1) {
-                const months = Math.round(years * 12)
-                return `~${months} month${months !== 1 ? "s" : ""} (last sold ${monthStr})`
-            }
-            const yrs = Math.floor(years)
-            return `~${yrs} year${yrs !== 1 ? "s" : ""} (last sold ${monthStr})`
-        } catch {
-            return isoDate
-        }
+        goToStep(formStep + 1)
     }
 
-    // Repairs UI state: checklist and a global estimated repair cost (slider)
-    const repairOptions = [
-        "Roof",
-        "HVAC",
-        "Foundation",
-        "Plumbing",
-        "Electrical",
-        "Windows/Doors",
-        "Interior (paint/floor)",
-        "Other",
-    ]
-    const [repairsChecklist, setRepairsChecklist] = useState<string[]>([])
-    const [repairsEstimate, setRepairsEstimate] = useState<number>(5000)
-
-    useEffect(() => {
-        setValue("repairsChecklist", repairsChecklist)
-    }, [repairsChecklist, setValue])
-
-    useEffect(() => {
-        setValue("repairsEstimate", String(repairsEstimate))
-    }, [repairsEstimate, setValue])
-
-    function toggleRepair(option: string) {
-        setRepairsChecklist((prev) => (prev.includes(option) ? prev.filter((p) => p !== option) : [...prev, option]))
+    const cancelAddressEdit = () => {
+        setLocalAddress(savedAddress)
+        setLocalCity(savedCity)
+        setLocalState(savedState)
+        setLocalZipCode(savedZipCode)
+        setEditMode(false)
     }
 
-    function formatCurrency(n: number) {
-        try {
-            return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n)
-        } catch {
-            return `$${n}`
-        }
+    /**
+     * Reached when the final step is submitted but an earlier answer is missing —
+     * possible if someone opens ?propInfoStep=6 directly. Their error messages live
+     * on the steps they belong to, so send the seller to the first one that failed
+     * instead of leaving the button looking broken.
+     */
+    const onInvalid = (formErrors: FieldErrors<PropertyInfoFormData>) => {
+        const firstIncompleteStep = Object.keys(STEP_FIELDS)
+            .map(Number)
+            .sort((a, b) => a - b)
+            .find((step) => STEP_FIELDS[step].some((field) => formErrors[field]))
+
+        if (firstIncompleteStep) goToStep(firstIncompleteStep)
     }
 
-    const handleGoToPage2 = () => {
-        setFormPage(2)
-        const p = new URLSearchParams(Array.from(searchParams.entries()))
-        p.set("propInfoStep", "2")
-        p.delete("step2Complete")
-        if (typeof window !== "undefined") {
-            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
-            window.scrollTo({ top: 0, behavior: "smooth" })
-        }
-    }
-
-    const handleBackToPage1 = () => {
-        setFormPage(1)
-        const p = new URLSearchParams(Array.from(searchParams.entries()))
-        p.delete("propInfoStep")
-        p.delete("step2Complete")
-        if (typeof window !== "undefined") {
-            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
-            window.scrollTo({ top: 0, behavior: "smooth" })
-        }
-    }
-
-    const handleGoToPage3 = async () => {
-        const valid = await trigger(["condition", "listedWithRealtor"])
-        if (!valid) return
-        setFormPage(3)
-        const p = new URLSearchParams(Array.from(searchParams.entries()))
-        p.set("propInfoStep", "3")
-        p.delete("step2Complete")
-        if (typeof window !== "undefined") {
-            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
-            window.scrollTo({ top: 0, behavior: "smooth" })
-        }
-    }
-
-    const handleBackToPage2 = () => {
-        setFormPage(2)
-        const p = new URLSearchParams(Array.from(searchParams.entries()))
-        p.set("propInfoStep", "2")
-        p.delete("step2Complete")
-        if (typeof window !== "undefined") {
-            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
-            window.scrollTo({ top: 0, behavior: "smooth" })
-        }
-    }
-
-    const handleGoToPage4 = async () => {
-        const valid = await trigger(["occupied", "ultimateGoal"])
-        if (!valid) return
-        setFormPage(4)
-        const p = new URLSearchParams(Array.from(searchParams.entries()))
-        p.set("propInfoStep", "4")
-        p.delete("step2Complete")
-        if (typeof window !== "undefined") {
-            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
-            window.scrollTo({ top: 0, behavior: "smooth" })
-        }
-    }
-
-    const handleBackToPage3 = () => {
-        setFormPage(3)
-        const p = new URLSearchParams(Array.from(searchParams.entries()))
-        p.set("propInfoStep", "3")
-        p.delete("step2Complete")
-        if (typeof window !== "undefined") {
-            window.history.replaceState(null, "", `${pathname}?${p.toString()}`)
-            window.scrollTo({ top: 0, behavior: "smooth" })
-        }
-    }
+    /* ── Submit → hand off to the contact step ────────────────────────────── */
 
     const onSubmit = async (data: PropertyInfoFormData) => {
         setIsSubmitting(true)
 
-        // Build params to forward to step 3 (property-details)
+        const conditionLabel = CONDITION_OPTIONS.find((o) => o.scale === data.condition)?.label ?? ""
         const params = new URLSearchParams()
-        // Forward step 1 address data
-        params.append("address", address)
-        if (city) params.append("city", city)
-        if (state) params.append("state", state)
-        if (zipCode) params.append("zipCode", zipCode)
+
+        // Address as confirmed on step 5 — the seller may have corrected it there
+        params.append("address", savedAddress)
+        if (savedCity) params.append("city", savedCity)
+        if (savedState) params.append("state", savedState)
+        if (savedZipCode) params.append("zipCode", savedZipCode)
         if (smsConsentPrev) params.append("smsConsent", smsConsentPrev)
-        // Property info fields from this step
-        if (data.garage !== undefined && data.garage !== "") params.append("garage", data.garage)
-        if (data.basement !== undefined && data.basement !== "") params.append("basement", data.basement)
-        if (data.propertyType !== undefined && data.propertyType !== "") params.append("propertyType", data.propertyType)
-        if (data.bedrooms !== undefined && data.bedrooms !== "") params.append("bedrooms", data.bedrooms)
-        if (data.bathrooms !== undefined && data.bathrooms !== "") params.append("bathrooms", data.bathrooms)
-        if (data.squareFootage !== undefined && data.squareFootage !== "") params.append("squareFootage", data.squareFootage)
-        if (data.yearsOwned !== undefined && data.yearsOwned !== "") params.append("yearsOwned", data.yearsOwned)
-        if (data.ownerName !== undefined && data.ownerName !== "") params.append("ownerName", data.ownerName)
-        if (data.condition !== undefined && data.condition !== "") params.append("condition", data.condition)
-        // Repairs: checklist + estimate + notes (kept as strings for URL params)
-        if (data.repairsChecklist && data.repairsChecklist.length > 0)
-            params.append("repairsChecklist", data.repairsChecklist.join(","))
-        if (data.repairsEstimate !== undefined && data.repairsEstimate !== "") params.append("repairsEstimate", data.repairsEstimate)
-        if (data.repairsNotes !== undefined && data.repairsNotes !== "") params.append("repairsNotes", data.repairsNotes)
-        if (data.occupied !== undefined && data.occupied !== "") params.append("occupied", data.occupied)
-        if (data.listedWithRealtor !== undefined && data.listedWithRealtor !== "") params.append("listedWithRealtor", data.listedWithRealtor)
-        if (data.closingTimeline !== undefined && data.closingTimeline !== "") params.append("closingTimeline", data.closingTimeline)
-        if (data.ultimateGoal !== undefined && data.ultimateGoal !== "") params.append("ultimateGoal", data.ultimateGoal)
-        if (data.askingPrice !== undefined && data.askingPrice !== "") params.append("askingPrice", data.askingPrice)
-        if (data.fairPrice !== undefined && data.fairPrice !== "") params.append("fairPrice", data.fairPrice)
-        if (data.yearBuilt !== undefined && data.yearBuilt !== "") params.append("yearBuilt", data.yearBuilt)
-        if (data.bestTimeToCall !== undefined && data.bestTimeToCall !== "") params.append("bestTimeToCall", data.bestTimeToCall)
-        // Forward any saved "Your Info" values so they survive the round-trip back
-        const _firstName = p("_firstName")
-        const _lastName = p("_lastName")
-        const _phone = p("_phone")
-        const _email = p("_email")
-        if (_firstName) params.append("_firstName", _firstName)
-        if (_lastName) params.append("_lastName", _lastName)
-        if (_phone) params.append("_phone", _phone)
-        if (_email) params.append("_email", _email)
 
-        // --- Fire AVM + offer calculation in parallel before moving to next step ---
+        params.append("condition", data.condition)
+        if (conditionLabel) params.append("conditionLabel", conditionLabel)
+        params.append("closingTimeline", data.closingTimeline)
+        params.append("ultimateGoal", data.ultimateGoal.join(", "))
+        params.append("askingPrice", data.askingPrice)
+
+        const confirmedFields: LookupField[] = [
+            "bedrooms",
+            "bathrooms",
+            "squareFootage",
+            "yearBuilt",
+            "lastSoldYear",
+        ]
+        confirmedFields.forEach((field) => {
+            const value = data[field]
+            if (value) params.append(field, value)
+        })
+
+        // Carry "Your Info" values so they survive a round-trip back to this step
+        const contactKeys = ["_firstName", "_lastName", "_phone", "_email"] as const
+        contactKeys.forEach((key) => {
+            const value = p(key)
+            if (value) params.append(key, value)
+        })
+
+        // Precompute the cash offer so /bookings has it without another wait
         try {
-            const avmParams = new URLSearchParams()
-            if (address) avmParams.append("address", address)
-            if (city) avmParams.append("city", city)
-            if (state) avmParams.append("state", state)
-            if (data.propertyType) avmParams.append("propertyType", data.propertyType)
-            if (data.bedrooms) avmParams.append("bedrooms", data.bedrooms)
-            if (data.bathrooms) avmParams.append("bathrooms", data.bathrooms)
-            if (data.squareFootage) avmParams.append("squareFootage", data.squareFootage)
-            avmParams.append("avm", "1")
-            avmParams.append("maxRadius", String(10))
+            const fullAddress = [savedAddress, savedCity, savedState, savedZipCode]
+                .filter(Boolean)
+                .join(", ")
 
-            // Build full address for the offer endpoint
-            const fullAddress = [address, city, state, zipCode].filter(Boolean).join(", ")
-            const conditionScale = data.condition ? Math.max(0, Math.min(5, Number(data.condition))) : 3
-
-            // Only call our offers API here; RentCast AVM is computed server-side in /api/offers
             const offerRes = await fetch("/api/offers", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ address: fullAddress, conditionScale }),
+                body: JSON.stringify({ address: fullAddress, conditionScale: Number(data.condition) }),
             })
 
             if (offerRes.ok) {
-                const offerData = await offerRes.json()
-                if (offerData.cashOffer != null) params.set("cashOffer", String(offerData.cashOffer))
-                if (offerData.repairCosts != null) params.set("repairCosts", String(offerData.repairCosts))
-                if (offerData.arv != null) params.set("arv", String(offerData.arv))
-                if (offerData.estimatedRent != null) params.set("estimatedRent", String(offerData.estimatedRent))
-                if (offerData.annualTaxes != null) params.set("annualTaxes", String(offerData.annualTaxes))
-                if (offerData.insuranceAnnual != null) params.set("insuranceAnnual", String(offerData.insuranceAnnual))
-                console.log("Offer precomputed:", offerData.cashOffer)
-                console.log("Offer precomputed details:", {
-                    baseAvmPrice: offerData.baseAvmPrice,
-                    repairCosts: offerData.repairCosts,
-                    netBefore70: (offerData.baseAvmPrice ?? 0) - (offerData.repairCosts ?? 0),
+                const offer = await offerRes.json()
+                const offerKeys = [
+                    "cashOffer",
+                    "repairCosts",
+                    "arv",
+                    "estimatedRent",
+                    "annualTaxes",
+                    "insuranceAnnual",
+                ] as const
+                offerKeys.forEach((key) => {
+                    if (offer[key] != null) params.set(key, String(offer[key]))
                 })
             } else {
                 console.error("Offer API error:", offerRes.status)
             }
         } catch (err) {
-            console.error("Failed to fetch AVM / offer:", err)
+            console.error("Failed to fetch the cash offer:", err)
         }
 
         if (onNext) {
@@ -558,174 +588,13 @@ export function PropertyInfoForm({ initialParams, onNext }: { initialParams?: UR
         }
     }
 
-    // Report step completion in URL so progress indicator can update in real time
-    useEffect(() => {
-        if (formPage !== 4) return
-        const params = new URLSearchParams(Array.from(searchParams.entries()))
-        const alreadySet = params.get("step2Complete") === "true"
-        // Skip replaceState if nothing would change — avoids triggering a
-        // Next.js searchParams update that can remount the form inside Suspense.
-        if (isValid && alreadySet) return
-        if (!isValid && !alreadySet) return
-        if (isValid) {
-            params.set("step2Complete", "true")
-        } else {
-            params.delete("step2Complete")
-        }
-        const qs = params.toString()
-        if (typeof window !== "undefined") {
-            window.history.replaceState(null, "", `${pathname}${qs ? `?${qs}` : ""}`)
-        }
-    }, [isValid, formPage, router, pathname, searchParams])
+    /* ── Render ───────────────────────────────────────────────────────────── */
 
-    // Prefill form from Rentcast when address (or city/state/zip) is present
-    useEffect(() => {
-        // Only run in browser and when we have an address or city/state
-        if (typeof window === "undefined") return
-        if (!savedAddress && !(savedCity && savedState)) return
-
-        let mounted = true
-        const prefill = async () => {
-            try {
-                setIsPrefilling(true)
-                const params = new URLSearchParams()
-                if (savedAddress) params.append("address", savedAddress)
-                if (savedCity) params.append("city", savedCity)
-                if (savedState) params.append("state", savedState)
-                if (savedZipCode) params.append("zipCode", savedZipCode)
-                // Ask backend to return a single property object
-                params.append("single", "1")
-
-                const res = await fetch(`/api/rentcast?${params.toString()}`)
-                if (!res.ok) {
-                    console.error("Rentcast prefill failed:", res.status)
-                    return
-                }
-
-                const prop = await res.json()
-                if (!mounted || !prop) return
-
-                // Save the raw result for debugging / later steps
-                setAvmResult(prop)
-                // Also print full API response to browser console
-                console.log("Rentcast prefill result:", prop)
-
-                // Map common Rentcast fields into our form fields (strings expected)
-                try {
-                    if (prop.bedrooms !== undefined && prop.bedrooms !== null) {
-                        setValue("bedrooms", String(prop.bedrooms))
-                    }
-
-                    if (prop.bathrooms !== undefined && prop.bathrooms !== null) {
-                        setValue("bathrooms", String(prop.bathrooms))
-                    }
-
-                    if (prop.squareFootage !== undefined && prop.squareFootage !== null) {
-                        setValue("squareFootage", String(prop.squareFootage))
-                    }
-
-                    if (prop.propertyType) {
-                        setValue("propertyType", prop.propertyType)
-                    }
-
-                    // Garage mapping: prefer explicit garageSpaces or garageType
-                    const garageSpaces = prop?.features?.garageSpaces ?? prop?.garageSpaces
-                    if (garageSpaces !== undefined && garageSpaces !== null) {
-                        // Normalize to one of the select options (best-effort)
-                        const spaces = Number(garageSpaces)
-                        if (!Number.isNaN(spaces)) {
-                            if (spaces >= 2) setValue("garage", "2 Car Attached")
-                            else if (spaces === 1) setValue("garage", "1 Car Attached")
-                            else setValue("garage", "None")
-                        }
-                    } else if (prop?.features?.garageType) {
-                        setValue("garage", String(prop.features.garageType))
-                    }
-
-                    // Basement heuristics: if foundation type mentions slab, mark as None
-                    const foundation = prop?.features?.foundationType
-                    if (foundation && /slab/i.test(String(foundation))) {
-                        setValue("basement", "None")
-                    }
-
-                    // Prices: try to populate asking/fair price from last sale or AVM if present
-                    if (prop.lastSalePrice) {
-                        setValue("askingPrice", String(prop.lastSalePrice))
-                    } else if (prop?.avm?.value) {
-                        setValue("askingPrice", String(prop.avm.value))
-                    }
-                    if (prop.yearBuilt !== undefined && prop.yearBuilt !== null) {
-                        setValue("yearBuilt", String(prop.yearBuilt))
-                    }
-
-                    // Owner name
-                    if (prop.owner?.names && Array.isArray(prop.owner.names) && prop.owner.names.length > 0) {
-                        setValue("ownerName", (prop.owner.names as string[]).join(" / "))
-                    }
-
-                    // Last sale date → years owned
-                    if (prop.lastSaleDate) {
-                        const iso = String(prop.lastSaleDate)
-                        const friendly = new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
-                        setLastSaleDateDisplay(friendly)
-                        setValue("yearsOwned", formatYearsOwned(iso))
-                    }
-                } catch (err) {
-                    console.error("Failed to map Rentcast data to form fields:", err)
-                }
-            } catch (err) {
-                console.error("Failed to prefill from Rentcast:", err)
-            } finally {
-                setIsPrefilling(false)
-            }
-        }
-
-        prefill()
-
-        return () => {
-            mounted = false
-        }
-    }, [savedAddress, savedCity, savedState, savedZipCode])
-
-    // Geocode helper: fetch lat/lng for the provided address string
-    const geocodeAddress = async (addr: string) => {
-        try {
-            setIsGeocoding(true)
-            setGeocodeError(null)
-            const url = `/api/geocode?address=${encodeURIComponent(addr)}`
-            const res = await fetch(url)
-            if (!res.ok) throw new Error(`HTTP ${res.status}`)
-            const json = await res.json()
-            if (json.status === "OK" && Array.isArray(json.results) && json.results.length > 0) {
-                const loc = json.results[0].geometry.location
-                setGeoLatLng({ lat: Number(loc.lat), lng: Number(loc.lng) })
-                setGeocodeError(null)
-            } else {
-                setGeoLatLng(null)
-                setGeocodeError(json.status || "No results")
-            }
-        } catch (err: any) {
-            console.error("Geocode error:", err)
-            setGeoLatLng(null)
-            setGeocodeError(err?.message ?? String(err))
-        } finally {
-            setIsGeocoding(false)
-        }
-    }
-
-    // Auto-run geocode when the editable address fields change
-    useEffect(() => {
-        if (typeof window === "undefined") return
-        const addr = [localAddress, localCity, localState, localZipCode].filter(Boolean).join(", ")
-        if (!addr) {
-            setGeoLatLng(null)
-            setGeocodeError(null)
-            return
-        }
-        // debounce a bit to avoid many requests while typing
-        const t = setTimeout(() => geocodeAddress(addr), 600)
-        return () => clearTimeout(t)
-    }, [localAddress, localCity, localState, localZipCode])
+    // The Maps Embed API geocodes `q` itself, so the address goes straight through —
+    // no separate geocoding round trip is needed to place the pin.
+    const mapQuery = encodeURIComponent(
+        [localAddress, localCity, localState, localZipCode].filter(Boolean).join(", ")
+    )
 
     return (
         <AnimatePresence mode="wait">
@@ -735,616 +604,427 @@ export function PropertyInfoForm({ initialParams, onNext }: { initialParams?: UR
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
-                onSubmit={handleSubmit(onSubmit, (errors) => {
-                    console.log("Validation errors:", errors)
-                })}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    // Pressing Enter anywhere would otherwise submit the whole form and
+                    // skip the remaining steps — treat it as "next" until the last one.
+                    if (formStep < LAST_STEP) {
+                        void handleNext()
+                        return
+                    }
+                    void handleSubmit(onSubmit, onInvalid)(e)
+                }}
                 noValidate
                 aria-label="Property information"
                 className="rounded-2xl bg-[var(--color-background)] p-4 sm:p-6 md:p-8 lg:p-10 border border-[var(--color-primary)]/60 w-full max-w-3xl lg:max-w-4xl mx-auto"
             >
-                {formPage === 1 ? (
-                    <>
-                        <h3 className="text-xl font-bold text-white mb-1">Property Information</h3>
-                        <p className="text-gray-400 text-sm mb-6 leading-relaxed">
-                            Excellent. We need a bit more info about your situation so we can provide you with your
-                            options and an instant cash offer.
-                            <br />
-                            <span className="text-gray-500">
-                                Please complete the form below. If you don&apos;t have the answers handy for some
-                                fields, just leave them blank for now.
-                            </span>
-                        </p>
-                    </>
-                ) : formPage === 2 ? (
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-xl font-bold text-white">Condition &amp; Repairs</h3>
+                <div className="flex items-center justify-between gap-4 mb-6">
+                    <h3 className="text-xl font-bold text-white">{STEP_TITLES[formStep]}</h3>
+                    {formStep > 1 && (
                         <button
                             type="button"
-                            onClick={handleBackToPage1}
-                            className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5"
+                            onClick={() => goToStep(formStep - 1)}
+                            className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5 shrink-0"
                         >
                             ← Back
                         </button>
-                    </div>
-                ) : formPage === 3 ? (
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-xl font-bold text-white">Your Situation</h3>
-                        <button
-                            type="button"
-                            onClick={handleBackToPage2}
-                            className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5"
-                        >
-                            ← Back
-                        </button>
-                    </div>
-                ) : (
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-xl font-bold text-white">Your Asking Price</h3>
-                        <button
-                            type="button"
-                            onClick={handleBackToPage3}
-                            className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1.5"
-                        >
-                            ← Back
-                        </button>
-                    </div>
-                )}
-
-                {/* ── Street View + Map ── */}
-                {formPage === 1 && (localAddress || localCity) && (
-                    <div className="grid grid-cols-1 gap-3 mb-6">
-                        {/* Fachada / Street View */}
-                        {/* <div className="flex flex-col gap-1.5">
-                            <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
-                                Street View
-                            </p>
-                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-56 sm:h-44 w-full flex items-center justify-center bg-[#0b0f1a]">
-                                {isGeocoding ? (
-                                    <div className="text-xs text-gray-400">Resolving address for Street View…</div>
-                                ) : geoLatLng ? (
-                                    <iframe
-                                        title="Street view of property"
-                                        width="100%"
-                                        height="100%"
-                                        loading="lazy"
-                                        allowFullScreen
-                                        referrerPolicy="no-referrer-when-downgrade"
-                                        src={`https://www.google.com/maps/embed/v1/streetview?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&location=${geoLatLng.lat},${geoLatLng.lng}&fov=80&heading=0&pitch=0}`}
-                                    />
-                                ) : (
-                                    <div className="p-3 text-center">
-                                        <div className="text-xs text-gray-400 mb-1">Street View unavailable for this address.</div>
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                const addr = [localAddress, localCity, localState, localZipCode].filter(Boolean).join(", ")
-                                                if (addr) geocodeAddress(addr)
-                                            }}
-                                            className="text-xs px-3 py-1 rounded bg-[#f59e0b] text-[#0f0f23]"
-                                        >
-                                            Try again
-                                        </button>
-                                        {geocodeError && <div className="text-xs text-red-400 mt-2">{geocodeError}</div>}
-                                    </div>
-                                )}
-                            </div>
-                        </div> */}
-
-                        {/* Mapa */}
-                        <div className="flex flex-col gap-1.5">
-                            <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
-                                Location
-                            </p>
-                            <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-72 sm:h-96 w-full">
-                                <iframe
-                                    title="Property location on map"
-                                    width="100%"
-                                    height="100%"
-                                    loading="lazy"
-                                    allowFullScreen
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${geoLatLng ? `${geoLatLng.lat},${geoLatLng.lng}` : encodeURIComponent([localAddress, localCity, localState, localZipCode].filter(Boolean).join(", "))}&zoom=15`}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* ── Summary of previous step (inline editable) ── */}
-                {formPage === 1 && <div className="rounded-lg bg-white/[0.03] border border-[var(--color-primary)]/60 p-3 mb-6">
-                    <div className="flex items-start justify-between mb-2">
-                        <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
-                            Address
-                        </p>
-                        {!editMode && (
-                            <button
-                                type="button"
-                                onClick={() => setEditMode(true)}
-                                className="text-xs text-[var(--color-primary)] hover:underline focus:outline-none"
-                            >
-                                Edit
-                            </button>
-                        )}
-                    </div>
-
-                    {editMode ? (
-                        <div className="space-y-3">
-                            <Input
-                                placeholder="Property address"
-                                value={localAddress}
-                                onChange={(e) => setLocalAddress(e.target.value)}
-                                className="h-10 bg-white/5 text-white placeholder:text-gray-400"
-                            />
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                <Input
-                                    placeholder="City"
-                                    value={localCity}
-                                    onChange={(e) => setLocalCity(e.target.value)}
-                                    className="h-10 bg-white/5 text-white placeholder:text-gray-400"
-                                />
-                                <Input
-                                    placeholder="State"
-                                    value={localState}
-                                    onChange={(e) => setLocalState(e.target.value)}
-                                    className="h-10 bg-white/5 text-white placeholder:text-gray-400"
-                                />
-                            </div>
-
-                            <Input
-                                placeholder="Zip code"
-                                value={localZipCode}
-                                onChange={(e) => setLocalZipCode(e.target.value)}
-                                className="h-10 bg-white/5 text-white placeholder:text-gray-400"
-                            />
-
-                            <div className="flex gap-3">
-                                <Button
-                                    type="button"
-                                    onClick={() => {
-                                        setSavedAddress(localAddress)
-                                        setSavedCity(localCity)
-                                        setSavedState(localState)
-                                        setSavedZipCode(localZipCode)
-                                        setEditMode(false)
-                                    }}
-                                    className="h-10 px-4 bg-[#f59e0b] text-[#0f0f23]"
-                                >
-                                    Save
-                                </Button>
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setLocalAddress(address)
-                                        setLocalCity(city)
-                                        setLocalState(state)
-                                        setLocalZipCode(zipCode)
-                                        setEditMode(false)
-                                    }}
-                                    className="h-10 px-4 rounded-lg border border-white/10 text-sm text-white"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    ) : (
-                        <>
-                            <SummaryRow icon={<MapPin className="h-4 w-4 text-[var(--color-primary)]" />} label="Address" value={localAddress} />
-                            <SummaryRow icon={<Building2 className="h-4 w-4 text-[var(--color-primary)]" />} label="City" value={localCity} />
-                            <SummaryRow icon={<Building2 className="h-4 w-4 text-[var(--color-primary)]" />} label="State" value={localState} />
-                            <SummaryRow icon={<Hash className="h-4 w-4 text-[var(--color-primary)]" />} label="Zip Code" value={localZipCode} />
-                        </>
                     )}
-                </div>}
-
-                {/* Prefill loading indicator */}
-                {formPage === 1 && isPrefilling && (
-                    <div className="mb-4 flex items-center gap-2 rounded-md bg-[#0f1724] p-3 text-sm text-gray-200 border border-white/10">
-                        <Loader2 className="h-4 w-4 animate-spin text-[#f59e0b]" />
-                        <span>Obteniendo datos de la propiedad…</span>
-                    </div>
-                )}
+                </div>
 
                 <div className="flex flex-col gap-5">
-
-                    {/* ───────── PROPERTY INFORMATION (page 1 only) ───────── */}
-                    {formPage === 1 && (<>
-                        <SectionHeading>Property Information</SectionHeading>
-
-                        {/* Garage + Basement row */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor={id("garage")} className="block text-xs text-gray-400 mb-1.5">
-                                    Garage
-                                </label>
-                                <div className="relative">
-                                    <select id={id("garage")} {...register("garage")} className={selectClass}>
-                                        <option value="">Select…</option>
-                                        <option>None</option>
-                                        <option>1 Car Attached</option>
-                                        <option>1 Car Detached</option>
-                                        <option>2 Car Attached</option>
-                                        <option>2 Car Detached</option>
-                                        <option>Carport</option>
-                                        <option>Other</option>
-                                    </select>
-                                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                                </div>
-                            </div>
-                            <div>
-                                <label htmlFor={id("basement")} className="block text-xs text-gray-400 mb-1.5">
-                                    Basement
-                                </label>
-                                <div className="relative">
-                                    <select id={id("basement")} {...register("basement")} className={selectClass}>
-                                        <option value="">Select…</option>
-                                        <option>None</option>
-                                        <option>Finished</option>
-                                        <option>Partially Finished</option>
-                                        <option>Unfinished</option>
-                                        <option>Crawl Space</option>
-                                        <option>Other</option>
-                                    </select>
-                                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Owner name + Years owned row */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor={id("ownerName")} className="block text-xs text-gray-400 mb-1.5">
-                                    Current Owner
-                                </label>
-                                <Input
-                                    id={id("ownerName")}
-                                    placeholder="e.g. John Smith"
-                                    {...register("ownerName")}
-                                    className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor={id("yearsOwned")} className="block text-xs text-gray-400 mb-1.5">
-                                    How long have you owned the property?
-                                </label>
-                                <Input
-                                    id={id("yearsOwned")}
-                                    placeholder="e.g. 5 years, inherited, just bought…"
-                                    {...register("yearsOwned")}
-                                    className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Property type + Bedrooms row (strings to match schema) */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor={id("propertyType")} className="block text-xs text-gray-400 mb-1.5">
-                                    Property Type
-                                </label>
-                                <div className="relative">
-                                    <select
-                                        id={id("propertyType")}
-                                        {...register("propertyType")}
-                                        className={selectClass}
-                                    >
-                                        <option value="">Select…</option>
-                                        <option>Single Family</option>
-                                        <option>Condo</option>
-                                        <option>Townhouse</option>
-                                        <option>Manufactured</option>
-                                        <option>Multi-Family</option>
-                                        <option>Apartment</option>
-                                        <option>Land</option>
-                                    </select>
-                                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label htmlFor={id("bedrooms")} className="block text-xs text-gray-400 mb-1.5">
-                                    Bedrooms (use 0 for studio)
-                                </label>
-                                <Input
-                                    id={id("bedrooms")}
-                                    type="number"
-                                    step="1"
-                                    min={0}
-                                    placeholder="e.g. 3 or 0 for studio"
-                                    {...register("bedrooms", {
-                                        setValueAs: (v) => (v === "" ? "" : String(Math.round(Number(v)))),
-                                    })}
-                                    className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Bathrooms + Square footage row (strings to match schema) */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label htmlFor={id("bathrooms")} className="block text-xs text-gray-400 mb-1.5">
-                                    Bathrooms
-                                </label>
-                                <Input
-                                    id={id("bathrooms")}
-                                    type="number"
-                                    step="0.25"
-                                    min={0}
-                                    placeholder="e.g. 2.5"
-                                    {...register("bathrooms")}
-                                    className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor={id("squareFootage")} className="block text-xs text-gray-400 mb-1.5">
-                                    Square Footage
-                                </label>
-                                <Input
-                                    id={id("squareFootage")}
-                                    type="number"
-                                    step="1"
-                                    min={0}
-                                    placeholder="e.g. 1450"
-                                    {...register("squareFootage")}
-                                    className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Year built */}
+                    {/* ───────── Step 1 — Property condition ───────── */}
+                    {formStep === 1 && (
                         <div>
-                            <label htmlFor={id("yearBuilt")} className="block text-xs text-gray-400 mb-1.5">
-                                Year Built
-                            </label>
-                            <Input
-                                id={id("yearBuilt")}
-                                type="number"
-                                step="1"
-                                min={0}
-                                placeholder="e.g. 1973"
-                                {...register("yearBuilt")}
-                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
-                            />
-                        </div>
-                    </>)}
-
-                    {/* ── Page 1 NEXT button ── */}
-                    {formPage === 1 && (
-                        <Button
-                            type="button"
-                            onClick={handleGoToPage2}
-                            className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                        >
-                            NEXT
-                            <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                        </Button>
-                    )}
-
-                    {/* ── Page 2: Condition & Situation ── */}
-                    {formPage === 2 && (<>
-
-                        {/* Condition (required) */}
-                        <div>
-                            <label className="block text-xs text-gray-400 mb-3">
-                                Click the color that represents your home{" "}
-                                <span className="text-red-400" aria-hidden="true">*</span>
-                            </label>
-                            {/* Wheel IDs map 1-to-1 with condition levels 0-5 */}
-                            <RehabConditionWheel
-                                value={(() => {
-                                    const v = watch("condition")
-                                    const ids = ["turnkey", "cosmetic", "mid-light", "mid-heavy", "major", "full-gut"]
-                                    return v !== "" && v !== undefined ? (ids[Number(v)] ?? undefined) : undefined
-                                })()}
-                                onChange={(wheelId) => {
-                                    const levelMap: Record<string, string> = {
-                                        turnkey: "0",
-                                        cosmetic: "1",
-                                        "mid-light": "2",
-                                        "mid-heavy": "3",
-                                        major: "4",
-                                        "full-gut": "5",
-                                    }
-                                    setValue("condition", levelMap[wheelId] ?? "1", { shouldValidate: true })
-                                }}
-                            />
-                            <input type="hidden" {...register("condition")} />
-                            <FieldError message={errors.condition?.message} />
-                        </div>
-
-                        {/* Repairs: structured checklist + estimate + notes */}
-                        <div>
-                            <label className="block text-xs text-gray-400 mb-1.5">What has been upgraded in the last 10 years? Please select all that apply.</label>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
-                                {repairOptions.map((opt) => (
-                                    <label key={opt} className="inline-flex items-center gap-2 text-sm text-gray-200">
-                                        <input
-                                            type="checkbox"
-                                            checked={repairsChecklist.includes(opt)}
-                                            onChange={() => toggleRepair(opt)}
-                                            className="h-4 w-4 rounded border-gray-300 bg-white/5"
-                                        />
-                                        <span>{opt}</span>
-                                    </label>
+                            <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+                                Pick whichever comes closest. We&apos;ll confirm the details when we speak — this
+                                just helps us size up the offer.
+                            </p>
+                            <div
+                                role="radiogroup"
+                                aria-label="Property condition"
+                                className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+                            >
+                                {CONDITION_OPTIONS.map((option) => (
+                                    <OptionCard
+                                        key={option.scale}
+                                        label={option.label}
+                                        hint={option.hint}
+                                        selected={condition === option.scale}
+                                        onSelect={() =>
+                                            setValue("condition", option.scale, { shouldValidate: true })
+                                        }
+                                    />
                                 ))}
                             </div>
-
-                            <div>
-                                <label htmlFor={id("repairsNotes")} className="block text-xs text-gray-400 mb-1.5">
-                                    Additional details (optional)
-                                </label>
-                                <textarea
-                                    id={id("repairsNotes")}
-                                    placeholder="e.g. Roof missing shingles on north side, HVAC not working…"
-                                    {...register("repairsNotes")}
-                                    className={textareaClass}
-                                />
-                            </div>
+                            <FieldError message={errors.condition?.message} />
                         </div>
+                    )}
 
-                        {/* Listed with realtor (required) */}
+                    {/* ───────── Step 2 — Selling timeline ───────── */}
+                    {formStep === 2 && (
                         <div>
-                            <label htmlFor={id("listedWithRealtor")} className="block text-xs text-gray-400 mb-1.5">
-                                Is the house currently listed with a realtor?{" "}
-                                <span className="text-red-400" aria-hidden="true">*</span>
-                            </label>
-                            <div className="relative">
-                                <select
-                                    id={id("listedWithRealtor")}
-                                    {...register("listedWithRealtor")}
-                                    className={selectClass}
-                                    aria-invalid={!!errors.listedWithRealtor}
-                                >
-                                    <option value="">Select…</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                </select>
-                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                            </div>
-                            <FieldError message={errors.listedWithRealtor?.message} />
-                        </div>
-
-                        <Button
-                            type="button"
-                            onClick={handleGoToPage3}
-                            className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                        >
-                            NEXT
-                            <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                        </Button>
-                    </>)}
-
-                    {/* ── Page 3: Your Situation ── */}
-                    {formPage === 3 && (<>
-
-                        {/* Closing timeline */}
-                        <div>
-                            <label htmlFor={id("closingTimeline")} className="block text-xs text-gray-400 mb-1.5">
-                                How soon would you like us to CLOSE?
-                            </label>
-                            <p className="text-xs text-gray-500 mb-2">
-                                We can close on the date YOU CHOOSE. If you need extra time to move after closing,
-                                we can often accommodate.
+                            <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+                                We can close on the date you choose — and if you need extra time to move out
+                                afterwards, we can usually accommodate that too.
                             </p>
-                            <div className="relative">
-                                <select id={id("closingTimeline")} {...register("closingTimeline")} className={selectClass}>
-                                    <option value="">Select…</option>
-                                    <option>7 days</option>
-                                    <option>14 days</option>
-                                    <option>30 days</option>
-                                    <option>Not sure yet</option>
-                                </select>
-                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                            <div
+                                role="radiogroup"
+                                aria-label="Selling timeline"
+                                className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+                            >
+                                {TIMELINE_OPTIONS.map((option) => (
+                                    <OptionCard
+                                        key={option}
+                                        label={option}
+                                        selected={closingTimeline === option}
+                                        onSelect={() =>
+                                            setValue("closingTimeline", option, { shouldValidate: true })
+                                        }
+                                    />
+                                ))}
                             </div>
+                            <FieldError message={errors.closingTimeline?.message} />
                         </div>
+                    )}
 
-                        {/* Ultimate goal (required) */}
+                    {/* ───────── Step 3 — Reason for selling ───────── */}
+                    {formStep === 3 && (
                         <div>
-                            <label htmlFor={id("ultimateGoal")} className="block text-xs text-gray-400 mb-1.5">
-                                {"What's your ultimate goal with your house? "}
-                                <span className="text-red-400" aria-hidden="true">*</span>
-                            </label>
-                            <div className="relative">
-                                <select
-                                    id={id("ultimateGoal")}
-                                    {...register("ultimateGoal")}
-                                    className={selectClass}
-                                    aria-invalid={!!errors.ultimateGoal}
-                                >
-                                    <option value="">Select…</option>
-                                    <option>Foreclosure</option>
-                                    <option>Need Cash</option>
-                                    <option>Inherited</option>
-                                    <option>Bad Tenants</option>
-                                    <option>Moving</option>
-                                    <option>Downsizing</option>
-                                    <option>Other</option>
-                                </select>
-                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                            <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+                                Select everything that applies — there are no wrong answers, and it helps us
+                                tailor the offer to your situation.
+                            </p>
+                            <div
+                                role="group"
+                                aria-label="Reason for selling"
+                                className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+                            >
+                                {REASON_OPTIONS.map((option) => (
+                                    <OptionCard
+                                        key={option}
+                                        label={option}
+                                        multi
+                                        selected={reasons.includes(option)}
+                                        onSelect={() =>
+                                            setValue(
+                                                "ultimateGoal",
+                                                reasons.includes(option)
+                                                    ? reasons.filter((r) => r !== option)
+                                                    : [...reasons, option],
+                                                { shouldValidate: true }
+                                            )
+                                        }
+                                    />
+                                ))}
                             </div>
                             <FieldError message={errors.ultimateGoal?.message} />
                         </div>
+                    )}
 
-                        {/* Occupied (required) */}
+                    {/* ───────── Step 4 — Asking price ───────── */}
+                    {formStep === 4 && (
                         <div>
-                            <label htmlFor={id("occupied")} className="block text-xs text-gray-400 mb-1.5">
-                                Is there anyone living in the house?{" "}
-                                <span className="text-red-400" aria-hidden="true">*</span>
-                            </label>
-                            <div className="relative">
-                                <select
-                                    id={id("occupied")}
-                                    {...register("occupied")}
-                                    className={selectClass}
-                                    aria-invalid={!!errors.occupied}
-                                >
-                                    <option value="">Select…</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                    <option>Rental</option>
-                                </select>
-                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                            </div>
-                            <FieldError message={errors.occupied?.message} />
-                        </div>
-
-                        <Button
-                            type="button"
-                            onClick={handleGoToPage4}
-                            className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                        >
-                            NEXT
-                            <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                        </Button>
-                    </>)}
-
-                    {/* ── Page 4: Asking Price ── */}
-                    {formPage === 4 && (<>
-
-                        <p className="text-gray-400 text-sm mb-2 leading-relaxed">
-                            This helps us prepare a competitive offer tailored to your needs. No commitment required.
-                        </p>
-
-                        {/* Asking price */}
-                        <div>
+                            <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+                                This helps us prepare a competitive offer tailored to your needs. No commitment
+                                required.
+                            </p>
                             <label htmlFor={id("askingPrice")} className="block text-xs text-gray-400 mb-1.5">
                                 How much are you looking to get for your property?{" "}
                                 <span className="text-red-400" aria-hidden="true">*</span>
                             </label>
                             <p className="text-xs text-gray-500 mb-2">
-                                Enter the amount you have in mind — even a rough estimate is helpful.
+                                Enter the amount you have in mind. You can always adjust it later.
                             </p>
                             <Input
                                 id={id("askingPrice")}
                                 type="number"
+                                inputMode="numeric"
                                 step="1000"
                                 min={0}
                                 placeholder="e.g. 150000"
                                 {...register("askingPrice")}
-                                className="h-12 text-base sm:text-sm bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus-visible:ring-[#f59e0b] focus-visible:border-[#f59e0b]"
+                                className={inputClass}
+                                aria-invalid={!!errors.askingPrice}
                             />
+                            <FieldError message={errors.askingPrice?.message} />
                         </div>
+                    )}
 
-                        <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="h-14 text-lg font-bold bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/60 text-[var(--color-text-white)] rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                        >
-                            {isSubmitting ? (
-                                <>
-                                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
-                                    <span className="sr-only">Submitting…</span>
-                                </>
-                            ) : (
-                                <>
-                                    NEXT
-                                    <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
-                                </>
+                    {/* ───────── Step 5 — Confirm the address ───────── */}
+                    {formStep === 5 && (
+                        <div className="flex flex-col gap-4">
+                            <p className="text-sm text-gray-400 leading-relaxed">
+                                Make sure this is the property you want an offer on.
+                            </p>
+
+                            {(localAddress || localCity) && (
+                                <div className="rounded-lg overflow-hidden border border-[var(--color-primary)]/40 h-64 sm:h-80 w-full">
+                                    <iframe
+                                        title="Property location on map"
+                                        width="100%"
+                                        height="100%"
+                                        loading="lazy"
+                                        allowFullScreen
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${mapQuery}&zoom=15`}
+                                    />
+                                </div>
                             )}
-                        </Button>
-                    </>)}
+
+                            <div className="rounded-lg bg-white/[0.03] border border-[var(--color-primary)]/60 p-3">
+                                <div className="flex items-start justify-between mb-2">
+                                    <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
+                                        Address
+                                    </p>
+                                    {!editMode && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                loadGoogleMaps()
+                                                setEditMode(true)
+                                            }}
+                                            className="text-xs text-[var(--color-primary)] hover:underline focus:outline-none"
+                                        >
+                                            Edit
+                                        </button>
+                                    )}
+                                </div>
+
+                                {editMode ? (
+                                    <div className="space-y-3">
+                                        <Input
+                                            placeholder="Property address"
+                                            autoComplete="off"
+                                            value={localAddress}
+                                            ref={addressInputRef}
+                                            onFocus={loadGoogleMaps}
+                                            onChange={(e) => {
+                                                setLocalAddress(e.target.value)
+                                                setAddressError(null)
+                                            }}
+                                            className="h-10 bg-white/5 text-white placeholder:text-gray-400"
+                                        />
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                            <Input
+                                                placeholder="City"
+                                                value={localCity}
+                                                onChange={(e) => setLocalCity(e.target.value)}
+                                                className="h-10 bg-white/5 text-white placeholder:text-gray-400"
+                                            />
+                                            <Input
+                                                placeholder="State"
+                                                value={localState}
+                                                onChange={(e) => setLocalState(e.target.value)}
+                                                className="h-10 bg-white/5 text-white placeholder:text-gray-400"
+                                            />
+                                        </div>
+
+                                        <Input
+                                            placeholder="Zip code"
+                                            value={localZipCode}
+                                            onChange={(e) => setLocalZipCode(e.target.value)}
+                                            className="h-10 bg-white/5 text-white placeholder:text-gray-400"
+                                        />
+
+                                        <div className="flex gap-3">
+                                            <Button
+                                                type="button"
+                                                onClick={confirmAddressEdit}
+                                                className="h-10 px-4 bg-[#f59e0b] text-[#0f0f23]"
+                                            >
+                                                Save
+                                            </Button>
+                                            <button
+                                                type="button"
+                                                onClick={cancelAddressEdit}
+                                                className="h-10 px-4 rounded-lg border border-white/10 text-sm text-white"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <SummaryRow
+                                            icon={<MapPin className="h-4 w-4" />}
+                                            label="Address"
+                                            value={localAddress}
+                                        />
+                                        <SummaryRow
+                                            icon={<Building2 className="h-4 w-4" />}
+                                            label="City"
+                                            value={localCity}
+                                        />
+                                        <SummaryRow
+                                            icon={<Building2 className="h-4 w-4" />}
+                                            label="State"
+                                            value={localState}
+                                        />
+                                        <SummaryRow
+                                            icon={<Hash className="h-4 w-4" />}
+                                            label="Zip Code"
+                                            value={localZipCode}
+                                        />
+                                    </>
+                                )}
+                            </div>
+
+                            <FieldError message={addressError ?? undefined} />
+                        </div>
+                    )}
+
+                    {/* ───────── Step 6 — Confirm the property details ───────── */}
+                    {formStep === 6 && (
+                        <div className="flex flex-col gap-4">
+                            {isLookingUp ? (
+                                <div className="flex items-center gap-2 rounded-md bg-[#0f1724] p-3 text-sm text-gray-200 border border-white/10">
+                                    <Loader2 className="h-4 w-4 animate-spin text-[#f59e0b]" aria-hidden="true" />
+                                    <span>Looking up public records for your property…</span>
+                                </div>
+                            ) : recordsFound ? (
+                                <p className="text-sm text-gray-400 leading-relaxed">
+                                    We found these details in public records. Just check they look right — correct
+                                    anything that doesn&apos;t.
+                                </p>
+                            ) : (
+                                <p className="text-sm text-gray-400 leading-relaxed">
+                                    We couldn&apos;t find public records for this address. Fill in whatever you
+                                    know — every field here is optional.
+                                </p>
+                            )}
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <ConfirmField
+                                    id={id("bedrooms")}
+                                    label="Bedrooms"
+                                    autoFilled={autoFilled.bedrooms}
+                                >
+                                    <Input
+                                        id={id("bedrooms")}
+                                        type="number"
+                                        inputMode="numeric"
+                                        step="1"
+                                        min={0}
+                                        placeholder="e.g. 3"
+                                        {...register("bedrooms", { onChange: () => clearAutoFilled("bedrooms") })}
+                                        className={inputClass}
+                                    />
+                                </ConfirmField>
+
+                                <ConfirmField
+                                    id={id("bathrooms")}
+                                    label="Bathrooms"
+                                    autoFilled={autoFilled.bathrooms}
+                                >
+                                    <Input
+                                        id={id("bathrooms")}
+                                        type="number"
+                                        inputMode="decimal"
+                                        step="0.25"
+                                        min={0}
+                                        placeholder="e.g. 2.5"
+                                        {...register("bathrooms", { onChange: () => clearAutoFilled("bathrooms") })}
+                                        className={inputClass}
+                                    />
+                                </ConfirmField>
+
+                                <ConfirmField
+                                    id={id("squareFootage")}
+                                    label="Square footage"
+                                    autoFilled={autoFilled.squareFootage}
+                                >
+                                    <Input
+                                        id={id("squareFootage")}
+                                        type="number"
+                                        inputMode="numeric"
+                                        step="1"
+                                        min={0}
+                                        placeholder="e.g. 1450"
+                                        {...register("squareFootage", {
+                                            onChange: () => clearAutoFilled("squareFootage"),
+                                        })}
+                                        className={inputClass}
+                                    />
+                                </ConfirmField>
+
+                                <ConfirmField
+                                    id={id("yearBuilt")}
+                                    label="Year built"
+                                    autoFilled={autoFilled.yearBuilt}
+                                >
+                                    <Input
+                                        id={id("yearBuilt")}
+                                        type="number"
+                                        inputMode="numeric"
+                                        step="1"
+                                        min={0}
+                                        placeholder="e.g. 1973"
+                                        {...register("yearBuilt", { onChange: () => clearAutoFilled("yearBuilt") })}
+                                        className={inputClass}
+                                    />
+                                </ConfirmField>
+                            </div>
+
+                            {/* Only shown when public records actually knew the last sale — no point
+                                asking a seller to recall a year we have no reason to expect. */}
+                            {hasLastSold && (
+                                <ConfirmField
+                                    id={id("lastSoldYear")}
+                                    label="Last sold"
+                                    autoFilled={autoFilled.lastSoldYear}
+                                >
+                                    <Input
+                                        id={id("lastSoldYear")}
+                                        type="number"
+                                        inputMode="numeric"
+                                        step="1"
+                                        min={0}
+                                        placeholder="e.g. 2018"
+                                        {...register("lastSoldYear", {
+                                            onChange: () => clearAutoFilled("lastSoldYear"),
+                                        })}
+                                        className={inputClass}
+                                    />
+                                </ConfirmField>
+                            )}
+                        </div>
+                    )}
+
+                    {/* ───────── Advance / submit ─────────
+                        Always type="button". Swapping a single button between "button" and
+                        "submit" makes React patch the `type` on the very same DOM node before
+                        the browser runs the click's default action — so the click that leaves
+                        step 5 would also submit the form and skip step 6 entirely. */}
+                    <Button
+                        type="button"
+                        disabled={isSubmitting}
+                        onClick={() => {
+                            if (formStep < LAST_STEP) {
+                                void handleNext()
+                            } else {
+                                void handleSubmit(onSubmit, onInvalid)()
+                            }
+                        }}
+                        className={nextButtonClass}
+                    >
+                        {isSubmitting ? (
+                            <>
+                                <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+                                <span className="sr-only">Submitting…</span>
+                            </>
+                        ) : (
+                            <>
+                                NEXT
+                                <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+                            </>
+                        )}
+                    </Button>
+
+                    {/* A form with several inputs and no submit button ignores the Enter key.
+                        This one exists only to keep that shortcut working; its type never
+                        changes, so it can't cause the skip described above. */}
+                    <button type="submit" hidden tabIndex={-1} aria-hidden="true" />
                 </div>
 
                 <p className="text-xs text-gray-500 mt-4 text-center flex items-center justify-center gap-1.5">

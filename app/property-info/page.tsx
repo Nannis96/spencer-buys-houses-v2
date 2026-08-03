@@ -23,9 +23,9 @@ const SAME_AS = [
 /* ─── SEO Metadata ──────────────────────────────────────────────────────── */
 
 export const metadata: Metadata = {
-    title: "Property Details — Final Step | Spencer Buys Houses",
+    title: "Property Details | Spencer Buys Houses",
     description:
-        "Step 3 of 3 — Tell us about your Memphis property's condition, timeline, and situation so Spencer Buys Houses can prepare your free, no-obligation cash offer.",
+        "Tell us about your Memphis property's condition, your timeline, and your asking price so Spencer Buys Houses can prepare your free, no-obligation cash offer.",
     // Mid-funnel form steps should never appear in search results
     robots: { index: false, follow: false },
     // Canonical points to the funnel entry page — avoids duplicate-content signals
@@ -60,9 +60,9 @@ const jsonLd = {
             "@type": "WebPage",
             "@id": `${SITE_URL}/property-info/`,
             url: `${SITE_URL}/property-info/`,
-            name: "Property Details — Final Step | Spencer Buys Houses",
+            name: "Property Details | Spencer Buys Houses",
             description:
-                "Step 3 of the free cash offer request form for Spencer Buys Houses — Memphis, TN cash home buyers. Tell us about your property's condition and timeline to receive your personalized cash offer.",
+                "The free cash offer request form for Spencer Buys Houses — Memphis, TN cash home buyers. Tell us about your property's condition and timeline to receive your personalized cash offer.",
             inLanguage: "en-US",
             isPartOf: { "@id": SITE_URL },
             about: {
@@ -166,8 +166,9 @@ export default function PropertyInfoPage() {
                 {/* Form — Suspense required for useSearchParams */}
                 <Suspense
                     fallback={
-                        <div className="rounded-2xl bg-[var(--color-background)] p-10 border border-[var(--color-primary)]/60 flex items-center justify-center w-full max-w-2xl">
-                            <Loader2 className="h-8 w-8 animate-spin text-[var(--color-primary)]" />
+                        <div className="rounded-2xl bg-[var(--color-background)] p-10 border border-[var(--color-primary)]/60 flex flex-col items-center justify-center gap-3 w-full max-w-2xl">
+                            <Loader2 className="h-8 w-8 animate-spin text-[var(--color-primary)]" aria-hidden="true" />
+                            <p className="text-sm text-gray-400">Loading your cash offer form…</p>
                         </div>
                     }
                 >

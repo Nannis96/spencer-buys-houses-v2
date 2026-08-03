@@ -1,160 +1,89 @@
 "use client"
 
+import { Fragment } from "react"
 import { useSearchParams } from "next/navigation"
 
 interface PropertyProgressProps {
-    /** Which funnel step is currently active (2 = /property-info, 3 = /property-details). */
+    /** Which funnel page is rendering the bar (2 = /property-info, 3 = /property-details). */
     activeStep?: 2 | 3
+}
+
+/**
+ * The seven steps a seller walks through. Steps 1-6 all live inside
+ * /property-info and are driven by the `propInfoStep` query param; step 7 is
+ * the contact form on /property-details.
+ */
+const STEPS = ["Condition", "Timeline", "Reason", "Price", "Address", "Details", "Your Info"] as const
+
+/** Steps 1-6 are the /property-info sub-steps; the last one is /property-details. */
+const CONTACT_STEP = STEPS.length
+const LAST_INFO_STEP = STEPS.length - 1
+
+type StepState = "done" | "active" | "todo"
+
+const DOT_CLASS: Record<StepState, string> = {
+    done: "bg-[#22c55e] text-white",
+    active: "bg-[#f59e0b] text-[#0f0f23]",
+    todo: "bg-white/10 text-gray-400",
+}
+
+const LABEL_CLASS: Record<StepState, string> = {
+    done: "text-[#22c55e]",
+    active: "text-[var(--color-primary)]",
+    todo: "text-gray-400",
+}
+
+const CONNECTOR_CLASS: Record<StepState, string> = {
+    done: "bg-[#22c55e]",
+    active: "bg-[#f59e0b]",
+    todo: "bg-white/20",
 }
 
 export default function PropertyProgress({ activeStep = 3 }: PropertyProgressProps) {
     const searchParams = useSearchParams()
-    const submitted = activeStep === 3 && searchParams.get("submitted") === "true"
-    const step2Complete = searchParams.get("step2Complete") === "true"
-    const step3Complete = searchParams.get("step3Complete") === "true"
-    // Set by the form when the user moves between sub-steps inside /property-info
-    const propInfoStep = searchParams.get("propInfoStep")
 
-    /* ── Derived state ─────────────────────────────────────────────────── */
-    // propInfoStep values: "2" = condition step active, "3" = situation active, "4" = asking price active
-    const step2Done = propInfoStep === "2" || propInfoStep === "3" || propInfoStep === "4" || activeStep > 2
-    const conditionActive = activeStep === 2 && propInfoStep === "2"
-    const conditionDone = (activeStep === 2 && (propInfoStep === "3" || propInfoStep === "4")) || activeStep > 2
-    const situationActive = activeStep === 2 && propInfoStep === "3"
-    const situationDone = (activeStep === 2 && propInfoStep === "4") || activeStep > 2
-    const askingActive = activeStep === 2 && propInfoStep === "4"
-    const askingDone = (activeStep === 2 && step2Complete) || activeStep > 2
+    const subStep = Number(searchParams.get("propInfoStep"))
+    const current =
+        activeStep === 3
+            ? CONTACT_STEP
+            : Math.min(LAST_INFO_STEP, Math.max(1, Number.isFinite(subStep) && subStep > 0 ? subStep : 1))
 
-    const connector2Color = step2Done
-        ? conditionDone ? "bg-[#22c55e]" : "bg-[#f59e0b]"
-        : "bg-white/20"
-    const connector3Color = conditionDone
-        ? situationDone ? "bg-[#22c55e]" : "bg-[#f59e0b]"
-        : "bg-white/20"
-    const connector4Color = situationDone
-        ? askingDone ? "bg-[#22c55e]" : "bg-[#f59e0b]"
-        : "bg-white/20"
+    const stateOf = (step: number): StepState =>
+        step < current ? "done" : step === current ? "active" : "todo"
 
     return (
         <div className="w-full max-w-2xl lg:max-w-6xl mb-8">
+            {/* Plain-language position — the rail below hides its labels on small screens,
+                so this line is what tells the seller how much is left on mobile. */}
+            <p className="mb-3 text-center text-sm font-medium text-gray-300">
+                Step <span className="text-[var(--color-primary)]">{current}</span> of {STEPS.length}
+                <span className="text-gray-500"> — {STEPS[current - 1]}</span>
+            </p>
+
             <div className="flex items-center gap-2 sm:gap-3 flex-nowrap">
+                {STEPS.map((label, index) => {
+                    const step = index + 1
+                    const state = stateOf(step)
 
-                {/* Step 1 – always done */}
-                <div className="flex items-center gap-1.5 shrink-0">
-                    <div className="h-7 w-7 rounded-full bg-[#22c55e] flex items-center justify-center text-xs font-bold text-white">✓</div>
-                    <span className="hidden sm:inline text-sm text-[#22c55e] font-medium">Location</span>
-                </div>
+                    return (
+                        <Fragment key={label}>
+                            {index > 0 && <div className={`flex-1 h-0.5 ${CONNECTOR_CLASS[state]}`} />}
 
-                {/* Connector 1 → 2 */}
-                <div className={`flex-1 h-0.5 ${step2Done ? "bg-[#22c55e]" : "bg-[var(--color-primary)]"}`} />
-
-                {/* Step 2 – Property Info */}
-                <div className="flex items-center gap-1.5 shrink-0">
-                    {step2Done ? (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-[#22c55e] flex items-center justify-center text-xs font-bold text-white">✓</div>
-                            <span className="hidden sm:inline text-sm text-[#22c55e] font-medium">Property Info</span>
-                        </>
-                    ) : (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-[#f59e0b] flex items-center justify-center text-xs font-bold text-[#0f0f23]">2</div>
-                            <span className="hidden sm:inline text-sm text-[var(--color-primary)] font-medium">Property Info</span>
-                        </>
-                    )}
-                </div>
-
-                {/* Connector 2 → 3 */}
-                <div className={`flex-1 h-0.5 ${connector2Color}`} />
-
-                {/* Step 3 – Condition */}
-                <div className="flex items-center gap-1.5 shrink-0">
-                    {conditionDone ? (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-[#22c55e] flex items-center justify-center text-xs font-bold text-white">✓</div>
-                            <span className="hidden sm:inline text-sm text-[#22c55e] font-medium">Condition</span>
-                        </>
-                    ) : conditionActive ? (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-[#f59e0b] flex items-center justify-center text-xs font-bold text-[#0f0f23]">3</div>
-                            <span className="hidden sm:inline text-sm text-[var(--color-primary)] font-medium">Condition</span>
-                        </>
-                    ) : (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-gray-400">3</div>
-                            <span className="hidden sm:inline text-sm text-gray-400 font-medium">Condition</span>
-                        </>
-                    )}
-                </div>
-
-                {/* Connector 3 → 4 */}
-                <div className={`flex-1 h-0.5 ${connector3Color}`} />
-
-                {/* Step 4 – Situation */}
-                <div className="flex items-center gap-1.5 shrink-0">
-                    {situationDone ? (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-[#22c55e] flex items-center justify-center text-xs font-bold text-white">✓</div>
-                            <span className="hidden sm:inline text-sm text-[#22c55e] font-medium">Situation</span>
-                        </>
-                    ) : situationActive ? (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-[#f59e0b] flex items-center justify-center text-xs font-bold text-[#0f0f23]">4</div>
-                            <span className="hidden sm:inline text-sm text-[var(--color-primary)] font-medium">Situation</span>
-                        </>
-                    ) : (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-gray-400">4</div>
-                            <span className="hidden sm:inline text-sm text-gray-400 font-medium">Situation</span>
-                        </>
-                    )}
-                </div>
-
-                {/* Connector 4 → 5 (Situation → Asking Price) */}
-                <div className={`flex-1 h-0.5 ${connector4Color}`} />
-
-                {/* Step 5 – Asking Price */}
-                <div className="flex items-center gap-1.5 shrink-0">
-                    {askingDone ? (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-[#22c55e] flex items-center justify-center text-xs font-bold text-white">✓</div>
-                            <span className="hidden sm:inline text-sm text-[#22c55e] font-medium">Asking Price</span>
-                        </>
-                    ) : askingActive ? (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-[#f59e0b] flex items-center justify-center text-xs font-bold text-[#0f0f23]">5</div>
-                            <span className="hidden sm:inline text-sm text-[var(--color-primary)] font-medium">Asking Price</span>
-                        </>
-                    ) : (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-gray-400">5</div>
-                            <span className="hidden sm:inline text-sm text-gray-400 font-medium">Asking Price</span>
-                        </>
-                    )}
-                </div>
-
-                {/* Connector 5 → 6 */}
-                <div className={`flex-1 h-0.5 ${askingDone ? (submitted || step3Complete ? "bg-[#22c55e]" : "bg-[#f59e0b]") : "bg-white/20"}`} />
-
-                {/* Step 6 – Your Info */}
-                <div className="flex items-center gap-1.5 shrink-0">
-                    {activeStep === 2 ? (
-                        <>
-                            <div className="h-7 w-7 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-gray-400">5</div>
-                            <span className="hidden sm:inline text-sm text-gray-400 font-medium">Your Info</span>
-                        </>
-                    ) : (
-                        <>
-                            <div className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold ${submitted ? "bg-[#22c55e] text-white" : "bg-[#f59e0b] text-[#0f0f23]"}`}>
-                                {submitted ? "✓" : "6"}
+                            <div className="flex items-center gap-1.5 shrink-0">
+                                <div
+                                    className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold ${DOT_CLASS[state]}`}
+                                    aria-current={state === "active" ? "step" : undefined}
+                                >
+                                    {state === "done" ? "✓" : step}
+                                </div>
+                                <span className={`hidden lg:inline text-sm font-medium ${LABEL_CLASS[state]}`}>
+                                    {label}
+                                </span>
                             </div>
-                            <span className={`hidden sm:inline text-sm font-medium ${submitted ? "text-[#22c55e]" : "text-[#f59e0b]"}`}>
-                                Your Info
-                            </span>
-                        </>
-                    )}
-                </div>
+                        </Fragment>
+                    )
+                })}
             </div>
-
         </div>
     )
 }

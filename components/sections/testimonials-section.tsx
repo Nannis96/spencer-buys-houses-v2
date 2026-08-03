@@ -1,8 +1,24 @@
-"use client"
+/**
+ * TestimonialsSection — Server Component
+ *
+ * Nothing here is interactive, so it renders entirely on the server. That also
+ * makes the random order safe: it is picked once, server-side, and the browser
+ * never disagrees with the HTML it was sent. Shuffling in the browser instead
+ * would rearrange the cards under the reader on every page load.
+ */
 
-import { useMemo } from "react"
 import { Star, Quote, ArrowRight, } from "lucide-react"
 import { testimonials } from "@/components/data/testimonials"
+
+/** Fisher–Yates, on a copy. */
+function shuffle<T>(input: readonly T[]): T[] {
+    const arr = [...input]
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+            ;[arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+    return arr
+}
 
 function StarRating({ rating }: { rating: number }) {
     return (
@@ -27,17 +43,8 @@ interface TestimonialsSectionProps {
 }
 
 export function TestimonialsSection({ count }: TestimonialsSectionProps = {}) {
-    // Make a shuffled copy (Fisher–Yates) on the client only
-    const shuffled = useMemo(() => {
-        const arr = [...testimonials]
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1))
-                ;[arr[i], arr[j]] = [arr[j], arr[i]]
-        }
-        return arr
-    }, [])
-
-    const visible = count ? shuffled.slice(0, count) : shuffled
+    const ordered = shuffle(testimonials)
+    const visible = count ? ordered.slice(0, count) : ordered
 
     return (
         <section id="testimonials" className="bg-[var(--color-background-white)] border-t-4 border-[var(--color-secondary)] py-10 lg:py-14">

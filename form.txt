@@ -1,0 +1,170 @@
+Contexto del proyecto
+
+Estás trabajando sobre un formulario de captura de leads existente que se encuentra en estos archivos @app/property-info/property-info-form.tsx , @app/property-details/property-details-form.tsx , @components/forms/lead-form-consent.tsx , @app/bookings/page.tsx para un sitio web de bienes raíces. El proyecto ya está desarrollado, por lo que NO debes rediseñarlo desde cero. En su lugar, modifica la implementación actual manteniendo el estilo, la identidad visual y la interfaz existentes.
+
+Anteriormente realicé una revisión de UX de este formulario. El documento adjunto contiene los hallazgos y recomendaciones. Sin embargo, después de revisarlo con el dueño del negocio (Spencer), acordamos algunos cambios que tienen prioridad sobre parte de las recomendaciones del documento.
+
+Tu tarea es implementar los cambios descritos a continuación.
+
+Objetivos generales
+Reducir la fricción para el usuario.
+Acortar el flujo del formulario.
+Eliminar preguntas innecesarias.
+Mantener únicamente la información que realmente ayuda a calificar al lead.
+Conservar el diseño actual siempre que sea posible.
+No introducir cambios visuales innecesarios.
+Decisiones del negocio
+
+
+1. Simplificar la sección de confirmación de datos de la propiedad
+
+Cuando la información de la propiedad se obtenga desde RentCast, únicamente deben mostrarse los siguientes datos:
+
+Número de habitaciones
+Número de baños
+Metros cuadrados
+Año de construcción
+Último año en que fue vendida (si está disponible)
+
+No mostrar el resto de la información autocompletada de la propiedad.
+
+El usuario únicamente debe confirmar estos datos.
+
+2. Eliminar la pregunta sobre mejoras
+
+Eliminar completamente la pregunta:
+
+"¿Qué mejoras le has hecho a la propiedad?"
+
+Esta información ya no es necesaria.
+
+3. Preguntar por el estado de la propiedad
+
+En lugar de preguntar por las remodelaciones o mejoras, preguntar cómo describiría el usuario el estado actual de la propiedad.
+
+Opciones sugeridas:
+
+Excelente
+Buena
+Regular
+Necesita reparaciones
+Necesita reparaciones importantes
+
+Utilizar opciones predefinidas (radio buttons o tarjetas), no un campo de texto libre.
+
+4. Reorganizar el flujo
+
+El dueño del negocio quiere que la primera parte del formulario se enfoque en calificar al prospecto antes que en recopilar detalles de la propiedad.
+
+Paso 1
+
+Estado de la propiedad.
+
+Paso 2
+
+¿Cuándo deseas vender?
+
+Opciones:
+
+En una semana
+En un mes
+En más de un mes
+Paso 3
+
+Motivo de la venta.
+
+Permitir seleccionar múltiples opciones.
+
+Opciones sugeridas:
+
+Me voy a mudar
+Problemas financieros
+Propiedad heredada
+Divorcio
+Cansado de ser propietario
+Ejecución hipotecaria
+Quiero reducir el tamaño de mi vivienda
+Otro
+Paso 4
+
+Precio esperado.
+
+Este campo NO debe ser una lista de opciones.
+
+El usuario debe escribir manualmente el precio esperado.
+
+Paso 5
+
+Confirmar dirección.
+
+Mostrar la propiedad seleccionada.
+
+Paso 6
+
+Confirmar los datos de la propiedad.
+
+Mostrar únicamente:
+
+Habitaciones
+Baños
+Metros cuadrados
+Año de construcción
+Último año de venta
+
+Permitir editarlos si es apropiado.
+
+Paso 7
+
+Información de contacto.
+
+Solicitar:
+
+Nombre
+Apellido
+Número telefónico
+Correo electrónico
+
+Si la implementación actual ya solicita alguno de estos datos, reorganiza el flujo en lugar de duplicarlos.
+
+5. Mantener estas mejoras del documento de UX
+
+Conservar las siguientes recomendaciones:
+
+Indicar claramente qué campos fueron llenados automáticamente.
+Mantener el indicador de progreso.
+Hacer que el flujo se perciba más corto.
+Dividir las secciones largas en pasos más pequeños cuando sea necesario.
+Eliminar desplazamientos largos e innecesarios.
+Ocultar preguntas que ya no apliquen según las respuestas anteriores.
+6. Mantener la interfaz actual
+
+No rediseñar la aplicación.
+
+Conservar:
+
+Los componentes existentes.
+El estilo actual.
+Los espacios y distribución.
+Los colores.
+
+Únicamente modificar el flujo y las preguntas.
+
+7. Calidad del código
+Reutilizar los componentes existentes siempre que sea posible.
+Eliminar estados y validaciones que ya no se utilicen.
+Eliminar preguntas obsoletas.
+Actualizar las validaciones según el nuevo flujo.
+Actualizar el cálculo del progreso cuando sea necesario.
+Asegurar que el formulario siga siendo responsivo.
+Verificar que ninguna funcionalidad existente se rompa.
+Antes de comenzar
+
+Antes de escribir cualquier código:
+
+Analiza la implementación actual del formulario.
+Presenta un plan de implementación.
+Después de aprobar el análisis, implementa los cambios de manera incremental.
+Al finalizar, genera un resumen detallado de todas las modificaciones realizadas.
+
+
+
