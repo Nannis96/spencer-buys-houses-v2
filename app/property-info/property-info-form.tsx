@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, ArrowLeft, Loader2, ShieldCheck, MapPin, Building2, Hash, Sparkles } from "lucide-react"
+import { ArrowRight, ArrowLeft, Loader2, ShieldCheck, MapPin, Building2, Hash, Sparkles, Pencil } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""
@@ -748,7 +748,8 @@ export function PropertyInfoForm({
                     {formStep === 5 && (
                         <div className="flex flex-col gap-4">
                             <p className="text-sm text-gray-400 leading-relaxed">
-                                Make sure this is the property you want an offer on.
+                                Make sure this is the property you want an offer on. Not quite right? Use{" "}
+                                <span className="font-semibold text-[#f59e0b]">Edit</span> to correct it.
                             </p>
 
                             {(localAddress || localCity) && (
@@ -766,10 +767,13 @@ export function PropertyInfoForm({
                             )}
 
                             <div className="rounded-lg bg-white/[0.03] border border-[var(--color-primary)]/60 p-3">
-                                <div className="flex items-start justify-between mb-2">
+                                <div className="flex items-center justify-between gap-3 mb-2">
                                     <p className="text-xs font-semibold text-[var(--color-primary-dark)] uppercase tracking-wider">
                                         Address
                                     </p>
+                                    {/* A plain text link read as a caption here. Given a border, a
+                                        pencil and a real tap target it reads as the control it is —
+                                        this is the seller's only chance to fix a wrong address. */}
                                     {!editMode && (
                                         <button
                                             type="button"
@@ -777,8 +781,10 @@ export function PropertyInfoForm({
                                                 loadGoogleMaps()
                                                 setEditMode(true)
                                             }}
-                                            className="text-xs text-[var(--color-primary)] hover:underline focus:outline-none"
+                                            aria-label="Edit the property address"
+                                            className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[#f59e0b]/50 bg-[#f59e0b]/10 px-3 text-xs font-bold uppercase tracking-wide text-[#f59e0b] transition-colors cursor-pointer hover:border-[#f59e0b] hover:bg-[#f59e0b]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b]/60"
                                         >
+                                            <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
                                             Edit
                                         </button>
                                     )}
