@@ -40,11 +40,11 @@ type LookupField = "bedrooms" | "bathrooms" | "squareFootage" | "yearBuilt" | "l
 
 /** `scale` feeds the repair-cost multiplier in /api/offers (0 = turnkey, 5 = full gut). */
 const CONDITION_OPTIONS = [
-    { label: "Excellent", scale: "0", hint: "Move-in ready — nothing needs fixing" },
-    { label: "Good", scale: "1", hint: "Only light cosmetic work" },
-    { label: "Fair", scale: "3", hint: "Normal wear and tear for its age" },
-    { label: "Needs repairs", scale: "4", hint: "Kitchen, bath, roof or major systems" },
-    { label: "Needs major repairs", scale: "5", hint: "Structural work or a full renovation" },
+    { label: "Excellent", scale: "0", hint: "New construction (under 5 years old) or completely remodeled within the last 5 years." },
+    { label: "Good", scale: "1", hint: "Well maintained with only minor cosmetic updates needed." },
+    { label: "Fair", scale: "3", hint: "Shows normal wear for its age and may benefit from some updates." },
+    { label: "Needs repairs", scale: "4", hint: "Requires repairs to one or more major areas such as the kitchen, bathrooms, roof, HVAC, plumbing, or electrical." },
+    { label: "Needs major repairs", scale: "5", hint: "Requires significant structural work or a full renovation." },
 ] as const
 
 const TIMELINE_OPTIONS = ["Within a week", "Within a month", "More than a month"] as const
@@ -630,8 +630,7 @@ export function PropertyInfoForm({
                     {formStep === 1 && (
                         <div>
                             <p className="text-sm text-gray-400 mb-4 leading-relaxed">
-                                Pick whichever comes closest. We&apos;ll confirm the details when we speak — this
-                                just helps us size up the offer.
+                                Choose the option that best matches your home&apos;s current condition. We'll confirm everything during our conversation.
                             </p>
                             <div
                                 role="radiogroup"
