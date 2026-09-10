@@ -46,3 +46,6 @@ app/generated/prisma/
 
 .pnpm-store/
 tmp/*
+
+## Claude Code worktrees (isolated agent checkouts — never real project state)
+.claude/worktrees/

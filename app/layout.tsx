@@ -525,6 +525,20 @@ export default function RootLayout({
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('config','AW-16699021352');`,
           }}
         />
+
+        {/*
+         * UTM tracker — captures campaign params from the landing URL into
+         * sessionStorage. LeadFormConsent rebuilds its own query string on
+         * the first funnel hop and drops any utm_* params in the process, so
+         * sessionStorage is what carries them through to the lead webhook.
+         */}
+        <Script
+          id="utm-tracker"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `try{var p=new URLSearchParams(window.location.search);['utm_campaign','utm_source','utm_medium','utm_content'].forEach(function(k){var v=p.get(k);if(v)sessionStorage.setItem(k,v);});}catch(e){}`,
+          }}
+        />
       </body>
     </html>
   )

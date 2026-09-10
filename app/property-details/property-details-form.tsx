@@ -29,6 +29,28 @@ const propertyDetailsSchema = z.object({
 
 type PropertyDetailsFormData = z.infer<typeof propertyDetailsSchema>
 
+const UTM_KEYS = ["utm_campaign", "utm_source", "utm_medium", "utm_content"] as const
+
+/**
+ * URL wins over sessionStorage: a link carrying fresh UTMs should not be
+ * shadowed by values saved from an earlier visit in the same tab. Falls back
+ * to sessionStorage because LeadFormConsent rebuilds the query string on the
+ * first funnel hop and drops any utm_* params in the process.
+ */
+function readUtmParams(params: URLSearchParams | null) {
+    return Object.fromEntries(
+        UTM_KEYS.map((key) => {
+            let stored = ""
+            try {
+                stored = window.sessionStorage.getItem(key) ?? ""
+            } catch {
+                // Private browsing or blocked storage — fall through to "".
+            }
+            return [key, params?.get(key) ?? stored]
+        })
+    )
+}
+
 /* ─── Field error ─────────────────────────────────────────────────────────── */
 function FieldError({ message }: { message?: string }) {
     if (!message) return null
@@ -106,6 +128,8 @@ export function PropertyDetailsForm({ initialParams }: { initialParams?: URLSear
             address: { address, city, state, zipCode },
             // explicit top-level fields for GHL mapping
             askingPrice: p("askingPrice") ?? null,
+            // campaign attribution — URL first, sessionStorage as fallback
+            ...readUtmParams(initialParams ?? searchParams),
             // include all search params forwarded from previous steps
             searchParams: Object.fromEntries(Array.from((initialParams ?? searchParams).entries())),
             // current step form data
