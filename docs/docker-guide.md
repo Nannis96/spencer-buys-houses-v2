@@ -27,7 +27,7 @@ docker compose up -d --build
 
 Servicios:
 - `web`: Next.js en modo desarrollo en el puerto `3000`.
-- `db`: PostgreSQL en el puerto `5432`.
+- `db`: PostgreSQL en el puerto `5434` del host (internamente sigue siendo `5432` dentro de la red de Docker; se remapeó porque `5432` puede estar ocupado por otro proyecto en el mismo host).
 
 Los cambios de código se reflejan en tiempo real mediante volúmenes. Si instalas nuevas dependencias, reconstruye la imagen:
 

@@ -129,6 +129,35 @@ body {
   box-shadow: 0 6px 18px rgba(246, 192, 46, 0.12);
 }
 
+/* ── Subtle attention pulse for the hero "Cash" headline ──────────────────── */
+@keyframes cash-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85), 0 0 16px rgba(228, 4, 4, 0.45);
+  }
+
+  50% {
+    opacity: 0.9;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85), 0 0 26px rgba(228, 4, 4, 0.85);
+  }
+}
+
+.cash-pulse {
+  animation: cash-pulse 2.6s ease-in-out infinite;
+}
+
+/* Respect OS-level reduced-motion preference across all decorative animations */
+@media (prefers-reduced-motion: reduce) {
+
+  .cash-pulse,
+  .blink,
+  .blink-fast {
+    animation: none;
+  }
+}
+
 /* ── CSS animations (replaces framer-motion) ─────────────────────────────── */
 @keyframes fade-up {
   from {

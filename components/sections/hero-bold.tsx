@@ -16,7 +16,7 @@ export function HeroBold() {
             />
 
             <div
-                className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20"
+                className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30"
                 aria-hidden="true"
             />
 
@@ -26,23 +26,21 @@ export function HeroBold() {
 
                     {/* FILA SUPERIOR */}
                     <div className="pt-5 lg:pt-5 w-full sm:max-w-[50%] text-left">
-                        <h1 className="text-4xl sm:text-[5vw] md:text-[5vw] lg:text-[4.5vw] font-bold text-white leading-tight">
+                        <h1 className="text-4xl sm:text-[5vw] md:text-[5vw] lg:text-[4.5vw] font-bold text-white leading-tight [text-shadow:0_2px_10px_rgba(0,0,0,0.6)]">
                             Sell Your Memphis House{" "}
-                            <span className="text-[var(--color-text-red)]">
+                            <span className="cash-pulse font-extrabold text-[var(--color-text-red)]">
                                 Fast for Cash
                             </span>
                         </h1>
 
-                        <p className="mt-6 text-lg lg:text-xl text-white">
+                        <p className="mt-6 text-lg lg:text-xl font-medium text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]">
                             Need to sell your Memphis house fast for cash? Spencer Buys Houses offers fair cash offer, no fees and fast closing. Get your free offer today!
                         </p>
                     </div>
 
                     {/* FILA INFERIOR */}
-                    <div className="mt-8 sm:mt-20 w-full sm:max-w-[50%]">
-                        <div className="mx-auto w-full max-w-xl">
-                            <LeadFormConsent />
-                        </div>
+                    <div className="mt-8 sm:mt-14 lg:mt-16 w-full sm:max-w-[34rem] md:max-w-[38rem] lg:max-w-[42rem] xl:max-w-[46rem]">
+                        <LeadFormConsent />
                     </div>
 
                 </div>

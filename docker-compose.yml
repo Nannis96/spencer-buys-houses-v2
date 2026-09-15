@@ -39,7 +39,7 @@ services:
   db:
     image: postgres:15-alpine
     ports:
-      - "5432:5432" # Se mapea al puerto local 5432 para que puedas usar Prisma Studio en tu host
+      - "5434:5432" # Puerto local 5434 (5432 estaba ocupado por otro proyecto en este host); Prisma Studio en tu host debe apuntar a 5434
     environment:
       POSTGRES_USER: spencer_user
       POSTGRES_PASSWORD: spencer_password
