@@ -180,7 +180,7 @@ export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams)
             >
                 <h3 className="text-center text-4xl sm:text-5xl font-extrabold text-[var(--color-primary)] mb-3 leading-snug tracking-tight [text-shadow:0_2px_10px_rgba(0,0,0,0.35)]">
                     Get An Offer In{" "}
-                    <span className="text-[var(--color-secondary)]">24 Hours</span>
+                    <span className="cash-pulse text-[var(--color-secondary)]">24 Hours</span>
                 </h3>
                 <p className="text-center text-[var(--color-text-white)]/80 text-base sm:text-lg font-medium mb-7">
                     100% free. Zero obligation. Results in 24 hours.
