@@ -42,7 +42,10 @@ function FieldError({ message }: { message?: string }) {
 
 /* ─── Component ───────────────────────────────────────────────────────────── */
 
-function AddressForm({ onNext }: { onNext?: (params: URLSearchParams) => void } = {}) {
+function AddressForm({
+    onNext,
+    intro,
+}: { onNext?: (params: URLSearchParams) => void; intro?: React.ReactNode } = {}) {
     const uid = useId()          // stable unique prefix per instance (safe for SSR)
     const id = (field: string) => `${uid}-${field}`
     const router = useRouter()
@@ -179,6 +182,7 @@ function AddressForm({ onNext }: { onNext?: (params: URLSearchParams) => void } 
                 aria-label="Get a free cash offer"
                 className="animate-fade-up rounded-3xl bg-[var(--background)] p-6 sm:p-8 md:p-10 border-2 border-[var(--color-primary-dark)] shadow-2xl shadow-black/50"
             >
+                {intro}
                 <h3 className="text-center text-4xl sm:text-5xl font-extrabold text-[var(--color-primary)] mb-3 leading-snug tracking-tight [text-shadow:0_2px_10px_rgba(0,0,0,0.35)]">
                     Get An Offer In{" "}
                     <span className="cash-pulse text-[var(--color-secondary)]">24 Hours</span>
@@ -279,15 +283,22 @@ export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams)
     }
 
     return (
-        <div className="flex flex-col gap-4">
-            <div
-                role="status"
-                className="flex items-center justify-center gap-2 rounded-xl border border-[#22c55e]/30 bg-[#22c55e]/10 px-4 py-3 text-sm sm:text-base font-semibold text-[#22c55e]"
-            >
-                <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
-                Your appointment is confirmed
-            </div>
-            <AddressForm onNext={onNext} />
-        </div>
+        <AddressForm
+            onNext={onNext}
+            intro={
+                <div className="mb-6 flex flex-col gap-3">
+                    <div
+                        role="status"
+                        className="flex items-center justify-center gap-2 rounded-xl border border-[#22c55e]/30 bg-[#22c55e]/10 px-4 py-3 text-sm sm:text-base font-semibold text-[#22c55e]"
+                    >
+                        <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
+                        Your appointment is confirmed
+                    </div>
+                    <p className="text-center text-gray-300 text-sm sm:text-base">
+                        Want your cash offer ready before we talk? Tell us about your property — it only takes about 2 minutes.
+                    </p>
+                </div>
+            }
+        />
     )
 }
