@@ -7,7 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { MapPin, ArrowRight, Loader2, ShieldCheck } from "lucide-react"
+import { MapPin, ArrowRight, Loader2, ShieldCheck, CheckCircle2 } from "lucide-react"
+import { BookingWidget, hasBooked } from "./booking-widget"
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""
 
@@ -41,7 +42,7 @@ function FieldError({ message }: { message?: string }) {
 
 /* ─── Component ───────────────────────────────────────────────────────────── */
 
-export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams) => void } = {}) {
+function AddressForm({ onNext }: { onNext?: (params: URLSearchParams) => void } = {}) {
     const uid = useId()          // stable unique prefix per instance (safe for SSR)
     const id = (field: string) => `${uid}-${field}`
     const router = useRouter()
@@ -250,5 +251,53 @@ export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams)
                 </p>
             </form>
         </>
+    )
+}
+
+/* ─── Entry point ─────────────────────────────────────────────────────────── */
+
+/**
+ * Funnel entry: seller first books an appointment (low-friction, captures the
+ * lead even if they never finish the long form), then continues to the offer form.
+ */
+export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams) => void } = {}) {
+    const [booked, setBooked] = useState(false)
+    const [showForm, setShowForm] = useState(false)
+
+    // Returning in the same session after already booking: skip straight to the CTA.
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- sessionStorage is client-only
+        if (hasBooked()) setBooked(true)
+    }, [])
+
+    if (showForm) return <AddressForm onNext={onNext} />
+
+    if (!booked) {
+        return (
+            <div className="animate-fade-up rounded-3xl bg-[var(--background)] p-4 sm:p-6 border-2 border-[var(--color-primary-dark)] shadow-2xl shadow-black/50">
+                <BookingWidget onBooked={() => setBooked(true)} />
+            </div>
+        )
+    }
+
+    return (
+        <div
+            role="status"
+            className="animate-fade-up rounded-3xl bg-[var(--background)] p-6 sm:p-8 border-2 border-[var(--color-primary-dark)] shadow-2xl shadow-black/50 text-center"
+        >
+            <CheckCircle2 className="mx-auto mb-4 h-14 w-14 text-[#22c55e]" aria-hidden="true" />
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">Your appointment is confirmed</h3>
+            <p className="text-gray-300 text-sm sm:text-base mb-6">
+                Want your cash offer ready before we talk? Tell us about your property — it only takes about 2 minutes.
+            </p>
+            <Button
+                type="button"
+                onClick={() => setShowForm(true)}
+                className="h-14 w-full text-lg font-extrabold uppercase tracking-wide rounded-xl bg-[var(--color-secondary)] hover:bg-[var(--color-secondary-dark)] text-[var(--color-text-white)] shadow-lg shadow-black/40"
+            >
+                GET MY FREE CASH OFFER
+                <ArrowRight className="ml-2 h-6 w-6" aria-hidden="true" />
+            </Button>
+        </div>
     )
 }

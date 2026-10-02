@@ -1,7 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import Script from "next/script"
+import { useEffect, useState } from "react"
 import {
     CheckCircle2,
     ShieldCheck,
@@ -15,47 +14,7 @@ import {
 
 import { motion } from "framer-motion"
 import { CallButton } from "@/components/ui/call-button"
-
-declare global {
-    interface Window {
-        gtag?: (...args: unknown[]) => void
-    }
-}
-
-/**
- * GHL's booking widget posts positional arrays, not named CustomEvent-style
- * objects. Two signals confirmed via real test bookings (2026-07-31):
- *  - In-person widget: ["msgsndr-booking-complete", { fingerprint, calendarId }]
- *  - Phone-call widget: only ["set-sticky-contacts", "_ud", "<contact JSON>", locationId, fingerprint]
- *    — "msgsndr-booking-complete" never arrived for this widget in testing.
- * The contact JSON's `appointment.id` is only populated once a booking exists,
- * so both signals are checked and either one fires the conversion (the
- * anti-duplicate ref below stops it firing twice if both arrive for the same
- * booking, as happened on the in-person widget). If GHL ever changes either
- * shape, temporarily log `event.data` in the message handler below to inspect it.
- */
-const BOOKING_COMPLETE_EVENT = "msgsndr-booking-complete"
-const STICKY_CONTACTS_EVENT = "set-sticky-contacts"
-const STICKY_CONTACTS_KEY = "_ud"
-
-function isBookingConfirmedMessage(payload: unknown): boolean {
-    if (!Array.isArray(payload)) return false
-
-    if (payload[0] === BOOKING_COMPLETE_EVENT) return true
-
-    if (payload[0] === STICKY_CONTACTS_EVENT && payload[1] === STICKY_CONTACTS_KEY) {
-        try {
-            const contact = typeof payload[2] === "string" ? JSON.parse(payload[2]) : payload[2]
-            return Boolean((contact as { appointment?: { id?: string } } | null)?.appointment?.id)
-        } catch {
-            return false
-        }
-    }
-
-    return false
-}
-
-const GHL_MESSAGE_ORIGIN = "https://api.leadconnectorhq.com"
+import { BookingWidget, hasBooked } from "@/components/forms/booking-widget"
 
 function sanitizeSellerName(raw: string | null): string | null {
     if (!raw) return null
@@ -66,50 +25,19 @@ function sanitizeSellerName(raw: string | null): string | null {
     return trimmed.slice(0, 60)
 }
 
-function fireBookingConversion() {
-    if (typeof window.gtag === "function") {
-        window.gtag("event", "conversion", {
-            send_to: "AW-16699021352/yz6kCLuMzNgcEKiw25o-",
-            value: 1.0,
-            currency: "USD",
-        })
-    }
-}
-
 export default function BookingsPage() {
     const [sellerName, setSellerName] = useState<string | null>(null)
-    const [appointmentType, setAppointmentType] = useState<"in-person" | "phone">("in-person")
     const [bookingConfirmed, setBookingConfirmed] = useState(false)
-    const conversionFiredRef = useRef(false)
 
     useEffect(() => {
         try {
-            if (typeof window !== "undefined") {
-                const stored = window.sessionStorage.getItem("sellerName")
-                setSellerName(sanitizeSellerName(stored))
-            }
+            setSellerName(sanitizeSellerName(window.sessionStorage.getItem("sellerName")))
         } catch {
             setSellerName(null)
         }
-    }, [])
-
-    useEffect(() => {
-        const handler = (event: MessageEvent) => {
-            if (event.origin !== GHL_MESSAGE_ORIGIN) return
-
-            const payload: unknown = event.data
-
-            if (!isBookingConfirmedMessage(payload)) return
-
-            if (conversionFiredRef.current) return
-            conversionFiredRef.current = true
-
-            fireBookingConversion()
-            setBookingConfirmed(true)
-        }
-
-        window.addEventListener("message", handler)
-        return () => window.removeEventListener("message", handler)
+        // Already booked at the start of the funnel — don't offer the calendar again.
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- sessionStorage is client-only
+        if (hasBooked()) setBookingConfirmed(true)
     }, [])
 
     return (
@@ -193,113 +121,8 @@ export default function BookingsPage() {
                             </div>
                         </div>
 
-                        {/* ── Booking Widgets ── */}
-                        <div className="flex flex-col gap-6">
-                            {/* Section heading */}
-                            <div className="text-center">
-                                <p className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-widest mb-1">Next Step</p>
-                                <h3 className="text-xl sm:text-2xl font-extrabold text-white leading-tight mb-2">
-                                    Schedule Your Appointment
-                                </h3>
-                                <p className="text-sm text-gray-400 max-w-md mx-auto leading-relaxed">
-                                    How would you prefer to connect with us?
-                                </p>
-                            </div>
-                
-                            {/* Appointment type selector */}
-                            <div className="grid grid-cols-2 gap-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setAppointmentType("in-person")}
-                                    className={[
-                                        "flex flex-col items-center gap-2 rounded-xl border px-4 py-5 text-sm font-semibold transition-all",
-                                        appointmentType === "in-person"
-                                            ? "border-[#f59e0b] bg-[#f59e0b]/10 text-white ring-2 ring-[#f59e0b]/40"
-                                            : "border-white/10 bg-white/[0.03] text-gray-300 hover:border-white/20 hover:bg-white/[0.06]",
-                                    ].join(" ")}
-                                    aria-pressed={appointmentType === "in-person"}
-                                >
-                                    <span className="text-3xl" aria-hidden>🏠</span>
-                                    <span>In-Person Visit</span>
-                                    <span className="text-xs font-normal text-gray-400 text-center leading-snug">Spencer's team walks your home</span>
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setAppointmentType("phone")}
-                                    className={[
-                                        "flex flex-col items-center gap-2 rounded-xl border px-4 py-5 text-sm font-semibold transition-all",
-                                        appointmentType === "phone"
-                                            ? "border-[#f59e0b] bg-[#f59e0b]/10 text-white ring-2 ring-[#f59e0b]/40"
-                                            : "border-white/10 bg-white/[0.03] text-gray-300 hover:border-white/20 hover:bg-white/[0.06]",
-                                    ].join(" ")}
-                                    aria-pressed={appointmentType === "phone"}
-                                >
-                                    <span className="text-3xl" aria-hidden>📞</span>
-                                    <span>Phone Call</span>
-                                    <span className="text-xs font-normal text-gray-400 text-center leading-snug">Book a call at a time that works for you</span>
-                                </button>
-                            </div>
-
-                            {/* In-Person calendar */}
-                            {appointmentType === "in-person" && (
-                                <div className="rounded-xl border border-[#f59e0b]/30 overflow-hidden">
-                                    <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.04] border-b border-white/10">
-                                        <span className="text-lg" aria-hidden>🏠</span>
-                                        <div>
-                                            <p className="text-sm font-bold text-white">In-Person Appointment</p>
-                                            <p className="text-xs text-gray-400">Schedule a visit — Spencer's team will walk your home</p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <iframe
-                                            src="https://api.leadconnectorhq.com/widget/booking/P1vgAP9PKCyszvGvim17"
-                                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
-                                            scrolling="yes"
-                                            loading="lazy"
-                                            id="P1vgAP9PKCyszvGvim17_1775688153226"
-                                        />
-                                        {/*
-                                        * GHL form_embed.js — afterInteractive: required immediately after
-                                        * hydration so the booking iframe renders correctly. Next.js
-                                        * deduplicates scripts with the same src automatically.
-                                        */}
-                                        <Script
-                                            id="ghl-embed-inperson"
-                                            src="https://api.leadconnectorhq.com/js/form_embed.js"
-                                            strategy="afterInteractive"
-                                        />
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Phone Call calendar */}
-                            {appointmentType === "phone" && (
-                                <div className="rounded-xl border border-[#f59e0b]/30 overflow-hidden">
-                                    <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.04] border-b border-white/10">
-                                        <span className="text-lg" aria-hidden>📞</span>
-                                        <div>
-                                            <p className="text-sm font-bold text-white">Phone Call</p>
-                                            <p className="text-xs text-gray-400">Prefer to talk? Book a call at a time that works for you</p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <iframe
-                                            src="https://api.leadconnectorhq.com/widget/bookings/spencerbuyhouses9hx574"
-                                            style={{ width: "100%", border: "none", overflow: "hidden", minHeight: "900px" }}
-                                            scrolling="yes"
-                                            loading="lazy"
-                                            id="spencerbuyhouses9hx574_1775688153226"
-                                        />
-                                        {/* Same script as above; Next.js deduplicates by src — only one request is made */}
-                                        <Script
-                                            id="ghl-embed-phone"
-                                            src="https://api.leadconnectorhq.com/js/form_embed.js"
-                                            strategy="afterInteractive"
-                                        />
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                        {/* ── Booking Widgets (skipped if the seller already booked at the start of the funnel) ── */}
+                        {!bookingConfirmed && <BookingWidget onBooked={() => setBookingConfirmed(true)} />}
 
                         <p className="text-gray-300 mb-4 leading-relaxed max-w-md mx-auto text-sm">
                             We've received your information — one of our home buying specialists
