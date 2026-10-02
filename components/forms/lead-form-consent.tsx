@@ -258,19 +258,17 @@ function AddressForm({ onNext }: { onNext?: (params: URLSearchParams) => void } 
 
 /**
  * Funnel entry: seller first books an appointment (low-friction, captures the
- * lead even if they never finish the long form), then continues to the offer form.
+ * lead even if they never finish the long form), then the offer form appears
+ * right below the confirmation.
  */
 export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams) => void } = {}) {
     const [booked, setBooked] = useState(false)
-    const [showForm, setShowForm] = useState(false)
 
-    // Returning in the same session after already booking: skip straight to the CTA.
+    // Returning in the same session after already booking: go straight to the form.
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect -- sessionStorage is client-only
         if (hasBooked()) setBooked(true)
     }, [])
-
-    if (showForm) return <AddressForm onNext={onNext} />
 
     if (!booked) {
         return (
@@ -281,23 +279,15 @@ export function LeadFormConsent({ onNext }: { onNext?: (params: URLSearchParams)
     }
 
     return (
-        <div
-            role="status"
-            className="animate-fade-up rounded-3xl bg-[var(--background)] p-6 sm:p-8 border-2 border-[var(--color-primary-dark)] shadow-2xl shadow-black/50 text-center"
-        >
-            <CheckCircle2 className="mx-auto mb-4 h-14 w-14 text-[#22c55e]" aria-hidden="true" />
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">Your appointment is confirmed</h3>
-            <p className="text-gray-300 text-sm sm:text-base mb-6">
-                Want your cash offer ready before we talk? Tell us about your property — it only takes about 2 minutes.
-            </p>
-            <Button
-                type="button"
-                onClick={() => setShowForm(true)}
-                className="h-14 w-full text-lg font-extrabold uppercase tracking-wide rounded-xl bg-[var(--color-secondary)] hover:bg-[var(--color-secondary-dark)] text-[var(--color-text-white)] shadow-lg shadow-black/40"
+        <div className="flex flex-col gap-4">
+            <div
+                role="status"
+                className="flex items-center justify-center gap-2 rounded-xl border border-[#22c55e]/30 bg-[#22c55e]/10 px-4 py-3 text-sm sm:text-base font-semibold text-[#22c55e]"
             >
-                GET MY FREE CASH OFFER
-                <ArrowRight className="ml-2 h-6 w-6" aria-hidden="true" />
-            </Button>
+                <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
+                Your appointment is confirmed
+            </div>
+            <AddressForm onNext={onNext} />
         </div>
     )
 }
