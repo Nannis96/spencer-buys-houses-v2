@@ -96,7 +96,7 @@ export function StickyHeader() {
                 itemType="https://schema.org/PostalAddress"
                 hidden
             >
-                <meta itemProp="streetAddress" content="111 S Highland Street Ste 179" />
+                <meta itemProp="streetAddress" content="4515 Poplar Ave Ste 102" />
                 <meta itemProp="addressLocality" content="Memphis" />
                 <meta itemProp="addressRegion" content="TN" />
                 <meta itemProp="postalCode" content="38111" />

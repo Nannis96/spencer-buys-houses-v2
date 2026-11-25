@@ -100,10 +100,10 @@ const SELLER_REF = {
   "image": `${SITE_URL}/perfil_spencer.webp`,
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "111 S Highland Street Ste 179",
+    "streetAddress": "4515 Poplar Ave Ste 102",
     "addressLocality": "Memphis",
     "addressRegion": "TN",
-    "postalCode": "38111",
+    "postalCode": "38117",
     "addressCountry": "US",
   },
   "priceRange": "$25,000 - $500,000",
@@ -126,10 +126,10 @@ const businessGraphSchema = {
       "email": "homebuyers901@gmail.com",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "111 S Highland Street Ste 179",
+        "streetAddress": "4515 Poplar Ave Ste 102",
         "addressLocality": "Memphis",
         "addressRegion": "TN",
-        "postalCode": "38111",
+        "postalCode": "38117",
         "addressCountry": "US",
       },
       "geo": {

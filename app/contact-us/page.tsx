@@ -72,10 +72,10 @@ const jsonLd = {
             telephone: "+19016218799",
             address: {
                 "@type": "PostalAddress",
-                streetAddress: "111 S Highland St, Suite 179",
+                streetAddress: "4515 Poplar Ave Ste 102",
                 addressLocality: "Memphis",
                 addressRegion: "TN",
-                postalCode: "38111",
+                postalCode: "38117",
                 addressCountry: "US",
             },
             openingHoursSpecification: {
@@ -319,9 +319,9 @@ export default function ContactUsPage() {
                                             <address className="not-italic text-white font-semibold text-sm leading-snug">
                                                 Spencer Buys Houses
                                                 <br />
-                                                111 S Highland St, Suite 179
+                                                4515 Poplar Ave Ste 102
                                                 <br />
-                                                Memphis, TN 38111
+                                                Memphis, TN 38117
                                             </address>
                                         </div>
                                     </div>
@@ -343,7 +343,7 @@ export default function ContactUsPage() {
                                     <MapEmbed
                                         title="Spencer Buys Houses - Memphis location"
                                         src="https://maps.google.com/maps?q=35.1176518,-89.9116545&z=15&output=embed"
-                                        address="111 S Highland St, Suite 179, Memphis, TN 38111"
+                                        address="4515 Poplar Ave Ste 102, Memphis, TN 38117"
                                     />
                                 </div>
                             </div>

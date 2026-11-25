@@ -728,7 +728,7 @@ export default function TermsOfUsePage() {
                                 <Prose>
                                     Official correspondence must be sent via postal mail to:{" "}
                                     <strong className="text-gray-300">
-                                        Volunteer Buyers GP. 111 S Highland Street Suite 179 Memphis, TN 38111.
+                                        Volunteer Buyers GP. 4515 Poplar Ave Ste 102 Memphis, TN 38117.
                                     </strong>
                                 </Prose>
 
