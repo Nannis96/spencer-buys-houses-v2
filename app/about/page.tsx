@@ -250,7 +250,7 @@ export default function AboutPage() {
                         {/* Image */}
                         <div className="w-full lg:w-7/12 flex-shrink-0">
                             <Image
-                                src="/spencer.webp"
+                                src="/spencer_flayer.webp"
                                 alt="Spencer Buys Houses — Memphis local home buyer"
                                 width={520}
                                 height={600}
